@@ -1,0 +1,108 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+=== Data Nodes
+
+==== CONST
+
+A node containing constant data for use as the input to an operation. May hold data in any of the supported data formats.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|out_t
+
+|Any|Boolean|bool
+|Any|signed 8|int8/aint8
+|Any|signed 16|int16
+|Any|signed 32|int32
+|MI, MT|float|float
+|===
+
+==== PLACEHOLDER
+
+A node where data will be inserted into the network at runtime. Generally used for inputs to the network.
+
+*Arguments:*
+|===
+|Argument|Type|Name|Shape|Description
+
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|out_t
+
+|Any|Boolean|bool
+|Any|unsigned 8|uint8
+|Any|signed 8|int8/aint8
+|Any|signed 16|int16
+|Any|signed 32|int32
+|MI, MT|float|float
+|===
+
+==== IDENTITY
+
+Returns a tensor with the same shape, type, and contents as the input.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t|input1|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|Any|Boolean|bool|bool
+|Any|signed 8|int8/aint8|int8/aint8
+|Any|signed 16|int16|int16
+|Any|signed 32|int32|int32
+|MI, MT|float|float|float
+|===
+
+==== IDENTITYN
+
+Returns a list of tensors with the same shape, type, and contents as the input list of tensors.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t|input1|[shape1, shape2, …]|List of input tensors
+|Output|out_t*|output|[shape1, shape2, …]|List of output tensors of same type, size as the input tensors
+|===
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|Any|Boolean|bool|bool
+|Any|signed 8|int8/aint8|int8/aint8
+|Any|signed 16|int16|int16
+|Any|signed 32|int32|int32
+|MI, MT|float|float|float
+|===

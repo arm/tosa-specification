@@ -1,0 +1,43 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+== Operators
+
+=== Operator Parameters
+
+Each operator has a set of input and output operands. The operands will be referenced during operator execution. Operators may also have a set of operator attributes. Operator attributes are expected to be constant values during compilation and may not be provided at execution time.
+For elementwise operations, the scaling of the output can be independent from the data type of the input. Thus 8-bit operations may output 16-bit data values.
+
+include::tensor_ops.adoc[]
+
+include::activation_funcs.adoc[]
+
+include::ewise_binary.adoc[]
+
+include::ewise_unary.adoc[]
+
+include::ewise_ternary.adoc[]
+
+include::comparison.adoc[]
+
+include::reduction.adoc[]
+
+include::data_layout.adoc[]
+
+include::scatter_gather.adoc[]
+
+include::image.adoc[]
+
+include::type_conversion.adoc[]
+
+include::data_nodes.adoc[]
+
+include::custom.adoc[]
+
+include::control_flow.adoc[]

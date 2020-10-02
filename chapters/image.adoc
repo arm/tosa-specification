@@ -1,0 +1,86 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+=== Image Operators
+
+==== RESIZE
+
+Resizes a tensor. Resize is only allowed in the H and W dimensions. In expected use, stride_y is approximately (IH<<shift)/OH and stride_x is approximately (IW<<shift)/OW. OH and OW are also supplied as inputs since there may be off by one errors if calculating OH and OW from the strides.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input|[N,IH,IW,C]|Input tensor
+|Attribute|int*|output_size|[2]|[OH,OW]
+|Attribute|int16*|stride|[2]|[stride_y, stride_x]
+|Attribute|int16*|offset|[2]|[offset_y, offset_x]
+|Attribute|int|shift|Shift value
+|Attribute|mode_t|mode|-|BILINEAR or NEAREST
+|Output|out_t*|output|[N,OH,OW,C]|Output tensor
+|===
+
+*Quantization Parameters:*
+
+None
+
+*Operation Function*
+
+[source,c]
+----
+assert(0<shift && shift<=11); // prevent int32_t accumulator overflow for in_t==int8_t
+assert(-stride_y < offset_y && offset_y < (IH<<shift)-(OH-1)*stride_y)
+assert(-stride_x < offset_x && offset_x < (IH<<shift)-(OW-1)*stride_x)
+for_each (0<=n<N, 0<=oy<OH, 0<=ox<OW; 0<=c<C) {
+    y = oy * stride_y + offset_y
+    x = ox * stride_x + offset_x
+    iy = y >> shift; dy = y - (iy<<shift);
+    ix = x >> shift; dx = x - (ix<<shift);
+    iy0 = apply_max(iy,0);
+    iy1 = apply_mix(iy,IW-1);
+    ix0 = apply_max(ix,0);
+    ix1 = apply_min(ix,IH-1);
+    if (mode==BILINEAR) {
+        v00 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix0,c])
+        v01 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c])
+        v10 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c])
+        v11 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c])
+        acc_t acc = v00*((1<<shift)-dy)*((1<<shift)-dx)
+        acc = acc + v01*((1<<shift)-dy)*dx
+        acc = acc + v10*dy*((1<<shift)-dx)
+        acc = acc + v11*dy*dx
+        tensor_write<acc_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc)
+    } else if (mode==NEAREST) {
+        iy = (dy>>(shift-1))!=0 ? iy1 : iy0;
+        ix = (dx>>(shift-1))!=0 ? ix1 : ix0;
+        v = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy,ix,c]);
+        tensor_write<acc_t>(output, [N,OH,OW,C], [n,oy,ox,c], v)
+    }
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|Any|signed 8,  bilinear|int8|int32
+|Any|signed 8,  nearest |int8|int8
+|Any|signed 16, bilinear|int16|int48
+|Any|signed 16, nearest |int16|int16
+|===
+
+*Scaling Modes:*
+|===
+|Mode|Description
+
+|NEAREST|Nearest Neighbor
+|BILINEAR|Bilinear interpoloation
+|===

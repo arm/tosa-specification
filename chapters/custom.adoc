@@ -1,0 +1,20 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+=== Custom Operators
+
+Hardware implementing TOSA may choose to add additional custom operators that are not expressed in the existing TOSA operations. These operators are not expected to be portable across TOSA implementations. The input and output signatures must be expressed in the corresponding TOSA node.
+
+==== CUSTOM
+Input Operands:
+
+* Num input operands – Scalar number of input operands
+* Num output operands – Scalar number of output operands
+* Operator code – untyped data consisting of the operator data
+* Affine transform description for each tensor

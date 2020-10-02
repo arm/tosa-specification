@@ -1,0 +1,156 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+
+=== Activation Functions
+
+==== CLAMP
+Clamp to an arbitrary minimum and maximum value. Note that the maximum and minimum values are specified as signed quantized values, no scaling happens before or after this operation.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|Input|shape|Input tensor from 1 to 4 dims
+|Attribute|in_t|min_val|-|minimum clip value
+|Attribute|in_t|max_val|-|maximum clip value
+|Output|out_t*|Output|shape|Output tensor of same type and shape as input
+|===
+
+*Operation Function:*
+....
+assert(dimensions(shape)<=4)
+for_each (index in shape) {
+    value = tensor_read<in_t>(input, shape, index)
+    acc = apply_clip(value, min_val, max_val)
+    tensor_write<out_t>(output, shape, index, acc)
+}
+....
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|Any|signed 8|aint8 |aint8
+|Any|signed 16|int16|int16
+|MI, MT|float|float|float
+|===
+
+==== RELUN
+
+ReLU with a scalar maximum value.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|Input|shape|Input tensor
+|Attribute|in_t|max_val|-|maximum clip value
+|Output|out_t*|Output|shape|Output tensor of same type and shape as input
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    in_t value = tensor_read<in_t>(input, shape, index)
+    acc = apply_clip<in_t>(value, 0, max_val)
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|signed 32|int32
+|MI, MT|float|float
+|===
+
+==== SIGMOID
+
+Sigmoid function: output = 1 / (1 + exp(-input))
+
+For quantized integer data types, the TABLE operator should be used instead with
+the following definition.
+
+The sigmoid table has 513 entries each of 16-bit precision and covering the input range -16.0 to +16.0 in steps of 1/16.
+
+[source,c]
+....
+int sigmoid_reference(int x) {|// input x range is -256 to + 256 inclusive
+    F64 v = (double)x/(double)16;
+    v = 1.0/(1.0+exp(-v));
+    return round_to_nearest(32768.0 * v);
+}
+
+generate_lookup_table(&sigmoid_table, &sigmoid_reference);
+....
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|Input|shape|Input tensor from 1 to 4 dims
+|Output|out_t*|Output|shape|Output tensor of same type and shape as input
+|===
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|MI, MT|float|float|float
+|===
+
+==== TANH
+
+Parameterized hyperbolic tangent.
+
+For quantized integer data types, the TABLE operator should be used instead with
+the following definition.
+
+The tanh_table has 513 entries each of 16-bit precision and covering the input range -8.0 to +8.0 in steps of 1/32. The table is specified by:
+
+[source,c]
+----
+int tanh_reference(int x) {  // input x range is -256 to +256 inclusive
+    F64 v = (double)x/(double)32;
+    v = exp(-2.0*v);
+    v = (1.0-v)/(1.0+v);
+    return round_to_nearest(32768.0 * v);
+}
+
+generate_lookup_table(&tanh_table, &tanh_reference);
+----
+
+*Arguments:*
+
+|===
+
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|Input|shape|Input tensor from 1 to 4 dims
+|Output|out_t*|Output|shape|Output tensor of same type and shape as input
+|===
+
+*Supported Data Types:*
+
+|===
+
+|Profile|Mode|in_t|out_t
+
+|MI, MT|float|float|float
+|===

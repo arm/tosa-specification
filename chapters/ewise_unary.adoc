@@ -1,0 +1,332 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+=== Elementwise Unary Operators
+
+==== ABS
+
+Elementwise absolute value operation
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    int32_t value1 = tensor_read<in_t>(input1, shape, index)
+    if (value1 < 0)
+        value1 = apply_sub<out_t>(0, value1)
+    tensor_write<out_t>(output, shape, index, value1)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|Any|signed 32|int32|int32
+|MI, MT|float|float|float
+|===
+
+==== BITWISE_NOT
+
+Elementwise bitwise NOT of input tensor.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Quantization Parameters:*
+
+None
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    int32_t value1 = tensor_read<in_t>(input1, shape, index)
+    int32_t acc = ~value1
+    tensor_write<out_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|Any|signed 8|aint8|aint8
+|Any|signed 16|int16|int16
+|Any|signed 32|int32|int32
+|===
+
+==== CEIL
+
+Elementwise ceiling operation
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|MI, MT|float|float|float
+|===
+
+==== CLZ
+
+Elementwise count leading zeros operation
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    int32_t value1 = tensor_read<in_t>(input1, shape, index)
+    if (value1 == 0) {
+         acc = 32 // input1_width
+    }
+    else {
+         mask = 1 << (32 - 1) // input1_width - 1
+         acc = 0
+         while (mask & value1 == 0) {
+            mask = mask >> 1
+            acc = acc + 1
+         }
+    }
+    tensor_write<out_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+|===
+|Profile|Mode|in_t|out_t
+
+|Any|signed 32|int32|int32
+|===
+
+==== EXP
+
+Elementwise e to the x operation
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|Input 0|Output
+
+|Any|float|float|float
+|===
+
+==== FLOOR
+
+Elementwise floor operation
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|MI, MT|float|float|float
+|===
+
+==== LOG
+
+Elementwise natural logarithm operation
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|MI, MT|float|float|float
+|===
+
+==== LOGICAL_NOT
+
+Elementwise logical NOT of input.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Quantization Parameters:*
+
+None
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    in_t value1 = tensor_read<in_t>(input1, shape1, index)
+    in_t acc = !value1
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|bool|bool
+|===
+
+==== NEGATE
+
+Elementwise negation operation
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Quantization Parameters:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Attribute|in_t|input1_zp|-|Input 1 zero point
+|Attribute|out_t|output_zp|-|Output zero point
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+assert(in_t == aint8_t || input_zp == 0) // Zero point only for asymmetric int8
+assert(out_t == aint8_t || output_zp == 0) // Zero point only for asymmetric int8
+for_each (index in shape) {
+    int32_t value1 = tensor_read<in_t>(input1, shape, index)
+    int32_t acc = appl_sub<int32_t>(0, value1 - input1_zp)
+    acc = apply_clip(acc, minimum<out_t>, maximum<out_t>)
+    tensor_write<out_t>(output + output_zp, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|Input 0|Output
+
+|Any|signed 8|aint8|aint8
+|Any|signed 16|int16|int16
+|Any|signed 32|int32|int32
+|MI, MT|float|float|float
+|===
+
+==== RECIPROCAL
+
+Elementwise reciprocal operation. For integer operation, a TABLE should be used with the appropriate ranges.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|Input 0|Output
+
+|MI, MT|float|float|float
+|===
+
+==== RSQRT
+
+Elementwise reciprocal square root operation. For integer operation, a TABLE should be used with the appropriate ranges.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|Input 0|Output
+
+|MI, MT|float|float|float
+|===

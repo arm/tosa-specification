@@ -1,0 +1,611 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+=== Elementwise Binary Operators
+
+==== ADD
+
+Elementwise addition of input1 and input2. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    in_t acc = apply_add<in_t>(value1, value2)
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|signed 32|int32
+|MI, MT|float|float
+|===
+
+==== ARITHMETIC_RIGHT_SHIFT
+
+Elementwise arithmetic right shift of input1 by the amount specified in input2. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    assert(value2 <= 31)
+    in_t acc = value1 >> value2
+    acc = apply_clip(acc, minimum<in_t>, maximum<in_t>)
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|signed 8|int8
+|Any|signed 16|int16
+|Any|signed 32|int32
+|===
+
+==== BITWISE_AND
+
+Elementwise bitwise AND of input tensor 0 and input tensor 1. Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|in_t*|output|shape|Output tensor of same type as the input tensors, with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    in_t acc = value1 & value2
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|signed 8|aint8
+|Any|signed 16|int16
+|Any|signed 32|int32
+|===
+
+==== BITWISE_OR
+
+Elementwise bitwise OR of input1 and input2. Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    in_t acc = value1 | value2
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|signed 8|aint8
+|Any|signed 16|int16
+|Any|signed 32|int32
+|===
+
+==== BITWISE_XOR
+
+Elementwise bitwise XOR of input1 and input2. Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    in_t acc = value1 ^ value2
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|signed 8|aint8
+|Any|signed 16|int16
+|Any|signed 32|int32
+|===
+
+==== LOGICAL_AND
+
+Elementwise logical AND of input1 and input2. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Quantization Parameters:*
+
+None
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    in_t acc = value1 && value2
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|Bool|Bool
+|===
+
+==== LOGICAL_LEFT_SHIFT
+
+Elementwise left shift of input1 and input2. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    assert(value2 <= 31)
+    in_t acc = value1 << value2
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|signed 8|int8
+|Any|signed 16|int16
+|Any|signed 32|int32
+|===
+
+==== LOGICAL_RIGHT_SHIFT
+
+Elementwise logical right shift of input1 by the amount specified in input2. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    assert(value2 <= 31)
+    in_t acc = (unsigned in_t)value1 >> value2
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|signed 8|int8
+|Any|signed 16|int16
+|Any|signed 32|int32
+|===
+
+==== LOGICAL_OR
+
+Elementwise logical OR of input1 and input2. Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    in_t acc = value1 || value2
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|Bool|Bool
+|===
+
+==== LOGICAL_XOR
+
+Elementwise logical XOR of input tensor 0 and input tensor 1. Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
+|Input|in_t*|input2|shape2|Input tensor with the same rank as Input 0
+|Output|in_t*|output|shape|Output tensor of same type as the input tensors, with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    in_t acc = value1 != value2
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|Bool|Bool
+|===
+
+==== MAXIMUM
+
+Elementwise max of input1 and input2. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    in_t acc = apply_max(value1, value2)
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|signed 32|int32
+|MI, MT|float|float
+|===
+
+==== MINIMUM
+
+Elementwise minimum of input tensor 0 and input tensor 1. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    in_t acc = apply_min(value1, value2)
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|signed 32|int32
+|MI, MT|float|float
+|===
+
+==== MUL
+
+Elementwise multiplication (Hadamard product) of input tensor 0 and input tensor 1. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as Input 0
+|Output|out_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    in_t acc = value1 * value2 // takes low bits for int32_t
+    tensor_write<out_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+|===
+|Profile|Mode|in_t|out_t
+
+|Any|signed 8|int8|int32
+|Any|signed 16|int16|int32
+|Any|signed 32|int32|int32
+|MI, MT|float|float|float
+|===
+
+==== POW
+
+Elementwise input tensor 0 value raised to the power of input 1 tensor. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
+|Input|in_t*|input2|shape2|Input tensor with the same rank as Input 0
+|Output|in_t*|output|shape|Output tensor of same type as the input tensors, with broadcast shape if necessary
+|===
+
+*Quantization Parameters:*
+
+Only supported with floating point values.
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|MI, MT|float|float
+|===
+
+==== SUB
+
+Elementwise subtraction of input tensor 0 and input tensor 1. Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as Input 0
+|Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    in_t acc = apply_sub<out_t>(value1, value2);
+    tensor_write<in_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t
+
+|Any|signed 32|int32
+|MI, MT|float|float
+|===
+
+====   TABLE
+
+Interpolated table lookup operation. Input values are scaled to create a fixed-point 9.7 value. The high 9 bits are used to index into the table. The fractional bits are used to interpolate based on the looked up value and the index+1 value in the table. The TABLE operator then returns a 16.7 interpolated value. Note that there must be 513 values to handle the full range of inputs.
+
+The TABLE operator is expected to be used as follows:
+
+* A RECALE node is expected before the TABLE operator to scale the input to a full int16_t range for the table lookup
+* If an int16_t result is required then follow the TABLE operator with a RESCALE with a right shift of 7
+* If an int8_t result is required then follow the TABLE operator with a RESCALE with a right shift of 15 
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|Input|shape|Input tensor
+|Input|table_t*|table|[513]|Lookup table tensor
+|Output|out_t*|output|shape|Output tensor
+|===
+
+*Quantization Parameters:*
+
+None
+
+*Operation Function:*
+
+[source,c]
+----
+assert(dimensions(shape)<=4)
+for_each (index in shape) {
+    in_t value = tensor_read<in_t>(input, shape, index)
+    out_t acc = apply_lookup(table, value)
+    tensor_write<out_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|table_t|out_t
+
+|Any|signed 16|int16|int16|int32
+|===
+

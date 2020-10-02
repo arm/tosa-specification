@@ -1,0 +1,60 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+=== Elementwise Ternary Operators
+
+==== SELECT
+
+Elementwise select of the output based on a condition.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|bool_t|input1|shape1|
+|Input|in_t*|input2|shape2|Input tensor from 1 to 4 dims
+|Input|in_t*|input3|shape3|Input tensor with the same rank as Input 0
+|Output|out_t*|output|shape|Output tensor of same type, as the input tensors, with broadcast shape if necessary
+|===
+
+*Quantization Parameters:*
+
+None
+
+*Operation Function:*
+
+[source,c]
+----
+for_each (index in shape) {
+    index1 = apply_broadcast(shape, shape1, index)
+    index2 = apply_broadcast(shape, shape2, index)
+    index3 = apply_broadcast(shape, shpae3, index)
+    bool_t value1 = tensor_read<in_t>(input1, shape1, index1)
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+    in_t value3 = tensor_read<in_t>(input3, shape3, index3)
+    if (value1 == True){
+         in_t acc = value2
+    } else {
+         in_t acc = value3
+    }
+    tensor_write<out_t>(output, shape, index, acc)
+}
+----
+
+*Supported Data Types:*
+|===
+|Profile|Mode|bool_t|in_t|out_t
+
+|Any|Boolean|bool|bool|bool
+|Any|signed 8|bool|aint8/int8|aint8/int8
+|Any|signed 16|bool|int16|int16
+|Any|signed 32|bool|int32|int32
+|MI, MT|float|bool|float|float
+|===

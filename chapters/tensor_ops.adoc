@@ -1,0 +1,519 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+=== Tensor Operators
+
+==== ARGMAX
+
+This returns the index with the largest value across the given axis of the input tensor.
+
+*Arguments*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input|input_shape|Input tensor dimension k \<=4
+|Attribute|int|axis|-|Axis in range 0 to k-1
+|Output|out_t*|output|output_shape|Output tensor dimension k-1
+|===
+
+*Quantization Parameters:*
+
+None
+
+*Operation Function:*
+
+[source,c]
+----
+assert(axis >= 0 && axis < k && k <=4)
+left_shape = input_shape[0:axis-1]
+right_shape = input_shape[axis+1:k-1]
+assert( concat(left_shape,    right_shape) == output_shape )
+for_each ( left_index in left_shape, right_index in right_shape )
+    in_t max_value = minimum_value<in_t>
+    int32 max_index = 0;
+    for (i=0; i<shape[axis]; i++) {
+        index = concat(left_index, [i], right_index)
+        value = tensor_read<in_t>(input, input_shape, index)
+        if (value > max_value) { max_value = value; max_index=i; }
+    }
+    index = concat(left_index, right_index)
+    tensor_write<int32_t>(output, output_shape, index, max_index)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|Any|signed 8|aint8|int32
+|Any|signed 16|int16|int32
+|MI, MT|float|float|int32
+|===
+
+==== AVG_POOL2D
+
+This performs an average pooling over the given input tensor. A sliding window of size given by <kernel size> is passed over the input tensor, with the mean value being placed in the output tensor.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t *|input|[N,H,W,C]|Input tensor 4D
+|Attribute|int *|kernel|[2]|[kernel_y, kernel_x]
+|Attribute|int *|stride|[2]|[stride_y, stride_x]
+|Attribute|int *|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
+|Output|out_t *|output|[N,H,W,C]|Output tensor 4D
+|===
+
+*Quantization Parameters:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Attribute|in_t|input_zp|-|Input tensor zero point
+|Attribute|out_t|output_zp|-|Output tensor zero point
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+assert(in_t == aint8_t || input_zp == 0) // Zero point only for asymmetric int8
+assert(out_t == aint8_t || output_zp == 0) // Zero point only for asymmetric int8
+pad=concat([0,0],pad,[0,0])
+for_each ( 0<=n<N, 0<=oy<H, 0<=ox<W, 0<=c<C ) {
+    acc_t acc = 0;
+    int count = 0;
+    iy = oy * stride_y - pad_top
+    ix = ox * stride_x - pad_left
+    for_each ( 0<=ky<kernel_y, 0<=kx<kernel_x) {
+        y = iy + ky
+        x = ix + kx
+        value  = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,c], input_zp, pad)
+        acc = apply_add<32>(acc, value)
+        if (0<=y<IH and 0<=x<IW) count++
+    }
+    if (is_float(out_t)) {
+      value = value / (float)count;
+    } else {
+      scale = reciprocal_scale(count)
+      acc = apply_scale_32(acc, scale.multiplier, scale.shift, false)
+      acc = apply_clip(acc + output_zp, output_min, output_max)
+    }
+    tensor_write<out_t>(output, [N,H,W,OC], [n,oy,ox,oc], acc)
+}
+----
+
+*Supported Data Types:*
+|===
+|Profile|Mode|in_t|acc_t|out_t
+
+|Any|signed 8|aint8|int32_t|aint8
+|Any|signed 16|int16|int32_t|int16
+|MI, MT|float|float|float|float
+|===
+
+==== CONV2D
+
+Performs a 2D convolution over the given tensor input, using the weight tensor.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input|[N,IH,IW,IC]|Input tensor
+|Attribute|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
+|Attribute|acc_t*|bias|[OC]|Per output channel bias data.
+|Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
+|Attribute|int*|stride|[2]|[stride_y, stride_x]
+|Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
+|Output|out_t*|output|[N,H,W,OC]|Output tensor
+|===
+
+*Quantization Parameters:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Attribute|in_t|input_zp|-|Input tensor zero point
+|Attribute|weight_t|weight_zp|-|Weight zero point
+|===
+
+*Operation Function*
+
+[source,c]
+----
+assert(in_t == aint8_t || input_zp == 0) // Zero point only for asymmetric int8
+assert(weight_t == aint8_t || weight_zp == 0)
+pad=concat([0,0],pad,[0,0])
+for_each (0<=n<N, 0<=oy<H, 0<=ox<W; 0<=oc<OC) {
+    acc_t acc = 0
+    iy = oy * stride_y - pad_top
+    ix = ox * stride_x - pad_left
+    for_each (0<=ky<KH, 0<=kx<KW, 0<=ic<IC) {
+        y = iy + ky * dilation_y
+        x = ix + kx * dilation_x
+        value  = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,ic], input_zp, pad)
+        weight = tensor_read<weight_t>(weight, [OC,KH,KW,IC], [oc,ky,kx,ic], weight_zp)
+        acc = apply_add<acc_t>(acc, value * weight)
+    }
+    acc = apply_add<acc_t>(acc, bias[oc])
+    tensor_write<acc_t>(output, [N,H,W,OC], [n,oy,ox,oc], acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|weight_t|acc_t
+
+|Any|signed 8x8|aint8|int8,aint8|int32
+|Any|signed 8x4|aint8|int4|int32
+|Any|signed 16x8|int16|int8|int48
+|MI, MT|float|float|float|float
+|===
+
+==== CONV3D
+
+Performs a 3D convolution over the given input tensor.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input|[N,ID,IH,IW,IC]|Input tensor
+|Attribute|weight_t*|weight|[OC,KD,KH,KW,IC]|Weight kernel size KDxKHxKW
+|Attribute|acc_t*|bias|[OC]|Per output channel bias data.
+|Attribute|int*|pad|[6]|[pad_d0, pad_d1, pad_top, pad_bottom, pad_left, pad_right]
+|Attribute|int*|stride|[3]|[stride_d, stride_y, stride_x]
+|Attribute|int*|dilation|[3]|[dilation_d, dilation_y, dilation_x]
+|Output|out_t*|output|[N,D,H,W,OC]|Output tensor
+|===
+
+*Quantization Parameters:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Attribute|in_t|input_zp|-|Input tensor zero point
+|Attribute|weight_t|weight_zp|-|Weight zero point
+|===
+
+*Operation Function*
+
+[source,c]
+----
+assert(in_t == aint8_t || input_zp == 0) // Zero point only for asymmetric int8
+assert(weight_t == aint8_t || weight_zp == 0)
+pad=concat([0,0],pad,[0,0])
+for_each (0<=n<N, 0<=od<D, 0<=oy<H, 0<=ox<W; 0<=oc<OC) {
+    acc_t acc = 0
+    id = od * stride_d - pad_d0
+    iy = oy * stride_y - pad_top
+    ix = ox * stride_x - pad_left
+    for_each (0<=kd<KD, 0<=ky<KH, 0<=kx<KW, 0<=ic<IC) {
+        d = id + kd * dilation_d
+        y = iy + ky * dilation_y
+        x = ix + kx * dilation_x
+        value  = tensor_read<in_t>(input, [N,ID,IH,IW,IC], [n,d,y,x,ic], input_zp, pad)
+        weight = tensor_read<weight_t>(weight,[OC,KD,KH,KW,IC],[oc,kd,ky,kx,ic], weight_zp)
+        acc = apply_add<acc_t>(acc, value * weight)
+    }
+    acc = apply_add<acc_t>(acc, bias[oc])
+    tensor_write<acc_t>(output, [N,D,H,W,OC], [n,od,oy,ox,oc], acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|weight_t|acc_t
+
+|Any|signed 8x8|aint8|int8,aint8|int32
+|Any|signed 8x4|aint8|int4|int32
+|Any|signed 16x8 |int16|int8|int 48
+|MI, MT|float|float|float|float
+|===
+
+
+==== DEPTHWISE_CONV2D
+
+Performs 2D convolutions separately over each channel of the given tensor input, using the weight tensor.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input|[N,H,W,C]|Input tensor
+|Attribute|weight_t*|weight|[KH,KW,C,M]|Weight kernel size KH x KW
+|Attribute|acc_t*|bias|[C*M]|Per output channel bias data.
+|Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
+|Attribute|int*|stride|[2]|[stride_y, stride_x]
+|Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
+|Output|out_t*|output|[N,H,W,C*M]|Output tensor
+|===
+
+*Quantization Parameters:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Attribute|in_t|input_zp|-|Input tensor zero point
+|Attribute|weight_t|weight_zp|-|Weight zero point
+|===
+
+*Operation Function*
+
+[source,c]
+----
+assert(in_t==aint8_t || input_zp==0) // Zero point only for asymmetric int8
+assert(weight_t==aint8_t || weight_zp==0)
+pad=concat([0,0],pad,[0,0])
+for_each (0 <= n<N, 0 <= oy < H, 0 <= ox < W; 0 <= c < (C * M), 0 <= m < M) {
+    acc_t acc = 0
+    iy = oy * stride_y - pad_top
+    ix = ox * stride_x - pad_left
+    for_each (0<=ky<KH, 0<=kx<KW) {
+        y = iy + ky * dilation_y
+        x = ix + kx * dilation_x
+        value  = tensor_read<in_t>(input, [N,H,W,C], [n,y,x,c], input_zp, pad)
+        weight = tensor_read<weight_t>(weight, [KH,KW,C,M], [ky,kx,c,m], weight_zp)
+        acc = apply_add<acc_t>(acc, value * weight)
+    }
+    acc = apply_add<acc_t>(acc, bias[(c*M) + m])
+    tensor_write<acc_t>(output, [N,H,W,C*M], [n,oy,ox,c*M+m], acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|weight_t|acc_t
+
+|Any|signed 8x8|aint8|int8,aint8|int32
+|Any|signed 8x4|aint8|int4|int32
+|Any|signed 16x8|int16|int8|int48
+|MI, MT|float|float|float|float
+|===
+
+==== FULLY_CONNECTED
+
+Performs a fully connected network.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input|[N,IC]|Input tensor
+|Attribute|weight_t*|weight|[OC,IC]|Weights
+|Attribute|acc_t*|bias|[OC]|Per output channel bias data.
+|Output|out_t*|output|[N,OC]|Output tensor
+|===
+
+*Quantization Parameters:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Attribute|in_t|input_zp|-|Input tensor zero point
+|Attribute|weight_t|weight_zp|-|Weight zero point
+|===
+
+*Operation Function*
+
+[source,c]
+----
+assert(in_t == aint8_t || input_zp == 0) // Zero point only for asymmetric int8
+assert(weight_t == aint8_t || weight_zp == 0)
+for_each (0<=n<N, 0<=oc<OC) {
+    acc_t acc = 0
+    for_each (0<=ic<IC) {
+        value  = tensor_read<in_t>(input, [N,IC], [n,ic], input_zp)
+        weight = tensor_read<weight_t>(weight, [OC,IC], [oc,ic], weight_zp)
+        acc = apply_add<acc_t>(acc, value * weight)
+    }
+    acc = apply_add<acc_t>(acc, bias[oc])
+    tensor_write<acc_t>(output, [N,OC], [n,oc], acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|weight_t|acc_t
+
+|Any|signed 8x8|aint8|int8,aint8|int32
+|Any|signed 8x4|aint8|int4|int32
+|Any|signed 16x8 |int16|int8|int48
+|MI, MT|float|float|float|float
+|===
+
+==== MATMUL
+Performs a two dimensional matrix multiplication. This allows both inputs to be activations, rather than reserving weights as an attribute in the FULLY_CONNECTED operator.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|A|[M,K]|Input tensor A
+|Input|in_t*|B|[K,N]|Input tensor B
+|Output|out_t*|C|[M,N]|Output tensor C
+|===
+
+*Quantization Parameters:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Attribute|in_t|A_zp|-|Input tensor A zero point
+|Attribute|in_t|B_zp|-|Input tensor B zero point
+|===
+
+*Operation Function*
+
+[source,c]
+----
+assert(in_t==aint8_t || (A_zp==0 && B_zp==0) // Zero point only for asymmetric int8
+for_each (0<=m<M, 0<=n<N) {
+    acc_t acc = 0
+    for_each (0<=k<K) {
+        value1 = tensor_read<in_t>(A, [M,K], [m,k], A_zp)
+        value2 = tensor_read<in_t>(B, [K,N], [k,n], B_zp)
+        acc = acc + value1 * value2
+    }
+    tensor_write<acc_t>(C, [M,N], [m,n], acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|acc_t
+
+|Any|signed 8x8|aint8|int32
+|Any|signed 16x16|int16|int48
+|MI, MT|float|float|float
+|===
+
+==== MAX_POOL2D
+This performs a max pooling over the given input tensor. A sliding window of size given by <kernel size> is passed over the input tensor, with the maximum value being placed in the output tensor.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input|[N,H,W,C]|Input tensor 4D
+|Attribute|int*|kernel|[2]|[kernel_y, kernel_x]
+|Attribute|int*|stride|[2]|[stride_y, stride_x]
+|Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
+|Output|out_t*|output|[N,H,W,C]|Output tensor 4D
+|===
+
+*Quantization Parameters:*
+
+None
+
+*Operation Function:*
+
+[source,c]
+----
+pad=concat([0,0],pad,[0,0])
+for_each ( 0<=n<N, 0<=oy<H, 0<=ox<W, 0<=c<C ) {
+    int32_t acc = minimum_value<in_t>;
+    iy = oy * stride_y - pad_top
+    ix = ox * stride_x - pad_left
+    for_each ( 0<=ky<kernel_y, 0<=kx<kernel_x ) {
+        y = iy + ky
+        x = ix + kx
+        value  = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,c], pad)
+        acc = apply_max(acc, value)
+    }
+    tensor_write<out_t>(output, [N,H,W,OC], [n,oy,ox,oc], acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|Any|signed 8|aint8|aint8
+|Any|16-bit|int16|int16
+|MI, MT|float|float|float
+|===
+
+==== TRANSPOSE_CONV2D
+
+Performs a 2D transposed convolution over the given tensor input, using the weights tensor.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input|[N,IH,IW,IC]|Input tensor
+|Attribute|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
+|Attribute|acc_t*|bias|[OC]|Per output channel bias data.
+|Attribute|int*|outpad|[2]|[outpad_top, outpad_left]
+|Attribute|int*|stride|[2]|[stride_y, stride_x]
+|Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
+|Attribute|int*|out_shape|[4]|[N,OH,OW,OC]
+|Output|out_t*|output|[N,OH,OW,OC]|Output tensor
+|===
+
+*Quantization Parameters:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Attribute|in_t|input_zp|-|Input tensor zero point
+|Attribute|weight_t|weight_zp|-|Weight zero point
+|===
+
+*Operation Function*
+
+[source,c]
+----
+assert(in_t==aint8_t  || input_zp==0) // Zero point only for asymmetric int8
+assert(weight_t == aint8_t || weight_zp == 0)
+for_each (index in out_shape) {
+    tensor_write<acc_t>(output, [N,OH,OW,OC], index, bias[index[3]])
+}
+for_each (0<=n<N, 0<=iy<IH, 0<=ix<IW, 0<=oc<OC, 0<=ic<IC, 0<=ky<KH,  0<=kx<KW) {
+    oy = iy * stride_y - outpad_top  + ky
+    ox = ix * stride_x - outpad_left + kx
+    if (oy>=0 && oy<OH && ox>=0 && ox<OW) {
+        acc = tensor_read<acc_t>(output, [N,OH,OW,OC], [n,oy,ox,oc])
+        value = tensor_read<in_t>(input, [N,IH,IW,IC], [n,iy,ix,ic], input_zp)
+        weight = tensor_read<weight_t>(weight, [OC,KH,KW,IC], [oc,ky,kx,ic], weight_zp)
+        acc = apply_add<acc_t>(acc, value * weight)
+        tensor_write<acc_t>(output, [N,OH,OW,OC], [n,oy,ox,oc], acc)
+    }
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|weight_t|acc_t
+
+|Any|signed 8x8|aint8|int8,aint8|int32
+|Any|signed 8x4|aint8|int4|int32
+|Any|signed 16x8|int16|int8|int48
+|MI, MT|float|float|float|float
+|===

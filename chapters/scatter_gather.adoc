@@ -1,0 +1,40 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+=== Scatter/Gather Operators
+
+==== GATHER
+
+Generate a tensor for which each element in the output is a subtensor of the values tensor along the given axis, based on the value of indices.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|index_t*|indices|shape|Input tensor from 1 to 4 dims
+|Input|value_t*|values|shape|Input tensor from 1 to 4 dims. Must be of rank at least axis + 1
+|Attribute|int|axis|-|Scalar value denoting which dimension to be used for striding.
+|Output|out_t*|output|shape|Output tensor
+|===
+
+*Quantization Parameters:*
+
+None
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|index_t|value_t|out_t
+
+|Any|signed 8|int8/int16|aint8|aint8
+|Any|signed 16|int8/int16|int16|int16
+|Any|signed 32|int8/int16|int32|int32
+|===
+

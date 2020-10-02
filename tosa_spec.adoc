@@ -1,0 +1,21 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+= TOSA {revnumber} specification
+:numbered:
+:toc: left
+:toclevels: 3
+:source-highliter: coderay
+
+include::chapters/notice.adoc[]
+
+include::chapters/introduction.adoc[]
+
+include::chapters/operators.adoc[]
+
