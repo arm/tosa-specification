@@ -33,30 +33,6 @@ A node containing constant data for use as the input to an operation. May hold d
 |MI, MT|float|float
 |===
 
-==== PLACEHOLDER
-
-A node where data will be inserted into the network at runtime. Generally used for inputs to the network.
-
-*Arguments:*
-|===
-|Argument|Type|Name|Shape|Description
-
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|out_t
-
-|Any|Boolean|bool
-|Any|unsigned 8|uint8
-|Any|signed 8|int8/aint8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
-|===
-
 ==== IDENTITY
 
 Returns a tensor with the same shape, type, and contents as the input.
@@ -105,4 +81,28 @@ Returns a list of tensors with the same shape, type, and contents as the input l
 |Any|signed 16|int16|int16
 |Any|signed 32|int32|int32
 |MI, MT|float|float|float
+|===
+
+==== PLACEHOLDER
+
+A node where data will be inserted into the network at runtime. Generally used for inputs to the network.
+
+*Arguments:*
+|===
+|Argument|Type|Name|Shape|Description
+
+|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|out_t
+
+|Any|Boolean|bool
+|Any|unsigned 8|uint8
+|Any|signed 8|int8/aint8
+|Any|signed 16|int16
+|Any|signed 32|int32
+|MI, MT|float|float
 |===

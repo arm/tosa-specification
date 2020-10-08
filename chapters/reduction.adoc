@@ -9,53 +9,6 @@
 
 === Reduction Operators
 
-==== REDUCE_ANY
-
-Reduce a tensor along the given axes with a logical OR operation
-
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input|in_shape|Input tensor from 1 to 4 dims
-|Attribute|int|axes|[]|List of axes with size from 1 to rank(input1). Values are integers into the 0-based dimensions of the input tensor. An empty list is not allowed.
-|Attribute|int|keep_dims|-|If 1, axes reduced will be retained with length=1.
-|Output|out_t*|output|out_shape|Output tensor. Same rank as the input tensor if keep_dims set, else one less than input tensor rank.
-|===
-
-*Operation Function:*
-
-[source,c]
-----
-tmp_shape = in_shape;
-for_each (axis in axes[]) {
-    tmp_shape[axis]=1;
-}
-if (keep_dims) assert(tmp_shape == out_shape)
-for_each (index in tmp_shape) {
-    tensor_write<in_t>(output, tmp_shape, index, false)
-}
-for_each (index in in_shape) {
-    tmp_index = index;
-    for each (axis in axes[]) {
-        tmp_index[axis]=0;
-    }
-    value = tensor_read<in_t>(input, in_shape, index)
-    acc   = tensor_read<in_t>(output, tmp_shape, tmp_index)
-    acc   = acc || value
-    tensor_write<in_t>(output, tmp_shape, tmp_index, acc)
-}
-----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|out_t
-
-|Any|Boolean|bool|bool
-|===
-
 ==== REDUCE_ALL
 
 Reduce a tensor along the given axes with a logical AND operation
@@ -91,6 +44,53 @@ for_each (index in in_shape) {
     value = tensor_read<in_t>(input, in_shape, index)
     acc   = tensor_read<in_t>(output, tmp_shape, tmp_index)
     acc   = acc && value
+    tensor_write<in_t>(output, tmp_shape, tmp_index, acc)
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_t|out_t
+
+|Any|Boolean|bool|bool
+|===
+
+==== REDUCE_ANY
+
+Reduce a tensor along the given axes with a logical OR operation
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input|in_shape|Input tensor from 1 to 4 dims
+|Attribute|int|axes|[]|List of axes with size from 1 to rank(input1). Values are integers into the 0-based dimensions of the input tensor. An empty list is not allowed.
+|Attribute|int|keep_dims|-|If 1, axes reduced will be retained with length=1.
+|Output|out_t*|output|out_shape|Output tensor. Same rank as the input tensor if keep_dims set, else one less than input tensor rank.
+|===
+
+*Operation Function:*
+
+[source,c]
+----
+tmp_shape = in_shape;
+for_each (axis in axes[]) {
+    tmp_shape[axis]=1;
+}
+if (keep_dims) assert(tmp_shape == out_shape)
+for_each (index in tmp_shape) {
+    tensor_write<in_t>(output, tmp_shape, index, false)
+}
+for_each (index in in_shape) {
+    tmp_index = index;
+    for each (axis in axes[]) {
+        tmp_index[axis]=0;
+    }
+    value = tensor_read<in_t>(input, in_shape, index)
+    acc   = tensor_read<in_t>(output, tmp_shape, tmp_index)
+    acc   = acc || value
     tensor_write<in_t>(output, tmp_shape, tmp_index, acc)
 }
 ----
