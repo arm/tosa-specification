@@ -36,32 +36,32 @@ None
 [source,c]
 ----
 assert(0<shift && shift<=11); // prevent int32_t accumulator overflow for in_t==int8_t
-assert(-stride_y < offset_y && offset_y < (IH<<shift)-(OH-1)*stride_y)
-assert(-stride_x < offset_x && offset_x < (IH<<shift)-(OW-1)*stride_x)
+assert(stride_x>0 && stride_y>0);
 for_each (0<=n<N, 0<=oy<OH, 0<=ox<OW; 0<=c<C) {
     y = oy * stride_y + offset_y
     x = ox * stride_x + offset_x
     iy = y >> shift; dy = y - (iy<<shift);
     ix = x >> shift; dx = x - (ix<<shift);
     iy0 = apply_max(iy,0);
-    iy1 = apply_mix(iy,IW-1);
+    iy1 = apply_min(iy+1,IH-1);
     ix0 = apply_max(ix,0);
-    ix1 = apply_min(ix,IH-1);
+    ix1 = apply_min(ix+1,IW-1);
+    assert(ix0<=ix1 && iy0<=iy1);
     if (mode==BILINEAR) {
         v00 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix0,c])
         v01 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c])
         v10 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c])
         v11 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c])
-        acc_t acc = v00*((1<<shift)-dy)*((1<<shift)-dx)
+        out_t acc = v00*((1<<shift)-dy)*((1<<shift)-dx)
         acc = acc + v01*((1<<shift)-dy)*dx
         acc = acc + v10*dy*((1<<shift)-dx)
         acc = acc + v11*dy*dx
-        tensor_write<acc_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc)
+        tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc)
     } else if (mode==NEAREST) {
         iy = (dy>>(shift-1))!=0 ? iy1 : iy0;
         ix = (dx>>(shift-1))!=0 ? ix1 : ix0;
         v = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy,ix,c]);
-        tensor_write<acc_t>(output, [N,OH,OW,C], [n,oy,ox,c], v)
+        tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], v)
     }
 }
 ----
