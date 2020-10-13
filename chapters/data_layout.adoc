@@ -135,7 +135,7 @@ for (i=0; i<tensor_size(shape); i++) {
 
 ==== REVERSE
 
-Returns a tensor with the same type/values as the input, with the data reversed along the given axes. No data conversion happens during a reverse operation.
+Returns a tensor with the same type/values as the input, with the data reversed along the given axis. No data conversion happens during a reverse operation.
 
 *Arguments:*
 
@@ -143,19 +143,18 @@ Returns a tensor with the same type/values as the input, with the data reversed 
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|shape|Input tensor from 1 to 4 dims
-|Attribute|int|axes|[]|List of axes along which to reverse with size from 1 to rank(input1). Values are integers into the 0-based dimensions of the input tensor. An empty list is not allowed.
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|Attribute|int|axis|-|Axis to reverse
+|Output|out_t*|output|shape|Output tensor. Same shape as input tensor.
 |===
 
 *Operation Function:*
 
 [source,c]
 ----
+assert(0<=axis && axis<dimensions(shape))
 for_each (index in shape) {
     tmp_index = index;
-    for_each (axis in axes[]) {
-        tmp_index[axis] = shape[axis]-1-index[axis]
-    }
+    tmp_index[axis] = shape[axis]-1-index[axis];
     value = tensor_read<in_t>(input, shape, tmp_index);
     tensor_write<in_t>(output, shape, index, value);
 }
