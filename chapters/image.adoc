@@ -20,9 +20,9 @@ Resizes a tensor. Resize is only allowed in the H and W dimensions. In expected 
 
 |Input|in_t*|input|[N,IH,IW,C]|Input tensor
 |Attribute|int*|output_size|[2]|[OH,OW]
-|Attribute|int16*|stride|[2]|[stride_y, stride_x]
-|Attribute|int16*|offset|[2]|[offset_y, offset_x]
-|Attribute|int|shift|Shift value
+|Attribute|scale_t*|stride|[2]|[stride_y, stride_x]
+|Attribute|scale_t*|offset|[2]|[offset_y, offset_x]
+|Attribute|int|shift|Shift value (must be zero if scale_t is float)
 |Attribute|mode_t|mode|-|BILINEAR or NEAREST
 |Output|out_t*|output|[N,OH,OW,C]|Output tensor
 |===
@@ -35,13 +35,20 @@ None
 
 [source,c]
 ----
-assert(0<shift && shift<=11); // prevent int32_t accumulator overflow for in_t==int8_t
+// scale assert prevents int32_t accumulator overflow for in_t==int8_t
+assert((scale_t==float && shift==0)||(0<shift && shift<=11));
 assert(stride_x>0 && stride_y>0);
 for_each (0<=n<N, 0<=oy<OH, 0<=ox<OW; 0<=c<C) {
+    unit = (scale_t==float) ? 1.0 : (1<<shift);
     y = oy * stride_y + offset_y
     x = ox * stride_x + offset_x
-    iy = y >> shift; dy = y - (iy<<shift);
-    ix = x >> shift; dx = x - (ix<<shift);
+    if (scale_t==float) {
+        iy = (int)floor(y); dy = y - (float)iy;
+        ix = (int)floor(x); dx = x - (float)ix;
+    } else {
+        iy = y >> shift; dy = y - (iy<<shift);
+        ix = x >> shift; dx = x - (ix<<shift);
+    }
     iy0 = apply_max(iy,0);
     iy1 = apply_min(iy+1,IH-1);
     ix0 = apply_max(ix,0);
@@ -52,14 +59,12 @@ for_each (0<=n<N, 0<=oy<OH, 0<=ox<OW; 0<=c<C) {
         v01 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c])
         v10 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c])
         v11 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c])
-        out_t acc = v00*((1<<shift)-dy)*((1<<shift)-dx)
-        acc = acc + v01*((1<<shift)-dy)*dx
-        acc = acc + v10*dy*((1<<shift)-dx)
-        acc = acc + v11*dy*dx
+        out_t acc = v00*(unit-dy)*(unit-dx) + v01*(unit-dy)*dx
+        acc = acc + v10*dy*(unit-dx) + v11*dy*dx;
         tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc)
     } else if (mode==NEAREST) {
-        iy = (dy>>(shift-1))!=0 ? iy1 : iy0;
-        ix = (dx>>(shift-1))!=0 ? ix1 : ix0;
+        iy = (dy >= unit/2) ? iy1 : iy0;
+        ix = (dx >= unit/2) ? ix1 : ix0;
         v = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy,ix,c]);
         tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], v)
     }
@@ -69,12 +74,13 @@ for_each (0<=n<N, 0<=oy<OH, 0<=ox<OW; 0<=c<C) {
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|out_t
+|Profile|Mode|scale_t|in_t|out_t
 
-|Any|signed 8,  bilinear|int8|int32
-|Any|signed 8,  nearest |int8|int8
-|Any|signed 16, bilinear|int16|int48
-|Any|signed 16, nearest |int16|int16
+|Any|signed 8,  bilinear|int16|int8|int32
+|Any|signed 8,  nearest |int16|int8|int8
+|Any|signed 16, bilinear|int16|int16|int48
+|Any|signed 16, nearest |int16|int16|int16
+|MI,MT|float            |float|float|float
 |===
 
 *Scaling Modes:*
