@@ -27,7 +27,7 @@ Reduce a tensor along the given axis with a logical AND operation
 
 [source,c]
 ----
-assert(0<=axis && axis<dimensions(in_shape))
+assert(0<=axis && axis<rank(in_shape))
 assert(out_shape[axis]==1)
 for_each (index in out_shape) {
     tensor_write<in_t>(output, out_shape, index, true)
@@ -68,7 +68,7 @@ Reduce a tensor along the given axis with a logical OR operation
 
 [source,c]
 ----
-assert(0<=axis && axis<dimensions(in_shape))
+assert(0<=axis && axis<rank(in_shape))
 assert(out_shape[axis]==1)
 for_each (index in out_shape) {
     tensor_write<in_t>(output, out_shape, index, false)
@@ -109,7 +109,7 @@ Reduce a tensor along the given axis with a maximum operation
 
 [source,c]
 ----
-assert(0<=axis && axis<dimensions(in_shape))
+assert(0<=axis && axis<rank(in_shape))
 assert(out_shape[axis]==1)
 for_each (index in out_shape) {
     tensor_write<in_t>(output, out_shape, index, minimum<in_t>)
@@ -156,7 +156,7 @@ Quantization is ignored when doing the REDUCE_MIN operation. The input and outpu
 
 [source,c]
 ----
-assert(0<=axis && axis<dimensions(in_shape))
+assert(0<=axis && axis<rank(in_shape))
 assert(out_shape[axis]==1)
 for_each (index in out_shape) {
     tensor_write<in_t>(output, out_shape, index, maximum<in_t>)
@@ -200,7 +200,7 @@ Reduce a tensor along the given axis by computing the product of the axis.
 
 [source,c]
 ----
-assert(0<=axis && axis<dimensions(in_shape))
+assert(0<=axis && axis<rank(in_shape))
 assert(out_shape[axis]==1)
 for_each (index in out_shape) {
     tensor_write<in_t>(output, out_shape, index, 1.0)
@@ -241,7 +241,7 @@ Reduce a tensor along the given axis by computing the sum of the axis.
 
 [source,c]
 ----
-assert(0<=axis && axis<dimensions(in_shape))
+assert(0<=axis && axis<rank(in_shape))
 assert(out_shape[axis]==1)
 for_each (index in out_shape) {
     tensor_write<in_t>(output, out_shape, index, 0)

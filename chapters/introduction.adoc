@@ -145,6 +145,7 @@ Tensors have an associated tensorinfo that contains information about the tensor
 * Data Type
 * Shape
 
+The number of dimensions in a shape is called the rank. Thus a tensor shape is an array of integers of size rank(shape) with shape[i] giving the the number of elements for dimension i.
 The following pseudocode represents the operations that will happen to data elements as they are read in to be processed, or have their results written out.
 
 *Functionality of tensor read*

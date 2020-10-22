@@ -26,7 +26,7 @@ Clamp to an arbitrary minimum and maximum value. Note that the maximum and minim
 
 *Operation Function:*
 ....
-assert(dimensions(shape)<=4)
+assert(rank(shape)<=4)
 for_each (index in shape) {
     value = tensor_read<in_t>(input, shape, index)
     acc = apply_clip(value, min_val, max_val)

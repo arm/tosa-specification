@@ -593,7 +593,7 @@ None
 
 [source,c]
 ----
-assert(dimensions(shape)<=4)
+assert(rank(shape)<=4)
 for_each (index in shape) {
     in_t value = tensor_read<in_t>(input, shape, index)
     out_t acc = apply_lookup(table, value)

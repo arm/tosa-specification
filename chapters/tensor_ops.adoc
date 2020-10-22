@@ -387,13 +387,13 @@ Performs a two dimensional matrix multiplication. This allows both inputs to be 
 
 [source,c]
 ----
-assert(in_t==aint8_t || (A_zp==0 && B_zp==0) // Zero point only for asymmetric int8
+assert(in_t==aint8_t || (A_zp==0 && B_zp==0)) // Zero point only for asymmetric int8
 for_each (0<=m<M, 0<=n<N) {
     acc_t acc = 0
     for_each (0<=k<K) {
         value1 = tensor_read<in_t>(A, [M,K], [m,k], A_zp)
         value2 = tensor_read<in_t>(B, [K,N], [k,n], B_zp)
-        acc = acc + value1 * value2
+        acc = apply_add<acc_t>(acc, value1 * value2)
     }
     tensor_write<acc_t>(C, [M,N], [m,n], acc)
 }
