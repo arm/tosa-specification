@@ -220,7 +220,7 @@ Most operations in TOSA do not contain quantization scaling in the operation, bu
 The apply_scale functions provide a scaling of approximately (multiplier * 2^-shift^). The shift range is limited to allow a variety of implementations. The upper limit of 62 allows it to be decomposed as two right shifts of 31. The lower limit removes special cases in the rounding. These restrictions have little practical impact since the shift value to achieve a scaling of 1.0 is 30 for apply_scale_32 with multiplier=1<<30 and 14 for apply_scale_16 with scale=1<<14. It follows that a scaling range of 2^+12^ down to 2^-32^ is supported for both functions with normalized multiplier. (Smaller scales can be obtained by denormalizing the multiplier).
 
 ....
-int32_t apply_scale_32(int32_t value, int32_t multipler, uint6_t shift, bool double_round) {
+int32_t apply_scale_32(int32_t value, int32_t multipler, uint6_t shift, bool double_round=false) {
   assert(multiplier >= 0);
   assert(2 <= shift && shift <= 62);
   int64_t round = 1 << (shift - 1);
