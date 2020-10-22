@@ -57,6 +57,7 @@ Elementwise arithmetic right shift of input1 by the amount specified in input2. 
 
 |Input|in_t*|input1|shape1|Input tensor
 |Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Input|bool |round |- | If true then the shift is rounded
 |Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
 |===
 
@@ -69,8 +70,11 @@ for_each (index in shape) {
     index2 = apply_broadcast(shape, shape2, index)
     in_t value1 = tensor_read<in_t>(input1, shape1, index1)
     in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    assert(value2 <= 31)
+    assert(0 <= value2 && value2 <= 31)
     in_t acc = value1 >> value2
+    if (round==true && value2>0 && (value1>>(value2-1))&1!=0) {
+        acc = acc + 1;
+    }
     acc = apply_clip(acc, minimum<in_t>, maximum<in_t>)
     tensor_write<in_t>(output, shape, index, acc)
 }
@@ -263,7 +267,7 @@ for_each (index in shape) {
     index2 = apply_broadcast(shape, shape2, index)
     in_t value1 = tensor_read<in_t>(input1, shape1, index1)
     in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    assert(value2 <= 31)
+    assert(0 <= value2 && value2 <= 31)
     in_t acc = value1 << value2
     tensor_write<in_t>(output, shape, index, acc)
 }
@@ -302,7 +306,7 @@ for_each (index in shape) {
     index2 = apply_broadcast(shape, shape2, index)
     in_t value1 = tensor_read<in_t>(input1, shape1, index1)
     in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    assert(value2 <= 31)
+    assert(0 <= value2 && value2 <= 31)
     in_t acc = (unsigned in_t)value1 >> value2
     tensor_write<in_t>(output, shape, index, acc)
 }
