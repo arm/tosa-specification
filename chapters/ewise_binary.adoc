@@ -577,13 +577,19 @@ for_each (index in shape) {
 
 ====   TABLE
 
-Interpolated table lookup operation. Input values are scaled to create a fixed-point 9.7 value. The high 9 bits are used to index into the table. The fractional bits are used to interpolate based on the looked up value and the index+1 value in the table. The TABLE operator then returns a 16.7 interpolated value. Note that there must be 513 values to handle the full range of inputs.
+Interpolated table lookup operation. The int16 input is treated as a fixed-point 9.7 value. The high 9 bits are used to index into the table. The fractional 7 bits are used to interpolate based on table[index] and table[index+1]. The TABLE operator returns a 16.7 interpolated value which can then be input to the RESCALE operator to scale to the required output data type. Note that table has 513 values to handle table[index+1] when index=511.
 
-The TABLE operator is expected to be used as follows:
+An int8_t to int8_t table lookup can be constructed in TOSA as follows:
 
-* A RECALE node is expected before the TABLE operator to scale the input to a full int16_t range for the table lookup
-* If an int16_t result is required then follow the TABLE operator with a RESCALE with a right shift of 7
-* If an int8_t result is required then follow the TABLE operator with a RESCALE with a right shift of 15 
+* Use RESCALE (in_t=int8, out_t=int16, input_zp=0, scale=1<<14, shift=7) to perform a shift left of 7 and convert to int16
+* Use the TABLE operator to produce a fixed point 16.7 result. The lower 7 bits will be zero and only the central 256 table entries will be used.
+* Use RESCALE (in_t=int32, out_t=int8, scale=1<<14, shift=28) to scale the output to int8_t range (or alternate scale as required)
+* Note that this TOSA sequence can be implemented in software as a 256 entry 8-bit lookup table.
+
+An int16_t to int16_t table lookup can be constructed in TOSA as follows:
+
+* Use the TABLE operator to produce a fixed point 16.7 interpolated result
+* Use RESCALE (in_t=int32, out_t=int16, scale=1<<14, shift=21) to scale the output to int16_t range (or alternate scale as required)
 
 *Arguments:*
 
