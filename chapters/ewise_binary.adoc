@@ -479,7 +479,7 @@ Elementwise multiplication (Hadamard product) of input tensor 0 and input tensor
 
 |Input|in_t*|input1|shape1|Input tensor
 |Input|in_t*|input2|shape2|Input tensor with the same rank as Input 0
-|Attribute|uint6_t|shift|-|Result right shift (int32 data type only)
+|Input (MT profile) Attribute (BI/MI profiles)|uint6_t|shift|-|Result right shift (int32 data type only)
 |Output|out_t*|output|shape|Output tensor with broadcast shape if necessary
 |===
 

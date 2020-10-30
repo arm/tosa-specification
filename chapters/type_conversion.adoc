@@ -91,9 +91,9 @@ Rescale quantized values into a new domain. This function scales by factor: mult
 
 |Attribute|in_t|input_zp|-|Input tensor zero point
 |Attribute|out_t|output_zp|-|Output tensor zero point
-|Attribute|mul_t|multiplier[NC]|-|Scaling multiplier array
-|Attribute|uint6_t|shift[NC] |-|Scaling shift array
-|Attribute|bool|scale32|-|if (scale32) mul_t=int32_t else mul_t=int16_t
+|Input (MT profile) Attribute (BI/MI profiles)|mul_t|multiplier[NC]|-|Scaling multiplier array
+|Input (MT profile) Attribute (BI/MI profiles)|uint6_t|shift[NC] |-|Scaling shift array
+|Input (MT profile) Attribute (BI/MI profiles)|bool|scale32|-|if (scale32) mul_t=int32_t else mul_t=int16_t
 |Attribute|bool|double_round|-|Select double round mode
 |Attribute|bool|per_channel|-|if (per_channel) NC=shape[dims-1] else NC=1
 |===

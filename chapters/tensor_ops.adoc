@@ -132,8 +132,8 @@ Performs a 2D convolution over the given tensor input, using the weight tensor.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|[N,IH,IW,IC]|Input tensor
-|Attribute|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
-|Attribute|acc_t*|bias|[OC]|Per output channel bias data.
+|Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
+|Input (MT profile) Attribute (BI/MI profiles)|acc_t*|bias|[OC]|Per output channel bias data.
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
@@ -193,8 +193,8 @@ Performs a 3D convolution over the given input tensor.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|[N,ID,IH,IW,IC]|Input tensor
-|Attribute|weight_t*|weight|[OC,KD,KH,KW,IC]|Weight kernel size KDxKHxKW
-|Attribute|acc_t*|bias|[OC]|Per output channel bias data.
+|Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KD,KH,KW,IC]|Weight kernel size KDxKHxKW
+|Input (MT profile) Attribute (BI/MI profiles)|acc_t*|bias|[OC]|Per output channel bias data.
 |Attribute|int*|pad|[6]|[pad_d0, pad_d1, pad_top, pad_bottom, pad_left, pad_right]
 |Attribute|int*|stride|[3]|[stride_d, stride_y, stride_x]
 |Attribute|int*|dilation|[3]|[dilation_d, dilation_y, dilation_x]
@@ -257,8 +257,8 @@ Performs 2D convolutions separately over each channel of the given tensor input,
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|[N,H,W,C]|Input tensor
-|Attribute|weight_t*|weight|[KH,KW,C,M]|Weight kernel size KH x KW
-|Attribute|acc_t*|bias|[C*M]|Per output channel bias data.
+|Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[KH,KW,C,M]|Weight kernel size KH x KW
+|Input (MT profile) Attribute (BI/MI profiles)|acc_t*|bias|[C*M]|Per output channel bias data.
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
@@ -467,8 +467,8 @@ Performs a 2D transposed convolution over the given tensor input, using the weig
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|[N,IH,IW,IC]|Input tensor
-|Attribute|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
-|Attribute|acc_t*|bias|[OC]|Per output channel bias data.
+|Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
+|Input (MT profile) Attribute (BI/MI profiles)|acc_t*|bias|[OC]|Per output channel bias data.
 |Attribute|int*|outpad|[2]|[outpad_top, outpad_left]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
