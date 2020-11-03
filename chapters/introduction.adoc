@@ -121,12 +121,17 @@ The following number formats are defined in TOSA. See section 2.3 for details on
 |int16
 | -32768
 | +32768
-|Signed  16-bit twos-complement values. Symmetric per-tensor quantization. No zero point is used , scale factor is provided in the operation.
+|Signed  16-bit twos-complement values. Symmetric per-tensor quantization. No zero point is used, scale factor is provided in the operation.
 
 |int32
 | (1<<31)-1
 | -(1<<31)
 |32-bit twos-complement value. No scale factor used.
+
+|int48
+| (1<<47)-1
+| -(1<<47)
+|48-bit twos-complement value. No scale factor used.
 
 |float
 | -infinity
