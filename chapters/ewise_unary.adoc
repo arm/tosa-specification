@@ -19,7 +19,7 @@ Elementwise absolute value operation
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape|Input tensor
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -27,10 +27,10 @@ Elementwise absolute value operation
 [source,c]
 ----
 for_each (index in shape) {
-    int32_t value1 = tensor_read<in_t>(input1, shape, index)
+    in_t value1 = tensor_read<in_t>(input1, shape, index)
     if (value1 < 0)
-        value1 = apply_sub<out_t>(0, value1)
-    tensor_write<out_t>(output, shape, index, value1)
+        value1 = apply_sub<in_t>(0, value1)
+    tensor_write<in_t>(output, shape, index, value1)
 }
 ----
 
@@ -39,8 +39,8 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t|out_t
 
-|Any|signed 32|int32|int32
-|MI, MT|float|float|float
+|Any|signed 32|int32
+|MI, MT|float|float
 |===
 
 ==== BITWISE_NOT
@@ -53,7 +53,7 @@ Elementwise bitwise NOT of input tensor.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape|Input tensor
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Quantization Parameters:*
@@ -65,20 +65,20 @@ None
 [source,c]
 ----
 for_each (index in shape) {
-    int32_t value1 = tensor_read<in_t>(input1, shape, index)
-    int32_t acc = ~value1
-    tensor_write<out_t>(output, shape, index, acc)
+    in_t value1 = tensor_read<in_t>(input1, shape, index)
+    in_t acc = ~value1
+    tensor_write<in_t>(output, shape, index, acc)
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|out_t
+|Profile|Mode|in_t
 
-|Any|signed 8|aint8|aint8
-|Any|signed 16|int16|int16
-|Any|signed 32|int32|int32
+|Any|signed 8|aint8
+|Any|signed 16|int16
+|Any|signed 32|int32
 |===
 
 ==== CEIL
@@ -91,15 +91,15 @@ Elementwise ceiling operation
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape|Input tensor
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|out_t
+|Profile|Mode|in_t
 
-|MI, MT|float|float|float
+|MI, MT|float|float
 |===
 
 ==== CLZ
@@ -112,7 +112,7 @@ Elementwise count leading zeros operation
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape|Input tensor
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -120,7 +120,8 @@ Elementwise count leading zeros operation
 [source,c]
 ----
 for_each (index in shape) {
-    int32_t value1 = tensor_read<in_t>(input1, shape, index)
+    in_t acc = 0
+    in_t value1 = tensor_read<in_t>(input1, shape, index)
     if (value1 == 0) {
          acc = 32 // input1_width
     }
@@ -132,15 +133,15 @@ for_each (index in shape) {
             acc = acc + 1
          }
     }
-    tensor_write<out_t>(output, shape, index, acc)
+    tensor_write<in_t>(output, shape, index, acc)
 }
 ----
 
 *Supported Data Types:*
 |===
-|Profile|Mode|in_t|out_t
+|Profile|Mode|in_t
 
-|Any|signed 32|int32|int32
+|Any|signed 32|int32
 |===
 
 ==== EXP
@@ -153,15 +154,15 @@ Elementwise e to the x operation
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape|Input tensor
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|Input 0|Output
+|Profile|Mode|in_t
 
-|Any|float|float|float
+|Any|float|float
 |===
 
 ==== FLOOR
@@ -174,15 +175,15 @@ Elementwise floor operation
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape|Input tensor
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|out_t
+|Profile|Mode|in_t
 
-|MI, MT|float|float|float
+|MI, MT|float|float
 |===
 
 ==== LOG
@@ -195,15 +196,15 @@ Elementwise natural logarithm operation
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape|Input tensor
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|out_t
+|Profile|Mode|in_t
 
-|MI, MT|float|float|float
+|MI, MT|float|float
 |===
 
 ==== LOGICAL_NOT
@@ -216,7 +217,7 @@ Elementwise logical NOT of input.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape|Input tensor
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Quantization Parameters:*
@@ -252,7 +253,7 @@ Elementwise negation operation
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape|Input tensor
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Quantization Parameters:*
@@ -261,7 +262,7 @@ Elementwise negation operation
 |Argument|Type|Name|Shape|Description
 
 |Attribute|in_t|input1_zp|-|Input 1 zero point
-|Attribute|out_t|output_zp|-|Output zero point
+|Attribute|in_t|output_zp|-|Output zero point
 |===
 
 *Operation Function:*
@@ -269,24 +270,24 @@ Elementwise negation operation
 [source,c]
 ----
 assert(in_t == aint8_t || input_zp == 0) // Zero point only for asymmetric int8
-assert(out_t == aint8_t || output_zp == 0) // Zero point only for asymmetric int8
+assert(in_t == aint8_t || output_zp == 0) // Zero point only for asymmetric int8
 for_each (index in shape) {
-    int32_t value1 = tensor_read<in_t>(input1, shape, index)
-    int32_t acc = appl_sub<int32_t>(0, value1 - input1_zp)
-    acc = apply_clip(acc, minimum<out_t>, maximum<out_t>)
-    tensor_write<out_t>(output + output_zp, shape, index, acc)
+    in_t value1 = tensor_read<in_t>(input1, shape, index)
+    in_t acc = appl_sub<in_t>(0, value1 - input1_zp)
+    acc = apply_clip(acc, minimum<in_t>, maximum<in_t>)
+    tensor_write<in_t>(output + output_zp, shape, index, acc)
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|Input 0|Output
+|Profile|Mode|in_t
 
-|Any|signed 8|aint8|aint8
-|Any|signed 16|int16|int16
-|Any|signed 32|int32|int32
-|MI, MT|float|float|float
+|Any|signed 8|aint8
+|Any|signed 16|int16
+|Any|signed 32|int32
+|MI, MT|float|float
 |===
 
 ==== RECIPROCAL
@@ -299,15 +300,15 @@ Elementwise reciprocal operation. For integer operation, a TABLE should be used 
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape|Input tensor
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|Input 0|Output
+|Profile|Mode|in_t
 
-|MI, MT|float|float|float
+|MI, MT|float|float
 |===
 
 ==== RSQRT
@@ -320,13 +321,13 @@ Elementwise reciprocal square root operation. For integer operation, a TABLE sho
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape|Input tensor
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
+|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|Input 0|Output
+|Profile|Mode|in_t
 
-|MI, MT|float|float|float
+|MI, MT|float|float
 |===

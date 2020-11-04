@@ -11,7 +11,8 @@
 
 ==== ADD
 
-Elementwise addition of input1 and input2. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+Elementwise addition of input1 and input2.
+Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -48,7 +49,8 @@ for_each (index in shape) {
 
 ==== ARITHMETIC_RIGHT_SHIFT
 
-Elementwise arithmetic right shift of input1 by the amount specified in input2. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+Elementwise arithmetic right shift of input1 by the amount specified in input2.
+Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -92,7 +94,8 @@ for_each (index in shape) {
 
 ==== BITWISE_AND
 
-Elementwise bitwise AND of input tensor 0 and input tensor 1. Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+Elementwise bitwise AND of input1 and input2.
+Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -130,7 +133,8 @@ for_each (index in shape) {
 
 ==== BITWISE_OR
 
-Elementwise bitwise OR of input1 and input2. Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+Elementwise bitwise OR of input1 and input2.
+Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -168,7 +172,8 @@ for_each (index in shape) {
 
 ==== BITWISE_XOR
 
-Elementwise bitwise XOR of input1 and input2. Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+Elementwise bitwise XOR of input1 and input2.
+Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -206,7 +211,8 @@ for_each (index in shape) {
 
 ==== LOGICAL_AND
 
-Elementwise logical AND of input1 and input2. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+Elementwise logical AND of input1 and input2.
+Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -246,7 +252,8 @@ for_each (index in shape) {
 
 ==== LOGICAL_LEFT_SHIFT
 
-Elementwise left shift of input1 and input2. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+Elementwise left shift of input1 and input2.
+Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -285,7 +292,8 @@ for_each (index in shape) {
 
 ==== LOGICAL_RIGHT_SHIFT
 
-Elementwise logical right shift of input1 by the amount specified in input2. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+Elementwise logical right shift of input1 by the amount specified in input2.
+Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -324,7 +332,8 @@ for_each (index in shape) {
 
 ==== LOGICAL_OR
 
-Elementwise logical OR of input1 and input2. Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+Elementwise logical OR of input1 and input2.
+Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -360,7 +369,8 @@ for_each (index in shape) {
 
 ==== LOGICAL_XOR
 
-Elementwise logical XOR of input tensor 0 and input tensor 1. Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+Elementwise logical XOR of input1 and input2.
+Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -368,7 +378,7 @@ Elementwise logical XOR of input tensor 0 and input tensor 1. Axis of size 1 wil
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
-|Input|in_t*|input2|shape2|Input tensor with the same rank as Input 0
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
 |Output|in_t*|output|shape|Output tensor of same type as the input tensors, with broadcast shape if necessary
 |===
 
@@ -396,7 +406,8 @@ for_each (index in shape) {
 
 ==== MAXIMUM
 
-Elementwise max of input1 and input2. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+Elementwise max of input1 and input2.
+Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -433,7 +444,8 @@ for_each (index in shape) {
 
 ==== MINIMUM
 
-Elementwise minimum of input tensor 0 and input tensor 1. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+Elementwise minimum of input1 and input2.
+Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -470,7 +482,8 @@ for_each (index in shape) {
 
 ==== MUL
 
-Elementwise multiplication (Hadamard product) of input tensor 0 and input tensor 1. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+Elementwise multiplication (Hadamard product) of input1 and input2.
+Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -478,7 +491,7 @@ Elementwise multiplication (Hadamard product) of input tensor 0 and input tensor
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape1|Input tensor
-|Input|in_t*|input2|shape2|Input tensor with the same rank as Input 0
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
 |Input (MT profile) Attribute (BI/MI profiles)|uint6_t|shift|-|Result right shift (int32 data type only)
 |Output|out_t*|output|shape|Output tensor with broadcast shape if necessary
 |===
@@ -514,7 +527,8 @@ for_each (index in shape) {
 
 ==== POW
 
-Elementwise input tensor 0 value raised to the power of input 1 tensor. Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+Elementwise input1 value raised to the power of input2.
+Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -522,7 +536,7 @@ Elementwise input tensor 0 value raised to the power of input 1 tensor. Axis of 
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
-|Input|in_t*|input2|shape2|Input tensor with the same rank as Input 0
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
 |Output|in_t*|output|shape|Output tensor of same type as the input tensors, with broadcast shape if necessary
 |===
 
@@ -540,7 +554,8 @@ Only supported with floating point values.
 
 ==== SUB
 
-Elementwise subtraction of input tensor 0 and input tensor 1. Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+Elementwise subtraction of input1 and input2.
+Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 *Arguments:*
 
@@ -548,7 +563,7 @@ Elementwise subtraction of input tensor 0 and input tensor 1. Axis of size 1 wil
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape1|Input tensor
-|Input|in_t*|input2|shape2|Input tensor with the same rank as Input 0
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
 |Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
 |===
 

@@ -18,10 +18,10 @@ Elementwise select of the output based on a condition.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|bool_t|input1|shape1|
-|Input|in_t*|input2|shape2|Input tensor from 1 to 4 dims
-|Input|in_t*|input3|shape3|Input tensor with the same rank as Input 0
-|Output|out_t*|output|shape|Output tensor of same type, as the input tensors, with broadcast shape if necessary
+|Input|bool_t|input1|shape1|Input selector tensor
+|Input|in_t*|input2|shape2|Input value tensor if input1 is True
+|Input|in_t*|input3|shape3|Input value tensor if input1 is False
+|Output|in_t*|output|shape|Output tensor of same type as input2 and input3, with broadcast shape if necessary
 |===
 
 *Quantization Parameters:*
@@ -39,22 +39,23 @@ for_each (index in shape) {
     bool_t value1 = tensor_read<in_t>(input1, shape1, index1)
     in_t value2 = tensor_read<in_t>(input2, shape2, index2)
     in_t value3 = tensor_read<in_t>(input3, shape3, index3)
+    in_t acc = 0
     if (value1 == True){
-         in_t acc = value2
+         acc = value2
     } else {
-         in_t acc = value3
+         acc = value3
     }
-    tensor_write<out_t>(output, shape, index, acc)
+    tensor_write<in_t>(output, shape, index, acc)
 }
 ----
 
 *Supported Data Types:*
 |===
-|Profile|Mode|bool_t|in_t|out_t
+|Profile|Mode|bool_t|in_t
 
-|Any|Boolean|bool|bool|bool
-|Any|signed 8|bool|aint8/int8|aint8/int8
-|Any|signed 16|bool|int16|int16
-|Any|signed 32|bool|int32|int32
-|MI, MT|float|bool|float|float
+|Any|Boolean|bool|bool
+|Any|signed 8|bool|aint8/int8
+|Any|signed 16|bool|int16
+|Any|signed 32|bool|int32
+|MI, MT|float|bool|float
 |===
