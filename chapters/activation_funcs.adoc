@@ -18,7 +18,7 @@ Clamp to an arbitrary minimum and maximum value. Note that the maximum and minim
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|Input|shape|Input tensor from 1 to 4 dims
+|Input|in_t*|Input|shape|Input tensor with rank from 1 to 4
 |Attribute|in_t|min_val|-|minimum clip value
 |Attribute|in_t|max_val|-|maximum clip value
 |Output|out_t*|Output|shape|Output tensor of same type and shape as input
@@ -53,7 +53,7 @@ ReLU with a scalar maximum value.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|Input|shape|Input tensor
+|Input|in_t*|Input|shape|Input tensor with rank from 1 to 4
 |Attribute|in_t|max_val|-|maximum clip value
 |Output|out_t*|Output|shape|Output tensor of same type and shape as input
 |===
@@ -103,7 +103,7 @@ generate_lookup_table(&sigmoid_table, &sigmoid_reference);
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|Input|shape|Input tensor from 1 to 4 dims
+|Input|in_t*|Input|shape|Input tensor with rank from 1 to 4
 |Output|out_t*|Output|shape|Output tensor of same type and shape as input
 |===
 
@@ -142,7 +142,7 @@ generate_lookup_table(&tanh_table, &tanh_reference);
 
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|Input|shape|Input tensor from 1 to 4 dims
+|Input|in_t*|Input|shape|Input tensor with rank from 1 to 4
 |Output|out_t*|Output|shape|Output tensor of same type and shape as input
 |===
 

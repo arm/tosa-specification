@@ -17,7 +17,7 @@ Concatenate two tensors along a given axis. No data conversion happens during a 
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
+|Input|in_t*|input1|shape1|Input tensor with rank from 1 to 4
 |Input|in_t*|input2|shape2|Input tensor with rank matching input1
 |Attribute|int|axis|-|Axis along which concatenation is to occur.
 |Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
@@ -106,7 +106,7 @@ Returns a tensor with the same type/values as the input, with a new shape specif
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
+|Input|in_t*|input1|shape1|Input tensor
 |Attribute|int|new_shape|[rank(output)]|List of values, with each element giving the size of the result tensor for the given dimension. At most one dimension may be given as-1 to automatically calculate the dimension size.
 |Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
@@ -180,7 +180,7 @@ Extracts a slice of the input tensor 0 on the given axis, beginning at the start
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
+|Input|in_t*|input1|shape1|Input tensor with rank from 1 to 4
 |Attribute|int|start|[rank(input1)]|List of integer coordinates, of length equal to the rank of input 0. Start coordinate for slicing.
 |Attribute|int|size|[rank(input1)]|List of integer size values, of length equal to the rank of input 0. Size of the input to be used.
 |Output|out_t*|output|shape|Output tensor of same type as the input tensor
@@ -221,7 +221,7 @@ Replicates input 0 multiplies times along each dimension.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
+|Input|in_t*|input1|shape1|Input tensor with rank from 1 to 4
 |Attribute|int|multiplies|[rank(shape1)]|Number of times to replicate input1 in each dimension
 |Output|out_t*|output|shape|Output tensor of same type, rank as the input tensor
 |===
@@ -262,7 +262,7 @@ Permutes the dimensions based on perm.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
+|Input|in_t*|input1|shape1|Input tensor with rank from 1 to 4
 |Attribute|int|perms|[rank(input1)]|List of integers of length equal to the rank of input1.
 |Output|out_t*|output|shape|Output tensor of same type, rank as the input tensor
 |===

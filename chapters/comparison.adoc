@@ -18,9 +18,9 @@ Elementwise comparison operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
-|Input|in_t*|input2|shape2|Input tensor with the same rank as Input 0
-|Output|out_t*|output|shape|Output tensor of same type, as the input tensors, with broadcast shape if necessary
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|out_t*|output|shape|Output tensor with broadcast shape if necessary
 |===
 
 *Operation Function:*
@@ -54,9 +54,9 @@ Elementwise greater than comparison operation
 
 |===
 |Argument|Type|Name|Shape|Description
-|Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
-|Input|in_t*|input2|shape2|Input tensor with the same rank as Input 0
-|Output|out_t*|output|shape|Output tensor of same type, as the input tensors, with broadcast shape if necessary
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|out_t*|output|shape|Output tensor with broadcast shape if necessary
 |===
 
 *Operation Function:*
@@ -90,9 +90,9 @@ Elementwise comparison operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
-|Input|in_t*|input2|shape2|Input tensor with the same rank as Input 0
-|Output|out_t*|output|shape|Output tensor of same type, as the input tensors, with broadcast shape if necessary
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|out_t*|output|shape|Output tensor with broadcast shape if necessary
 |===
 
 *Operation Function:*
