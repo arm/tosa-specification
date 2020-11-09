@@ -11,7 +11,46 @@
 
 === Overview
 
-Tensor Operator Set Architecture (TOSA) provides a set of operations that Arm expects to be implemented on its NPUs. Each NPU may implement the operators with a different microarchitecture, however the result at the TOSA level must be consistent. Applications or frameworks which target TOSA can also be deployed on a wide variety of IP, such as CPUs or GPUs, with defined accuracy and compatibility constraints. Most operators from the common ML frameworks (TensorFlow, PyTorch, etc.) should be expressible in TOSA. It is expected that there will be tools to lower from the ML frameworks into TOSA. TOSA is focused on inference, leaving training to the original frameworks.
+Tensor Operator Set Architecture (TOSA) provides a set of whole-tensor
+operations commonly employed by Deep Neural Networks. The intent is to enable a
+variety of implementations running on a diverse range of processors, with the
+results at the TOSA level consistent across those implementations. Applications
+or frameworks which target TOSA can therefore be deployed on a wide range of
+different processors, such as SIMD CPUs, GPUs and custom hardware such as
+NPUs/TPUs, with defined accuracy and compatibility constraints. Most operators
+from the common ML frameworks (TensorFlow, PyTorch, etc.) should be expressible
+in TOSA. It is expected that there will be tools to lower from ML frameworks
+into TOSA.
+
+=== Goals
+
+The goals of TOSA include the following:
+
+* A minimal and stable set of tensor-level operators to which machine learning
+framework operators can be reduced.
+
+* Full support for both quantized integer and floating-point content.
+
+* Precise functional description of the behavior of every operator, including
+the treatment of their numerical behavior in the case of precision, saturation,
+scaling, and range as required by quantized datatypes.
+
+* Agnostic to any single high-level framework, compiler backend stack or
+particular target.
+
+* The detailed functional and numerical description enables precise code
+construction for a diverse range of targets – SIMD CPUs, GPUs and custom
+hardware such as NPUs/TPUs.
+
+=== Specification
+
+The TOSA Specification is written as AsciiDoc mark-up and developed in its raw
+mark-up form, managed through a git repository here:
+https://git.mlplatform.org/tosa/specification.git/. The specification is
+developed and versioned much like software. While the mark-up is legible and can
+be read fairly easily in its raw form, it’s recommended to build or “render” the
+mark-up into a PDF document, or similar. To do this, please follow the
+instructions in the README.md in the root of the specification repository.
 
 === Profiles
 
