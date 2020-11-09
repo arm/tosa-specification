@@ -11,7 +11,25 @@
 
 ==== RESIZE
 
-Resizes a tensor. Resize is only allowed in the H and W dimensions. In expected use, stride_y is approximately (IH<<shift)/OH and stride_x is approximately (IW<<shift)/OW. OH and OW are also supplied as inputs since there may be off by one errors if calculating OH and OW from the strides.
+Resizes a tensor. Resize is only allowed in the H and W dimensions.
+
+The NEAREST_NEIGHBOR mode returns the value of the input tensor closest to the
+calculated sample position for both floating point and integer data formats.
+
+Floating point BILINEAR mode returns a bilinearly interpolated output value
+based on the four closest input sample positions.
+
+For integer BILINEAR interpolation mode, the output value is calculated by using
+the shift value along with the other parameters to create a fixed point scaling
+factor for each input. These values are then summed to create the value for
+output, which has 2 * shift fractional bits. To convert back to the original
+integer size, the output value must be rescaled.
+
+For floating point stride, stride_y should be set to  IH/OH, stride_x should be
+set to IW/OW. When using integer stride, stride_y is approximately
+(IH<<shift)/OH and stride_x is approximately (IW<<shift)/OW. OH and OW are also
+supplied as inputs since there may be off by one errors if calculating OH and OW
+from the strides.
 
 *Arguments:*
 
