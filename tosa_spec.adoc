@@ -13,7 +13,7 @@
 :toclevels: 3
 :source-highliter: coderay
 
-include::chapters/notice.adoc[]
+include::chapters/tosa_license.adoc[]
 
 include::chapters/introduction.adoc[]
 
