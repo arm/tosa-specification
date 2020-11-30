@@ -471,7 +471,6 @@ Performs a 2D transposed convolution over the given tensor input, using the weig
 |Input (MT profile) Attribute (BI/MI profiles)|acc_t*|bias|[OC]|Per output channel bias data.
 |Attribute|int*|out_pad|[2]|[out_pad_top, out_pad_left]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
-|Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
 |Attribute|int*|out_shape|[4]|[N,OH,OW,OC]
 |Output|acc_t*|output|[N,OH,OW,OC]|Output tensor
 |===

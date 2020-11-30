@@ -162,7 +162,7 @@ Elementwise e to the x operation
 |===
 |Profile|Mode|in_t
 
-|Any|float|float
+|MI, MT|float|float
 |===
 
 ==== FLOOR
