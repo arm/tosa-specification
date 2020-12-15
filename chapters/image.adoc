@@ -38,9 +38,9 @@ from the strides.
 
 |Input|in_t*|input|[N,IH,IW,C]|Input tensor
 |Attribute|int*|output_size|[2]|[OH,OW]
-|Attribute|scale_t*|stride|[2]|[stride_y, stride_x]
-|Attribute|scale_t*|offset|[2]|[offset_y, offset_x]
-|Attribute|int|shift|Shift value (must be zero if scale_t is float)
+|Attribute|resize_t*|stride|[2]|[stride_y, stride_x]
+|Attribute|resize_t*|offset|[2]|[offset_y, offset_x]
+|Attribute|int|shift|Shift value (must be zero if resize_t is float)
 |Attribute|mode_t|mode|-|BILINEAR or NEAREST
 |Output|out_t*|output|[N,OH,OW,C]|Output tensor
 |===
@@ -54,13 +54,13 @@ None
 [source,c]
 ----
 // scale assert prevents int32_t accumulator overflow for in_t==int8_t
-assert((scale_t==float && shift==0)||(0<shift && shift<=11));
+assert((resize_t==float && shift==0)||(0<shift && shift<=11));
 assert(stride_x>0 && stride_y>0);
 for_each (0<=n<N, 0<=oy<OH, 0<=ox<OW; 0<=c<C) {
-    unit = (scale_t==float) ? 1.0 : (1<<shift);
+    unit = (resize_t==float) ? 1.0 : (1<<shift);
     y = oy * stride_y + offset_y
     x = ox * stride_x + offset_x
-    if (scale_t==float) {
+    if (resize_t==float) {
         iy = (int)floor(y); dy = y - (float)iy;
         ix = (int)floor(x); dx = x - (float)ix;
     } else {
@@ -92,7 +92,7 @@ for_each (0<=n<N, 0<=oy<OH, 0<=ox<OW; 0<=c<C) {
 *Supported Data Types:*
 
 |===
-|Profile|Mode|scale_t|in_t|out_t
+|Profile|Mode|resize_t|in_t|out_t
 
 |Any|signed 8,  bilinear|int16|int8|int32
 |Any|signed 8,  nearest |int16|int8|int8
@@ -101,7 +101,7 @@ for_each (0<=n<N, 0<=oy<OH, 0<=ox<OW; 0<=c<C) {
 |MI,MT|float            |float|float|float
 |===
 
-*Scaling Modes:*
+*Resize Modes:*
 |===
 |Mode|Description
 

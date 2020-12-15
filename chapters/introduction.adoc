@@ -330,8 +330,9 @@ acc_t apply_sub<acc_t>(acc_t a, acc_t b) {
 }
 ....
 
-The following functions are used in the pseudocode to take maximum, minimum or clip values to a range.
-
+The following functions are used in the pseudocode to take maximum,
+minimum, clip values to a range, or count leading zeros.
+[[count_leading_zeros]]
 ....
 <type> apply_max<type>(<type> a, <type> b) {
     if (a >= b) return a; else return b;
@@ -346,6 +347,20 @@ The following functions are used in the pseudocode to take maximum, minimum or c
     value = apply_max(value, min_val);
     value = apply_min(value, max_val);
     return value;
+}
+
+int32_t count_leading_zeros(int32_t a) {
+    int32_t acc = 32;
+    if (a != 0) {
+        uint32_t mask;
+        mask = 1 << (32 - 1); // width of int32_t - 1
+        acc = 0;
+        while ((mask & a) == 0) {
+            mask = mask >> 1;
+            acc = acc + 1;
+        }
+    }
+    return acc;
 }
 ....
 

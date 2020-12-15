@@ -122,17 +122,7 @@ Elementwise count leading zeros operation
 for_each (index in shape) {
     in_t acc = 0
     in_t value1 = tensor_read<in_t>(input1, shape, index)
-    if (value1 == 0) {
-         acc = 32 // input1_width
-    }
-    else {
-         mask = 1 << (32 - 1) // input1_width - 1
-         acc = 0
-         while (mask & value1 == 0) {
-            mask = mask >> 1
-            acc = acc + 1
-         }
-    }
+    acc = count_leading_zeros(value1)
     tensor_write<in_t>(output, shape, index, acc)
 }
 ----
