@@ -55,6 +55,8 @@ for_each(0<=n<N, 0<=w<W, 0<=c<C) {
 
 The values_out tensor is set to the values_in tensor with data modified as follows: data from the input tensor is inserted at the positions specified by the indices tensor.
 N is the number of batches, W the number of indices in each batch, K the range of each index and C the number data channels for each index.
+It is not permitted to repeat the same output index within a single SCATTER operation and so each output index occurs at most once.
+In use cases that require multiple updates to the same output position, these must be decomposed into multiple SCATTER operations.
 
 *Arguments:*
 
@@ -75,18 +77,27 @@ None
 
 [source,c]
 ----
+
+// The following array is used to check compliance that an output position
+// is modified at most once.
+bool output_modified[N,K,C];
+
 // Copy the values_in tensor to the values_out tensor.
 // Values not written by the scatter operation are unchanged in the output.
 for_each(0<=n<N, 0<=k<K, 0<=c<C) {
     value_t value = tensor_read<value_t>(values_in, [N,K,C], [n,k,c])
     tensor_write<value_t>(values_out, [N,K,C], [n, k, c], value)
+    output_modified[n,k,c]=false;
 }
-// Now perform the SCATTER operation, writing to the positions from the indices tensor
+
+// Now perform the SCATTER operation, modifying the positions from the indices tensor
 for_each(0<=n<N, 0<=w<W, 0<=c<C) {
     index_t k = tensor_read<index_t>(indices, [N,W], [n,w])
     assert(0<=k && k<K)
+    assert(output_modified[n,k,c]==false);
     value_t value = tensor_read<value_t>(input, [N,W,C], [n,w,c])
     tensor_write<value_t>(values_out, [N,K,C], [n, k, c], value)
+    output_modified[n,k,c]=true;
 }
 ----
 
