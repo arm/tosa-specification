@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020 ARM Limited
+// (C) COPYRIGHT 2020-2021 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -45,7 +45,7 @@ for_each(0<=n<N, 0<=w<W, 0<=c<C) {
 |===
 |Profile|Mode|index_t|value_t
 
-|Any|signed 8|int32|aint8
+|Any|signed 8|int32|int8
 |Any|signed 16|int32|int16
 |Any|signed 32|int32|int32
 |MI,MT|float|int32|float
@@ -106,7 +106,7 @@ for_each(0<=n<N, 0<=w<W, 0<=c<C) {
 |===
 |Profile|Mode|index_t|value_t
 
-|Any|signed 8|int32|aint8
+|Any|signed 8|int32|int8
 |Any|signed 16|int32|int16
 |Any|signed 32|int32|int32
 |MI,MT|float|int32|float

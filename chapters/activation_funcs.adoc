@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020 ARM Limited
+// (C) COPYRIGHT 2020-2021 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -39,7 +39,7 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t|out_t
 
-|Any|signed 8|aint8 |aint8
+|Any|signed 8|int8 |int8
 |Any|signed 16|int16|int16
 |MI, MT|float|float|float
 |===

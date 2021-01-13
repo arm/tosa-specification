@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020 ARM Limited
+// (C) COPYRIGHT 2020-2021 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -103,8 +103,8 @@ Rescale quantized values into a new domain. This function scales by factor: mult
 [source,c]
 ....
 for_each (index in shape) {
-    assert(in_t==aint8  || in_t==uint8  || input_zp==0);
-    assert(out_t==aint8 || out_t==uint8 || output_zp==0);
+    assert(in_t == int8  || in_t == uint8  || input_zp == 0);
+    assert(out_t == int8 || out_t == uint8 || output_zp == 0);
     assert((scale32 && in_t!=int48_t) || (!scale32 && !double_round));
     int48_t value = tensor_read<in_t>(input, shape, index, input_zp);
     int c = (per_channel) ? index[dims-1] : 0;
@@ -121,18 +121,18 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t|out_t
 
-|Any|signed 8 to signed 8|aint8|aint8
-|Any|signed 8 to signed 16|aint8|int16
-|Any|signed 8 to signed 32|aint8|int32
-|Any|signed 16 to signed 8|int16|aint8
+|Any|signed 8 to signed 8|int8|int8
+|Any|signed 8 to signed 16|int8|int16
+|Any|signed 8 to signed 32|int8|int32
+|Any|signed 16 to signed 8|int16|int8
 |Any|signed 16 to signed 16|int16|int16
 |Any|signed 16 to signed 32|int16|int32
-|Any|signed 32 to signed 8|int32|aint8
+|Any|signed 32 to signed 8|int32|int8
 |Any|signed 32 to signed 16|int32|int16
 |Any|signed 32 to signed 32|int32|int32
-|Any|signed 48 to signed 8|int48|aint8
+|Any|signed 48 to signed 8|int48|int8
 |Any|signed 48 to signed 16|int48|int16
 |Any|signed 48 to signed 32|int48|int32
-|Any|unsigned 8 to signed 8|uint8|aint8
-|Any|signed 8 to unsigned 8|aint8|uint8
+|Any|unsigned 8 to signed 8|uint8|int8
+|Any|signed 8 to unsigned 8|int8|uint8
 |===

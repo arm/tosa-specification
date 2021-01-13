@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020 ARM Limited
+// (C) COPYRIGHT 2020-2021 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -28,7 +28,7 @@ A node containing constant data for use as the input to an operation. May hold d
 |Profile|Mode|out_t
 
 |Any|Boolean|bool
-|Any|signed 8|int8/aint8
+|Any|signed 8|int8
 |Any|signed 16|int16
 |Any|signed 32|int32
 |MI, MT|float|float
@@ -53,7 +53,7 @@ Returns a tensor with the same shape, type, and contents as the input.
 |Profile|Mode|in_t
 
 |Any|Boolean|bool
-|Any|signed 8|int8/aint8
+|Any|signed 8|int8
 |Any|signed 16|int16
 |Any|signed 32|int32
 |MI, MT|float|float
@@ -78,7 +78,7 @@ Returns a list of tensors with the same shape, type, and contents as the input l
 |Profile|Mode|in_t
 
 |Any|Boolean|bool
-|Any|signed 8|int8/aint8
+|Any|signed 8|int8
 |Any|signed 16|int16
 |Any|signed 32|int32
 |MI, MT|float|float
@@ -102,7 +102,7 @@ A node where data will be inserted into the network at runtime. Generally used f
 
 |Any|Boolean|bool
 |Any|unsigned 8|uint8
-|Any|signed 8|int8/aint8
+|Any|signed 8|int8
 |Any|signed 16|int16
 |Any|signed 32|int32
 |MI, MT|float|float

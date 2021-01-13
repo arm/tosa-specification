@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020 ARM Limited
+// (C) COPYRIGHT 2020-2021 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -53,7 +53,7 @@ for_each ( left_index in left_shape, right_index in right_shape )
 |===
 |Profile|Mode|in_t|out_t
 
-|Any|signed 8|aint8|int32
+|Any|signed 8|int8|int32
 |Any|signed 16|int16|int32
 |MI, MT|float|float|int32
 |===
@@ -87,15 +87,15 @@ This performs an average pooling over the given input tensor. A sliding window o
 
 [source,c]
 ----
-assert(in_t == aint8_t || input_zp == 0) // Zero point only for asymmetric int8
-assert(out_t == aint8_t || output_zp == 0) // Zero point only for asymmetric int8
+assert(in_t == int8_t || input_zp == 0) // Zero point only for int8
+assert(out_t == int8_t || output_zp == 0) // Zero point only for int8
 pad=concat([0,0],pad,[0,0])
-for_each ( 0<=n<N, 0<=oy<H, 0<=ox<W, 0<=c<C ) {
+for_each ( 0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     acc_t acc = 0;
     int count = 0;
     iy = oy * stride_y - pad_top
     ix = ox * stride_x - pad_left
-    for_each ( 0<=ky<kernel_y, 0<=kx<kernel_x) {
+    for_each ( 0 <= ky < kernel_y, 0 <= kx < kernel_x) {
         y = iy + ky
         x = ix + kx
         in_t value  = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,c], input_zp, pad)
@@ -117,7 +117,7 @@ for_each ( 0<=n<N, 0<=oy<H, 0<=ox<W, 0<=c<C ) {
 |===
 |Profile|Mode|in_t|acc_t|out_t
 
-|Any|signed 8|aint8|int32_t|aint8
+|Any|signed 8|int8|int32_t|int8
 |Any|signed 16|int16|int32_t|int16
 |MI, MT|float|float|float|float
 |===
@@ -153,14 +153,14 @@ Performs a 2D convolution over the given tensor input, using the weight tensor.
 
 [source,c]
 ----
-assert(in_t == aint8_t || input_zp == 0) // Zero point only for asymmetric int8
-assert(weight_t == aint8_t || weight_zp == 0)
-pad=concat([0,0],pad,[0,0])
-for_each (0<=n<N, 0<=oy<H, 0<=ox<W; 0<=oc<OC) {
+assert(in_t == int8_t || input_zp == 0) // Zero point only for int8
+assert(weight_t == int8_t || weight_zp == 0)
+pad=concat([0,0], pad, [0,0])
+for_each (0 <= n < N, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
     acc_t acc = 0
     iy = oy * stride_y - pad_top
     ix = ox * stride_x - pad_left
-    for_each (0<=ky<KH, 0<=kx<KW, 0<=ic<IC) {
+    for_each (0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
         y = iy + ky * dilation_y
         x = ix + kx * dilation_x
         in_t value  = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,ic], input_zp, pad)
@@ -177,8 +177,8 @@ for_each (0<=n<N, 0<=oy<H, 0<=ox<W; 0<=oc<OC) {
 |===
 |Profile|Mode|in_t|weight_t|acc_t
 
-|Any|signed 8x8|aint8|int8,aint8|int32
-|Any|signed 8x4|aint8|int4|int32
+|Any|signed 8x8|int8|int8|int32
+|Any|signed 8x4|int8|int4|int32
 |Any|signed 16x8|int16|int8|int48
 |MI, MT|float|float|float|float
 |===
@@ -214,15 +214,15 @@ Performs a 3D convolution over the given input tensor.
 
 [source,c]
 ----
-assert(in_t == aint8_t || input_zp == 0) // Zero point only for asymmetric int8
-assert(weight_t == aint8_t || weight_zp == 0)
-pad=concat([0,0],pad,[0,0])
-for_each (0<=n<N, 0<=od<D, 0<=oy<H, 0<=ox<W; 0<=oc<OC) {
+assert(in_t == int8_t || input_zp == 0) // Zero point only for int8
+assert(weight_t == int8_t || weight_zp == 0)
+pad=concat([0,0], pad, [0,0])
+for_each (0 <= n < N, 0 <= od < D, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
     acc_t acc = 0
     id = od * stride_d - pad_d0
     iy = oy * stride_y - pad_top
     ix = ox * stride_x - pad_left
-    for_each (0<=kd<KD, 0<=ky<KH, 0<=kx<KW, 0<=ic<IC) {
+    for_each (0 <= kd < KD, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
         d = id + kd * dilation_d
         y = iy + ky * dilation_y
         x = ix + kx * dilation_x
@@ -240,8 +240,8 @@ for_each (0<=n<N, 0<=od<D, 0<=oy<H, 0<=ox<W; 0<=oc<OC) {
 |===
 |Profile|Mode|in_t|weight_t|acc_t
 
-|Any|signed 8x8|aint8|int8,aint8|int32
-|Any|signed 8x4|aint8|int4|int32
+|Any|signed 8x8|int8|int8|int32
+|Any|signed 8x4|int8|int4|int32
 |Any|signed 16x8|int16|int8|int48
 |MI, MT|float|float|float|float
 |===
@@ -278,14 +278,14 @@ Performs 2D convolutions separately over each channel of the given tensor input,
 
 [source,c]
 ----
-assert(in_t==aint8_t || input_zp==0) // Zero point only for asymmetric int8
-assert(weight_t==aint8_t || weight_zp==0)
-pad=concat([0,0],pad,[0,0])
+assert(in_t == int8_t || input_zp == 0) // Zero point only for int8
+assert(weight_t == int8_t || weight_zp == 0)
+pad=concat([0,0], pad, [0,0])
 for_each (0 <= n<N, 0 <= oy < H, 0 <= ox < W; 0 <= c < (C * M), 0 <= m < M) {
     acc_t acc = 0
     iy = oy * stride_y - pad_top
     ix = ox * stride_x - pad_left
-    for_each (0<=ky<KH, 0<=kx<KW) {
+    for_each (0 <= ky < KH, 0 <= kx < KW) {
         y = iy + ky * dilation_y
         x = ix + kx * dilation_x
         in_t value  = tensor_read<in_t>(input, [N,H,W,C], [n,y,x,c], input_zp, pad)
@@ -302,8 +302,8 @@ for_each (0 <= n<N, 0 <= oy < H, 0 <= ox < W; 0 <= c < (C * M), 0 <= m < M) {
 |===
 |Profile|Mode|in_t|weight_t|acc_t
 
-|Any|signed 8x8|aint8|int8,aint8|int32
-|Any|signed 8x4|aint8|int4|int32
+|Any|signed 8x8|int8|int8|int32
+|Any|signed 8x4|int8|int4|int32
 |Any|signed 16x8|int16|int8|int48
 |MI, MT|float|float|float|float
 |===
@@ -336,11 +336,11 @@ Performs a fully connected network.
 
 [source,c]
 ----
-assert(in_t == aint8_t || input_zp == 0) // Zero point only for asymmetric int8
-assert(weight_t == aint8_t || weight_zp == 0)
-for_each (0<=n<N, 0<=oc<OC) {
+assert(in_t == int8_t || input_zp == 0) // Zero point only for int8
+assert(weight_t == int8_t || weight_zp == 0)
+for_each (0 <= n < N, 0 <= oc < OC) {
     acc_t acc = 0
-    for_each (0<=ic<IC) {
+    for_each (0 <= ic < IC) {
         in_t value  = tensor_read<in_t>(input, [N,IC], [n,ic], input_zp)
         weight_t weight = tensor_read<weight_t>(weight, [OC,IC], [oc,ic], weight_zp)
         acc = apply_add<acc_t>(acc, value * weight)
@@ -355,8 +355,8 @@ for_each (0<=n<N, 0<=oc<OC) {
 |===
 |Profile|Mode|in_t|weight_t|acc_t
 
-|Any|signed 8x8|aint8|int8,aint8|int32
-|Any|signed 8x4|aint8|int4|int32
+|Any|signed 8x8|int8|int8|int32
+|Any|signed 8x4|int8|int4|int32
 |Any|signed 16x8 |int16|int8|int48
 |MI, MT|float|float|float|float
 |===
@@ -387,10 +387,10 @@ Performs a two dimensional matrix multiplication. This allows both inputs to be 
 
 [source,c]
 ----
-assert(in_t==aint8_t || (A_zp==0 && B_zp==0)) // Zero point only for asymmetric int8
-for_each (0<=m<M, 0<=n<N) {
+assert(in_t == int8_t || (A_zp == 0 && B_zp == 0)) // Zero point only for int8
+for_each (0 <= m < M, 0 <= n < N) {
     acc_t acc = 0
-    for_each (0<=k<K) {
+    for_each (0 <= k < K) {
         in_t value1 = tensor_read<in_t>(A, [M,K], [m,k], A_zp)
         in_t value2 = tensor_read<in_t>(B, [K,N], [k,n], B_zp)
         acc = apply_add<acc_t>(acc, value1 * value2)
@@ -404,7 +404,7 @@ for_each (0<=m<M, 0<=n<N) {
 |===
 |Profile|Mode|in_t|acc_t
 
-|Any|signed 8x8|aint8|int32
+|Any|signed 8x8|int8|int32
 |Any|signed 16x16|int16|int48
 |MI, MT|float|float|float
 |===
@@ -432,8 +432,8 @@ None
 
 [source,c]
 ----
-pad=concat([0,0],pad,[0,0])
-for_each ( 0<=n<N, 0<=oy<H, 0<=ox<W, 0<=c<C ) {
+pad=concat([0,0], pad, [0,0])
+for_each (0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     in_t acc = minimum_value<in_t>;
     iy = oy * stride_y - pad_top
     ix = ox * stride_x - pad_left
@@ -452,7 +452,7 @@ for_each ( 0<=n<N, 0<=oy<H, 0<=ox<W, 0<=c<C ) {
 |===
 |Profile|Mode|in_t|out_t
 
-|Any|signed 8|aint8|aint8
+|Any|signed 8|int8|int8
 |Any|16-bit|int16|int16
 |MI, MT|float|float|float
 |===
@@ -488,12 +488,13 @@ Performs a 2D transposed convolution over the given tensor input, using the weig
 
 [source,c]
 ----
-assert(in_t==aint8_t  || input_zp==0) // Zero point only for asymmetric int8
-assert(weight_t == aint8_t || weight_zp == 0)
+assert(in_t == int8_t  || input_zp == 0) // Zero point only allowed for int8
+assert(weight_t == int8_t || weight_zp == 0)
 for_each (index in out_shape) {
     tensor_write<acc_t>(output, [N,OH,OW,OC], index, bias[index[3]])
 }
-for_each (0<=n<N, 0<=iy<IH, 0<=ix<IW, 0<=oc<OC, 0<=ic<IC, 0<=ky<KH,  0<=kx<KW) {
+for_each (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= oc < OC,
+          0 <= ic < IC, 0 <= ky < KH,  0 <= kx < KW) {
     oy = iy * stride_y - out_pad_top  + ky
     ox = ix * stride_x - out_pad_left + kx
     if (oy>=0 && oy<OH && ox>=0 && ox<OW) {
@@ -511,8 +512,8 @@ for_each (0<=n<N, 0<=iy<IH, 0<=ix<IW, 0<=oc<OC, 0<=ic<IC, 0<=ky<KH,  0<=kx<KW) {
 |===
 |Profile|Mode|in_t|weight_t|acc_t
 
-|Any|signed 8x8|aint8|int8,aint8|int32
-|Any|signed 8x4|aint8|int4|int32
+|Any|signed 8x8|int8|int8|int32
+|Any|signed 8x4|int8|int4|int32
 |Any|signed 16x8|int16|int8|int48
 |MI, MT|float|float|float|float
 |===
