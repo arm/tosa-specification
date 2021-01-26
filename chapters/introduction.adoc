@@ -374,16 +374,23 @@ int32_t count_leading_zeros(int32_t a) {
 For convolution, the input is not required to be scaled before the convolution occurs. The convolution produces an accumulator output of type int32_t or int48_t. This accumulator output is then scaled to the final output range using the RESCALE operator. The scale applied in the RESCALE operator should be set to multiplier and shift values such that: multiplier * 2^-shift^ = (input scale * weight scale) / output_scale. Here, input_scale, weight_scale and output_scale are the conversion factors from integer to floating point for the input, weight and output tensor values respectively. If per-channel scaling is needed then the per-channel option of the RESCALE operation should be used.
 
 ==== Elementwise operators
-When two quantized tensors are used in an operation, they must use the same scaling factor for the result to be valid. If the scaling factor for both tensors is equal, implementations will be allowed to optionally skip the scaling process. If the scaling factors are different, then the input with the smaller scaling factor is scaled to match the scaling factor of the input with the larger scaling factor.
-For each input, then, the scaled result = (result * scale + round) >> shift.
-For 8 and 16 bit activations, the scale will be calculated during compilation of the network and provided as a 16-bit scale factor and corresponding shift value. The value for round is 1 << (shift – 1). The scaled result should be 32 bits.
-Once each input has been scaled, the elementwise operation will occur.  Then the result must be scaled into the proper output scaling range. The output scaling range will be supplied as a 16-bit scale factor and a 6-bit shift value (other than the comparison operators).
-This applies to the following operations:
-ADD, MAX, MIN, SUB, EQUAL, GREATER, GREATER_EQUAL
-MUL is a special case, where the inputs do not need to be scaled, all the scaling can be done during the output scaling process.
+
+When two quantized tensors are used in an operation, they must represent the
+same numeric range for the result to be valid. In this case, TOSA expects that
+RESCALE operations will be used as necessary to generate 32-bit integer values
+in a common range. There are many valid choices for scale factors and options
+for the common range. TOSA does not impose a requirement on which scale factors
+and range should be used. Compilers generating TOSA sequences should choose a
+range that allows the operation to be computed without overflow, while allowing
+the highest possible accuracy of the output.
 
 ==== General unary functions
-General unary functions such as sigmoid(), tanh(), exp() are expressed using lookup table and interpolation to enable efficient implementation and extension to other operations with the addition of user supplied tables (the TABLE operation). All table lookups are based on the following reference lookup function that takes as input a table of 513 entries of 16-bit each.
+General unary functions such as sigmoid(), tanh(), exp() for integer inputs are
+expressed using a lookup table and interpolation to enable efficient
+implementation. This also allows for other operations with the addition of
+user-supplied tables (the TABLE operation). All table lookups are based on the
+following reference lookup function that takes as input a table of 513 entries
+of 16 bits each.
 
 ....
 int32_t apply_lookup(int16_t *table, int value)
