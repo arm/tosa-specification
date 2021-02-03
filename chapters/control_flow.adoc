@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020 ARM Limited
+// (C) COPYRIGHT 2020-2021 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -9,40 +9,74 @@
 
 === Control Flow Operators
 
-TOSA implements two control flow operators, for conditional branching and loop based transfer of control. Both refer to region labels, which express the address of another operator in the TOSA program, to which control transfers.
+TOSA implements two control flow operators, for conditional branching and loop based control. Both have attributes that are TOSA sub-graphs.
 
 ==== COND_IF
 
-Evaluates a Boolean condition and then takes one of two distinct execution paths. This implements the semantic If-then-else structure.
+Evaluates a Boolean condition and then takes one of two distinct execution paths. This implements the semantic if-then-else structure.
 
-*Input Operands:*
+*Arguments:*
 
-* List of Input tensors – up to 4D tensor of any data layout.
-* A Boolean condition.
+|===
+|Argument|Type|Name|Description
 
-*Output Operands:*
+|Input |tensor_list_t  |input_list |List of input tensors
+|Input |bool_t         |condition  |Input condition as rank-0 tensor
+|Attribute|tosa_graph_t|then_graph |TOSA graph to execute if condition is true
+|Attribute|tosa_graph_t|else_graph |TOSA graph to execute if condition is false
+|Output|tensor_list_t  |output_list|List of output tensors
+|===
 
-* List of Input tensors – up to 4D tensor of any data layout. These need not have the same shapes as the list of input tensors.
+*Operation Function:*
 
-*Region Labels:*
+[source,c]
+----
+assert(tensor_list_shape(input_list)==tosa_input_shape(then_graph));
+assert(tensor_list_shape(input_list)==tosa_input_shape(else_graph));
+assert(tensor_list_shape(output_list)==tosa_output_shape(then_graph));
+assert(tensor_list_shape(output_list)==tosa_output_shape(else_graph));
 
-* Then: a reference to an operator that execution control transfers to if the Boolean condition is TRUE.
-* Else: a reference to an operator that execution control transfers to if the Boolean condition is FALSE.
+if (condition) {
+    tosa_execute_graph(then_graph, input_list, output_list)
+} else {
+    tosa_execute_graph(else_graph, input_list, output_list)
+}
+----
 
 ==== WHILE_LOOP
 
-Generates and evaluates a Bool condition and either executes a loop body or exits to another control point. This action is performed repeatedly after updating and re-evaluating the Boolean condition every iteration. This implements the semantic foreach or while iterative loop structure.
+Generates and evaluates a Bool condition and either executes a loop body or exits the loop. This action is performed repeatedly after updating and re-evaluating the Boolean condition every iteration. This implements the semantic foreach or while iterative loop structure.
 
-*Input Operands:*
+*Arguments:*
 
-* List of Input tensors – up to 4D tensor of any data layout. The list comprises both the tensors that are used to compute each iteration of the Bool condition, and the inputs to the body of the loop.
+|===
+|Argument|Type|Name|Description
 
-*Output Operands:*
+|Input |tensor_list_t  |input_list |List of input tensors
+|Attribute|tosa_graph_t|cond_graph |TOSA graph to evaluate the condition
+|Attribute|tosa_graph_t|body_graph |TOSA graph to execute the loop body
+|Output|tensor_list_t  |output_list|List of output tensors
+|===
 
-* List of Input tensors – up to 4D tensor of any data layout. These must have the same dynamic shapes as the list of input tensors.
+*Operation Function:*
 
-*Region Labels:*
+[source,c]
+----
+assert(tensor_list_shape(input_list)==tosa_list_shape(output_list));
+assert(tensor_list_shape(input_list)==tosa_input_shape(cond_graph));
+assert(tensor_list_shape(input_list)==tosa_input_shape(body_graph));
+assert(tensor_list_shape(input_list)==tosa_output_shape(body_graph));
+assert(tosa_output_shape(cond_graph)==tosa_list_shape([bool_t]));
 
-* Cond: a reference to an operator that execution control transfers to in order to evaluate the current iteration of the Bool condition, and to update the condition for the next iteration.
-* Body: a reference to an operator that execution control transfers to in order to begin executing the body of the loop.
-
+// The iteration number 'i' is included to give unique names to variables
+// in each iteration of the loop and is not required by implementations
+int i=0                 // iteration number
+list[i] = input_list    // copy input data as list[0]
+tosa_execute_graph(cond_graph, list[i], [condition[i]])   // initial condition
+while (condition[i]) {
+    tosa_execute_graph(body_graph, list[i], list[i+1])
+    i = i+1
+    tosa_execute_graph(cond_graph, list[i], [condition[i]])
+}
+output_list = list[i]
+----

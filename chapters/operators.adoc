@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020 ARM Limited
+// (C) COPYRIGHT 2020-2021 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -11,8 +11,37 @@
 
 === Operator Parameters
 
-Each operator has a set of input and output operands. The operands will be referenced during operator execution. Operators may also have a set of operator attributes. Operator attributes are expected to be constant values during compilation and may not be provided at execution time.
-For elementwise operations, the scaling of the output can be independent from the data type of the input. Thus 8-bit operations may output 16-bit data values.
+An operator processes input operands to produce output operands. An operator can have three types of parameters:
+
+* An input operand. This must be a tensor or a list of tensors and data is read by the operation.
+* An output operand. This must be a tensor or a list of tensors and data is written by the operation.
+* An attribute. This is a parameter that is constant for a particular instance of the operator. It may have any data type supported by TOSA. It is expected to be set at compile time.
+
+=== Operator Graphs
+
+Some operators, such as control flow operators, take a graph of other operators as an attribute. The type tosa_graph_t will denote a graph of operators and the following functions define the tensor shape list for the graph input and outputs:
+
+....
+shape_list_t tosa_input_shape(tosa_graph_t graph);
+shape_list_t tosa_output_shape(tosa_graph_t graph);
+....
+
+Similarly the type tensor_list_t will be used for a list of tensors and the following function returns the shape of a tensor list:
+....
+shape_list_t tensor_list_shape(tosa_list_t tensor_list);
+....
+
+The following function denotes the execution of a TOSA graph, on an input tensor list to produce an output tensor list.
+
+....
+tosa_execute_graph(tosa_graph_t graph, tosa_list_t input_list, tosa_list_t output_list) {
+    assert(tensor_list_shape(input_list)==tosa_input_shape(graph));
+    assert(tensor_list_shape(output_list)==tosa_output_shape(graph));
+    <Execute TOSA graph operators as defined in this specification>
+}
+....
+
+Note that within the graph, each input operand is instantiated as a PLACEHOLDER operator.
 
 include::tensor_ops.adoc[]
 
