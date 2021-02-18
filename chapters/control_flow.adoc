@@ -37,9 +37,9 @@ assert(tensor_list_shape(output_list)==tosa_output_shape(then_graph));
 assert(tensor_list_shape(output_list)==tosa_output_shape(else_graph));
 
 if (condition) {
-    tosa_execute_graph(then_graph, input_list, output_list)
+    tosa_execute_graph(then_graph, input_list, output_list);
 } else {
-    tosa_execute_graph(else_graph, input_list, output_list)
+    tosa_execute_graph(else_graph, input_list, output_list);
 }
 ----
 
@@ -70,13 +70,13 @@ assert(tosa_output_shape(cond_graph)==tosa_list_shape([bool_t]));
 
 // The iteration number 'i' is included to give unique names to variables
 // in each iteration of the loop and is not required by implementations
-int i=0                 // iteration number
-list[i] = input_list    // copy input data as list[0]
-tosa_execute_graph(cond_graph, list[i], [condition[i]])   // initial condition
+int i=0;                 // iteration number
+list[i] = input_list;    // copy input data as list[0]
+tosa_execute_graph(cond_graph, list[i], [condition[i]]);   // initial condition
 while (condition[i]) {
-    tosa_execute_graph(body_graph, list[i], list[i+1])
-    i = i+1
-    tosa_execute_graph(cond_graph, list[i], [condition[i]])
+    tosa_execute_graph(body_graph, list[i], list[i+1]);
+    i = i+1;
+    tosa_execute_graph(cond_graph, list[i], [condition[i]]);
 }
-output_list = list[i]
+output_list = list[i];
 ----

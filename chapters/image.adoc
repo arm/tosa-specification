@@ -14,9 +14,9 @@
 Resizes a tensor. Resize is only allowed in the H and W dimensions.
 
 The NEAREST_NEIGHBOR mode returns the value of the input tensor closest to the
-calculated sample position for both floating point and integer data formats.
+calculated sample position for both floating-point and integer data formats.
 
-Floating point BILINEAR mode returns a bilinearly interpolated output value
+Floating-point BILINEAR mode returns a bilinearly interpolated output value
 based on the four closest input sample positions.
 
 For integer BILINEAR interpolation mode, the output value is calculated by using
@@ -25,7 +25,7 @@ factor for each input. These values are then summed to create the value for
 output, which has 2 * shift fractional bits. To convert back to the original
 integer size, the output value must be rescaled.
 
-For floating point stride, stride_y should be set to  IH/OH, stride_x should be
+For floating-point stride, stride_y should be set to  IH/OH, stride_x should be
 set to IW/OW. When using integer stride, stride_y is approximately
 (IH<<shift)/OH and stride_x is approximately (IW<<shift)/OW. OH and OW are also
 supplied as inputs since there may be off by one errors if calculating OH and OW
@@ -54,37 +54,37 @@ None
 [source,c]
 ----
 // scale assert prevents int32_t accumulator overflow for in_t==int8_t
-assert((resize_t==float && shift==0)||(0<shift && shift<=11));
-assert(stride_x>0 && stride_y>0);
-for_each (0<=n<N, 0<=oy<OH, 0<=ox<OW; 0<=c<C) {
-    unit = (resize_t==float) ? 1.0 : (1<<shift);
-    y = oy * stride_y + offset_y
-    x = ox * stride_x + offset_x
-    if (resize_t==float) {
-        iy = (int)floor(y); dy = y - (float)iy;
-        ix = (int)floor(x); dx = x - (float)ix;
+assert((resize_t == float_t && shift == 0)||(0 < shift && shift <= 11));
+assert(stride_x > 0 && stride_y > 0);
+for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
+    unit = (resize_t == float_t) ? 1.0 : (1 << shift);
+    y = oy * stride_y + offset_y;
+    x = ox * stride_x + offset_x;
+    if (resize_t == float_t) {
+        iy = (int)floor(y); dy = y - (float_t)iy;
+        ix = (int)floor(x); dx = x - (float_t)ix;
     } else {
         iy = y >> shift; dy = y - (iy<<shift);
         ix = x >> shift; dx = x - (ix<<shift);
     }
-    iy0 = apply_max(iy,0);
-    iy1 = apply_min(iy+1,IH-1);
-    ix0 = apply_max(ix,0);
-    ix1 = apply_min(ix+1,IW-1);
-    assert(ix0<=ix1 && iy0<=iy1);
+    iy0 = apply_max(iy, 0);
+    iy1 = apply_min(iy+1, IH-1);
+    ix0 = apply_max(ix, 0);
+    ix1 = apply_min(ix+1, IW-1);
+    assert(ix0 <= ix1 && iy0 <= iy1);
     if (mode==BILINEAR) {
-        v00 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix0,c])
-        v01 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c])
-        v10 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c])
-        v11 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c])
-        out_t acc = v00*(unit-dy)*(unit-dx) + v01*(unit-dy)*dx
-        acc = acc + v10*dy*(unit-dx) + v11*dy*dx;
-        tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc)
+        v00 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix0,c]);
+        v01 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c]);
+        v10 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c]);
+        v11 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c]);
+        out_t acc = v00 * (unit - dy) * (unit - dx) + v01 * (unit - dy) * dx;
+        acc = acc + v10 * dy * (unit-dx) + v11 * dy * dx;
+        tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc);
     } else if (mode==NEAREST) {
         iy = (dy >= unit/2) ? iy1 : iy0;
         ix = (dx >= unit/2) ? ix1 : ix0;
         v = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy,ix,c]);
-        tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], v)
+        tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], v);
     }
 }
 ----
@@ -94,11 +94,11 @@ for_each (0<=n<N, 0<=oy<OH, 0<=ox<OW; 0<=c<C) {
 |===
 |Profile|Mode|resize_t|in_t|out_t
 
-|Any|signed 8,  bilinear|int16|int8|int32
-|Any|signed 8,  nearest |int16|int8|int8
-|Any|signed 16, bilinear|int16|int16|int48
-|Any|signed 16, nearest |int16|int16|int16
-|MI,MT|float            |float|float|float
+|Any|signed 8,  bilinear|int16_t|int8_t|int32_t
+|Any|signed 8,  nearest |int16_t|int8_t|int8_t
+|Any|signed 16, bilinear|int16_t|int16_t|int48_t
+|Any|signed 16, nearest |int16_t|int16_t|int16_t
+|MI,MT|floating-point   |float_t|float_t|float_t
 |===
 
 *Resize Modes:*

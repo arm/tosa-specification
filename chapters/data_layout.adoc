@@ -48,11 +48,11 @@ for_each(index1 in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|Boolean|bool
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|Boolean|bool_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== PAD
@@ -81,12 +81,12 @@ Zero-pads a tensor along borders of each dimension.
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = index
-    for (i=0; i<rank(shape); i++) {
-        index1[i] = index1[i] - padding[i,0]
+for_each(index in shape) {
+    index1 = index;
+    for(i = 0; i < rank(shape); i++) {
+        index1[i] = index1[i] - padding[i,0];
     }
-    in_t value = tensor_read<in_t>(input1, shape1, index1, input1_zp, padding)
+    in_t value = tensor_read<in_t>(input1, shape1, index1, input1_zp, padding);
     tensor_write<in_t>(output, shape, index, value + input1_zp);
 }
 ----
@@ -96,11 +96,11 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|Boolean|bool
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|Boolean|bool_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== RESHAPE
@@ -121,9 +121,9 @@ Returns a tensor with the same type/values as the input, with a new shape specif
 
 [source,c]
 ----
-assert(tensor_size(shape1)==tensor_size(shape))
-for (i=0; i<tensor_size(shape); i++) {
-    output[i] = input[i]
+assert(tensor_size(shape1) == tensor_size(shape));
+for(i = 0; i < tensor_size(shape); i++) {
+    output[i] = input[i];
 }
 ----
 
@@ -132,11 +132,11 @@ for (i=0; i<tensor_size(shape); i++) {
 |===
 |Profile|Mode|in_t
 
-|Any|Boolean|bool
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|Boolean|bool_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== REVERSE
@@ -157,10 +157,10 @@ Returns a tensor with the same type/values as the input, with the data reversed 
 
 [source,c]
 ----
-assert(0<=axis && axis<rank(shape))
-for_each (index in shape) {
+assert(0 <= axis && axis < rank(shape));
+for_each(index in shape) {
     tmp_index = index;
-    tmp_index[axis] = shape[axis]-1-index[axis];
+    tmp_index[axis] = shape[axis] - 1 - index[axis];
     in_t value = tensor_read<in_t>(input, shape, tmp_index);
     tensor_write<in_t>(output, shape, index, value);
 }
@@ -171,16 +171,17 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|Boolean|bool
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|Boolean|bool_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== SLICE
 
-Extracts a slice of the input1 on the given axis, beginning at the start coordinates, and extending for size elements in each direction. No data conversion happens during a slice operation.
+Extracts a slice of the input1 on the given axis, beginning at the start coordinates, and extending for size elements in each direction.
+No data conversion happens during a slice operation.
 
 *Arguments:*
 |===
@@ -196,9 +197,9 @@ Extracts a slice of the input1 on the given axis, beginning at the start coordin
 
 [source,c]
 ----
-for_each (index in shape) {
+for_each(index in shape) {
     tmp_index = index;
-    for (i=0; i<rank(shape); i++) {
+    for(i = 0; i < rank(shape); i++) {
        tmp_index[i] = index[i] + start[i];
     }
     in_t value = tensor_read<in_t>(input, shape1, tmp_index);
@@ -211,11 +212,11 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|Boolean|bool
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|Boolean|bool_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== TILE
@@ -228,7 +229,7 @@ Replicates input1 multiplies times along each dimension.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape1|Input tensor with rank from 1 to 4
-|Attribute|int|multiplies|[rank(shape1)]|Number of times to replicate input1 in each dimension
+|Attribute|int32_t|multiplies|[rank(shape1)]|Number of times to replicate input1 in each dimension
 |Output|in_t*|output|shape|Output tensor of same type, rank as the input tensor
 |===
 
@@ -236,11 +237,11 @@ Replicates input1 multiplies times along each dimension.
 
 [source,c]
 ----
-for_each (index in shape) {
+for_each(index in shape) {
     tmp_index = index;
-    for (i=0; i<rank(shape); i++) {
-        assert(shape1[i] * multiplies[i] == shape[i])
-        tmp_index[i] = index[i] % shape1[i]
+    for(i = 0; i < rank(shape); i++) {
+        assert(shape1[i] * multiplies[i] == shape[i]);
+        tmp_index[i] = index[i] % shape1[i];
     }
     in_t value = tensor_read<in_t>(input, shape1, tmp_index);
     tensor_write<in_t>(output, shape, index, value);
@@ -252,11 +253,11 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|Boolean|bool
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|Boolean|bool_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== TRANSPOSE
@@ -269,7 +270,7 @@ Permutes the dimensions based on perm.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape1|Input tensor with rank from 1 to 4
-|Attribute|int|perms|[rank(input1)]|List of integers of length equal to the rank of input1.
+|Attribute|int32_t|perms|[rank(input1)]|List of integers of length equal to the rank of input1.
 |Output|in_t*|output|shape|Output tensor of same type, rank as the input tensor
 |===
 
@@ -277,9 +278,9 @@ Permutes the dimensions based on perm.
 
 [source,c]
 ----
-for_each (index in shape) {
+for_each(index in shape) {
     tmp_index = index;
-    for (i=0; i<rank(shape); i++) {
+    for(i = 0; i < rank(shape); i++) {
         assert(shape1[perm[i]] == shape[i])
         tmp_index[perm[i]] = index[i]
     }
@@ -293,9 +294,9 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|Boolean|bool
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|Boolean|bool_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===

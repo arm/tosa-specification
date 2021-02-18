@@ -32,20 +32,20 @@ None
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    index3 = apply_broadcast(shape, shpae3, index)
-    bool_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    in_t value3 = tensor_read<in_t>(input3, shape3, index3)
-    in_t acc = 0
-    if (value1 == True){
-         acc = value2
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    index3 = apply_broadcast(shape, shpae3, index);
+    bool_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    in_t value3 = tensor_read<in_t>(input3, shape3, index3);
+    in_t acc = 0;
+    if (value1 == True) {
+         acc = value2;
     } else {
-         acc = value3
+         acc = value3;
     }
-    tensor_write<in_t>(output, shape, index, acc)
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -53,9 +53,9 @@ for_each (index in shape) {
 |===
 |Profile|Mode|bool_t|in_t
 
-|Any|Boolean|bool|bool
-|Any|signed 8|bool|int8
-|Any|signed 16|bool|int16
-|Any|signed 32|bool|int32
-|MI, MT|float|bool|float
+|Any|Boolean|bool_t|bool_t
+|Any|signed 8|bool_t|int8_t
+|Any|signed 16|bool_t|int16_t
+|Any|signed 32|bool_t|int32_t
+|MI, MT|floating-point|bool_t|float_t
 |===

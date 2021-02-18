@@ -27,11 +27,11 @@ A node containing constant data for use as the input to an operation. May hold d
 |===
 |Profile|Mode|out_t
 
-|Any|Boolean|bool
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|Boolean|bool_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== IDENTITY
@@ -52,11 +52,11 @@ Returns a tensor with the same shape, type, and contents as the input.
 |===
 |Profile|Mode|in_t
 
-|Any|Boolean|bool
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|Boolean|bool_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== IDENTITYN
@@ -77,11 +77,11 @@ Returns a list of tensors with the same shape, type, and contents as the input l
 |===
 |Profile|Mode|in_t
 
-|Any|Boolean|bool
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|Boolean|bool_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== PLACEHOLDER
@@ -100,10 +100,10 @@ A node where data will be inserted into the network at runtime. Generally used f
 |===
 |Profile|Mode|out_t
 
-|Any|Boolean|bool
-|Any|unsigned 8|uint8
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|Boolean|bool_t
+|Any|unsigned 8|uint8_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===

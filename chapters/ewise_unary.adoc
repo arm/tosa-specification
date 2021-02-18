@@ -26,21 +26,21 @@ Elementwise absolute value operation
 
 [source,c]
 ----
-for_each (index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape, index)
+for_each(index in shape) {
+    in_t value1 = tensor_read<in_t>(input1, shape, index);
     if (value1 < 0)
-        value1 = apply_sub<in_t>(0, value1)
-    tensor_write<in_t>(output, shape, index, value1)
+        value1 = apply_sub<in_t>(0, value1);
+    tensor_write<in_t>(output, shape, index, value1);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|out_t
+|Profile|Mode|in_t
 
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== BITWISE_NOT
@@ -64,10 +64,10 @@ None
 
 [source,c]
 ----
-for_each (index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape, index)
-    in_t acc = ~value1
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    in_t value1 = tensor_read<in_t>(input1, shape, index);
+    in_t acc = ~value1;
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -76,9 +76,9 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
 |===
 
 ==== CEIL
@@ -99,7 +99,7 @@ Elementwise ceiling operation
 |===
 |Profile|Mode|in_t
 
-|MI, MT|float|float
+|MI, MT|floating-point|float_t
 |===
 
 ==== CLZ
@@ -119,11 +119,11 @@ Elementwise count leading zeros operation
 
 [source,c]
 ----
-for_each (index in shape) {
-    in_t acc = 0
-    in_t value1 = tensor_read<in_t>(input1, shape, index)
-    acc = count_leading_zeros(value1)
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    in_t acc = 0;
+    in_t value1 = tensor_read<in_t>(input1, shape, index);
+    acc = count_leading_zeros(value1);
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -131,7 +131,7 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 32|int32
+|Any|signed 32|int32_t
 |===
 
 ==== EXP
@@ -152,7 +152,7 @@ Elementwise e to the x operation
 |===
 |Profile|Mode|in_t
 
-|MI, MT|float|float
+|MI, MT|floating-point|float_t
 |===
 
 ==== FLOOR
@@ -173,7 +173,7 @@ Elementwise floor operation
 |===
 |Profile|Mode|in_t
 
-|MI, MT|float|float
+|MI, MT|floating-point|float_t
 |===
 
 ==== LOG
@@ -194,7 +194,7 @@ Elementwise natural logarithm operation
 |===
 |Profile|Mode|in_t
 
-|MI, MT|float|float
+|MI, MT|floating-point|float_t
 |===
 
 ==== LOGICAL_NOT
@@ -218,10 +218,10 @@ None
 
 [source,c]
 ----
-for_each (index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape1, index)
-    in_t acc = !value1
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    in_t value1 = tensor_read<in_t>(input1, shape1, index);
+    in_t acc = !value1;
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -230,7 +230,7 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|bool|bool
+|Any|bool|bool_t
 |===
 
 ==== NEGATE
@@ -259,13 +259,13 @@ Elementwise negation operation
 
 [source,c]
 ----
-assert(in_t == int8_t || input_zp == 0) // Zero point only for int8
-assert(in_t == int8_t || output_zp == 0) // Zero point only for int8
-for_each (index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape, index)
-    in_t acc = appl_sub<in_t>(0, value1 - input1_zp)
-    acc = apply_clip(acc, minimum<in_t>, maximum<in_t>)
-    tensor_write<in_t>(output + output_zp, shape, index, acc)
+assert(in_t == int8_t || input1_zp == 0) // Zero point only for int8_t
+assert(in_t == int8_t || output_zp == 0) // Zero point only for int8_t
+for_each(index in shape) {
+    in_t value1 = tensor_read<in_t>(input1, shape, index, input1_zp);
+    in_t acc = apply_sub<in_t>(0, value1);
+    acc = apply_clip<in_t>(acc + output_zp, minimum<in_t>, maximum<in_t>);
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -274,10 +274,10 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== RECIPROCAL
@@ -298,7 +298,7 @@ Elementwise reciprocal operation. For integer operation, a TABLE should be used 
 |===
 |Profile|Mode|in_t
 
-|MI, MT|float|float
+|MI, MT|floating-point|float_t
 |===
 
 ==== RSQRT
@@ -319,5 +319,5 @@ Elementwise reciprocal square root operation. For integer operation, a TABLE sho
 |===
 |Profile|Mode|in_t
 
-|MI, MT|float|float
+|MI, MT|floating-point|float_t
 |===

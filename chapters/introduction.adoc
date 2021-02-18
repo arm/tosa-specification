@@ -119,63 +119,61 @@ The following data layouts are supported in TOSA. Data layouts are specified suc
 |DOHWI|Depth, Output Channels, Filter Height, Filter Width, Input Channels|Weights for 3D convolution
 |===
 
-==== Floating point
+==== Floating-point
 
-The base inference profile of TOSA requires support for the quantized integer operations. Floating point support is included in the main inference profile.
+The base inference profile of TOSA requires support for the quantized integer operations. Floating-point support is included in the main inference profile.
 
-==== Number formats
+==== Number Formats
 
-The following number formats are defined in TOSA. See section 2.3 for details on
-quantization within TOSA. The number formats supported by an operator are listed
-in a per-operator table of supported types. The integer types may be used to
-represent quantized data. For details of interpreting the quantized data, see
-the <<Quantization Scaling>> section.
+The following number formats are defined in TOSA.
+The number formats supported by an operator are listed in a per-operator table of supported types.
+The integer types may be used to represent quantized data.
+For details of interpreting the quantized data, see the <<Quantization Scaling>> section.
 
 .Number formats
-[cols="1,1,1,6"]
+[cols="1,1,1,5"]
 |===
 |Format|Minimum|Maximum|Description
 
-|bool
+|bool_t
 | -
 | -
 |Boolean value. Size implementation defined.
 
-|int4
+|int4_t
 | -7
 | +7
-|Signed 4-bit values.
+|Signed 4-bit twos-complement values.
 
-|int8
+|int8_t
 | -128
 | +127
 |Signed 8-bit twos-complement values.
 
-|uint8
+|uint8_t
 | 0
 | 255
-|Unsigned 8-bit value. This data type is only used for input/output conversion by the
-RESCALE operator and not supported by other operators.
+|Unsigned 8-bit value.
 
-|int16
+|int16_t
 | -32768
 | +32767
-|Signed  16-bit twos-complement values.
+|Signed 16-bit twos-complement values.
 
-|int32
+|int32_t
 | -(1<<31)
 | (1<<31)-1
-|32-bit twos-complement value.
+|Signed 32-bit twos-complement value.
 
-|int48
+|int48_t
 | -(1<<47)
 | (1<<47)-1
-|48-bit twos-complement value.
+|Signed 48-bit twos-complement value.
 
-|float
+|float_t
 | -infinity
 | +infinity
-|floating point number. Must have features defined in the section <<Floating Point>>. (Main inference profile)
+|floating-point number. Must have features defined in the section <<Floating-point>>.
 |===
 
 Note: In this specification minimum<type> and maximum<type> will denote the minimum and maximum values of the data as stored in memory (ignoring the zero point). The minimum and maximum values for each type is given in the preceeding table.
@@ -194,7 +192,10 @@ The following pseudocode represents the operations that will happen to data elem
 
 *Functionality of tensor read*
 If in_t is 8-bit then out_t=int16_t. Otherwise out_t is set to the same as in_t.
+If padding is specified, the size of the padding array should be 2 times the size of the shape.
+The padding array represents the before and after pair for each dimension.
 ....
+assert((pad ==  NULL) || size(pad) == 2 * size(shape));
 out_t tensor_read<in_t>(in_t *address, dim_t shape, dim_t index, in_t zero_point=0, dim_t pad=NULL) {
   assert(in_t == int8_t || zero_point == 0)
   unsigned offset = 0;
@@ -248,8 +249,11 @@ dim_t apply_broadcast(dim_t out_shape, dim_t in_shape, dim_t index) {
 
 When converting the floating-point values used in training to quantized integer values used on devices for inference, we need to know the range of values to be represented by the integers. The frameworks use slightly different parameters and data types to do this conversion. For example, TensorFlow passes a min and max floating-point values for quantization. TensorFlow Lite and PyTorch use a floating-point scale factor, and an integer zero point. TFLite and PyTorch also allow for symmetric quantization where the zero point value is not used.
 In the initial quantization work, tensors were quantized with a single set of parameters for the entire tensor. Recently, frameworks have added support for different quantization parameters on a per channel basis. This per channel quantization thus carries a vector of scales and zero points to be used on each channel. TOSA will support per channel quantization, but only for the weight tensor used in convolution operators.
-Quantization parameters in floating point cause imprecision. In some instances, the software may need to calculate post-op scaling values on hardware that does not have a floating-point unit. Arm NPUs have fixed output scaling hardware that uses fixed point arithmetic to calculate the output values. When calculating these multiplicands and shift amounts, different floating-point precisions may cause results to differ.
-To remove this dependency on floating point values, there are two design choices being made:
+Quantization parameters in floating-point cause imprecision.
+In some instances, the software may need to calculate post-op scaling values on hardware that does not have a floating-point unit.
+Arm NPUs have fixed output scaling hardware that uses fixed point arithmetic to calculate the output values.
+When calculating these multiplicands and shift amounts, different floating-point precisions may cause results to differ.
+To remove this dependency on floating-point values, there are two design choices being made:
 
 * Quantization parameters will be associated with operations rather than tensors. The operations are where the scaling is taking place, and thus can be specified such that the hardware fixed point calculations can be represented exactly, such that any hardware designed to the TOSA specification will return the same quantized values.
 * Quantization parameters will be given in integer values, as multiplicands and shifts. Specific bit widths and signed/unsignedness will be provided with each operator.
@@ -269,7 +273,7 @@ Most operations in TOSA do not contain quantization scaling in the operation, bu
 The apply_scale functions provide a scaling of approximately (multiplier * 2^-shift^). The shift range is limited to allow a variety of implementations. The upper limit of 62 allows it to be decomposed as two right shifts of 31. The lower limit removes special cases in the rounding. These restrictions have little practical impact since the shift value to achieve a scaling of 1.0 is 30 for apply_scale_32 with multiplier=1<<30 and 14 for apply_scale_16 with scale=1<<14. It follows that a scaling range of 2^+12^ down to 2^-32^ is supported for both functions with normalized multiplier. (Smaller scales can be obtained by denormalizing the multiplier).
 
 ....
-int32_t apply_scale_32(int32_t value, int32_t multipler, uint6_t shift, bool double_round=false) {
+int32_t apply_scale_32(int32_t value, int32_t multipler, uint6_t shift, bool_t double_round=false) {
   assert(multiplier >= 0);
   assert(2 <= shift && shift <= 62);
   int64_t round = 1 << (shift - 1);
@@ -317,18 +321,105 @@ scale_t reciprocal_scale(uint32_t value) {
 }
 ....
 
+==== Quantized Convolutions
+
+For convolution, the input is not required to be scaled before the convolution occurs.
+The convolution produces an accumulator output of type int32_t or int48_t.
+This accumulator output is then scaled to the final output range using the RESCALE operator.
+The scale applied in the RESCALE operator should be set to multiplier and shift values such that: multiplier * 2^-shift^ = (input scale * weight scale) / output_scale.
+Here, input_scale, weight_scale and output_scale are the conversion factors from integer to floating-point for the input, weight and output tensor values respectively.
+If per-channel scaling is needed then the per-channel option of the RESCALE operation should be used.
+
+==== Quantized Elementwise Operators
+
+When two quantized tensors are used in an operation, they must represent the same numeric range for the result to be valid.
+In this case, TOSA expects that RESCALE operators will be used as necessary to generate 32-bit integer values in a common range.
+There are many valid choices for scale factors and options for the common range.
+TOSA does not impose a requirement on which scale factors and range should be used.
+Compilers generating TOSA sequences should choose a range that allows the operation to be computed without overflow, while allowing the highest possible accuracy of the output.
+
+==== General Unary Functions
+General unary functions such as sigmoid(), tanh(), exp() for integer inputs are expressed using a lookup table and interpolation to enable efficient implementation.
+This also allows for other operations with the addition of user-supplied tables (the TABLE operation).
+All table lookups are based on the following reference lookup function that takes as input a table of 513 entries of 16 bits each.
+
+....
+int32_t apply_lookup(int16_t *table, int32_t value)
+{
+    int16_t clipped_value = apply_clip<int16_t>(value, -32768, +32767);
+    int32_t index = (clipped_value + 32768) >> 7;
+    int32_t fraction = clipped_value & 0x7f;
+    int16_t base = table[index];
+    int16_t next = table[index+1];
+    int32_t return_value = (base << 7) + (next - base) * fraction;
+    return return_value;	// return interpolated value of 16 + 7 = 23 bits
+}
+....
+
+Note that although the table lookup defined here has 16-bit precision, for 8-bit only operations an 8-bit table can be derived by applying the reference function to each of the possible 256 input values.
+The following code constructs a 513-entry table based on a reference function.
+
+....
+void generate_lookup_table(int16_t *table, int32_t (*reference)(int32_t))
+{
+    for (int i = -256; i <= 256; i++) {
+        int32_t value = (*reference)(i);
+        table[i + 256] = apply_clip<int16_t>(value, -32768, +32767)
+    }
+}
+....
+
+=== Floating-point
+
+TOSA does not define bit-exact behaviour of the floating-point type, since floating-point operation results can vary according to operation order (floating-point addition is not associative in general) and rounding behaviour.
+If a bit-exact answer is required then integer operations should be used.
+TOSA does define that the floating-point type must support the following list of features.
+These features ensure that detection of overflow and other exceptional conditions can be handled consistently.
+
+* The floating-point type must have at least 16 total bits including the sign bit
+* The floating-point type must support positive and negative infinity values
+* The floating-point type must support at least one Not-a-Number encoding (NaN)
+* The floating-point type must support signed zero
+* The floating-point type must support handling of infinities, NaNs, zeros as in the following table
+
+.floating-point behaviour
+|===
+|Case|Result
+
+|Any input operand is a NaN | a NaN
+
+|(&#177; 0) &#215; (&#177; infinity), (&#177; infinity) &#215; (&#177; 0) | a NaN
+
+|(&#177; 0) / (&#177; 0), (&#177; infinity) / (&#177; infinity) | a NaN
+
+| (+infinity) - (+infinity),  (+infinity) + (-infinity) | a NaN
+
+| Any positive overflow | + infinity
+
+| Any negative overflow | - infinity
+
+| Any positive underflow | + 0
+
+| Any negative underflow | - 0
+
+|===
+
+=== General Pseudocode Helpers
+
+This section contains general pseudocode utility functions used throughout the specification.
+
 The following functions provide basic arithmetic with asserts that values stay in the valid range supported by TOSA.
 
 ....
 acc_t apply_add<acc_t>(acc_t a, acc_t b) {
-    if (acc_t == float) return a + b;
+    if (acc_t == float_t) return a + b;
     int64_t c = (int64_t)a + (int64_t)b;
     assert(c >= minimum<acc_t> && c <= maximum<acc_t>);
     return (acc_t)c;
 }
 
 acc_t apply_sub<acc_t>(acc_t a, acc_t b) {
-    if (acc_t == float) return a - b;
+    if (acc_t == float_t) return a - b;
     int64_t c = (int64_t)a - (int64_t)b;
     assert(c >= minimum<acc_t> && c <= maximum<acc_t>);
     return (acc_t)c;
@@ -369,83 +460,32 @@ int32_t count_leading_zeros(int32_t a) {
 }
 ....
 
-==== Quantized Convolutions
-
-For convolution, the input is not required to be scaled before the convolution occurs. The convolution produces an accumulator output of type int32_t or int48_t. This accumulator output is then scaled to the final output range using the RESCALE operator. The scale applied in the RESCALE operator should be set to multiplier and shift values such that: multiplier * 2^-shift^ = (input scale * weight scale) / output_scale. Here, input_scale, weight_scale and output_scale are the conversion factors from integer to floating point for the input, weight and output tensor values respectively. If per-channel scaling is needed then the per-channel option of the RESCALE operation should be used.
-
-==== Elementwise operators
-
-When two quantized tensors are used in an operation, they must represent the
-same numeric range for the result to be valid. In this case, TOSA expects that
-RESCALE operations will be used as necessary to generate 32-bit integer values
-in a common range. There are many valid choices for scale factors and options
-for the common range. TOSA does not impose a requirement on which scale factors
-and range should be used. Compilers generating TOSA sequences should choose a
-range that allows the operation to be computed without overflow, while allowing
-the highest possible accuracy of the output.
-
-==== General unary functions
-General unary functions such as sigmoid(), tanh(), exp() for integer inputs are
-expressed using a lookup table and interpolation to enable efficient
-implementation. This also allows for other operations with the addition of
-user-supplied tables (the TABLE operation). All table lookups are based on the
-following reference lookup function that takes as input a table of 513 entries
-of 16 bits each.
-
+The following definitions are used in pseudocode to do numeric conversions.
 ....
-int32_t apply_lookup(int16_t *table, int value)
-{
-    value = apply_clip(value, -32768, +32767)
-    index = (value + 32768) >> 7
-    fraction = value & 0x7f
-    base = table[index]
-    next = table[index+1]
-    value = (base << 7) + (next - base) * fraction
-    return value;	// return interpolated value of 16 + 7 = 23 bits
-}
+int round_to_nearest_int(float_t f)
+  Converts the floating-point value to f, with rounding to the nearest integer value.
+
+float_t round_to_nearest_float(in_t f)
+  Converts the input value into floating-point, rounding to the nearest representable value.
+  The behavior for ties is implementation dependent.
+
+out_t sign_extend(in_t input)
+  Only valid for twos complement integer values where out_t has more bits than in_t.
+  Output = input
+  Replicate the top bit of input for all bits between the top bit of input and the top bit of output.
+
+out_t truncate(in_t input)
+  output is the sizeof(out_t) least significant bits in input.
 ....
 
-Note that although the table lookup defined here has 16-bit precision, for 8-bit only operations an 8-bit table can be derived by applying the reference function to each of the possible 256 input values.
-The following code constructs a 513-entry table based on a reference function.
-
+The following definition is used to flatten a list of lists into a single list
 ....
-void generate_lookup_table(int16_t *table, int (*reference)(int))
-{
-    for (int i = -256; i <= 256; i++) {
-        value = (*reference)(i);
-        table[i + 256] = clip(value, -32768, +32767)
+in_t* flatten(in_t lists[]) {
+  in_t output = [];
+  for_each(list in lists) {
+    for_each(element in list) {
+      output.append(element);
     }
+  }
 }
 ....
-
-=== Floating Point
-
-TOSA does not define bit-exact behaviour of the floating point type, since floating point operation results can vary according to operation order (floating point addition is not associative in general) and rounding behaviour. If a bit defined answer is required then integer operations should be used. TOSA does define that the floating point type must support the following list of features. These features ensure that detection of overflow and other exceptional conditions can be handled consistently.
-
-* The floating point type must have at least 16 total bits including the sign bit
-* The floating point type must support positive and negative infinity values
-* The floating point type must support at least one Not-a-Number encoding (NaN)
-* The floating point type must support signed zero
-* The floating point type must support handling of infinities, NaNs, zeros as in the following table
-
-.Floating point behaviour
-|===
-|Case|Result
-
-|Any input operand is a NaN | a NaN
-
-|(&#177; 0) &#215; (&#177; infinity), (&#177; infinity) &#215; (&#177; 0) | a NaN
-
-|(&#177; 0) / (&#177; 0), (&#177; infinity) / (&#177; infinity) | a NaN
-
-| (+infinity) - (+infinity),  (+infinity) + (-infinity) | a NaN
-
-| Any positive overflow | + infinity
-
-| Any negative overflow | - infinity
-
-| Any positive underflow | + 0
-
-| Any negative underflow | - 0
-
-|===

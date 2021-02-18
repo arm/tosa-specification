@@ -32,11 +32,11 @@ None
 
 [source,c]
 ----
-for_each(0<=n<N, 0<=w<W, 0<=c<C) {
-    index_t k = tensor_read<index_t>(indices, [N,W], [n,w])
-    assert(0<=k && k<K)
-    value_t value = tensor_read<value_t>(values, [N,K,C], [n, k, c])
-    tensor_write<value_t>(output, [N,W,C], [n,w,c], value)
+for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
+    index_t k = tensor_read<index_t>(indices, [N,W], [n,w]);
+    assert(0 <= k && k < K);
+    value_t value = tensor_read<value_t>(values, [N,K,C], [n,k,c]);
+    tensor_write<value_t>(output, [N,W,C], [n,w,c], value);
 }
 ----
 
@@ -45,10 +45,10 @@ for_each(0<=n<N, 0<=w<W, 0<=c<C) {
 |===
 |Profile|Mode|index_t|value_t
 
-|Any|signed 8|int32|int8
-|Any|signed 16|int32|int16
-|Any|signed 32|int32|int32
-|MI,MT|float|int32|float
+|Any|signed 8|int32_t|int8_t
+|Any|signed 16|int32_t|int16_t
+|Any|signed 32|int32_t|int32_t
+|MI,MT|float|int32_t|float
 |===
 
 ==== SCATTER
@@ -80,24 +80,24 @@ None
 
 // The following array is used to check compliance that an output position
 // is modified at most once.
-bool output_modified[N,K,C];
+bool_t output_modified[N,K,C];
 
 // Copy the values_in tensor to the values_out tensor.
 // Values not written by the scatter operation are unchanged in the output.
-for_each(0<=n<N, 0<=k<K, 0<=c<C) {
-    value_t value = tensor_read<value_t>(values_in, [N,K,C], [n,k,c])
-    tensor_write<value_t>(values_out, [N,K,C], [n, k, c], value)
+for_each(0 <= n < N, 0 <= k < K, 0 <= c < C) {
+    value_t value = tensor_read<value_t>(values_in, [N,K,C], [n,k,c]);
+    tensor_write<value_t>(values_out, [N,K,C], [n, k, c], value);
     output_modified[n,k,c]=false;
 }
 
 // Now perform the SCATTER operation, modifying the positions from the indices tensor
-for_each(0<=n<N, 0<=w<W, 0<=c<C) {
-    index_t k = tensor_read<index_t>(indices, [N,W], [n,w])
-    assert(0<=k && k<K)
-    assert(output_modified[n,k,c]==false);
-    value_t value = tensor_read<value_t>(input, [N,W,C], [n,w,c])
-    tensor_write<value_t>(values_out, [N,K,C], [n, k, c], value)
-    output_modified[n,k,c]=true;
+for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
+    index_t k = tensor_read<index_t>(indices, [N,W], [n,w]);
+    assert(0 <= k && k < K);
+    assert(output_modified[n,k,c] == false);
+    value_t value = tensor_read<value_t>(input, [N,W,C], [n,w,c]);
+    tensor_write<value_t>(values_out, [N,K,C], [n, k, c], value);
+    output_modified[n,k,c] = true;
 }
 ----
 
@@ -106,8 +106,8 @@ for_each(0<=n<N, 0<=w<W, 0<=c<C) {
 |===
 |Profile|Mode|index_t|value_t
 
-|Any|signed 8|int32|int8
-|Any|signed 16|int32|int16
-|Any|signed 32|int32|int32
-|MI,MT|float|int32|float
+|Any|signed 8|int32_t|int8_t
+|Any|signed 16|int32_t|int16_t
+|Any|signed 32|int32_t|int32_t
+|MI,MT|float|int32_t|float
 |===

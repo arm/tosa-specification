@@ -27,13 +27,13 @@ Elementwise comparison operation
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    int32_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    int32_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    bool_t acc = (value1 == value2) ? True : False
-    tensor_write<out_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    int32_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    int32_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    bool_t acc = (value1 == value2) ? True : False;
+    tensor_write<out_t>(output, shape, index, acc);
 }
 ----
 
@@ -42,8 +42,8 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t|out_t
 
-|Any|signed 32|int32|bool
-|MI, MT|float|float|bool
+|Any|signed 32|int32_t|bool_t
+|MI, MT|floating-point|float_t|bool_t
 |===
 
 ==== GREATER
@@ -63,13 +63,13 @@ Elementwise greater than comparison operation
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    int32_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    int32_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    bool_t acc = (value1 > value2) ? True : False
-    tensor_write<out_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    int32_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    int32_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    bool_t acc = (value1 > value2) ? True : False;
+    tensor_write<out_t>(output, shape, index, acc);
 }
 ----
 
@@ -77,8 +77,8 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t|out_t
 
-|Any|signed 32|int32|bool
-|MI, MT|float|float|bool
+|Any|signed 32|int32_t|bool_t
+|MI, MT|floating-point|float_t|bool_t
 |===
 
 ==== GREATER_EQUAL
@@ -99,13 +99,13 @@ Elementwise comparison operation
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    int32_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    int32_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    bool_t acc = (value1 >= value2) ? True : False
-    tensor_write<out_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    int32_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    int32_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    bool_t acc = (value1 >= value2) ? True : False;
+    tensor_write<out_t>(output, shape, index, acc);
 }
 ----
 
@@ -114,6 +114,6 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t|out_t
 
-|Any|signed 32|int32|bool
-|MI, MT|float|float|bool
+|Any|signed 32|int32_t|bool_t
+|MI, MT|floating-point|float_t|bool_t
 |===

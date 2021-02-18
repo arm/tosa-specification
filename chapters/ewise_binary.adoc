@@ -28,14 +28,13 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    in_t acc = apply_add<in_t>(value1, value2)
-    tensor_write<in_t>(output, shape, index, acc)
-}
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    in_t acc = apply_add<in_t>(value1, value2);
+    tensor_write<in_t>(output, shape, index, acc);
 ----
 
 *Supported Data Types:*
@@ -43,8 +42,8 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== ARITHMETIC_RIGHT_SHIFT
@@ -59,7 +58,7 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 |Input|in_t*|input1|shape1|Input tensor
 |Input|in_t*|input2|shape2|Input tensor with the same rank as input1
-|Input|bool |round |- | If true then the shift is rounded
+|Input|bool_t |round |- | If true then the shift is rounded
 |Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
 |===
 
@@ -67,17 +66,17 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    assert(0 <= value2 && value2 <= 31)
-    in_t acc = value1 >> value2
-    if (round==true && value2>0 && (value1>>(value2-1))&1!=0) {
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    assert(0 <= value2 && value2 <= 31);
+    in_t acc = value1 >> value2;
+    if (round == true && value2 > 0 && (value1 >> (value2 - 1)) & 1 != 0) {
         acc = acc + 1;
     }
-    acc = apply_clip(acc, minimum<in_t>, maximum<in_t>)
+    acc = apply_clip<in_t>(acc, minimum<in_t>, maximum<in_t>)
     tensor_write<in_t>(output, shape, index, acc)
 }
 ----
@@ -87,9 +86,9 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
 |===
 
 ==== BITWISE_AND
@@ -111,13 +110,13 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    in_t acc = value1 & value2
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    in_t acc = value1 & value2;
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -126,9 +125,9 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
 |===
 
 ==== BITWISE_OR
@@ -150,13 +149,13 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    in_t acc = value1 | value2
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    in_t acc = value1 | value2;
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -165,9 +164,9 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
 |===
 
 ==== BITWISE_XOR
@@ -189,13 +188,13 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    in_t acc = value1 ^ value2
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    in_t acc = value1 ^ value2;
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -204,9 +203,9 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
 |===
 
 ==== LOGICAL_AND
@@ -232,13 +231,13 @@ None
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    in_t acc = value1 && value2
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    in_t acc = value1 && value2;
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -247,7 +246,7 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|Bool|Bool
+|Any|Bool|bool_t
 |===
 
 ==== LOGICAL_LEFT_SHIFT
@@ -269,14 +268,14 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    assert(0 <= value2 && value2 <= 31)
-    in_t acc = value1 << value2
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    assert(0 <= value2 && value2 <= 31);
+    in_t acc = value1 << value2;
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -285,9 +284,9 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
 |===
 
 ==== LOGICAL_RIGHT_SHIFT
@@ -309,14 +308,14 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    assert(0 <= value2 && value2 <= 31)
-    in_t acc = (unsigned in_t)value1 >> value2
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    assert(0 <= value2 && value2 <= 31);
+    in_t acc = (unsigned in_t)value1 >> value2;
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -325,9 +324,9 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 8|int8
-|Any|signed 16|int16
-|Any|signed 32|int32
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
 |===
 
 ==== LOGICAL_OR
@@ -349,13 +348,13 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    in_t acc = value1 || value2
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    in_t acc = value1 || value2;
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -364,7 +363,7 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|Bool|Bool
+|Any|Bool|bool_t
 |===
 
 ==== LOGICAL_XOR
@@ -377,7 +376,7 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor from 1 to 4 dims
+|Input|in_t*|input1|shape1|Input tensor
 |Input|in_t*|input2|shape2|Input tensor with the same rank as input1
 |Output|in_t*|output|shape|Output tensor of same type as the input tensors, with broadcast shape if necessary
 |===
@@ -386,13 +385,13 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    in_t acc = value1 != value2
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    in_t acc = value1 != value2;
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -401,7 +400,7 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|Bool|Bool
+|Any|Bool|bool_t
 |===
 
 ==== MAXIMUM
@@ -423,13 +422,13 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    in_t acc = apply_max(value1, value2)
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    in_t acc = apply_max(value1, value2);
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -438,8 +437,8 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== MINIMUM
@@ -461,13 +460,13 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    in_t acc = apply_min(value1, value2)
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    in_t acc = apply_min(value1, value2);
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -476,8 +475,8 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== MUL
@@ -492,7 +491,7 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 |Input|in_t*|input1|shape1|Input tensor
 |Input|in_t*|input2|shape2|Input tensor with the same rank as input1
-|Input (MT profile) Attribute (BI/MI profiles)|uint6_t|shift|-|Result right shift (int32 data type only)
+|Input (MT profile) Attribute (BI/MI profiles)|uint6_t|shift|-|Result right shift (int32_t data type only)
 |Output|out_t*|output|shape|Output tensor with broadcast shape if necessary
 |===
 
@@ -500,18 +499,18 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 [source,c]
 ----
-assert(in_t==int32_t || shift==0);
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
+assert(in_t == int32_t || shift == 0);
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
     if (shift>0) {
-        out_t acc = apply_scale_32(value1, value2, shift)
+        out_t acc = apply_scale_32(value1, value2, shift);
     } else {
         out_t acc = value1 * value2;  // low 32-bits of result for int32_t
     }
-    tensor_write<out_t>(output, shape, index, acc)
+    tensor_write<out_t>(output, shape, index, acc);
 }
 ----
 
@@ -519,10 +518,10 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t|out_t
 
-|Any|signed 8|int8|int32
-|Any|signed 16|int16|int32
-|Any|signed 32|int32|int32
-|MI, MT|float|float|float
+|Any|signed 8|int8_t|int32_t
+|Any|signed 16|int16_t|int32_t
+|Any|signed 32|int32_t|int32_t
+|MI, MT|floating-point|float_t|float_t
 |===
 
 ==== POW
@@ -542,14 +541,14 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 *Quantization Parameters:*
 
-Only supported with floating point values.
+Only supported with floating-point values.
 
 *Supported Data Types:*
 
 |===
 |Profile|Mode|in_t
 
-|MI, MT|float|float
+|MI, MT|floating-point|float_t
 |===
 
 ==== SUB
@@ -571,13 +570,13 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 [source,c]
 ----
-for_each (index in shape) {
-    index1 = apply_broadcast(shape, shape1, index)
-    index2 = apply_broadcast(shape, shape2, index)
-    in_t value1 = tensor_read<in_t>(input1, shape1, index1)
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2)
-    in_t acc = apply_sub<out_t>(value1, value2);
-    tensor_write<in_t>(output, shape, index, acc)
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    in_t acc = apply_sub<in_t>(value1, value2);
+    tensor_write<in_t>(output, shape, index, acc);
 }
 ----
 
@@ -586,25 +585,25 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t
 
-|Any|signed 32|int32
-|MI, MT|float|float
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ====   TABLE
 
-Interpolated table lookup operation. The int16 input is treated as a fixed-point 9.7 value. The high 9 bits are used to index into the table. The fractional 7 bits are used to interpolate based on table[index] and table[index+1]. The TABLE operator returns a 16.7 interpolated value which can then be input to the RESCALE operator to scale to the required output data type. Note that table has 513 values to handle table[index+1] when index=511.
+Interpolated table lookup operation. The int16_t input is treated as a fixed-point 9.7 value. The high 9 bits are used to index into the table. The fractional 7 bits are used to interpolate based on table[index] and table[index+1]. The TABLE operator returns a 16.7 interpolated value which can then be input to the RESCALE operator to scale to the required output data type. Note that table has 513 values to handle table[index+1] when index=511.
 
 An int8_t to int8_t table lookup can be constructed in TOSA as follows:
 
-* Use RESCALE (in_t=int8, out_t=int16, input_zp=0, scale=1<<14, shift=7) to perform a shift left of 7 and convert to int16
+* Use RESCALE (in_t=int8_t, out_t=int16_t, input_zp=0, scale=1<<14, shift=7) to perform a shift left of 7 and convert to int16_t
 * Use the TABLE operator to produce a fixed point 16.7 result. The lower 7 bits will be zero and only the central 256 table entries will be used.
-* Use RESCALE (in_t=int32, out_t=int8, scale=1<<14, shift=28) to scale the output to int8_t range (or alternate scale as required)
+* Use RESCALE (in_t=int32_t, out_t=int8_t, scale=1<<14, shift=28) to scale the output to int8_t range (or alternate scale as required)
 * Note that this TOSA sequence can be implemented in software as a 256 entry 8-bit lookup table.
 
 An int16_t to int16_t table lookup can be constructed in TOSA as follows:
 
 * Use the TABLE operator to produce a fixed point 16.7 interpolated result
-* Use RESCALE (in_t=int32, out_t=int16, scale=1<<14, shift=21) to scale the output to int16_t range (or alternate scale as required)
+* Use RESCALE (in_t=int32_t, out_t=int16_t, scale=1<<14, shift=21) to scale the output to int16_t range (or alternate scale as required)
 
 *Arguments:*
 
@@ -624,11 +623,10 @@ None
 
 [source,c]
 ----
-assert(rank(shape)<=4)
-for_each (index in shape) {
-    in_t value = tensor_read<in_t>(input, shape, index)
-    out_t acc = apply_lookup(table, value)
-    tensor_write<out_t>(output, shape, index, acc)
+for_each(index in shape) {
+    in_t value = tensor_read<in_t>(input, shape, index);
+    out_t acc = apply_lookup(table, value);
+    tensor_write<out_t>(output, shape, index, acc);
 }
 ----
 
@@ -637,6 +635,6 @@ for_each (index in shape) {
 |===
 |Profile|Mode|in_t|table_t|out_t
 
-|Any|signed 16|int16|int16|int32
+|Any|signed 16|int16_t|int16_t|int32_t
 |===
 
