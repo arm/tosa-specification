@@ -43,7 +43,7 @@ Returns a tensor with the same shape, type, and contents as the input.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t|input1|shape|Input tensor
+|Input|in_t*|input1|shape|Input tensor
 |Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
@@ -68,8 +68,8 @@ Returns a list of tensors with the same shape, type, and contents as the input l
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t|input1|[shape1, shape2, …]|List of input tensors
-|Output|in_t*|output|[shape1, shape2, …]|List of output tensors of same type, size as the input tensors
+|Input|in_t**|input1|shape[]|List of input tensors
+|Output|in_t**|output|shape[]|List of output tensors of same type, size as the input tensors
 |===
 
 *Supported Data Types:*
