@@ -262,22 +262,22 @@ Elementwise negation operation
 assert(in_t == int8_t || input1_zp == 0) // Zero point only for int8_t
 assert(in_t == int8_t || output_zp == 0) // Zero point only for int8_t
 for_each(index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape, index, input1_zp);
-    in_t acc = apply_sub<in_t>(0, value1);
-    acc = apply_clip<in_t>(acc + output_zp, minimum<in_t>, maximum<in_t>);
-    tensor_write<in_t>(output, shape, index, acc);
+    acc_t acc = tensor_read<in_t>(input1, shape, index, input1_zp);
+    acc = apply_sub<acc_t>(0, acc);
+    in_t value = (in_t)apply_clip<acc_t>(acc + output_zp, minimum<in_t>, maximum<in_t>);
+    tensor_write<in_t>(output, shape, index, value);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_t|acc_t
 
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|Any|signed 8|int8_t|int32_t
+|Any|signed 16|int16_t|int32_t
+|Any|signed 32|int32_t|int32_t
+|MI, MT|floating-point|float_t|float_t
 |===
 
 ==== RECIPROCAL

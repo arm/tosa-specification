@@ -106,12 +106,12 @@ for_each(index in shape) {
     assert(in_t == int8_t  || in_t == uint8_t  || input_zp == 0);
     assert(out_t == int8_t || out_t == uint8_t || output_zp == 0);
     assert((scale32 && in_t != int48_t_t) || (!scale32 && !double_round));
-    int48_t_t value = tensor_read<in_t>(input, shape, index, input_zp);
+    int48_t value = tensor_read<in_t>(input, shape, index, input_zp);
     int c = (per_channel) ? index[dims-1] : 0;
     int32_t result = (scale32) ?
         apply_scale_32(value, multiplier[c], shift[c], double_round) :
         apply_scale_16(value, multiplier[c], shift[c]);
-    result = apply_clip<out_t>(result + output_zp, minimum<out_t>, maximum<out_t>);
+    result = (out_t)apply_clip<int32_t>(result + output_zp, minimum<out_t>, maximum<out_t>);
     tensor_write<out_t>(output, shape, index, result);
 }
 ....

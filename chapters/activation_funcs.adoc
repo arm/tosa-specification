@@ -27,8 +27,8 @@ Clamp to an arbitrary minimum and maximum value. Note that the maximum and minim
 *Operation Function:*
 ....
 for_each(index in shape) {
-    value = tensor_read<in_t>(input, shape, index);
-    acc = apply_clip<in_t>(value, min_val, max_val);
+    acc_t value = tensor_read<in_t>(input, shape, index);
+    acc = (in_t)apply_clip<acc_t>(value, min_val, max_val);
     tensor_write<in_t>(output, shape, index, acc);
 }
 ....
@@ -36,11 +36,11 @@ for_each(index in shape) {
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_t|acc_t
 
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|MI, MT|floating-point|float_t
+|Any|signed 8|int8_t|int16_t
+|Any|signed 16|int16_t|int16_t
+|MI, MT|floating-point|float_t|float_t
 |===
 
 ==== RELUN
@@ -63,8 +63,8 @@ ReLU with a scalar maximum value.
 ----
 for_each(index in shape) {
     in_t value = tensor_read<in_t>(input, shape, index);
-    acc = apply_clip<in_t>(value, 0, max_val);
-    tensor_write<in_t>(output, shape, index, acc);
+    value = apply_clip<in_t>(value, 0, max_val);
+    tensor_write<in_t>(output, shape, index, value);
 }
 ----
 

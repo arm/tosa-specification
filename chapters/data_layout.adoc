@@ -86,7 +86,7 @@ for_each(index in shape) {
     for(i = 0; i < rank(shape); i++) {
         index1[i] = index1[i] - padding[i,0];
     }
-    in_t value = tensor_read<in_t>(input1, shape1, index1, input1_zp, padding);
+    acc_t value = tensor_read<in_t>(input1, shape1, index1, input1_zp, padding);
     tensor_write<in_t>(output, shape, index, value + input1_zp);
 }
 ----
@@ -94,13 +94,13 @@ for_each(index in shape) {
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_t|acc_t
 
-|Any|Boolean|bool_t
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|Any|Boolean|bool_t|bool_t
+|Any|signed 8|int8_t|int16_t
+|Any|signed 16|int16_t|int16_t
+|Any|signed 32|int32_t|int32_t
+|MI, MT|floating-point|float_t|float_t
 |===
 
 ==== RESHAPE

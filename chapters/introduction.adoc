@@ -197,14 +197,20 @@ The padding array represents the before and after pair for each dimension.
 ....
 assert((pad ==  NULL) || size(pad) == 2 * size(shape));
 out_t tensor_read<in_t>(in_t *address, dim_t shape, dim_t index, in_t zero_point=0, dim_t pad=NULL) {
-  assert(in_t == int8_t || zero_point == 0)
-  unsigned offset = 0;
-  for (i = 0; i < rank(shape); i++)
-    if (index[i] < 0) { assert(pad && pad[2 * i] + index[i] >= 0); return 0; }
-    if (index[i] >= shape[i]) { assert(pad && index[i] < shape[i] + pad[2 * i + 1]); return 0; }
-    offset = offset * shape[i] + index[i]
-  }
-  return address[offset] - zero_point;
+    assert(in_t == int8_t || zero_point == 0)
+    unsigned offset = 0;
+    for (i = 0; i < rank(shape); i++) {
+        if (index[i] < 0) {
+            assert(pad && pad[2 * i] + index[i] >= 0);
+            return 0;
+        }
+        if (index[i] >= shape[i]) {
+            assert(pad && index[i] < shape[i] + pad[2 * i + 1]);
+            return 0;
+        }
+        offset = offset * shape[i] + index[i];
+    }
+    return address[offset] - zero_point;
 }
 ....
 
@@ -212,12 +218,12 @@ out_t tensor_read<in_t>(in_t *address, dim_t shape, dim_t index, in_t zero_point
 
 ....
 tensor_write<type>(<type> *address, dim_t shape, dim_t index, <type> value) {
-  unsigned offset = 0;
-  for (i = 0; i < rank(shape); i++)
-    assert (index[i] >= 0 && index[i] < shape[i]);
-    offset = offset * shape[i] + index[i];
-  }
-  address[offset] = value;
+    unsigned offset = 0;
+    for (i = 0; i < rank(shape); i++) {
+        assert (index[i] >= 0 && index[i] < shape[i]);
+        offset = offset * shape[i] + index[i];
+    }
+    address[offset] = value;
 }
 ....
 
@@ -346,7 +352,7 @@ All table lookups are based on the following reference lookup function that take
 ....
 int32_t apply_lookup(int16_t *table, int32_t value)
 {
-    int16_t clipped_value = apply_clip<int16_t>(value, -32768, +32767);
+    int16_t clipped_value = (int16_t)apply_clip<int32_t>(value, -32768, +32767);
     int32_t index = (clipped_value + 32768) >> 7;
     int32_t fraction = clipped_value & 0x7f;
     int16_t base = table[index];
@@ -364,7 +370,7 @@ void generate_lookup_table(int16_t *table, int32_t (*reference)(int32_t))
 {
     for (int i = -256; i <= 256; i++) {
         int32_t value = (*reference)(i);
-        table[i + 256] = apply_clip<int16_t>(value, -32768, +32767)
+        table[i + 256] = (int16_t)apply_clip<int32_t>(value, -32768, +32767)
     }
 }
 ....

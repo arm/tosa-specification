@@ -99,7 +99,7 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     for_each(0 <= ky < kernel_y, 0 <= kx < kernel_x) {
         y = iy + ky;
         x = ix + kx;
-        in_t value = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,c], input_zp, pad);
+        acc_t value = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,c], input_zp, pad);
         acc = apply_add<acc_t>(acc, value);
         if (0 <= y < IH and 0 <= x < IW) count++
     }
@@ -108,7 +108,7 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     } else {
         scale_t scale = reciprocal_scale(count);
         acc = apply_scale_32(acc, scale.multiplier, scale.shift, false);
-        output_val = apply_clip<in_t>(acc + output_zp, minimum<in_t>, maximum<in_t>)
+        output_val = (in_t)apply_clip<acc_t>(acc + output_zp, minimum<in_t>, maximum<in_t>)
     }
     tensor_write<in_t>(output, [N,H,W,OC], [n,oy,ox,oc], output_val);
 }
@@ -164,8 +164,8 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
     for_each(0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
         y = iy + ky * dilation_y;
         x = ix + kx * dilation_x;
-        in_t value  = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,ic], input_zp, pad);
-        weight_t weight = tensor_read<weight_t>(weight, [OC,KH,KW,IC], [oc,ky,kx,ic], weight_zp);
+        acc_t value  = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,ic], input_zp, pad);
+        acc_t weight = tensor_read<weight_t>(weight, [OC,KH,KW,IC], [oc,ky,kx,ic], weight_zp);
         acc = apply_add<acc_t>(acc, value * weight);
     }
     acc = apply_add<acc_t>(acc, bias[oc]);
@@ -227,8 +227,8 @@ for_each(0 <= n < N, 0 <= od < D, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
         d = id + kd * dilation_d;
         y = iy + ky * dilation_y;
         x = ix + kx * dilation_x;
-        in_t value  = tensor_read<in_t>(input, [N,ID,IH,IW,IC], [n,d,y,x,ic], input_zp, pad);
-        weight_t weight = tensor_read<weight_t>(weight,[OC,KD,KH,KW,IC],[oc,kd,ky,kx,ic], weight_zp);
+        acc_t value  = tensor_read<in_t>(input, [N,ID,IH,IW,IC], [n,d,y,x,ic], input_zp, pad);
+        acc_t weight = tensor_read<weight_t>(weight,[OC,KD,KH,KW,IC],[oc,kd,ky,kx,ic], weight_zp);
         acc = apply_add<acc_t>(acc, value * weight);
     }
     acc = apply_add<acc_t>(acc, bias[oc]);
@@ -289,8 +289,8 @@ for_each(0 <= n<N, 0 <= oy < H, 0 <= ox < W; 0 <= c < (C * M), 0 <= m < M) {
     for_each(0 <= ky < KH, 0 <= kx < KW) {
         y = iy + ky * dilation_y;
         x = ix + kx * dilation_x;
-        in_t value  = tensor_read<in_t>(input, [N,H,W,C], [n,y,x,c], input_zp, pad);
-        weight_t weight = tensor_read<weight_t>(weight, [KH,KW,C,M], [ky,kx,c,m], weight_zp);
+        acc_t value  = tensor_read<in_t>(input, [N,H,W,C], [n,y,x,c], input_zp, pad);
+        acc_t weight = tensor_read<weight_t>(weight, [KH,KW,C,M], [ky,kx,c,m], weight_zp);
         acc = apply_add<acc_t>(acc, value * weight);
     }
     acc = apply_add<acc_t>(acc, bias[(c * M) + m]);
@@ -342,8 +342,8 @@ assert(weight_t == int8_t || weight_zp == 0);
 for_each(0 <= n < N, 0 <= oc < OC) {
     acc_t acc = 0;
     for_each(0 <= ic < IC) {
-        in_t value  = tensor_read<in_t>(input, [N,IC], [n,ic], input_zp);
-        weight_t weight = tensor_read<weight_t>(weight, [OC,IC], [oc,ic], weight_zp);
+        acc_t value  = tensor_read<in_t>(input, [N,IC], [n,ic], input_zp);
+        acc_t weight = tensor_read<weight_t>(weight, [OC,IC], [oc,ic], weight_zp);
         acc = apply_add<acc_t>(acc, value * weight);
     }
     acc = apply_add<acc_t>(acc, bias[oc]);
@@ -392,8 +392,8 @@ assert(in_t == int8_t || (A_zp == 0 && B_zp == 0)); // Zero point only for int8_
 for_each(0 <= n < N, 0 <= h < H, 0 <= w < W) {
     acc_t acc = 0;
     for_each(0 <= c < C) {
-        in_t value1 = tensor_read<in_t>(A, [N,H,C], [n,h,c], A_zp);
-        in_t value2 = tensor_read<in_t>(B, [N,C,W], [n,c,w], B_zp);
+        acc_t value1 = tensor_read<in_t>(A, [N,H,C], [n,h,c], A_zp);
+        acc_t value2 = tensor_read<in_t>(B, [N,C,W], [n,c,w], B_zp);
         acc = apply_add<acc_t>(acc, value1 * value2);
     }
     tensor_write<acc_t>(output, [N,H,W], [n,h,w], acc);
@@ -500,8 +500,8 @@ for_each(0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= oc < OC,
     ox = ix * stride_x - out_pad_left + kx;
     if (oy >= 0 && oy < OH && ox >= 0 && ox < OW) {
         acc_t acc = tensor_read<acc_t>(output, [N,OH,OW,OC], [n,oy,ox,oc]);
-        in_t value = tensor_read<in_t>(input, [N,IH,IW,IC], [n,iy,ix,ic], input_zp);
-        weight_t weight = tensor_read<weight_t>(weight, [OC,KH,KW,IC], [oc,ky,kx,ic], weight_zp);
+        acc_t value = tensor_read<in_t>(input, [N,IH,IW,IC], [n,iy,ix,ic], input_zp);
+        acc_t weight = tensor_read<weight_t>(weight, [OC,KH,KW,IC], [oc,ky,kx,ic], weight_zp);
         acc = apply_add<acc_t>(acc, value * weight);
         tensor_write<acc_t>(output, [N,OH,OW,OC], [n,oy,ox,oc], acc);
     }
