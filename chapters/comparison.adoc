@@ -25,7 +25,7 @@ Elementwise comparison operation
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -61,7 +61,7 @@ Elementwise greater than comparison operation
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -97,7 +97,7 @@ Elementwise comparison operation
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);

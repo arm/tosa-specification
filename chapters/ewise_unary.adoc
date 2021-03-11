@@ -24,7 +24,7 @@ Elementwise absolute value operation
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     in_t value1 = tensor_read<in_t>(input1, shape, index);
@@ -62,7 +62,7 @@ None
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     in_t value1 = tensor_read<in_t>(input1, shape, index);
@@ -117,7 +117,7 @@ Elementwise count leading zeros operation
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     in_t acc = 0;
@@ -216,7 +216,7 @@ None
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     in_t value1 = tensor_read<in_t>(input1, shape1, index);
@@ -257,7 +257,7 @@ Elementwise negation operation
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 assert(in_t == int8_t || input1_zp == 0) // Zero point only for int8_t
 assert(in_t == int8_t || output_zp == 0) // Zero point only for int8_t

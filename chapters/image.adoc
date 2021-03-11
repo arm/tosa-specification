@@ -51,7 +51,7 @@ None
 
 *Operation Function*
 
-[source,c]
+[source,c++]
 ----
 // scale assert prevents int32_t accumulator overflow for in_t==int8_t
 assert((resize_t == float_t && shift == 0)||(0 < shift && shift <= 11));

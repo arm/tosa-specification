@@ -29,7 +29,7 @@ None
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 assert(axis >= 0 && axis < k && k <=4);
 left_shape = shape1[0:axis-1];
@@ -85,7 +85,7 @@ This performs an average pooling over the given input tensor. A sliding window o
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 assert(in_t == int8_t || input_zp == 0); // Zero point only for int8_t
 assert(in_t == int8_t || output_zp == 0); // Zero point only for int8_t
@@ -152,7 +152,7 @@ Performs a 2D convolution over the given tensor input, using the weight tensor.
 
 *Operation Function*
 
-[source,c]
+[source,c++]
 ----
 assert(in_t == int8_t || input_zp == 0); // Zero point only for int8_t
 assert(weight_t == int8_t || weight_zp == 0);
@@ -213,7 +213,7 @@ Performs a 3D convolution over the given input tensor.
 
 *Operation Function*
 
-[source,c]
+[source,c++]
 ----
 assert(in_t == int8_t || input_zp == 0); // Zero point only for int8_t
 assert(weight_t == int8_t || weight_zp == 0);
@@ -277,7 +277,7 @@ Performs 2D convolutions separately over each channel of the given tensor input,
 
 *Operation Function*
 
-[source,c]
+[source,c++]
 ----
 assert(in_t == int8_t || input_zp == 0); // Zero point only for int8_t
 assert(weight_t == int8_t || weight_zp == 0);
@@ -335,7 +335,7 @@ Performs a fully connected network.
 
 *Operation Function*
 
-[source,c]
+[source,c++]
 ----
 assert(in_t == int8_t || input_zp == 0); // Zero point only for int8_t
 assert(weight_t == int8_t || weight_zp == 0);
@@ -386,7 +386,7 @@ Performs two dimensional matrix multiplications. This allows both inputs to be a
 
 *Operation Function*
 
-[source,c]
+[source,c++]
 ----
 assert(in_t == int8_t || (A_zp == 0 && B_zp == 0)); // Zero point only for int8_t
 for_each(0 <= n < N, 0 <= h < H, 0 <= w < W) {
@@ -431,7 +431,7 @@ None
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
@@ -487,7 +487,7 @@ Performs a 2D transposed convolution over the given tensor input, using the weig
 
 *Operation Function*
 
-[source,c]
+[source,c++]
 ----
 assert(in_t == int8_t  || input_zp == 0); // Zero point only allowed for int8_t
 assert(weight_t == int8_t || weight_zp == 0);

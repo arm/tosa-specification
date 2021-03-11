@@ -26,7 +26,7 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -64,7 +64,7 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -108,7 +108,7 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -147,7 +147,7 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -186,7 +186,7 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -229,7 +229,7 @@ None
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -266,7 +266,7 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -306,7 +306,7 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -346,7 +346,7 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -383,7 +383,7 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -420,7 +420,7 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -458,7 +458,7 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -497,7 +497,7 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 assert(in_t == int32_t || shift == 0);
 for_each(index in shape) {
@@ -568,7 +568,7 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
@@ -621,7 +621,7 @@ None
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     in_t value = tensor_read<in_t>(input, shape, index);

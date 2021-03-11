@@ -24,8 +24,8 @@ Casts a tensor from one data type to another.
 
 *Operation Function:*
 
-[source,c]
-....
+[source,c++]
+----
 for_each(index in shape) {
     in_t in = tensor_read<in_t>(input, shape, index);
     out_t out;
@@ -44,7 +44,7 @@ for_each(index in shape) {
     }
     tensor_write<out_t>(output, shape, index, out)
 }
-....
+----
 
 *Supported Data Types:*
 
@@ -100,8 +100,8 @@ Rescale quantized values into a new domain. This function scales by factor: mult
 
 *Operation Function:*
 
-[source,c]
-....
+[source,c++]
+----
 for_each(index in shape) {
     assert(in_t == int8_t  || in_t == uint8_t  || input_zp == 0);
     assert(out_t == int8_t || out_t == uint8_t || output_zp == 0);
@@ -114,7 +114,7 @@ for_each(index in shape) {
     result = (out_t)apply_clip<int32_t>(result + output_zp, minimum<out_t>, maximum<out_t>);
     tensor_write<out_t>(output, shape, index, result);
 }
-....
+----
 
 *Supported Data Types:*
 

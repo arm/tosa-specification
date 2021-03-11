@@ -79,7 +79,7 @@ Zero-pads a tensor along borders of each dimension.
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = index;
@@ -119,7 +119,7 @@ Returns a tensor with the same type/values as the input, with a new shape specif
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 assert(tensor_size(shape1) == tensor_size(shape));
 for(i = 0; i < tensor_size(shape); i++) {
@@ -155,7 +155,7 @@ Returns a tensor with the same type/values as the input, with the data reversed 
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 assert(0 <= axis && axis < rank(shape));
 for_each(index in shape) {
@@ -195,7 +195,7 @@ No data conversion happens during a slice operation.
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     tmp_index = index;
@@ -235,7 +235,7 @@ Replicates input1 multiplies times along each dimension.
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     tmp_index = index;
@@ -276,7 +276,7 @@ Permutes the dimensions based on perm.
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     tmp_index = index;

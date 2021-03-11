@@ -21,25 +21,28 @@ An operator processes input operands to produce output operands. An operator can
 
 Some operators, such as control flow operators, take a graph of other operators as an attribute. The type tosa_graph_t will denote a graph of operators and the following functions define the tensor shape list for the graph input and outputs:
 
-....
+[source,c++]
+----
 shape_list_t tosa_input_shape(tosa_graph_t graph);
 shape_list_t tosa_output_shape(tosa_graph_t graph);
-....
+----
 
 Similarly the type tensor_list_t will be used for a list of tensors and the following function returns the shape of a tensor list:
-....
+[source,c++]
+----
 shape_list_t tensor_list_shape(tosa_list_t tensor_list);
-....
+----
 
 The following function denotes the execution of a TOSA graph, on an input tensor list to produce an output tensor list.
 
-....
+[source,c++]
+----
 tosa_execute_graph(tosa_graph_t graph, tosa_list_t input_list, tosa_list_t output_list) {
     assert(tensor_list_shape(input_list)==tosa_input_shape(graph));
     assert(tensor_list_shape(output_list)==tosa_output_shape(graph));
     <Execute TOSA graph operators as defined in this specification>
 }
-....
+----
 
 Note that within the graph, each input operand is instantiated as a PLACEHOLDER operator.
 

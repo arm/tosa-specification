@@ -25,13 +25,14 @@ Clamp to an arbitrary minimum and maximum value. Note that the maximum and minim
 |===
 
 *Operation Function:*
-....
+[source,c++]
+----
 for_each(index in shape) {
     acc_t value = tensor_read<in_t>(input, shape, index);
     acc = (in_t)apply_clip<acc_t>(value, min_val, max_val);
     tensor_write<in_t>(output, shape, index, acc);
 }
-....
+----
 
 *Supported Data Types:*
 
@@ -59,7 +60,7 @@ ReLU with a scalar maximum value.
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     in_t value = tensor_read<in_t>(input, shape, index);
@@ -86,8 +87,8 @@ the following definition.
 
 The sigmoid table has 513 entries each of 16-bit precision and covering the input range -16.0 to +16.0 in steps of 1/16.
 
-[source,c]
-....
+[source,c++]
+----
 int sigmoid_reference(int x) {|// input x range is -256 to + 256 inclusive
     F64 v = (double)x / (double)16;
     v = 1.0/(1.0 + exp(-v));
@@ -95,7 +96,7 @@ int sigmoid_reference(int x) {|// input x range is -256 to + 256 inclusive
 }
 
 generate_lookup_table(&sigmoid_table, &sigmoid_reference);
-....
+----
 
 *Arguments:*
 
@@ -123,7 +124,7 @@ the following definition.
 
 The tanh_table has 513 entries each of 16-bit precision and covering the input range -8.0 to +8.0 in steps of 1/32. The table is specified by:
 
-[source,c]
+[source,c++]
 ----
 int tanh_reference(int x) {  // input x range is -256 to +256 inclusive
     F64 v = (double)x/(double)32;

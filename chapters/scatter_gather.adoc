@@ -30,7 +30,7 @@ None
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
     index_t k = tensor_read<index_t>(indices, [N,W], [n,w]);
@@ -75,7 +75,7 @@ None
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 
 // The following array is used to check compliance that an output position

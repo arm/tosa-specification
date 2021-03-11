@@ -29,7 +29,7 @@ Evaluates a Boolean condition and then takes one of two distinct execution paths
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 assert(tensor_list_shape(input_list)==tosa_input_shape(then_graph));
 assert(tensor_list_shape(input_list)==tosa_input_shape(else_graph));
@@ -60,7 +60,7 @@ Generates and evaluates a Bool condition and either executes a loop body or exit
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 assert(tensor_list_shape(input_list)==tosa_list_shape(output_list));
 assert(tensor_list_shape(input_list)==tosa_input_shape(cond_graph));

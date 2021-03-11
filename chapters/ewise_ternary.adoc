@@ -30,7 +30,7 @@ None
 
 *Operation Function:*
 
-[source,c]
+[source,c++]
 ----
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
