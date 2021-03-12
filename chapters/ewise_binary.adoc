@@ -591,14 +591,14 @@ for_each(index in shape) {
 
 ====   TABLE
 
-Interpolated table lookup operation. The int16_t input is treated as a fixed-point 9.7 value. The high 9 bits are used to index into the table. The fractional 7 bits are used to interpolate based on table[index] and table[index+1]. The TABLE operator returns a 16.7 interpolated value which can then be input to the RESCALE operator to scale to the required output data type. Note that table has 513 values to handle table[index+1] when index=511.
-
-An int8_t to int8_t table lookup can be constructed in TOSA as follows:
-
-* Use RESCALE (in_t=int8_t, out_t=int16_t, input_zp=0, scale=1<<14, shift=7) to perform a shift left of 7 and convert to int16_t
-* Use the TABLE operator to produce a fixed point 16.7 result. The lower 7 bits will be zero and only the central 256 table entries will be used.
-* Use RESCALE (in_t=int32_t, out_t=int8_t, scale=1<<14, shift=28) to scale the output to int8_t range (or alternate scale as required)
-* Note that this TOSA sequence can be implemented in software as a 256 entry 8-bit lookup table.
+Table lookup operation.
+For int8_t TABLE operation, perform a 256 entry table lookup returning an int8_t value.
+For int16_t tables, the int16_t input is treated as a fixed-point 9.7 value.
+The most significant 9 bits are used to index into the table.
+The fractional 7 bits are used to interpolate based on table[index] and table[index+1].
+For int16_t inputs, the TABLE operator returns a 16.7 interpolated value in an int32_t.
+This value can then be input to the RESCALE operator to scale to the required output data type.
+Note that int16_t table has 513 values to handle table[index+1] when index=511.
 
 An int16_t to int16_t table lookup can be constructed in TOSA as follows:
 
@@ -611,7 +611,7 @@ An int16_t to int16_t table lookup can be constructed in TOSA as follows:
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|Input|shape|Input tensor
-|Input|table_t*|table|[513]|Lookup table tensor
+|Input|table_t*|table|[TABLE_SIZE]|Lookup table tensor
 |Output|out_t*|output|shape|Output tensor
 |===
 
@@ -625,7 +625,11 @@ None
 ----
 for_each(index in shape) {
     in_t value = tensor_read<in_t>(input, shape, index);
-    out_t acc = apply_lookup(table, value);
+    if (in_t == int8_t) {
+        out_t acc = table[value];
+    } else {
+        out_t acc = apply_lookup(table, value);
+    }
     tensor_write<out_t>(output, shape, index, acc);
 }
 ----
@@ -633,8 +637,9 @@ for_each(index in shape) {
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|table_t|out_t
+|Profile|Mode|in_t|table_t|TABLE_SIZE|out_t
 
-|Any|signed 16|int16_t|int16_t|int32_t
+|Any|signed 8|int8_t|int8_t|256|int8_t
+|Any|signed 16|int16_t|int16_t|513|int32_t
 |===
 
