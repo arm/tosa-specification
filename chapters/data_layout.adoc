@@ -18,8 +18,8 @@ No data conversion happens during a concat operation.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t**|input1|shapes1[]|List of input tensors
-|Attribute|int|axis|-|Axis along which concatenation is to occur
+|Input|in_t**|input1|shapes1[]|List of input tensors. All inputs must have the same rank
+|Attribute|int|axis|-|Axis along which concatenation is to occur, in range from 0 to rank(shape)-1
 |Output|in_t*|output|shape|Output tensor
 |===
 
@@ -149,7 +149,7 @@ Returns a tensor with the same type/values as the input, with the data reversed 
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|shape|Input tensor from 1 to 4 dims
-|Attribute|int|axis|-|Axis to reverse
+|Attribute|int|axis|-|Axis to reverse, in range from 0 to rank(shape)-1
 |Output|in_t*|output|shape|Output tensor. Same shape as input tensor.
 |===
 

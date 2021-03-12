@@ -19,7 +19,7 @@ Reduce a tensor along the given axis with a logical AND operation
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis to reduce
+|Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
 |Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
@@ -60,7 +60,7 @@ Reduce a tensor along the given axis with a logical OR operation
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis to reduce
+|Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
 |Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
@@ -101,7 +101,7 @@ Reduce a tensor along the given axis with a maximum operation
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis to reduce
+|Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
 |Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
@@ -144,7 +144,7 @@ Reduce a tensor along the given axis with a minimum operation
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis to reduce
+|Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
 |Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
@@ -192,7 +192,7 @@ Reduce a tensor along the given axis by computing the product of the axis.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis to reduce
+|Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
 |Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
@@ -233,7 +233,7 @@ Reduce a tensor along the given axis by computing the sum of the axis.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis to reduce
+|Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
 |Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
