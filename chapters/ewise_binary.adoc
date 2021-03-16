@@ -208,6 +208,46 @@ for_each(index in shape) {
 |Any|signed 32|int32_t
 |===
 
+==== DIV
+
+Elementwise divide of input1 by input2.
+The result of the divide is truncated towards zero.
+Only used for integer operation.
+Floating point divide should use RECIPROCAL and MUL.
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_t*|input1|shape1|Input tensor
+|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
+|Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
+|===
+
+*Operation Function:*
+
+[source,c++]
+----
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    assert(value2 != 0);
+    assert((int64_t)value1 / value2 <= maximum<in_t>);
+    in_t acc = value1 / value2;
+    tensor_write<in_t>(output, shape, index, acc);
+}
+----
+
+*Supported Data Types:*
+|===
+|Profile|Mode|in_t
+
+|Any|signed 32|int32_t
+|===
+
 ==== LOGICAL_AND
 
 Elementwise logical AND of input1 and input2.
