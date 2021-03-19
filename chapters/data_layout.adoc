@@ -121,7 +121,7 @@ Returns a tensor with the same type/values as the input, with a new shape specif
 
 [source,c++]
 ----
-REQUIRE(tensor_size(shape1) == tensor_size(shape));
+ERROR_IF(tensor_size(shape1) != tensor_size(shape));
 for(i = 0; i < tensor_size(shape); i++) {
     output[i] = input[i];
 }

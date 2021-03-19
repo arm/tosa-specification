@@ -27,8 +27,8 @@ Reduce a tensor along the given axis with a logical AND operation
 
 [source,c]
 ----
-REQUIRE(0 <= axis && axis < rank(shape1));
-REQUIRE(shape[axis] == 1);
+ERROR_IF(axis < 0  || axis >= rank(shape1));
+ERROR_IF(shape[axis] != 1);
 for_each(index in shape) {
     tensor_write<in_t>(output, shape, index, true);
 }
@@ -68,8 +68,8 @@ Reduce a tensor along the given axis with a logical OR operation
 
 [source,c]
 ----
-REQUIRE(0 <= axis && axis < rank(shape1));
-REQUIRE(shape[axis] == 1);
+ERROR_IF(axis < 0  || axis >= rank(shape1));
+ERROR_IF(shape[axis] != 1);
 for_each(index in shape) {
     tensor_write<in_t>(output, shape, index, false);
 }
@@ -109,8 +109,8 @@ Reduce a tensor along the given axis with a maximum operation
 
 [source,c]
 ----
-REQUIRE(0 <= axis && axis < rank(shape1));
-REQUIRE(shape[axis] == 1);
+ERROR_IF(axis < 0  || axis >= rank(shape1));
+ERROR_IF(shape[axis] != 1);
 for_each(index in shape) {
     tensor_write<in_t>(output, shape, index, minimum<in_t>);
 }
@@ -156,8 +156,8 @@ Quantization is ignored when doing the REDUCE_MIN operation. The input and outpu
 
 [source,c]
 ----
-REQUIRE(0 <= axis && axis < rank(shape1));
-REQUIRE(shape[axis]==1);
+ERROR_IF(axis < 0  || axis >= rank(shape1));
+ERROR_IF(shape[axis] != 1);
 for_each(index in shape) {
     tensor_write<in_t>(output, shape, index, maximum<in_t>);
 }
@@ -200,8 +200,8 @@ Reduce a tensor along the given axis by computing the product of the axis.
 
 [source,c]
 ----
-REQUIRE(0 <= axis && axis < rank(shape1));
-REQUIRE(shape[axis] == 1);
+ERROR_IF(axis < 0  || axis >= rank(shape1));
+ERROR_IF(shape[axis] != 1);
 for_each(index in shape) {
     tensor_write<in_t>(output, shape, index, 1.0);
 }
@@ -241,8 +241,8 @@ Reduce a tensor along the given axis by computing the sum of the axis.
 
 [source,c]
 ----
-REQUIRE(0 <= axis && axis < rank(shape1));
-REQUIRE(shape[axis] == 1);
+ERROR_IF(axis < 0  || axis >= rank(shape1));
+ERROR_IF(shape[axis] != 1);
 for_each(index in shape) {
     tensor_write<in_t>(output, shape, index, 0);
 }

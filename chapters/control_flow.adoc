@@ -31,10 +31,10 @@ Evaluates a Boolean condition and then takes one of two distinct execution paths
 
 [source,c++]
 ----
-REQUIRE(tensor_list_shape(input_list) == tosa_input_shape(then_graph));
-REQUIRE(tensor_list_shape(input_list) == tosa_input_shape(else_graph));
-REQUIRE(tensor_list_shape(output_list) == tosa_output_shape(then_graph));
-REQUIRE(tensor_list_shape(output_list) == tosa_output_shape(else_graph));
+ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(then_graph));
+ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(else_graph));
+ERROR_IF(tensor_list_shape(output_list) != tosa_output_shape(then_graph));
+ERROR_IF(tensor_list_shape(output_list) != tosa_output_shape(else_graph));
 
 if (condition) {
     tosa_execute_graph(then_graph, input_list, output_list);
@@ -62,11 +62,11 @@ Generates and evaluates a Bool condition and either executes a loop body or exit
 
 [source,c++]
 ----
-REQUIRE(tensor_list_shape(input_list) == tosa_list_shape(output_list));
-REQUIRE(tensor_list_shape(input_list) == tosa_input_shape(cond_graph));
-REQUIRE(tensor_list_shape(input_list) == tosa_input_shape(body_graph));
-REQUIRE(tensor_list_shape(input_list) == tosa_output_shape(body_graph));
-REQUIRE(tosa_output_shape(cond_graph) == tosa_list_shape([bool_t]));
+ERROR_IF(tensor_list_shape(input_list) != tosa_list_shape(output_list));
+ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(cond_graph));
+ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(body_graph));
+ERROR_IF(tensor_list_shape(input_list) != tosa_output_shape(body_graph));
+ERROR_IF(tosa_output_shape(cond_graph) != tosa_list_shape([bool_t]));
 
 // The iteration number 'i' is included to give unique names to variables
 // in each iteration of the loop and is not required by implementations

@@ -15,22 +15,37 @@ This section contains pseudocode functions shared across multiple operators in t
 
 === Operator Validation Helpers
 
-
 The following functions are used to define the valid conditions for TOSA operators.
+
 The REQUIRE function defines the conditions required by the TOSA operator.
-When a call to unpredictable() is made, processing defined in the pseudocode for this operator may or may not be executed.
-Once unpredictable is called, the whole TOSA graph is considered unpredictable, even if the unpredictable result does not propagate to the graph output.
+If the conditions are not met then the result of the TOSA graph is marked as unpredictable.
+Once the tosa_graph_result is set to tosa_unpredictable, the whole graph is considered unpredictable.
+
+The ERROR_IF function defines a condition that must set an error if the condition holds and the graph is not unpredictable.
+Note that if a graph contains both unpredictable and error statements then result of tosa_execute_graph() is tosa_unpredictable.
+This condition is captured in the ERROR_IF function.
+
+*Implementation Notes*
+
+* An implementation is not required to detect unpredictable behaviour. If tosa_execute_graph() returns tosa_unpredictable then the tosa_test_compliance() function does not require any specific output from an implementation.
+* An implementation is required to detect errors in a graph that does not have unpredictable behaviour (see tosa_test_compliance).
+* An acceptable implementation is to stop and report an error on the first ERROR_IF condition that occurs. This satifies tosa_test_compliance() even if the tosa_execute_graph() was tosa_unpredictable.
+* If the tosa_execute_graphs() result is tosa_unpredictable or tosa_error, then there is no requirement on the implementation to execute any portion of the TOSA graph.
 
 [source,c++]
 ----
-void unpredictable() {
-    // Behavior of this TOSA operator cannot be relied on if this is called.
-    tosa_graph_result_unpredictable = true;
+void REQUIRE(condition) {
+    // Unpredictable overrides any previous result
+    if (!(condition)) {
+        tosa_graph_result = tosa_unpredictable;
+    }
 }
 
-void REQUIRE(condition) {
-    if (not condition) {
-        unpredictable();
+void ERROR_IF(condition) {
+    // Error encodes a predictable error state and so is not registered
+    // if the graph is marked as unpredictable.
+    if (tosa_graph_result != tosa_unpredictable && condition) {
+        tosa_graph_result = tosa_error;
     }
 }
 ----

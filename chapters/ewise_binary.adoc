@@ -540,13 +540,12 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 [source,c++]
 ----
-REQUIRE(in_t == int32_t || shift == 0);
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    if (shift>0) {
+    if (in_t == int32_t && shift > 0) {
         out_t acc = apply_scale_32(value1, value2, shift);
     } else {
         out_t acc = value1 * value2;  // low 32-bits of result for int32_t

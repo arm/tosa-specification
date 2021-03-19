@@ -19,6 +19,14 @@ An operator processes input operands to produce output operands. An operator can
 
 === Operator Graphs
 
+A TOSA graph is a collection of TOSA operators where:
+
+* The output of an operator in the graph may be connected to one or more inputs of other operators in the graph
+* When an output is connected to an input the tensor list shapes must match
+* The attributes of the operators are defined and considered part of the graph
+* The attributes must be in the valid range permitted for the operator
+* The tensor dimensions must be in the valid range permitted for the operator
+
 Some operators, such as control flow operators, take a graph of other operators as an attribute. The type tosa_graph_t will denote a graph of operators and the following functions define the tensor shape list for the graph input and outputs:
 
 [source,c++]
@@ -38,12 +46,14 @@ The following function denotes the execution of a TOSA graph, on an input tensor
 [source,c++]
 ----
 tosa_execute_graph(tosa_graph_t graph, tosa_list_t input_list, tosa_list_t output_list) {
-    REQUIRE(tensor_list_shape(input_list)==tosa_input_shape(graph));
-    REQUIRE(tensor_list_shape(output_list)==tosa_output_shape(graph));
-    <Execute TOSA graph operators as defined in this specification>
-    if (tosa_graph_result_unpredictable == true) {
-        // Result of TOSA graph execution is unpredictable due to calling
-        // the unpredictable() function during execution.
+    ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(graph));
+    ERROR_IF(tensor_list_shape(output_list) != tosa_output_shape(graph));
+    for_each(operator in graph order) {
+        ERROR_IF(operator input tensors do not meet requirement of operator Arguments inputs)
+        ERROR_IF(operator attributes do not meet requirement of operator Arguments attributes)
+        ERROR_IF(operator output tensors do not meet requirement of operator Arguments outputs)
+        ERROR_IF(operator data types do not meet requirement of operator Supported Data Types)
+        <Execute operator as defined by the Operation Function pseduo-code>
     }
 }
 ----
