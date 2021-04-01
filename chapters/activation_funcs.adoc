@@ -44,40 +44,6 @@ for_each(index in shape) {
 |MI, MT|floating-point|float_t|float_t
 |===
 
-==== RELUN
-
-ReLU with a scalar maximum value.
-
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|Input|shape|Input tensor
-|Attribute|in_t|max_val|-|maximum clip value
-|Output|in_t*|Output|shape|Output tensor of same type and shape as input
-|===
-
-*Operation Function:*
-
-[source,c++]
-----
-for_each(index in shape) {
-    in_t value = tensor_read<in_t>(input, shape, index);
-    value = apply_clip<in_t>(value, 0, max_val);
-    tensor_write<in_t>(output, shape, index, value);
-}
-----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t
-
-|Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
-|===
-
 ==== SIGMOID
 
 Sigmoid function: output = 1 / (1 + exp(-input))
