@@ -53,9 +53,16 @@ None
 
 [source,c++]
 ----
-// scale assert prevents int32_t accumulator overflow for in_t==int8_t
+// shift assert prevents int32_t accumulator overflow for in_t==int8_t
 assert((resize_t == float_t && shift == 0)||(0 < shift && shift <= 11));
-assert(stride_x > 0 && stride_y > 0);
+// stride asserts set consistent lower limit of 1/16 downscale
+// independent of the shift value to simplify implementations
+assert(0 < stride_x && stride_x < (16 << shift));
+assert(0 < stride_y && stride_y < (16 << shift));
+// offset range is similarly limited to maximum 16 pixels irrespective
+// of shift. Both stride and offset fit in int16_t when shift=11.
+assert((-16 << shift) < offset_x && offset_x < (16 << shift));
+assert((-16 << shift) < offset_y && offset_y < (16 << shift));
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
     unit = (resize_t == float_t) ? 1.0 : (1 << shift);
     y = oy * stride_y + offset_y;
