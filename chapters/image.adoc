@@ -40,7 +40,7 @@ from the strides.
 |Attribute|int*|output_size|[2]|[OH,OW]
 |Attribute|resize_t*|stride|[2]|[stride_y, stride_x]
 |Attribute|resize_t*|offset|[2]|[offset_y, offset_x]
-|Attribute|int|shift|Shift value (must be zero if resize_t is float)
+|Attribute|int      |shift|-|Shift value (must be zero if resize_t is float)
 |Attribute|mode_t|mode|-|BILINEAR or NEAREST
 |Output|out_t*|output|[N,OH,OW,C]|Output tensor
 |===
