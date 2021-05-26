@@ -208,12 +208,13 @@ for_each(index in shape) {
 |Any|signed 32|int32_t
 |===
 
-==== DIV
+==== INTDIV
 
-Elementwise divide of input1 by input2.
+Elementwise integer divide of input1 by input2.
 The result of the divide is truncated towards zero.
-Only used for integer operation.
+Expected use is for operations on non-scaled integers.
 Floating point divide should use RECIPROCAL and MUL.
+Quantized integer divide should use TABLE (for 1/x) and MUL.
 
 *Arguments:*
 
