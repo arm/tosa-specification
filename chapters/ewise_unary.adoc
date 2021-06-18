@@ -259,8 +259,8 @@ Elementwise negation operation
 
 [source,c++]
 ----
-assert(in_t == int8_t || input1_zp == 0) // Zero point only for int8_t
-assert(in_t == int8_t || output_zp == 0) // Zero point only for int8_t
+REQUIRE(in_t == int8_t || input1_zp == 0) // Zero point only for int8_t
+REQUIRE(in_t == int8_t || output_zp == 0) // Zero point only for int8_t
 for_each(index in shape) {
     acc_t acc = tensor_read<in_t>(input1, shape, index, input1_zp);
     acc = apply_sub<acc_t>(0, acc);

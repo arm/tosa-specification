@@ -103,9 +103,9 @@ Rescale quantized values into a new domain. This function scales by factor: mult
 [source,c++]
 ----
 for_each(index in shape) {
-    assert(in_t == int8_t  || in_t == uint8_t  || input_zp == 0);
-    assert(out_t == int8_t || out_t == uint8_t || output_zp == 0);
-    assert((scale32 && in_t != int48_t_t) || (!scale32 && !double_round));
+    REQUIRE(in_t == int8_t  || in_t == uint8_t  || input_zp == 0);
+    REQUIRE(out_t == int8_t || out_t == uint8_t || output_zp == 0);
+    REQUIRE((scale32 && in_t != int48_t_t) || (!scale32 && !double_round));
     int48_t value = tensor_read<in_t>(input, shape, index, input_zp);
     int c = (per_channel) ? index[dims-1] : 0;
     int32_t result = (scale32) ?

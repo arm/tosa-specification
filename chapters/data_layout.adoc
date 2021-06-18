@@ -121,7 +121,7 @@ Returns a tensor with the same type/values as the input, with a new shape specif
 
 [source,c++]
 ----
-assert(tensor_size(shape1) == tensor_size(shape));
+REQUIRE(tensor_size(shape1) == tensor_size(shape));
 for(i = 0; i < tensor_size(shape); i++) {
     output[i] = input[i];
 }
@@ -157,7 +157,7 @@ Returns a tensor with the same type/values as the input, with the data reversed 
 
 [source,c++]
 ----
-assert(0 <= axis && axis < rank(shape));
+REQUIRE(0 <= axis && axis < rank(shape));
 for_each(index in shape) {
     tmp_index = index;
     tmp_index[axis] = shape[axis] - 1 - index[axis];
@@ -240,7 +240,7 @@ Replicates input1 multiplies times along each dimension.
 for_each(index in shape) {
     tmp_index = index;
     for(i = 0; i < rank(shape); i++) {
-        assert(shape1[i] * multiplies[i] == shape[i]);
+        REQUIRE(shape1[i] * multiplies[i] == shape[i]);
         tmp_index[i] = index[i] % shape1[i];
     }
     in_t value = tensor_read<in_t>(input, shape1, tmp_index);
@@ -281,7 +281,7 @@ Permutes the dimensions based on perm.
 for_each(index in shape) {
     tmp_index = index;
     for(i = 0; i < rank(shape); i++) {
-        assert(shape1[perm[i]] == shape[i])
+        REQUIRE(shape1[perm[i]] == shape[i])
         tmp_index[perm[i]] = index[i]
     }
     in_t value = tensor_read<in_t>(input, shape1, tmp_index);

@@ -34,7 +34,7 @@ None
 ----
 for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
     index_t k = tensor_read<index_t>(indices, [N,W], [n,w]);
-    assert(0 <= k && k < K);
+    REQUIRE(0 <= k && k < K);
     value_t value = tensor_read<value_t>(values, [N,K,C], [n,k,c]);
     tensor_write<value_t>(output, [N,W,C], [n,w,c], value);
 }
@@ -93,8 +93,8 @@ for_each(0 <= n < N, 0 <= k < K, 0 <= c < C) {
 // Now perform the SCATTER operation, modifying the positions from the indices tensor
 for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
     index_t k = tensor_read<index_t>(indices, [N,W], [n,w]);
-    assert(0 <= k && k < K);
-    assert(output_modified[n,k,c] == false);
+    REQUIRE(0 <= k && k < K);
+    REQUIRE(output_modified[n,k,c] == false);
     value_t value = tensor_read<value_t>(input, [N,W,C], [n,w,c]);
     tensor_write<value_t>(values_out, [N,K,C], [n, k, c], value);
     output_modified[n,k,c] = true;

@@ -38,9 +38,13 @@ The following function denotes the execution of a TOSA graph, on an input tensor
 [source,c++]
 ----
 tosa_execute_graph(tosa_graph_t graph, tosa_list_t input_list, tosa_list_t output_list) {
-    assert(tensor_list_shape(input_list)==tosa_input_shape(graph));
-    assert(tensor_list_shape(output_list)==tosa_output_shape(graph));
+    REQUIRE(tensor_list_shape(input_list)==tosa_input_shape(graph));
+    REQUIRE(tensor_list_shape(output_list)==tosa_output_shape(graph));
     <Execute TOSA graph operators as defined in this specification>
+    if (tosa_graph_result_unpredictable == true) {
+        // Result of TOSA graph execution is unpredictable due to calling
+        // the unpredictable() function during execution.
+    }
 }
 ----
 

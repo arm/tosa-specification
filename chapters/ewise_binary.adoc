@@ -71,7 +71,7 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    assert(0 <= value2 && value2 <= 31);
+    REQUIRE(0 <= value2 && value2 <= 31);
     in_t acc = value1 >> value2;
     if (round == true && value2 > 0 && (value1 >> (value2 - 1)) & 1 != 0) {
         acc = acc + 1;
@@ -235,8 +235,8 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    assert(value2 != 0);
-    assert((int64_t)value1 / value2 <= maximum<in_t>);
+    REQUIRE(value2 != 0);
+    REQUIRE((int64_t)value1 / value2 <= maximum<in_t>);
     in_t acc = value1 / value2;
     tensor_write<in_t>(output, shape, index, acc);
 }
@@ -314,7 +314,7 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    assert(0 <= value2 && value2 <= 31);
+    REQUIRE(0 <= value2 && value2 <= 31);
     in_t acc = value1 << value2;
     tensor_write<in_t>(output, shape, index, acc);
 }
@@ -354,7 +354,7 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    assert(0 <= value2 && value2 <= 31);
+    REQUIRE(0 <= value2 && value2 <= 31);
     in_t acc = (unsigned in_t)value1 >> value2;
     tensor_write<in_t>(output, shape, index, acc);
 }
@@ -540,7 +540,7 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 [source,c++]
 ----
-assert(in_t == int32_t || shift == 0);
+REQUIRE(in_t == int32_t || shift == 0);
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
     index2 = apply_broadcast(shape, shape2, index);
