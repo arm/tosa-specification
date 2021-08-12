@@ -333,6 +333,70 @@ for_each(0 <= n<N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C, 0 <= m < M) {
 |MI, MT|floating-point|float_t|float_t|float_t
 |===
 
+==== FFT2D
+
+Performs a batched complex 2D Fast Fourier Transform over the input.
+The complex input values are constructed from the corresponding values in the input_real and input_imag tensors.
+The resulting values in the output are split into the output_real and output_imag tensors.
+No normalization is applied on either the forward or inverse versions of the operation.
+
+// output[h][w] = \sum_{m=0}^{H-1}\sum_{n=0}^{W-1}input[m][n] * \exp\left(-2\pi i\left(\frac{mh}{H} + \frac{nw}{W}\right)\right)
+
+.Calculation for the forward FFT2D calculation (direction=false)
+image::forward_fft2d.svg["forward FFT definition", align="center"]
+
+// output[h][w] = \sum_{m=0}^{H-1}\sum_{n=0}^{W-1}input[m][n] * \exp\left(2\pi i\left(\frac{mh}{H} + \frac{nw}{W}\right)\right)
+
+.Calculation for the inverse FFT2D calculation (direction=true)
+image::inverse_fft2d.svg["inverse FFT definition", align="center"]
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_out_t*|input_real|[N,H,W]|Real part of the complex input. H,W must be powers of two.
+|Input|in_out_t*|input_imag|[N,H,W]|Imaginary part of the complex input. H,W must be powers of two.
+|Attribute|bool_t|inverse|-|false for forward FFT, true for inverse FFT
+|Output|in_out_t*|output_real|[N,H,W]|Real part of the complex output
+|Output|in_out_t*|output_imag|[N,H,W]|Imaginary part of the complex output.
+|===
+
+*Operation Function*
+
+[source,c++]
+----
+ERROR_IF(!power_of_two(H));
+ERROR_IF(!power_of_two(W));
+
+float sign_val = 1.0;
+
+if (inverse) {
+    sign_val = -1.0;
+}
+
+for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W) {
+    in_out_t sum_real = 0.0;
+    in_out_t sum_imag = 0.0;
+    for_each(0 <= iy < H, 0 <= ix < W) {
+        in_out_t val_real = tensor_read<in_out_t>(input_real, [N,H,W], [n,iy,ix]);
+        in_out_t val_imag = tensor_read<in_out_t>(input_imag, [N,H,W], [n,iy,ix]);
+        float_t a = sign_val * 2 * pi() * ((iy * oy) / H + (ix * ox) / W);
+        sum_real += val_real * cos(a) + val_imag * sin(a);
+        sum_imag += -val_real * sin(a) + val_imag * cos(a);
+    }
+    tensor_write<in_out_t>(output_real, [N,H,W], [n,oy,ox], sum_real);
+    tensor_write<in_out_t>(output_imag, [N,H,W], [n,oy,ox], sum_imag);
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_out_t
+|MI,MT|floating-point|float
+|===
+
 ==== FULLY_CONNECTED
 
 Performs a fully connected network.
@@ -478,6 +542,54 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
 |Any|16-bit|int16_t
 |MI, MT|floating-point|float_t
 |===
+
+==== RFFT2D
+
+Performs a batched 2D real-valued Fast Fourier Transform over the input where the input tensor consists of real values producing complex valued output.
+The complex output values will be split into the output_real and output_imag tensor arguments.
+RFFT2D takes advantage of Hermitian symmetry to only calculate the first half of the output.
+Imaginary values with locations h=0,H/2 or w=0,W/2 are zero.
+
+image::forward_fft2d.svg["forward FFT definition", align="center"]
+
+*Arguments:*
+
+|===
+|Argument|Type|Name|Shape|Description
+
+|Input|in_out_t*|input|[N,H,W]|Real input. H,W must be powers of two.
+|Output|in_out_t*|output_real|[N,H/2 + 1,W/2 + 1]|Real part of the complex output
+|Output|in_out_t*|output_imag|[N,H/2 + 1,W/2 + 1]|Imaginary part of the complex output.
+|===
+
+*Operation Function*
+
+[source,c++]
+----
+ERROR_IF(!power_of_two(H));
+ERROR_IF(!power_of_two(W));
+
+for_each(0 <= n < N, 0 <= oy < H/2 + 1, 0 <= ox < W/2 + 1) {
+    in_out_t sum_real = 0.0;
+    in_out_t sum_imag = 0.0;
+    for_each(0 <= iy < H, 0 <= ix < W) {
+        in_out_t val_real = tensor_read<in_out_t>(input_real, [N,H,W], [n,iy,ix]);
+        float_t a = 2 * pi() * ((iy * oy) / H + (ix * ox) / W);
+        sum_real += val_real * cos(a);
+        sum_imag += -val_real * sin(a);
+    }
+    tensor_write<in_out_t>(output_real, [N,H,W], [n,oy,ox], sum_real);
+    tensor_write<in_out_t>(output_imag, [N,H,W], [n,oy,ox], sum_imag);
+}
+----
+
+*Supported Data Types:*
+
+|===
+|Profile|Mode|in_out_t
+|MI,MT|floating-point|float
+|===
+
 
 ==== TRANSPOSE_CONV2D
 

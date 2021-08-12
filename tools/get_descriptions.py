@@ -49,5 +49,8 @@ for name in args.filenames:
                 # not useful there
                 if re.match(r'[\[\*]', text):
                     in_description = False
+                # skip comments
+                elif re.match(r'\w*\/\/', text):
+                    continue
                 else:
                     print(text)

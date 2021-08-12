@@ -22,22 +22,28 @@ COMMON_ARGS= -a revnumber="$(TOSAREVISION)"
 SPECSRC := tosa_spec.adoc
 ADOCFILES = $(wildcard chapters/[A-Za-z]*.adoc)
 SPECFILES = $(ADOCFILES) tosa.css
+FIGURES = $(wildcard figures/*.svg)
 
 .DELETE_ON_ERROR:
 
-.PHONY: all html pdf clean spell
+.PHONY: all html pdf clean spell copy_html_figures
 
 all: spell html pdf
 
-html: $(HTMLDIR)/tosa_spec.html
+html: copy_html_figures $(HTMLDIR)/tosa_spec.html
 
 pdf: $(PDFDIR)/tosa_spec.pdf
 
 clean:
 	$(RM) $(HTMLDIR)/tosa_spec.html
+	rm -rf $(HTMLDIR)/figures
 	$(RM) $(PDFDIR)/tosa_spec.pdf
 
 spell: out/spell.txt
+
+copy_html_figures: $(FIGURES)
+	$(MKDIR) -p $(HTMLDIR)/figures
+	cp $(FIGURES) $(HTMLDIR)/figures
 
 .PRECIOUS: out/spell.txt
 out/spell.txt: $(ADOCFILES) FORCE

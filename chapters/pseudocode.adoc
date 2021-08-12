@@ -212,4 +212,16 @@ int32_t tensor_size(int32_t input[]) {
     }
     return size;
 }
+
+float_t pi()
+    returns value of pi
+
+float_t sin(angle)
+    return sine of angle given in radians
+
+float_t cos(angle)
+    return cosine of angle given in radians
+
+bool power_of_two(int32_t value)
+    return true if value is a power of two, false otherwise
 ----

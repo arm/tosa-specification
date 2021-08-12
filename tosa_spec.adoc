@@ -12,6 +12,7 @@
 :toc: left
 :toclevels: 3
 :source-highliter: coderay
+:imagesdir: figures
 
 include::chapters/tosa_license.adoc[]
 
