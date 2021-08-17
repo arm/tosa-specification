@@ -27,6 +27,7 @@ Clamp to an arbitrary minimum and maximum value. Note that the maximum and minim
 *Operation Function:*
 [source,c++]
 ----
+ERROR_IF(max_val < min_val);
 for_each(index in shape) {
     acc_t value = tensor_read<in_t>(input, shape, index);
     acc = (in_t)apply_clip<acc_t>(value, min_val, max_val);

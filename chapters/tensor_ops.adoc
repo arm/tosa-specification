@@ -99,6 +99,9 @@ This performs an average pooling over the given input tensor. A sliding window o
 ----
 ERROR_IF(in_t != int8_t && input_zp != 0); // Zero point only for int8_t
 ERROR_IF(in_t != int8_t && output_zp != 0); // Zero point only for int8_t
+ERROR_IF(kernel_y < 1 || kernel_x < 1); // kernel size must be >= 1
+ERROR_IF(stride_y < 1 || stride_x < 1);
+ERROR_IF(pad_top < 0 || pad_buttom < 0 || pad_left < 0 || pad_right < 0);
 pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     in_t output_val;
@@ -170,6 +173,9 @@ Performs a 2D convolution over the given tensor input, using the weight tensor.
 ----
 ERROR_IF(in_t != int8_t && input_zp != 0); // Zero point only for int8_t
 ERROR_IF(weight_t != int8_t && weight_zp != 0);
+ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
+ERROR_IF(stride_y < 1 || stride_x < 1);
+ERROR_IF(dilation_y < 1 || dilation_x < 1);
 pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
     acc_t acc = 0;
@@ -231,6 +237,9 @@ Performs a 3D convolution over the given input tensor.
 ----
 ERROR_IF(in_t != int8_t && input_zp != 0); // Zero point only for int8_t
 ERROR_IF(weight_t != int8_t && weight_zp != 0);
+ERROR_IF(pad_d0 < 0 || pad_d1 < 0 || pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
+ERROR_IF(stride_d < 1 || stride_y < 1 || stride_x < 1);
+ERROR_IF(dilation_d < 1 || dilation_y < 1 || dilation_x < 1);
 pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= od < D, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
     acc_t acc = 0;
@@ -295,6 +304,9 @@ Performs 2D convolutions separately over each channel of the given tensor input,
 ----
 ERROR_IF(in_t != int8_t && input_zp != 0); // Zero point only for int8_t
 ERROR_IF(weight_t != int8_t && weight_zp != 0);
+ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
+ERROR_IF(stride_y < 1 || stride_x < 1);
+ERROR_IF(dilation_y < 1 || dilation_x < 1);
 pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n<N, 0 <= oy < H, 0 <= ox < W; 0 <= c < (C * M), 0 <= m < M) {
     acc_t acc = 0;
@@ -447,6 +459,9 @@ None
 
 [source,c++]
 ----
+ERROR_IF(kernel_y < 1 || kernel_x < 1); // kernel size must be >= 1
+ERROR_IF(stride_y < 1 || stride_x < 1);
+ERROR_IF(pad_top < 0 || pad_buttom < 0 || pad_left < 0 || pad_right < 0);
 for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     in_t acc = minimum_value<in_t>;
     iy = oy * stride_y - pad_top;
@@ -507,6 +522,8 @@ Performs a 2D transposed convolution over the given tensor input, using the weig
 ----
 ERROR_IF(in_t != int8_t  && input_zp != 0); // Zero point only allowed for int8_t
 ERROR_IF(weight_t != int8_t && weight_zp != 0);
+ERROR_IF(out_pad_top < 0 || out_pad_left < 0);
+ERROR_IF(stride_y < 1 || stride_x < 1);
 for_each(index in out_shape) {
     tensor_write<acc_t>(output, [N,OH,OW,OC], index, bias[index[3]])
 }

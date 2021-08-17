@@ -81,6 +81,11 @@ Zero-pads a tensor along borders of each dimension.
 
 [source,c++]
 ----
+ERROR_IF(in_t != int8_t  && input1_zp != 0); // Zero point only allowed for int8_t
+// Pad values must be >= 0.
+for_each(value in padding) {
+    ERROR_IF(value < 0);
+}
 for_each(index in shape) {
     index1 = index;
     for(i = 0; i < rank(shape); i++) {
@@ -113,7 +118,7 @@ Returns a tensor with the same type/values as the input, with a new shape specif
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape1|Input tensor
-|Attribute|int|new_shape|[rank(output)]|List of values, with each element giving the size of the result tensor for the given dimension. At most one dimension may be given as-1 to automatically calculate the dimension size.
+|Attribute|int|new_shape|[rank(output)]|List of values, with each element giving the size of the result tensor for the given dimension. At most one dimension may be given as -1 to automatically calculate the dimension size.
 |Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
@@ -197,6 +202,16 @@ No data conversion happens during a slice operation.
 
 [source,c++]
 ----
+// Sanity check the given coordinates, ensure start and end are
+// within tensor bounds
+for_each(index in rank(input1)) {
+    ERROR_IF(start[index] < 0 ||
+             start[index] >= shape1[index]);
+    ERROR_IF(start[index] + size[index] < 0 ||
+             start[index] + size[index] >= shape1[index]);
+    ERROR_IF(size[index] <= 0); //Output must be positive size
+}
+
 for_each(index in shape) {
     tmp_index = index;
     for(i = 0; i < rank(shape); i++) {
@@ -270,7 +285,7 @@ Permutes the dimensions based on perm.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|perms|[rank(input1)]|List of integers of length equal to the rank of input1.
+|Attribute|int32_t|perms|[rank(input1)]|List of integers of length equal to the rank of input1. Values must be valid dimensions within shape1, and may not be repeated.
 |Output|in_t*|output|shape|Output tensor of same type, rank as the input tensor
 |===
 
@@ -278,6 +293,14 @@ Permutes the dimensions based on perm.
 
 [source,c++]
 ----
+for_each(index in perms) {
+    // Ensure each perms value is a valid value
+    ERROR_IF(index > rank(shape1));
+    ERROR_IF(index < 0);
+    // Ensure ranks aren't repeated
+    ERROR_IF(indexes_used[index] == true);
+    indexes_used[index] = true;
+}
 for_each(index in shape) {
     tmp_index = index;
     for(i = 0; i < rank(shape); i++) {

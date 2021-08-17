@@ -120,7 +120,7 @@ float_t round_to_nearest_float(in_t f)
   The behavior for ties is implementation dependent.
 
 out_t sign_extend(in_t input)
-  Only valid for twos complement integer values where out_t has more bits than in_t.
+  Only valid for two's complement integer values where out_t has more bits than in_t.
   Output = input
   Replicate the top bit of input for all bits between the top bit of input and the top bit of output.
 
@@ -140,4 +140,12 @@ in_t* flatten(in_t lists[]) {
         }
     }
 }
+----
+
+The following helper function returns the length of a list
+
+[source,c++]
+----
+int length(in_t input)
+    return number of elements in input
 ----

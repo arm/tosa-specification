@@ -194,17 +194,17 @@ For details of interpreting the quantized data, see the <<Quantization Scaling>>
 |bool_t
 | -
 | -
-|Boolean value. Size implementation defined.
+|Boolean value. Size implementation defined. The TOSA reference model implements this as int8_t with 0 for false and 1 for true. All non-zero values are accepted on input as true.
 
 |int4_t
 | -7
 | +7
-|Signed 4-bit twos-complement values.
+|Signed 4-bit two's-complement values. Excludes -8 to maintain a symmetric about zero range for weights.
 
 |int8_t
 | -128
 | +127
-|Signed 8-bit twos-complement values.
+|Signed 8-bit two's-complement values.
 
 |uint8_t
 | 0
@@ -214,17 +214,17 @@ For details of interpreting the quantized data, see the <<Quantization Scaling>>
 |int16_t
 | -32768
 | +32767
-|Signed 16-bit twos-complement values.
+|Signed 16-bit two's-complement values.
 
 |int32_t
 | -(1<<31)
 | (1<<31)-1
-|Signed 32-bit twos-complement value.
+|Signed 32-bit two's-complement value.
 
 |int48_t
 | -(1<<47)
 | (1<<47)-1
-|Signed 48-bit twos-complement value.
+|Signed 48-bit two's-complement value.
 
 |float_t
 | -infinity
@@ -243,7 +243,9 @@ Tensors have an associated tensorinfo that contains information about the tensor
 * Data Type
 * Shape
 
-The number of dimensions in a shape is called the rank. Thus a tensor shape is an array of integers of size rank(shape) with shape[i] giving the the number of elements for dimension i.
+The number of dimensions in a shape is called the rank.
+Thus a tensor shape is an array of integers of size rank(shape) with shape[i] giving the the number of elements for dimension i.
+The tensor shape in each dimension must be greater than or equal to 1.
 The following pseudocode represents the operations that will happen to data elements as they are read in to be processed, or have their results written out.
 
 *Functionality of tensor read*
@@ -253,9 +255,13 @@ The padding array represents the before and after pair for each dimension.
 
 [source,c++]
 ----
-ERROR_IF((pad !=  NULL) && size(pad) != 2 * size(shape));
 out_t tensor_read<in_t>(in_t *address, dim_t shape, dim_t index, in_t zero_point=0, dim_t pad=NULL) {
-    ERROR_IF(in_t != int8_t && zero_point != 0)
+    ERROR_IF((pad !=  NULL) && size(pad) != 2 * size(shape));
+    ERROR_IF(in_t != int8_t && zero_point != 0);
+    // Ensure this is a proper tensor with each dimension having size >= 1
+    for_each(dimension_size in shape) {
+        REQUIRE(dimension_size >= 1);
+    }
     unsigned offset = 0;
     for (i = 0; i < rank(shape); i++) {
         if (index[i] < 0) {
@@ -278,6 +284,10 @@ out_t tensor_read<in_t>(in_t *address, dim_t shape, dim_t index, in_t zero_point
 ----
 tensor_write<type>(<type> *address, dim_t shape, dim_t index, <type> value) {
     unsigned offset = 0;
+    // Ensure this is a proper tensor with each dimension having size >= 1
+    for_each(dimension_size in shape) {
+        REQUIRE(dimension_size >= 1);
+    }
     for (i = 0; i < rank(shape); i++) {
         REQUIRE(index[i] >= 0 && index[i] < shape[i]);
         offset = offset * shape[i] + index[i];

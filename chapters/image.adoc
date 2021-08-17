@@ -56,16 +56,18 @@ None
 // Ensure image size is supported by GPU APIs and that for integer
 // implementations, position * stride does not overflow int32_t.
 ERROR_IF(max(OH,OW,IH,IW) >= 16384);
+ERROR_IF(stride_x <= 0 || stride_y <= 0);
 if (resize_t == float_t) {
     // The shift attribute is not used for floating point
     ERROR_IF(shift != 0);
+    ERROR_IF(stride_x > IW || stride_y > IH);
 } else {
     // if in_t=int8_t ensure that an int32_t accumulator can be used
     ERROR_IF(shift < 1 || shift > 11);
     // set a consistent lower limit of 1/16 downscale
     // independent of the shift value to simplify implementations
-    ERROR_IF(stride_x <= 0 || stride_x >= (16 << shift));
-    ERROR_IF(stride_y <= 0 || stride_y >= (16 << shift));
+    ERROR_IF(stride_x >= (16 << shift));
+    ERROR_IF(stride_y >= (16 << shift));
     // offset range is similarly limited to maximum 16 pixels irrespective
     // of shift. Both stride and offset fit in int16_t when shift=11.
     ERROR_IF(offset_x <= (-16 << shift) || offset_x >= (16 << shift));
