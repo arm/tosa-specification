@@ -58,8 +58,6 @@ tosa_execute_graph(tosa_graph_t graph, tosa_list_t input_list, tosa_list_t outpu
 }
 ----
 
-Note that within the graph, each input operand is instantiated as a PLACEHOLDER operator.
-
 include::tensor_ops.adoc[]
 
 include::activation_funcs.adoc[]

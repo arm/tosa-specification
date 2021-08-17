@@ -77,7 +77,7 @@ This performs an average pooling over the given input tensor. A sliding window o
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input|[N,H,W,C]|Input tensor 4D
+|Input|in_t*|input|[N,IH,IW,C]|Input tensor 4D
 |Attribute|int*|kernel|[2]|[kernel_y, kernel_x]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
@@ -109,9 +109,13 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     for_each(0 <= ky < kernel_y, 0 <= kx < kernel_x) {
         y = iy + ky;
         x = ix + kx;
-        acc_t value = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,c], input_zp, pad);
+        acc_t value = tensor_read<in_t>(input, [N,IH,IW,C], [n,y,x,c], input_zp, pad);
         acc = apply_add<acc_t>(acc, value);
-        if (0 <= y < IH and 0 <= x < IW) count++
+        // Only values from the input tensor are used to calculate the
+        // average, padding does not count
+        if (0 <= y < IH and 0 <= x < IW) {
+            count++;
+        }
     }
     if (is_float(out_t)) {
         output_val = acc / (float)count;
@@ -120,7 +124,7 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
         acc = apply_scale_32(acc, scale.multiplier, scale.shift, false);
         output_val = (in_t)apply_clip<acc_t>(acc + output_zp, minimum<in_t>, maximum<in_t>)
     }
-    tensor_write<in_t>(output, [N,H,W,OC], [n,oy,ox,oc], output_val);
+    tensor_write<in_t>(output, [N,H,W,C], [n,oy,ox,c], output_val);
 }
 ----
 
@@ -428,7 +432,7 @@ This performs a max pooling over the given input tensor. A sliding window of siz
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input|[N,H,W,C]|Input tensor 4D
+|Input|in_t*|input|[N,IH,IW,C]|Input tensor 4D
 |Attribute|int*|kernel|[2]|[kernel_y, kernel_x]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
@@ -448,13 +452,13 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     in_t acc = minimum_value<in_t>;
     iy = oy * stride_y - pad_top;
     ix = ox * stride_x - pad_left;
-    for_each( 0<=ky<kernel_y, 0<=kx<kernel_x ) {
+    for_each( 0 <= ky < kernel_y, 0 <= kx < kernel_x ) {
         y = iy + ky;
         x = ix + kx;
-        in_t value  = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,c], pad);
+        in_t value = tensor_read<in_t>(input, [N,IH,IW,C], [n,y,x,c], pad);
         acc = apply_max(acc, value);
     }
-    tensor_write<in_t>(output, [N,H,W,OC], [n,oy,ox,oc], acc);
+    tensor_write<in_t>(output, [N,H,W,C], [n,oy,ox,c], acc);
 }
 ----
 
