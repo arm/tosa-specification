@@ -447,7 +447,6 @@ None
 
 [source,c++]
 ----
-pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     in_t acc = minimum_value<in_t>;
     iy = oy * stride_y - pad_top;
@@ -455,8 +454,11 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     for_each( 0 <= ky < kernel_y, 0 <= kx < kernel_x ) {
         y = iy + ky;
         x = ix + kx;
-        in_t value = tensor_read<in_t>(input, [N,IH,IW,C], [n,y,x,c], pad);
-        acc = apply_max(acc, value);
+        ERROR_IF(y >= IH + pad_bottom || x >= IW + pad_right);
+        if (y >= 0 && y < IH && x >= 0 && x < IW) {
+            in_t value = tensor_read<in_t>(input, [N,IH,IW,C], [n,y,x,c]);
+            acc = apply_max(acc, value);
+        }
     }
     tensor_write<in_t>(output, [N,H,W,C], [n,oy,ox,c], acc);
 }
