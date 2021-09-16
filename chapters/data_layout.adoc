@@ -57,7 +57,8 @@ for_each(index1 in shape) {
 
 ==== PAD
 
-Zero-pads a tensor along borders of each dimension.
+Pads a tensor along the borders of each dimension with a supplied value.
+Returns a new tensor with the padding included.
 
 *Arguments:*
 
@@ -66,6 +67,7 @@ Zero-pads a tensor along borders of each dimension.
 
 |Input|in_t*|input1|shape1|Input tensor
 |Attribute|int|padding|[rank(input1),2]|Amount of padding to be done
+|Attribute|in_t|pad_const|-|Constant value to be used as padding
 |Output|in_t*|output|shape|Output tensor of same type as the input tensor
 |===
 
@@ -82,16 +84,20 @@ Zero-pads a tensor along borders of each dimension.
 [source,c++]
 ----
 ERROR_IF(in_t != int8_t  && input1_zp != 0); // Zero point only allowed for int8_t
-// Pad values must be >= 0.
-for_each(value in padding) {
-    ERROR_IF(value < 0);
+// Padding sizes must be >= 0.
+for_each(pad_size in padding) {
+    ERROR_IF(pad_size < 0);
 }
 for_each(index in shape) {
     index1 = index;
+    bool_t is_pad = false;
     for(i = 0; i < rank(shape); i++) {
         index1[i] = index1[i] - padding[i,0];
+        if (index1[i] < 0 || index[i] >= length(shape[i])) {
+            is_pad = true;
+        }
     }
-    acc_t value = tensor_read<in_t>(input1, shape1, index1, input1_zp, padding);
+    acc_t value = is_pad ? pad_const : tensor_read<in_t>(input1, shape1, index1, input1_zp);
     tensor_write<in_t>(output, shape, index, value + input1_zp);
 }
 ----
