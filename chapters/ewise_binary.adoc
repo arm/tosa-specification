@@ -658,7 +658,7 @@ An int16_t to int16_t table lookup can be constructed in TOSA as follows:
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|Input|shape|Input tensor
-|Input|table_t*|table|[TABLE_SIZE]|Lookup table tensor
+|Input (MT profile) Attribute (BI/MI profiles)|table_t*|table|[TABLE_SIZE]|Lookup table tensor
 |Output|out_t*|output|shape|Output tensor
 |===
 
