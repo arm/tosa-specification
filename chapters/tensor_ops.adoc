@@ -70,8 +70,9 @@ for_each(left_index in left_shape) {
 
 ==== AVG_POOL2D
 
-This performs an average pooling over the given input tensor. A sliding window of size given by <kernel size> is passed over the input tensor, with the mean value being placed in the output tensor.
-
+This performs an average pooling over the given input tensor.
+A sliding window of size given by <kernel size> is passed over the input tensor, with the mean value being placed in the output tensor.
+When calculating the average, only the number of valid input tensor values, but not padding, are used to calculate the divisor.
 *Arguments:*
 
 |===
@@ -102,6 +103,11 @@ ERROR_IF(in_t != int8_t && output_zp != 0); // Zero point only for int8_t
 ERROR_IF(kernel_y < 1 || kernel_x < 1); // kernel size must be >= 1
 ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(pad_top < 0 || pad_buttom < 0 || pad_left < 0 || pad_right < 0);
+// Padding must be less than kernel size to avoid
+// a divide-by-zero.
+ERROR_IF(pad_right >= kernel_x || pad_left >= kernel_x);
+ERROR_IF(pad_top >= kernel_y || pad_bottom >= kernel_y);
+
 pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     in_t output_val;
@@ -462,6 +468,11 @@ None
 ERROR_IF(kernel_y < 1 || kernel_x < 1); // kernel size must be >= 1
 ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(pad_top < 0 || pad_buttom < 0 || pad_left < 0 || pad_right < 0);
+// Padding must be less than kernel size, otherwise no
+// input values will be used.
+ERROR_IF(pad_right >= kernel_x || pad_left >= kernel_x);
+ERROR_IF(pad_top >= kernel_y || pad_bottom >= kernel_y);
+
 for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     in_t acc = minimum_value<in_t>;
     iy = oy * stride_y - pad_top;
