@@ -57,18 +57,18 @@ for_each(index in shape) {
 |Any|signed 8 to bool|int8_t|bool_t
 |Any|signed 8 to signed 16|int8_t|int16_t
 |Any|signed 8 to signed 32|int8_t|int32_t
-|Any|signed 8 to floating-point|int8_t|float_t
+|MI, MT|signed 8 to floating-point|int8_t|float_t
 |Any|signed 16 to bool|int16_t|bool_t
 |Any|signed 16 to signed 8|int16_t|int8_t
 |Any|signed 16 to signed 32|int16_t|int32_t
-|Any|signed 16 to floating-point|int16_t|float_t
+|MI, MT|signed 16 to floating-point|int16_t|float_t
 |Any|signed 32 to bool|int32_t|bool_t
 |Any|signed 32 to signed 8|int32_t|int8_t
 |Any|signed 32 to signed 16|int32_t|int16_t
-|Any|signed 32 to floating-point|int32_t|float_t
-|Any|floating-point to signed 8|float_t|int8_t
-|Any|floating-point to signed 16|float_t|int16_t
-|Any|floating-point to signed 32|float_t|int32_t
+|MI, MT|signed 32 to floating-point|int32_t|float_t
+|MI, MT|floating-point to signed 8|float_t|int8_t
+|MI, MT|floating-point to signed 16|float_t|int16_t
+|MI, MT|floating-point to signed 32|float_t|int32_t
 |===
 
 ==== RESCALE
