@@ -148,10 +148,6 @@ Reduce a tensor along the given axis with a minimum operation
 |Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
-*Quantization Parameters:*
-
-Quantization is ignored when doing the REDUCE_MIN operation. The input and output must maintain the same parameters.
-
 *Operation Function:*
 
 [source,c]

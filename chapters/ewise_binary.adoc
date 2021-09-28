@@ -271,10 +271,6 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 |Output|in_t*|output|shape|Output tensor with broadcast shape if necessary
 |===
 
-*Quantization Parameters:*
-
-None
-
 *Operation Function:*
 
 [source,c++]
@@ -586,10 +582,6 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 |Output|in_t*|output|shape|Output tensor of same type as the input tensors, with broadcast shape if necessary
 |===
 
-*Quantization Parameters:*
-
-Only supported with floating-point values.
-
 *Supported Data Types:*
 
 |===
@@ -661,10 +653,6 @@ An int16_t to int16_t table lookup can be constructed in TOSA as follows:
 |Input (MT profile) Attribute (BI/MI profiles)|table_t*|table|[TABLE_SIZE]|Lookup table tensor
 |Output|out_t*|output|shape|Output tensor
 |===
-
-*Quantization Parameters:*
-
-None
 
 *Operation Function:*
 

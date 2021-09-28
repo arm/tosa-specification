@@ -68,15 +68,8 @@ Returns a new tensor with the padding included.
 |Input|in_t*|input1|shape1|Input tensor
 |Attribute|int|padding|[rank(input1),2]|Amount of padding to be done
 |Attribute|in_t|pad_const|-|Constant value to be used as padding
+|Attribute|in_t|input1_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Output|in_t*|output|shape|Output tensor of same type as the input tensor
-|===
-
-*Quantization Parameters:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Attribute|in_t|input1_zp|-|Input tensor zero point
 |===
 
 *Operation Function:*

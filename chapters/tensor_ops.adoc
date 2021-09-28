@@ -23,10 +23,6 @@ This returns the index with the largest value across the given axis of the input
 |Output|out_t*|output|shape|Output tensor, with rank = rank(shape1)-1
 |===
 
-*Quantization Parameters:*
-
-None
-
 *Operation Function:*
 
 [source,c++]
@@ -82,16 +78,9 @@ When calculating the average, only the number of valid input tensor values, but 
 |Attribute|int*|kernel|[2]|[kernel_y, kernel_x]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
+|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
+|Attribute|in_t|output_zp|-|Output tensor zero point. Must be zero for non-int8 types.
 |Output|in_t*|output|[N,H,W,C]|Output tensor 4D
-|===
-
-*Quantization Parameters:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Attribute|in_t|input_zp|-|Input tensor zero point
-|Attribute|in_t|output_zp|-|Output tensor zero point
 |===
 
 *Operation Function:*
@@ -161,16 +150,9 @@ Performs a 2D convolution over the given tensor input, using the weight tensor.
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
+|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
+|Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
 |Output|acc_t*|output|[N,H,W,OC]|Output tensor
-|===
-
-*Quantization Parameters:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Attribute|in_t|input_zp|-|Input tensor zero point
-|Attribute|weight_t|weight_zp|-|Weight zero point
 |===
 
 *Operation Function*
@@ -227,16 +209,9 @@ Performs a 3D convolution over the given input tensor.
 |Attribute|int*|pad|[6]|[pad_d0, pad_d1, pad_top, pad_bottom, pad_left, pad_right]
 |Attribute|int*|stride|[3]|[stride_d, stride_y, stride_x]
 |Attribute|int*|dilation|[3]|[dilation_d, dilation_y, dilation_x]
+|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
+|Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
 |Output|acc_t*|output|[N,D,H,W,OC]|Output tensor
-|===
-
-*Quantization Parameters:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Attribute|in_t|input_zp|-|Input tensor zero point
-|Attribute|weight_t|weight_zp|-|Weight zero point
 |===
 
 *Operation Function*
@@ -296,16 +271,9 @@ Performs 2D convolutions separately over each channel of the given tensor input,
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
+|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
+|Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
 |Output|acc_t*|output|[N,H,W,C*M]|Output tensor
-|===
-
-*Quantization Parameters:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Attribute|in_t|input_zp|-|Input tensor zero point
-|Attribute|weight_t|weight_zp|-|Weight zero point
 |===
 
 *Operation Function*
@@ -359,16 +327,9 @@ Performs a fully connected network.
 |Input|in_t*|input|[N,IC]|Input tensor
 |Attribute|weight_t*|weight|[OC,IC]|Weights
 |Attribute|acc_t*|bias|[OC]|Per output channel bias data.
+|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
+|Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
 |Output|acc_t*|output|[N,OC]|Output tensor
-|===
-
-*Quantization Parameters:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Attribute|in_t|input_zp|-|Input tensor zero point
-|Attribute|weight_t|weight_zp|-|Weight zero point
 |===
 
 *Operation Function*
@@ -410,16 +371,9 @@ Performs two dimensional matrix multiplications. This allows both inputs to be a
 
 |Input|in_t*|A|[N,H,C]|Input tensor A, N matrices of size HxC
 |Input|in_t*|B|[N,C,W]|Input tensor B, N matrices of size CxW
+|Attribute|in_t|A_zp|-|Input tensor A zero point. Must be zero for non-int8 types.
+|Attribute|in_t|B_zp|-|Input tensor B zero point. Must be zero for non-int8 types.
 |Output|acc_t*|output|[N,H,W]|Output tensor, N matrices of size HxW
-|===
-
-*Quantization Parameters:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Attribute|in_t|A_zp|-|Input tensor A zero point
-|Attribute|in_t|B_zp|-|Input tensor B zero point
 |===
 
 *Operation Function*
@@ -462,10 +416,6 @@ This performs a max pooling over the given input tensor. A sliding window of siz
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
 |Output|in_t*|output|[N,H,W,C]|Output tensor 4D
 |===
-
-*Quantization Parameters:*
-
-None
 
 *Operation Function:*
 
@@ -521,16 +471,9 @@ Performs a 2D transposed convolution over the given tensor input, using the weig
 |Attribute|int*|out_pad|[2]|[out_pad_top, out_pad_left]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|out_shape|[4]|[N,OH,OW,OC]
+|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
+|Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
 |Output|acc_t*|output|[N,OH,OW,OC]|Output tensor
-|===
-
-*Quantization Parameters:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Attribute|in_t|input_zp|-|Input tensor zero point
-|Attribute|weight_t|weight_zp|-|Weight zero point
 |===
 
 *Operation Function*

@@ -45,10 +45,6 @@ from the strides.
 |Output|out_t*|output|[N,OH,OW,C]|Output tensor
 |===
 
-*Quantization Parameters:*
-
-None
-
 *Operation Function*
 
 [source,c++]

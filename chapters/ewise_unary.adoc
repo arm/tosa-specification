@@ -56,10 +56,6 @@ Elementwise bitwise NOT of input tensor.
 |Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
-*Quantization Parameters:*
-
-None
-
 *Operation Function:*
 
 [source,c++]
@@ -210,10 +206,6 @@ Elementwise logical NOT of input.
 |Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
-*Quantization Parameters:*
-
-None
-
 *Operation Function:*
 
 [source,c++]
@@ -243,16 +235,9 @@ Elementwise negation operation
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input1|shape|Input tensor
+|Attribute|in_t|input1_zp|-|Input 1 zero point. Must be zero for non-int8 types.
+|Attribute|in_t|output_zp|-|Output zero point. Must be zero for non-int8 types.
 |Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
-
-*Quantization Parameters:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Attribute|in_t|input1_zp|-|Input 1 zero point
-|Attribute|in_t|output_zp|-|Output zero point
 |===
 
 *Operation Function:*

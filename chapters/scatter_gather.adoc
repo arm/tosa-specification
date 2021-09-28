@@ -24,10 +24,6 @@ N is the number of batches, W the number of indices in each batch, K the range o
 |Output|value_t*|output|[N,W,C]|3D output tensor
 |===
 
-*Quantization Parameters:*
-
-None
-
 *Operation Function:*
 
 [source,c++]
