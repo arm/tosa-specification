@@ -124,9 +124,9 @@ for_each(index in shape) {
 |Any|signed 32 to signed 8|int32_t|int8_t
 |Any|signed 32 to signed 16|int32_t|int16_t
 |Any|signed 32 to signed 32|int32_t|int32_t
-|Any|signed 48 to signed 8|int48_t_t|int8_t
-|Any|signed 48 to signed 16|int48_t_t|int16_t
-|Any|signed 48 to signed 32|int48_t_t|int32_t
+|Any|signed 48 to signed 8|int48_t|int8_t
+|Any|signed 48 to signed 16|int48_t|int16_t
+|Any|signed 48 to signed 32|int48_t|int32_t
 |Any|unsigned 8 to signed 8|uint8_t|int8_t
 |Any|signed 8 to unsigned 8|int8_t|uint8_t
 |===

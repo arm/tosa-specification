@@ -128,7 +128,7 @@ out_t truncate(in_t input)
   output is the sizeof(out_t) least significant bits in input.
 ----
 
-The following definition is used to flatten a list of lists into a single list
+The following definition is used to flatten a list of lists into a single list.
 
 [source,c++]
 ----
@@ -142,10 +142,13 @@ in_t* flatten(in_t lists[]) {
 }
 ----
 
-The following helper function returns the length of a list
+Generic helper functions used to keep the pseudocode concise.
 
 [source,c++]
 ----
 int length(in_t input)
-    return number of elements in input
+    return number of elements in input list
+
+int floor(in_t input)
+    return input value rounded down to nearest integer
 ----
