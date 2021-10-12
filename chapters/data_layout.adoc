@@ -201,14 +201,15 @@ No data conversion happens during a slice operation.
 
 [source,c++]
 ----
+ERROR_IF(rank(input1) != length(start) || rank(input1) != length(size));
+ERROR_IF(rank(input1) != rank(output))
 // Sanity check the given coordinates, ensure start and end are
 // within tensor bounds
 for_each(index in rank(input1)) {
-    ERROR_IF(start[index] < 0 ||
-             start[index] >= shape1[index]);
-    ERROR_IF(start[index] + size[index] < 0 ||
-             start[index] + size[index] >= shape1[index]);
+    ERROR_IF(start[index] < 0);
     ERROR_IF(size[index] <= 0); //Output must be positive size
+    ERROR_IF(start[index] + size[index] > shape1[index]);
+    ERROR_IF(shape[index] != size[index]);
 }
 
 for_each(index in shape) {

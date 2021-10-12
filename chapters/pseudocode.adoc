@@ -151,4 +151,7 @@ int length(in_t input)
 
 int floor(in_t input)
     return input value rounded down to nearest integer
+
+int rank(in_t input)
+    return rank of an input tensor
 ----
