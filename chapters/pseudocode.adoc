@@ -154,4 +154,7 @@ int floor(in_t input)
 
 int rank(in_t input)
     return rank of an input tensor
+
+int sum(in_t input[])
+    return the sum of values of an input list
 ----

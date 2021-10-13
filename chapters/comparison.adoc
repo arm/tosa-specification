@@ -54,6 +54,7 @@ Elementwise greater than comparison operation
 
 |===
 |Argument|Type|Name|Shape|Description
+
 |Input|in_t*|input1|shape1|Input tensor
 |Input|in_t*|input2|shape2|Input tensor with the same rank as input1
 |Output|out_t*|output|shape|Output tensor with broadcast shape if necessary

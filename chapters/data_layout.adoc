@@ -18,7 +18,7 @@ No data conversion happens during a concat operation.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t**|input1|shapes1[]|List of input tensors. All inputs must have the same rank
+|Input|in_t*|input1|shapes1[]|List of input tensors. All inputs must have the same rank and data type
 |Attribute|int|axis|-|Axis along which concatenation is to occur, in range from 0 to rank(shape)-1
 |Output|in_t*|output|shape|Output tensor
 |===
@@ -27,6 +27,15 @@ No data conversion happens during a concat operation.
 
 [source,c]
 ----
+ERROR_IF(axis < 0 || axis >= rank(shapes1[0]));
+ERROR_IF(shape[axis] != sum(shape1[k][axis] for all k))
+// The following checks ensure all inputs are compatible for concatenation
+for_each(input_shape in shapes1) {
+    ERROR_IF(rank(input_shape) != rank(shapes1[0]));
+    for_each(index in input_shape) {
+        ERROR_IF(input_shape[index] != shapes1[0][index] && index != axis);
+    }
+}
 for_each(index1 in shape) {
     index2 = index1;
     for (tensor t = 0; t < length(input1); t++) {
@@ -161,7 +170,7 @@ Returns a tensor with the same type/values as the input, with the data reversed 
 
 [source,c++]
 ----
-REQUIRE(0 <= axis && axis < rank(shape));
+ERROR_IF(axis < 0 || axis >= rank(shape));
 for_each(index in shape) {
     tmp_index = index;
     tmp_index[axis] = shape[axis] - 1 - index[axis];
