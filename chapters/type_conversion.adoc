@@ -98,7 +98,7 @@ Rescale quantized values into a new domain. This function scales by factor: mult
 for_each(index in shape) {
     ERROR_IF(in_t != int8_t && in_t != uint8_t && input_zp != 0);
     ERROR_IF(out_t != int8_t && out_t != uint8_t && output_zp != 0);
-    ERROR_IF(scale32 && int_t == int48_t);
+    ERROR_IF(scale32 && in_t == int48_t);
     ERROR_IF(!scale32 && double_round);
     int48_t value = tensor_read<in_t>(input, shape, index, input_zp);
     int c = (per_channel) ? index[dims-1] : 0;
