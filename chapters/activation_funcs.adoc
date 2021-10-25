@@ -11,7 +11,9 @@
 === Activation Functions
 
 ==== CLAMP
-Clamp to an arbitrary minimum and maximum value. Note that the maximum and minimum values are specified as signed quantized values, no scaling happens before or after this operation.
+Clamp to an arbitrary minimum and maximum value.
+Maximum and minimum values are specified as values in the range of the input type.
+No zero point subtraction is done to the values, thus to clamp to the zero point value, the zero point itself should be supplied as the minimum value.
 
 *Arguments:*
 
@@ -29,20 +31,20 @@ Clamp to an arbitrary minimum and maximum value. Note that the maximum and minim
 ----
 ERROR_IF(max_val < min_val);
 for_each(index in shape) {
-    acc_t value = tensor_read<in_t>(input, shape, index);
-    acc = (in_t)apply_clip<acc_t>(value, min_val, max_val);
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t value = tensor_read<in_t>(input, shape, index);
+    value = apply_clip<in_t>(value, min_val, max_val);
+    tensor_write<in_t>(output, shape, index, value);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|acc_t
+|Profile|Mode|in_t
 
-|Any|signed 8|int8_t|int16_t
-|Any|signed 16|int16_t|int16_t
-|MI, MT|floating-point|float_t|float_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== SIGMOID
