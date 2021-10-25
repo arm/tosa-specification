@@ -25,11 +25,27 @@ factor for each input. These values are then summed to create the value for
 output, which has 2 * shift fractional bits. To convert back to the original
 integer size, the output value must be rescaled.
 
-For floating-point stride, stride_y should be set to  IH/OH, stride_x should be
-set to IW/OW. When using integer stride, stride_y is approximately
-(IH<<shift)/OH and stride_x is approximately (IW<<shift)/OW. OH and OW are also
-supplied as inputs since there may be off by one errors if calculating OH and OW
-from the strides.
+The following examples show practical uses of the parameters:
+
+* For approximate uniform input sampling between (0, 0) and (IH-1, IW-1) set
+stride_y = ( (IH-1) * (1<<shift) ) / (OH-1),
+stride_x = ( (IW-1) * (1<<shift) ) / (OW-1),
+offset_x=0, offset_y=0, border_x=0, border_y=0.
+
+* For power of two upscale by factor (1<<k) the following parameters can
+be used for fixed point upscales:
+** For upscale [OH-1,OW-1] = (1<<k) * [IH-1, IW-1] set
+shift=k, stride_y=1, stride_x=1, offset_x=0, offset_y=0,
+border_x=0, border_y=0.
+** For upscale [OH,OW] = (1<<k) * [IH,IW] set
+shift=(k+1), stride_y=2, stride_x=2, offset_x=-(1<<k)+1, offset_y=-(1<<k)+1,
+border_x=1<<(k-1), border_y=1<<(k-1). This samples approximately
+the input area (-0.5, -0.5) to (IH-0.5, IW-0.5).
+
+The output dimensions are derived from the input dimensions by inverting
+the scale as described in the pseudocode. The [border_y, border_x] values
+adjust the output size to allow fractional sampling beyond integer
+input position (IH-1,IW-1).
 
 *Arguments:*
 
@@ -40,6 +56,7 @@ from the strides.
 |Attribute|int*|output_size|[2]|[OH,OW]
 |Attribute|resize_t*|stride|[2]|[stride_y, stride_x]
 |Attribute|resize_t*|offset|[2]|[offset_y, offset_x]
+|Attribute|int*     |border|[2]|[border_y, border_x]
 |Attribute|int      |shift|-|Shift value (must be zero if resize_t is float)
 |Attribute|mode_t|mode|-|BILINEAR or NEAREST
 |Output|out_t*|output|[N,OH,OW,C]|Output tensor
@@ -49,7 +66,10 @@ from the strides.
 
 [source,c++]
 ----
-// Ensure image size is supported by GPU APIs and that for integer
+// Derive the output dimensions from the input dimensions
+OH = floor(((IH-1)*(1<<shift) - offset_y)/stride_y)) + 1 + border_y
+OW = floor(((IW-1)*(1<<shift) - offset_x)/stride_x)) + 1 + border_x
+// Ensure the image size is supported by GPU APIs and that for integer
 // implementations, position * stride does not overflow int32_t.
 ERROR_IF(max(OH,OW,IH,IW) >= 16384);
 ERROR_IF(stride_x <= 0 || stride_y <= 0);
