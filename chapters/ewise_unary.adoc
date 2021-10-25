@@ -247,10 +247,11 @@ Elementwise negation operation
 ERROR_IF(in_t != int8_t && input1_zp != 0) // Zero point only for int8_t
 ERROR_IF(in_t != int8_t && output_zp != 0) // Zero point only for int8_t
 for_each(index in shape) {
-    acc_t acc = tensor_read<in_t>(input1, shape, index, input1_zp);
-    acc = apply_sub<acc_t>(0, acc);
-    in_t value = (in_t)apply_clip<acc_t>(acc + output_zp, minimum<in_t>, maximum<in_t>);
-    tensor_write<in_t>(output, shape, index, value);
+    in_t value1 = tensor_read<in_t>(input1, shape, index);
+    acc_t value = (acc_t)value1 - input1_zp;
+    value = apply_sub<acc_t>(0, value);
+    in_t result = (in_t)apply_clip<acc_t>(value + output_zp, minimum<in_t>, maximum<in_t>);
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 

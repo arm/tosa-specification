@@ -253,14 +253,10 @@ The following pseudocode represents the operations that will happen to data elem
 tensor_read reads a single data value out of the given tensor.
 The shape argument contains the shape of the tensor.
 Index is the coordinates within the tensor of the value to be read.
-zero_point is the zero point value to be added for int8 values.
-If in_t is 8-bit then out_t=int16_t to account for the zero_point subtraction.
-Otherwise out_t is the same as in_t.
 
 [source,c++]
 ----
-out_t tensor_read<in_t>(in_t *address, dim_t shape, dim_t index, in_t zero_point=0) {
-    ERROR_IF(in_t != int8_t && zero_point != 0);
+in_t tensor_read<in_t>(in_t *address, dim_t shape, dim_t index) {
     // Ensure this is a proper tensor with each dimension having size >= 1
     for_each(dimension_size in shape) {
         REQUIRE(dimension_size >= 1);
@@ -270,7 +266,7 @@ out_t tensor_read<in_t>(in_t *address, dim_t shape, dim_t index, in_t zero_point
         REQUIRE(index[i] >= 0 && index[i] < shape[i]);
         offset = offset * shape[i] + index[i];
     }
-    return address[offset] - zero_point;
+    return address[offset];
 }
 ----
 

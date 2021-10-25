@@ -68,6 +68,7 @@ for_each(index1 in shape) {
 
 Pads a tensor along the borders of each dimension with a supplied value.
 Returns a new tensor with the padding included.
+The pad_const value includes the zero point if the tensor uses a zero point.
 
 *Arguments:*
 
@@ -77,7 +78,6 @@ Returns a new tensor with the padding included.
 |Input|in_t*|input1|shape1|Input tensor
 |Attribute|int|padding|[rank(input1),2]|Amount of padding to be done
 |Attribute|in_t|pad_const|-|Constant value to be used as padding
-|Attribute|in_t|input1_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Output|in_t*|output|shape|Output tensor of same type as the input tensor
 |===
 
@@ -85,7 +85,6 @@ Returns a new tensor with the padding included.
 
 [source,c++]
 ----
-ERROR_IF(in_t != int8_t  && input1_zp != 0); // Zero point only allowed for int8_t
 // Padding sizes must be >= 0.
 for_each(pad_size in padding) {
     ERROR_IF(pad_size < 0);
@@ -99,21 +98,21 @@ for_each(index in shape) {
             is_pad = true;
         }
     }
-    acc_t value = is_pad ? pad_const : tensor_read<in_t>(input1, shape1, index1, input1_zp);
-    tensor_write<in_t>(output, shape, index, value + input1_zp);
+    in_t value = is_pad ? pad_const : tensor_read<in_t>(input1, shape1, index1);
+    tensor_write<in_t>(output, shape, index, value);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|acc_t
+|Profile|Mode|in_t
 
-|Any|Boolean|bool_t|bool_t
-|Any|signed 8|int8_t|int16_t
-|Any|signed 16|int16_t|int16_t
-|Any|signed 32|int32_t|int32_t
-|MI, MT|floating-point|float_t|float_t
+|Any|Boolean|bool_t
+|Any|signed 8|int8_t
+|Any|signed 16|int16_t
+|Any|signed 32|int32_t
+|MI, MT|floating-point|float_t
 |===
 
 ==== RESHAPE
