@@ -33,8 +33,8 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    in_t acc = apply_add<in_t>(value1, value2);
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = apply_add<in_t>(value1, value2);
+    tensor_write<in_t>(output, shape, index, result);
 ----
 
 *Supported Data Types:*
@@ -77,12 +77,12 @@ for_each(index in shape) {
             (in_t == int16_t && 0 <= value2 && value2 <= 15) ||
             (in_t == int8_t && 0 <= value2 && value2 <= 7));
 
-    in_t acc = value1 >> value2;
+    in_t result = value1 >> value2;
     if (round == true && value2 > 0 && (value1 >> (value2 - 1)) & 1 != 0) {
-        acc = acc + 1;
+        result = result + 1;
     }
-    acc = apply_clip<in_t>(acc, minimum<in_t>, maximum<in_t>)
-    tensor_write<in_t>(output, shape, index, acc)
+    result = apply_clip<in_t>(result, minimum<in_t>, maximum<in_t>);
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -120,8 +120,8 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    in_t acc = value1 & value2;
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = value1 & value2;
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -159,8 +159,8 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    in_t acc = value1 | value2;
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = value1 | value2;
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -198,8 +198,8 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    in_t acc = value1 ^ value2;
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = value1 ^ value2;
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -244,8 +244,8 @@ for_each(index in shape) {
     // This catches the case where we divide minimum<in_t> by -1
     // which is not representable in two's complement
     REQUIRE((int64_t)value1 / value2 <= maximum<in_t>);
-    in_t acc = value1 / value2;
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = value1 / value2;
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -280,8 +280,8 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    in_t acc = value1 && value2;
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = value1 && value2;
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -318,8 +318,8 @@ for_each(index in shape) {
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
     REQUIRE(0 <= value2 && value2 <= 31);
-    in_t acc = value1 << value2;
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = value1 << value2;
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -358,8 +358,8 @@ for_each(index in shape) {
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
     REQUIRE(0 <= value2 && value2 <= 31);
-    in_t acc = (unsigned in_t)value1 >> value2;
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = (in_t)((unsigned in_t)value1 >> value2);
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -397,8 +397,8 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    in_t acc = value1 || value2;
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = value1 || value2;
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -434,8 +434,8 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    in_t acc = value1 != value2;
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = value1 != value2;
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -471,8 +471,8 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    in_t acc = apply_max(value1, value2);
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = apply_max(value1, value2);
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -509,8 +509,8 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    in_t acc = apply_min(value1, value2);
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = apply_min(value1, value2);
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -548,12 +548,13 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    out_t result;
     if (in_t == int32_t && shift > 0) {
-        out_t acc = apply_scale_32(value1, value2, shift);
+        result = apply_scale_32(value1, value2, shift);
     } else {
-        out_t acc = value1 * value2;  // low 32-bits of result for int32_t
+        result = value1 * value2;  // low 32-bits of result for int32_t
     }
-    tensor_write<out_t>(output, shape, index, acc);
+    tensor_write<out_t>(output, shape, index, result);
 }
 ----
 
@@ -581,6 +582,20 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 |Input|in_t*|input2|shape2|Input tensor with the same rank as input1
 |Output|in_t*|output|shape|Output tensor of same type as the input tensors, with broadcast shape if necessary
 |===
+
+*Operation Function:*
+
+[source,c++]
+----
+for_each(index in shape) {
+    index1 = apply_broadcast(shape, shape1, index);
+    index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    in_t result = apply_pow<in_t>(value1, value2);
+    tensor_write<in_t>(output, shape, index, result);
+}
+----
 
 *Supported Data Types:*
 
@@ -614,8 +629,8 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    in_t acc = apply_sub<in_t>(value1, value2);
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = apply_sub<in_t>(value1, value2);
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -661,13 +676,14 @@ An int16_t to int16_t table lookup can be constructed in TOSA as follows:
 REQUIRE(length(table) == TABLE_SIZE);
 for_each(index in shape) {
     in_t value = tensor_read<in_t>(input, shape, index);
+    out_t result;
     if (in_t == int8_t) {
         // value is a signed int, convert to a 0 based index
-        out_t acc = table[value + 128];
+        result = table[value + 128];
     } else {
-        out_t acc = apply_lookup(table, value);
+        result = apply_lookup(table, value);
     }
-    tensor_write<out_t>(output, shape, index, acc);
+    tensor_write<out_t>(output, shape, index, result);
 }
 ----
 

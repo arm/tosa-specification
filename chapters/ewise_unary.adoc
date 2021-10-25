@@ -62,8 +62,8 @@ Elementwise bitwise NOT of input tensor.
 ----
 for_each(index in shape) {
     in_t value1 = tensor_read<in_t>(input1, shape, index);
-    in_t acc = ~value1;
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = ~value1;
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -89,6 +89,17 @@ Elementwise ceiling operation
 |Input|in_t*|input1|shape|Input tensor
 |Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
+
+*Operation Function:*
+
+[source,c++]
+----
+for_each(index in shape) {
+    in_t value1 = tensor_read<in_t>(input1, shape, index);
+    in_t result = apply_ceil<in_t>(value1);
+    tensor_write<in_t>(output, shape, index, result);
+}
+----
 
 *Supported Data Types:*
 
@@ -116,10 +127,9 @@ Elementwise count leading zeros operation
 [source,c++]
 ----
 for_each(index in shape) {
-    in_t acc = 0;
     in_t value1 = tensor_read<in_t>(input1, shape, index);
-    acc = count_leading_zeros(value1);
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = count_leading_zeros(value1);
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -143,6 +153,17 @@ Elementwise e to the x operation
 |Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
+*Operation Function:*
+
+[source,c++]
+----
+for_each(index in shape) {
+    in_t value1 = tensor_read<in_t>(input1, shape, index);
+    in_t result = apply_exp<in_t>(value1);
+    tensor_write<in_t>(output, shape, index, result);
+}
+----
+
 *Supported Data Types:*
 
 |===
@@ -164,6 +185,17 @@ Elementwise floor operation
 |Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
+*Operation Function:*
+
+[source,c++]
+----
+for_each(index in shape) {
+    in_t value1 = tensor_read<in_t>(input1, shape, index);
+    in_t result = apply_floor<in_t>(value1);
+    tensor_write<in_t>(output, shape, index, result);
+}
+----
+
 *Supported Data Types:*
 
 |===
@@ -184,6 +216,17 @@ Elementwise natural logarithm operation
 |Input|in_t*|input1|shape|Input tensor
 |Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
+
+*Operation Function:*
+
+[source,c++]
+----
+for_each(index in shape) {
+    in_t value1 = tensor_read<in_t>(input1, shape, index);
+    in_t result = apply_log<in_t>(value1);
+    tensor_write<in_t>(output, shape, index, result);
+}
+----
 
 *Supported Data Types:*
 
@@ -212,8 +255,8 @@ Elementwise logical NOT of input.
 ----
 for_each(index in shape) {
     in_t value1 = tensor_read<in_t>(input1, shape1, index);
-    in_t acc = !value1;
-    tensor_write<in_t>(output, shape, index, acc);
+    in_t result = !value1;
+    tensor_write<in_t>(output, shape, index, result);
 }
 ----
 
@@ -279,6 +322,17 @@ Elementwise reciprocal operation. For integer operation, a TABLE should be used 
 |Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
+*Operation Function:*
+
+[source,c++]
+----
+for_each(index in shape) {
+    in_t value1 = tensor_read<in_t>(input1, shape1, index);
+    in_t result = 1.0 / value1;
+    tensor_write<in_t>(output, shape, index, result);
+}
+----
+
 *Supported Data Types:*
 
 |===
@@ -299,6 +353,17 @@ Elementwise reciprocal square root operation. For integer operation, a TABLE sho
 |Input|in_t*|input1|shape|Input tensor
 |Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
+
+*Operation Function:*
+
+[source,c++]
+----
+for_each(index in shape) {
+    in_t value1 = tensor_read<in_t>(input1, shape1, index);
+    in_t result = 1.0 / apply_sqrt<in_t>(value1);
+    tensor_write<in_t>(output, shape, index, result);
+}
+----
 
 *Supported Data Types:*
 

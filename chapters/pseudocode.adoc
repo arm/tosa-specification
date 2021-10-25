@@ -54,43 +54,61 @@ void ERROR_IF(condition) {
 
 This section contains general pseudocode utility functions used throughout the specification.
 
-The following functions provide basic arithmetic while defining requirements such that values stay in the valid range.
+The following functions provide arithmetic while defining requirements such that values stay in the valid range.
 
 [source,c++]
 ----
-acc_t apply_add<acc_t>(acc_t a, acc_t b) {
-    if (acc_t == float_t) return a + b;
+in_t apply_add<in_t>(in_t a, in_t b) {
+    if (<in_t> == float_t) return a + b;
     int64_t c = (int64_t)a + (int64_t)b;
-    REQUIRE(c >= minimum<acc_t> && c <= maximum<acc_t>);
-    return (acc_t)c;
+    REQUIRE(c >= minimum<in_t> && c <= maximum<in_t>);
+    return (in_t)c;
 }
 
-acc_t apply_sub<acc_t>(acc_t a, acc_t b) {
-    if (acc_t == float_t) return a - b;
-    int64_t c = (int64_t)a - (int64_t)b;
-    REQUIRE(c >= minimum<acc_t> && c <= maximum<acc_t>);
-    return (acc_t)c;
-}
-----
-
-The following functions are used in the pseudocode to take maximum,
-minimum, clip values to a range, or count leading zeros.
-[[count_leading_zeros]]
-[source,c++]
-----
-<type> apply_max<type>(<type> a, <type> b) {
-    if (a >= b) return a; else return b;
+in_t apply_ceil<in_t>(in_t input) {
+    return input value rounded up to nearest integer
 }
 
-<type> apply_min<type>(<type> a, <type> b) {
-    if (a < b) return a; else return b;
-}
-
-<type> apply_clip<type>(<type> value, <type> min_val, <type> max_val) {
+in_t apply_clip<in_t>(in_t value, in_t min_val, in_t max_val) {
     REQUIRE(min_val <= max_val);
     value = apply_max(value, min_val);
     value = apply_min(value, max_val);
     return value;
+}
+
+in_t apply_exp<in_t>(in_t input) {
+    return e to the power input
+}
+
+in_t apply_floor<in_t>(in_t input) {
+    return input value rounded down to nearest integer
+}
+
+in_t apply_log<in_t>(in_t input) {
+    return the natural logarithm of input
+}
+
+in_t apply_max<in_t>(in_t a, in_t b) {
+    if (a >= b) return a; else return b;
+}
+
+in_t apply_min<in_t>(in_t a, in_t b) {
+    if (a < b) return a; else return b;
+}
+
+in_t apply_pow<in_t>(in_t a, in_t b) {
+    return a ** b; // a raised to the power b
+}
+
+in_t apply_sqrt<in_t>(in_t input) {
+    return the square root of input
+}
+
+in_t apply_sub<in_t>(in_t a, in_t b) {
+    if (in_t == float_t) return a - b;
+    int64_t c = (int64_t)a - (int64_t)b;
+    REQUIRE(c >= minimum<in_t> && c <= maximum<in_t>);
+    return (in_t)c;
 }
 
 int32_t count_leading_zeros(int32_t a) {
@@ -146,11 +164,13 @@ Generic helper functions used to keep the pseudocode concise.
 
 [source,c++]
 ----
+
+int idiv(int input1, int input2) {
+    return input1 / input2; // Integer divide that truncates towards zero
+}
+
 int length(in_t input)
     return number of elements in input list
-
-int floor(in_t input)
-    return input value rounded down to nearest integer
 
 int rank(in_t input)
     return rank of an input tensor

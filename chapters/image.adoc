@@ -74,8 +74,8 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
     y = oy * stride_y + offset_y;
     x = ox * stride_x + offset_x;
     if (resize_t == float_t) {
-        iy = (int)floor(y); dy = y - (float_t)iy;
-        ix = (int)floor(x); dx = x - (float_t)ix;
+        iy = (int)apply_floor(y); dy = y - (float_t)iy;
+        ix = (int)apply_floor(x); dx = x - (float_t)ix;
     } else {
         iy = y >> shift; dy = y - (iy<<shift);
         ix = x >> shift; dx = x - (ix<<shift);

@@ -29,16 +29,18 @@ Reduce a tensor along the given axis with a logical AND operation
 ----
 ERROR_IF(axis < 0  || axis >= rank(shape1));
 ERROR_IF(shape[axis] != 1);
+
+// Initialize output state to true
 for_each(index in shape) {
     tensor_write<in_t>(output, shape, index, true);
 }
 for_each(index in shape1) {
-    tmp_index = index;
-    tmp_index[axis]=0;
-    value = tensor_read<in_t>(input, shape1, index);
-    acc   = tensor_read<in_t>(output, shape, tmp_index);
-    acc   = acc && value;
-    tensor_write<in_t>(output, shape, tmp_index, acc);
+    out_index = index;
+    out_index[axis] = 0;
+    in_t value = tensor_read<in_t>(input, shape1, index);
+    in_t state = tensor_read<in_t>(output, shape, out_index);
+    state      = state && value;
+    tensor_write<in_t>(output, shape, out_index, state);
 }
 ----
 
@@ -70,16 +72,18 @@ Reduce a tensor along the given axis with a logical OR operation
 ----
 ERROR_IF(axis < 0  || axis >= rank(shape1));
 ERROR_IF(shape[axis] != 1);
+
+// Initialize output state to false
 for_each(index in shape) {
     tensor_write<in_t>(output, shape, index, false);
 }
 for_each(index in shape1) {
-    tmp_index = index;
-    tmp_index[axis]=0;
-    value = tensor_read<in_t>(input, shape1, index);
-    acc   = tensor_read<in_t>(output, shape, tmp_index);
-    acc   = acc || value;
-    tensor_write<in_t>(output, shape, tmp_index, acc);
+    out_index = index;
+    out_index[axis] = 0;
+    in_t value = tensor_read<in_t>(input, shape1, index);
+    in_t state = tensor_read<in_t>(output, shape, out_index);
+    state      = state || value;
+    tensor_write<in_t>(output, shape, out_index, state);
 }
 ----
 
@@ -115,12 +119,12 @@ for_each(index in shape) {
     tensor_write<in_t>(output, shape, index, minimum<in_t>);
 }
 for_each(index in shape1) {
-    tmp_index = index;
-    tmp_index[axis]=0;
-    value = tensor_read<in_t>(input, shape1, index);
-    acc   = tensor_read<in_t>(output, shape, tmp_index);
-    acc   = apply_max<in_t>(acc, value);
-    tensor_write<in_t>(output, shape, tmp_index, acc);
+    out_index = index;
+    out_index[axis] = 0;
+    in_t value = tensor_read<in_t>(input, shape1, index);
+    in_t state = tensor_read<in_t>(output, shape, out_index);
+    state      = apply_max<in_t>(state, value);
+    tensor_write<in_t>(output, shape, out_index, state);
 }
 ----
 
@@ -158,12 +162,12 @@ for_each(index in shape) {
     tensor_write<in_t>(output, shape, index, maximum<in_t>);
 }
 for_each(index in shape1) {
-    tmp_index = index;
-    tmp_index[axis]=0;
-    value = tensor_read<in_t>(input, shape1, index);
-    acc   = tensor_read<in_t>(output, shape, tmp_index);
-    acc   = apply_min<in_t>(acc, value);
-    tensor_write<in_t>(output, shape, tmp_index, acc);
+    out_index = index;
+    out_index[axis] = 0;
+    in_t value = tensor_read<in_t>(input, shape1, index);
+    in_t state = tensor_read<in_t>(output, shape, out_index);
+    state      = apply_min<in_t>(state, value);
+    tensor_write<in_t>(output, shape, out_index, state);
 }
 ----
 
@@ -202,12 +206,12 @@ for_each(index in shape) {
     tensor_write<in_t>(output, shape, index, 1.0);
 }
 for_each(index in shape1) {
-    tmp_index = index;
-    tmp_index[axis]=0;
-    value = tensor_read<in_t>(input, shape1, index);
-    acc   = tensor_read<in_t>(output, shape, tmp_index);
-    acc   = acc * value;
-    tensor_write<in_t>(output, shape, tmp_index, acc);
+    out_index = index;
+    out_index[axis] = 0;
+    in_t value = tensor_read<in_t>(input, shape1, index);
+    in_t state = tensor_read<in_t>(output, shape, out_index);
+    state      = state * value;
+    tensor_write<in_t>(output, shape, out_index, state);
 }
 ----
 
@@ -243,12 +247,12 @@ for_each(index in shape) {
     tensor_write<in_t>(output, shape, index, 0);
 }
 for_each(index in shape1) {
-    tmp_index = index;
-    tmp_index[axis]=0;
-    value = tensor_read<in_t>(input, shape1, index);
-    acc   = tensor_read<in_t>(output, shape, tmp_index);
-    acc   = apply_add<in_t>(acc, value);
-    tensor_write<in_t>(output, shape, tmp_index, acc);
+    out_index = index;
+    out_index[axis] = 0;
+    in_t value = tensor_read<in_t>(input, shape1, index);
+    in_t state = tensor_read<in_t>(output, shape, out_index);
+    state      = apply_add<in_t>(state, value);
+    tensor_write<in_t>(output, shape, out_index, state);
 }
 ----
 
