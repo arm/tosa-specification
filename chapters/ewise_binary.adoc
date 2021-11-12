@@ -35,6 +35,7 @@ for_each(index in shape) {
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
     in_t result = apply_add<in_t>(value1, value2);
     tensor_write<in_t>(output, shape, index, result);
+}
 ----
 
 *Supported Data Types:*
