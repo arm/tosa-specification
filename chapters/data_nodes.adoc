@@ -43,14 +43,14 @@ Returns a tensor with the same shape, type, and contents as the input.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape|Input tensor
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Input|in_out_t*|input1|shape|Input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|Boolean|bool_t
 |Any|signed 8|int8_t

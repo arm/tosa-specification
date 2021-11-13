@@ -18,9 +18,9 @@ Reduce a tensor along the given axis with a logical AND operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
+|Input|in_out_t*|input|shape1|Input tensor with rank from 1 to 4
 |Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
-|Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
+|Output|in_out_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
 *Operation Function:*
@@ -32,22 +32,22 @@ ERROR_IF(shape[axis] != 1);
 
 // Initialize output state to true
 for_each(index in shape) {
-    tensor_write<in_t>(output, shape, index, true);
+    tensor_write<in_out_t>(output, shape, index, true);
 }
 for_each(index in shape1) {
     out_index = index;
     out_index[axis] = 0;
-    in_t value = tensor_read<in_t>(input, shape1, index);
-    in_t state = tensor_read<in_t>(output, shape, out_index);
+    in_out_t value = tensor_read<in_out_t>(input, shape1, index);
+    in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
     state      = state && value;
-    tensor_write<in_t>(output, shape, out_index, state);
+    tensor_write<in_out_t>(output, shape, out_index, state);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|Boolean|bool_t
 |===
@@ -61,9 +61,9 @@ Reduce a tensor along the given axis with a logical OR operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
+|Input|in_out_t*|input|shape1|Input tensor with rank from 1 to 4
 |Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
-|Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
+|Output|in_out_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
 *Operation Function:*
@@ -75,22 +75,22 @@ ERROR_IF(shape[axis] != 1);
 
 // Initialize output state to false
 for_each(index in shape) {
-    tensor_write<in_t>(output, shape, index, false);
+    tensor_write<in_out_t>(output, shape, index, false);
 }
 for_each(index in shape1) {
     out_index = index;
     out_index[axis] = 0;
-    in_t value = tensor_read<in_t>(input, shape1, index);
-    in_t state = tensor_read<in_t>(output, shape, out_index);
+    in_out_t value = tensor_read<in_out_t>(input, shape1, index);
+    in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
     state      = state || value;
-    tensor_write<in_t>(output, shape, out_index, state);
+    tensor_write<in_out_t>(output, shape, out_index, state);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|Boolean|bool_t
 |===
@@ -104,9 +104,9 @@ Reduce a tensor along the given axis with a maximum operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
+|Input|in_out_t*|input|shape1|Input tensor with rank from 1 to 4
 |Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
-|Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
+|Output|in_out_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
 *Operation Function:*
@@ -116,22 +116,22 @@ Reduce a tensor along the given axis with a maximum operation
 ERROR_IF(axis < 0  || axis >= rank(shape1));
 ERROR_IF(shape[axis] != 1);
 for_each(index in shape) {
-    tensor_write<in_t>(output, shape, index, minimum<in_t>);
+    tensor_write<in_out_t>(output, shape, index, minimum<in_out_t>);
 }
 for_each(index in shape1) {
     out_index = index;
     out_index[axis] = 0;
-    in_t value = tensor_read<in_t>(input, shape1, index);
-    in_t state = tensor_read<in_t>(output, shape, out_index);
-    state      = apply_max<in_t>(state, value);
-    tensor_write<in_t>(output, shape, out_index, state);
+    in_out_t value = tensor_read<in_out_t>(input, shape1, index);
+    in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
+    state      = apply_max<in_out_t>(state, value);
+    tensor_write<in_out_t>(output, shape, out_index, state);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
@@ -147,9 +147,9 @@ Reduce a tensor along the given axis with a minimum operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
+|Input|in_out_t*|input|shape1|Input tensor with rank from 1 to 4
 |Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
-|Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
+|Output|in_out_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
 *Operation Function:*
@@ -159,22 +159,22 @@ Reduce a tensor along the given axis with a minimum operation
 ERROR_IF(axis < 0  || axis >= rank(shape1));
 ERROR_IF(shape[axis] != 1);
 for_each(index in shape) {
-    tensor_write<in_t>(output, shape, index, maximum<in_t>);
+    tensor_write<in_out_t>(output, shape, index, maximum<in_out_t>);
 }
 for_each(index in shape1) {
     out_index = index;
     out_index[axis] = 0;
-    in_t value = tensor_read<in_t>(input, shape1, index);
-    in_t state = tensor_read<in_t>(output, shape, out_index);
-    state      = apply_min<in_t>(state, value);
-    tensor_write<in_t>(output, shape, out_index, state);
+    in_out_t value = tensor_read<in_out_t>(input, shape1, index);
+    in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
+    state      = apply_min<in_out_t>(state, value);
+    tensor_write<in_out_t>(output, shape, out_index, state);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
@@ -191,9 +191,9 @@ Reduce a tensor along the given axis by computing the product of the axis.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
+|Input|in_out_t*|input|shape1|Input tensor with rank from 1 to 4
 |Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
-|Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
+|Output|in_out_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
 *Operation Function:*
@@ -203,22 +203,22 @@ Reduce a tensor along the given axis by computing the product of the axis.
 ERROR_IF(axis < 0  || axis >= rank(shape1));
 ERROR_IF(shape[axis] != 1);
 for_each(index in shape) {
-    tensor_write<in_t>(output, shape, index, 1.0);
+    tensor_write<in_out_t>(output, shape, index, 1.0);
 }
 for_each(index in shape1) {
     out_index = index;
     out_index[axis] = 0;
-    in_t value = tensor_read<in_t>(input, shape1, index);
-    in_t state = tensor_read<in_t>(output, shape, out_index);
+    in_out_t value = tensor_read<in_out_t>(input, shape1, index);
+    in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
     state      = state * value;
-    tensor_write<in_t>(output, shape, out_index, state);
+    tensor_write<in_out_t>(output, shape, out_index, state);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |MI, MT|floating-point|float_t
 |===
@@ -232,9 +232,9 @@ Reduce a tensor along the given axis by computing the sum of the axis.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
+|Input|in_out_t*|input|shape1|Input tensor with rank from 1 to 4
 |Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
-|Output|in_t*|output|shape|Output tensor. Same rank as the input tensor.
+|Output|in_out_t*|output|shape|Output tensor. Same rank as the input tensor.
 |===
 
 *Operation Function:*
@@ -244,22 +244,22 @@ Reduce a tensor along the given axis by computing the sum of the axis.
 ERROR_IF(axis < 0  || axis >= rank(shape1));
 ERROR_IF(shape[axis] != 1);
 for_each(index in shape) {
-    tensor_write<in_t>(output, shape, index, 0);
+    tensor_write<in_out_t>(output, shape, index, 0);
 }
 for_each(index in shape1) {
     out_index = index;
     out_index[axis] = 0;
-    in_t value = tensor_read<in_t>(input, shape1, index);
-    in_t state = tensor_read<in_t>(output, shape, out_index);
-    state      = apply_add<in_t>(state, value);
-    tensor_write<in_t>(output, shape, out_index, state);
+    in_out_t value = tensor_read<in_out_t>(input, shape1, index);
+    in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
+    state      = apply_add<in_out_t>(state, value);
+    tensor_write<in_out_t>(output, shape, out_index, state);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|signed 32|int32_t
 |MI, MT|floating-point|float_t

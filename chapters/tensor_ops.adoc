@@ -74,21 +74,21 @@ When calculating the average, only the number of valid input tensor values, but 
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input|[N,IH,IW,C]|Input tensor 4D
+|Input|in_out_t*|input|[N,IH,IW,C]|Input tensor 4D
 |Attribute|int*|kernel|[2]|[kernel_y, kernel_x]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
-|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
-|Attribute|in_t|output_zp|-|Output tensor zero point. Must be zero for non-int8 types.
-|Output|in_t*|output|[N,H,W,C]|Output tensor 4D
+|Attribute|in_out_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
+|Attribute|in_out_t|output_zp|-|Output tensor zero point. Must be zero for non-int8 types.
+|Output|in_out_t*|output|[N,H,W,C]|Output tensor 4D
 |===
 
 *Operation Function:*
 
 [source,c++]
 ----
-ERROR_IF(in_t != int8_t && input_zp != 0); // Zero point only for int8_t
-ERROR_IF(in_t != int8_t && output_zp != 0); // Zero point only for int8_t
+ERROR_IF(in_out_t != int8_t && input_zp != 0); // Zero point only for int8_t
+ERROR_IF(in_out_t != int8_t && output_zp != 0); // Zero point only for int8_t
 ERROR_IF(kernel_y < 1 || kernel_x < 1); // kernel size must be >= 1
 ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
@@ -102,7 +102,7 @@ ERROR_IF(H != idiv((IH + pad_top + pad_bottom + stride_y - kernel_y), stride_y))
 ERROR_IF(W != idiv((IW + pad_left + pad_right + stride_x - kernel_x), stride_x));
 
 for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
-    in_t output_val;
+    in_out_t output_val;
     acc_t acc = 0;
     int count = 0;
     iy = oy * stride_y - pad_top;
@@ -114,25 +114,25 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
         // average, padding does not count
         if (0 <= y < IH and 0 <= x < IW) {
             count++;
-            acc_t value = tensor_read<in_t>(input, [N,IH,IW,C], [n,y,x,c]);
+            acc_t value = tensor_read<in_out_t>(input, [N,IH,IW,C], [n,y,x,c]);
             value = value - input_zp;
             acc = apply_add<acc_t>(acc, value);
         }
     }
-    if (is_float(in_t)) {
+    if (is_float(in_out_t)) {
         output_val = acc / (float)count;
     } else {
         scale_t scale = reciprocal_scale(count);
         acc = apply_scale_32(acc, scale.multiplier, scale.shift, false);
-        output_val = (in_t)apply_clip<acc_t>(acc + output_zp, minimum<in_t>, maximum<in_t>)
+        output_val = (in_out_t)apply_clip<acc_t>(acc + output_zp, minimum<in_out_t>, maximum<in_out_t>)
     }
-    tensor_write<in_t>(output, [N,H,W,C], [n,oy,ox,c], output_val);
+    tensor_write<in_out_t>(output, [N,H,W,C], [n,oy,ox,c], output_val);
 }
 ----
 
 *Supported Data Types:*
 |===
-|Profile|Mode|in_t|acc_t
+|Profile|Mode|in_out_t|acc_t
 
 |Any|signed 8|int8_t|int32_t
 |Any|signed 16|int16_t|int32_t
@@ -150,13 +150,13 @@ Performs a 2D convolution over the given tensor input, using the weight tensor.
 
 |Input|in_t*|input|[N,IH,IW,IC]|Input tensor
 |Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
-|Input (MT profile) Attribute (BI/MI profiles)|acc_t*|bias|[OC]|Per output channel bias data.
+|Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[OC]|Per output channel bias data.
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|acc_t*|output|[N,H,W,OC]|Output tensor
+|Output|out_t*|output|[N,H,W,OC]|Output tensor
 |===
 
 *Operation Function*
@@ -170,29 +170,29 @@ ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(dilation_y < 1 || dilation_x < 1);
 pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
-    acc_t acc = 0;
+    out_t acc = 0;
     iy = oy * stride_y - pad_top;
     ix = ox * stride_x - pad_left;
     for_each(0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
         y = iy + ky * dilation_y;
         x = ix + kx * dilation_x;
         if (0 <= y < IH && 0 <= x < IW) {
-            acc_t value  = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,ic]);
-            acc_t weight = tensor_read<weight_t>(weight, [OC,KH,KW,IC], [oc,ky,kx,ic]);
+            out_t value  = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,ic]);
+            out_t weight = tensor_read<weight_t>(weight, [OC,KH,KW,IC], [oc,ky,kx,ic]);
             value  = value - input_zp;
             weight = weight - weight_zp;
-            acc = apply_add<acc_t>(acc, value * weight);
+            acc = apply_add<out_t>(acc, value * weight);
         }
     }
-    acc = apply_add<acc_t>(acc, bias[oc]);
-    tensor_write<acc_t>(output, [N,H,W,OC], [n,oy,ox,oc], acc);
+    acc = apply_add<out_t>(acc, bias[oc]);
+    tensor_write<out_t>(output, [N,H,W,OC], [n,oy,ox,oc], acc);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|weight_t|acc_t
+|Profile|Mode|in_t|weight_t|out_t
 
 |Any|signed 8x8|int8_t|int8_t|int32_t
 |Any|signed 8x4|int8_t|int4_t|int32_t
@@ -211,13 +211,13 @@ Performs a 3D convolution over the given input tensor.
 
 |Input|in_t*|input|[N,ID,IH,IW,IC]|Input tensor
 |Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KD,KH,KW,IC]|Weight kernel size KDxKHxKW
-|Input (MT profile) Attribute (BI/MI profiles)|acc_t*|bias|[OC]|Per output channel bias data.
+|Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[OC]|Per output channel bias data.
 |Attribute|int*|pad|[6]|[pad_d0, pad_d1, pad_top, pad_bottom, pad_left, pad_right]
 |Attribute|int*|stride|[3]|[stride_d, stride_y, stride_x]
 |Attribute|int*|dilation|[3]|[dilation_d, dilation_y, dilation_x]
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|acc_t*|output|[N,D,H,W,OC]|Output tensor
+|Output|out_t*|output|[N,D,H,W,OC]|Output tensor
 |===
 
 *Operation Function*
@@ -231,7 +231,7 @@ ERROR_IF(stride_d < 1 || stride_y < 1 || stride_x < 1);
 ERROR_IF(dilation_d < 1 || dilation_y < 1 || dilation_x < 1);
 pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= od < D, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
-    acc_t acc = 0;
+    out_t acc = 0;
     id = od * stride_d - pad_d0;
     iy = oy * stride_y - pad_top;
     ix = ox * stride_x - pad_left;
@@ -240,22 +240,22 @@ for_each(0 <= n < N, 0 <= od < D, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
         y = iy + ky * dilation_y;
         x = ix + kx * dilation_x;
         if (0 <= x < IW && 0 <= y < IH && 0 <= d <= ID) {
-            acc_t value  = tensor_read<in_t>(input, [N,ID,IH,IW,IC], [n,d,y,x,ic]);
-            acc_t weight = tensor_read<weight_t>(weight,[OC,KD,KH,KW,IC],[oc,kd,ky,kx,ic]);
+            out_t value  = tensor_read<in_t>(input, [N,ID,IH,IW,IC], [n,d,y,x,ic]);
+            out_t weight = tensor_read<weight_t>(weight,[OC,KD,KH,KW,IC],[oc,kd,ky,kx,ic]);
             value  = value - input_zp;
             weight = weight - weight_zp;
-            acc = apply_add<acc_t>(acc, value * weight);
+            acc = apply_add<out_t>(acc, value * weight);
         }
     }
-    acc = apply_add<acc_t>(acc, bias[oc]);
-    tensor_write<acc_t>(output, [N,D,H,W,OC], [n,od,oy,ox,oc], acc);
+    acc = apply_add<out_t>(acc, bias[oc]);
+    tensor_write<out_t>(output, [N,D,H,W,OC], [n,od,oy,ox,oc], acc);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|weight_t|acc_t
+|Profile|Mode|in_t|weight_t|out_t
 
 |Any|signed 8x8|int8_t|int8_t|int32_t
 |Any|signed 8x4|int8_t|int4_t|int32_t
@@ -275,13 +275,13 @@ Performs 2D convolutions separately over each channel of the given tensor input,
 
 |Input|in_t*|input|[N,H,W,C]|Input tensor
 |Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[KH,KW,C,M]|Weight kernel size KH x KW
-|Input (MT profile) Attribute (BI/MI profiles)|acc_t*|bias|[C*M]|Per output channel bias data.
+|Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[C*M]|Per output channel bias data.
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|acc_t*|output|[N,H,W,C*M]|Output tensor
+|Output|out_t*|output|[N,H,W,C*M]|Output tensor
 |===
 
 *Operation Function*
@@ -295,29 +295,29 @@ ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(dilation_y < 1 || dilation_x < 1);
 pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n<N, 0 <= oy < H, 0 <= ox < W; 0 <= c < (C * M), 0 <= m < M) {
-    acc_t acc = 0;
+    out_t acc = 0;
     iy = oy * stride_y - pad_top;
     ix = ox * stride_x - pad_left;
     for_each(0 <= ky < KH, 0 <= kx < KW) {
         y = iy + ky * dilation_y;
         x = ix + kx * dilation_x;
         if (0 <= y < IH && 0 <= x < IW) {
-            acc_t value  = tensor_read<in_t>(input, [N,H,W,C], [n,y,x,c]);
-            acc_t weight = tensor_read<weight_t>(weight, [KH,KW,C,M], [ky,kx,c,m]);
+            out_t value  = tensor_read<in_t>(input, [N,H,W,C], [n,y,x,c]);
+            out_t weight = tensor_read<weight_t>(weight, [KH,KW,C,M], [ky,kx,c,m]);
             value  = value - input_zp;
             weight = weight - weight_zp;
-            acc = apply_add<acc_t>(acc, value * weight);
+            acc = apply_add<out_t>(acc, value * weight);
         }
     }
-    acc = apply_add<acc_t>(acc, bias[(c * M) + m]);
-    tensor_write<acc_t>(output, [N,H,W,C * M], [n,oy,ox,c * M + m], acc);
+    acc = apply_add<out_t>(acc, bias[(c * M) + m]);
+    tensor_write<out_t>(output, [N,H,W,C * M], [n,oy,ox,c * M + m], acc);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|weight_t|acc_t
+|Profile|Mode|in_t|weight_t|out_t
 
 |Any|signed 8x8|int8_t|int8_t|int32_t
 |Any|signed 8x4|int8_t|int4_t|int32_t
@@ -336,10 +336,10 @@ Performs a fully connected network.
 
 |Input|in_t*|input|[N,IC]|Input tensor
 |Attribute|weight_t*|weight|[OC,IC]|Weights
-|Attribute|acc_t*|bias|[OC]|Per output channel bias data.
+|Attribute|out_t*|bias|[OC]|Per output channel bias data.
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|acc_t*|output|[N,OC]|Output tensor
+|Output|out_t*|output|[N,OC]|Output tensor
 |===
 
 *Operation Function*
@@ -349,23 +349,23 @@ Performs a fully connected network.
 ERROR_IF(in_t != int8_t && input_zp != 0); // Zero point only for int8_t
 ERROR_IF(weight_t != int8_t && weight_zp != 0);
 for_each(0 <= n < N, 0 <= oc < OC) {
-    acc_t acc = 0;
+    out_t acc = 0;
     for_each(0 <= ic < IC) {
-        acc_t value  = tensor_read<in_t>(input, [N,IC], [n,ic]);
-        acc_t weight = tensor_read<weight_t>(weight, [OC,IC], [oc,ic]);
+        out_t value  = tensor_read<in_t>(input, [N,IC], [n,ic]);
+        out_t weight = tensor_read<weight_t>(weight, [OC,IC], [oc,ic]);
         value  = value - input_zp;
         weight = weight - weight_zp;
-        acc = apply_add<acc_t>(acc, value * weight);
+        acc = apply_add<out_t>(acc, value * weight);
     }
-    acc = apply_add<acc_t>(acc, bias[oc]);
-    tensor_write<acc_t>(output, [N,OC], [n,oc], acc);
+    acc = apply_add<out_t>(acc, bias[oc]);
+    tensor_write<out_t>(output, [N,OC], [n,oc], acc);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|weight_t|acc_t
+|Profile|Mode|in_t|weight_t|out_t
 
 |Any|signed 8x8|int8_t|int8_t|int32_t
 |Any|signed 8x4|int8_t|int4_t|int32_t
@@ -385,7 +385,7 @@ Performs two dimensional matrix multiplications. This allows both inputs to be a
 |Input|in_t*|B|[N,C,W]|Input tensor B, N matrices of size CxW
 |Attribute|in_t|A_zp|-|Input tensor A zero point. Must be zero for non-int8 types.
 |Attribute|in_t|B_zp|-|Input tensor B zero point. Must be zero for non-int8 types.
-|Output|acc_t*|output|[N,H,W]|Output tensor, N matrices of size HxW
+|Output|out_t*|output|[N,H,W]|Output tensor, N matrices of size HxW
 |===
 
 *Operation Function*
@@ -394,22 +394,22 @@ Performs two dimensional matrix multiplications. This allows both inputs to be a
 ----
 ERROR_IF(in_t != int8_t && (A_zp != 0 || B_zp != 0)); // Zero point only for int8_t
 for_each(0 <= n < N, 0 <= h < H, 0 <= w < W) {
-    acc_t acc = 0;
+    out_t acc = 0;
     for_each(0 <= c < C) {
-        acc_t value1 = tensor_read<in_t>(A, [N,H,C], [n,h,c]);
-        acc_t value2 = tensor_read<in_t>(B, [N,C,W], [n,c,w]);
+        out_t value1 = tensor_read<in_t>(A, [N,H,C], [n,h,c]);
+        out_t value2 = tensor_read<in_t>(B, [N,C,W], [n,c,w]);
         value1 = value1 - A_zp;
         value2 = value2 - B_zp;
-        acc = apply_add<acc_t>(acc, value1 * value2);
+        acc = apply_add<out_t>(acc, value1 * value2);
     }
-    tensor_write<acc_t>(output, [N,H,W], [n,h,w], acc);
+    tensor_write<out_t>(output, [N,H,W], [n,h,w], acc);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|acc_t
+|Profile|Mode|in_t|out_t
 
 |Any|signed 8x8|int8_t|int32_t
 |Any|signed 16x16|int16_t|int48_t
@@ -424,11 +424,11 @@ This performs a max pooling over the given input tensor. A sliding window of siz
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input|[N,IH,IW,C]|Input tensor 4D
+|Input|in_out_t*|input|[N,IH,IW,C]|Input tensor 4D
 |Attribute|int*|kernel|[2]|[kernel_y, kernel_x]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
-|Output|in_t*|output|[N,H,W,C]|Output tensor 4D
+|Output|in_out_t*|output|[N,H,W,C]|Output tensor 4D
 |===
 
 *Operation Function:*
@@ -448,25 +448,25 @@ ERROR_IF(H != idiv((IH + pad_top + pad_bottom + stride_y - kernel_y), stride_y))
 ERROR_IF(W != idiv((IW + pad_left + pad_right + stride_x - kernel_x), stride_x));
 
 for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
-    in_t acc = minimum_value<in_t>;
+    in_out_t acc = minimum_value<in_out_t>;
     iy = oy * stride_y - pad_top;
     ix = ox * stride_x - pad_left;
     for_each( 0 <= ky < kernel_y, 0 <= kx < kernel_x ) {
         y = iy + ky;
         x = ix + kx;
         if (y >= 0 && y < IH && x >= 0 && x < IW) {
-            in_t value = tensor_read<in_t>(input, [N,IH,IW,C], [n,y,x,c]);
+            in_out_t value = tensor_read<in_out_t>(input, [N,IH,IW,C], [n,y,x,c]);
             acc = apply_max(acc, value);
         }
     }
-    tensor_write<in_t>(output, [N,H,W,C], [n,oy,ox,c], acc);
+    tensor_write<in_out_t>(output, [N,H,W,C], [n,oy,ox,c], acc);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|signed 8|int8_t
 |Any|16-bit|int16_t
@@ -484,13 +484,13 @@ Performs a 2D transposed convolution over the given tensor input, using the weig
 
 |Input|in_t*|input|[N,IH,IW,IC]|Input tensor
 |Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
-|Input (MT profile) Attribute (BI/MI profiles)|acc_t*|bias|[OC]|Per output channel bias data.
+|Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[OC]|Per output channel bias data.
 |Attribute|int*|out_pad|[2]|[out_pad_top, out_pad_left]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|out_shape|[4]|[N,OH,OW,OC]
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|acc_t*|output|[N,OH,OW,OC]|Output tensor
+|Output|out_t*|output|[N,OH,OW,OC]|Output tensor
 |===
 
 *Operation Function*
@@ -502,20 +502,20 @@ ERROR_IF(weight_t != int8_t && weight_zp != 0);
 ERROR_IF(out_pad_top < 0 || out_pad_left < 0);
 ERROR_IF(stride_y < 1 || stride_x < 1);
 for_each(index in out_shape) {
-    tensor_write<acc_t>(output, [N,OH,OW,OC], index, bias[index[3]])
+    tensor_write<out_t>(output, [N,OH,OW,OC], index, bias[index[3]])
 }
 for_each(0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= oc < OC,
           0 <= ic < IC, 0 <= ky < KH,  0 <= kx < KW) {
     oy = iy * stride_y - out_pad_top  + ky;
     ox = ix * stride_x - out_pad_left + kx;
     if (oy >= 0 && oy < OH && ox >= 0 && ox < OW) {
-        acc_t acc = tensor_read<acc_t>(output, [N,OH,OW,OC], [n,oy,ox,oc]);
-        acc_t value = tensor_read<in_t>(input, [N,IH,IW,IC], [n,iy,ix,ic]);
-        acc_t weight = tensor_read<weight_t>(weight, [OC,KH,KW,IC], [oc,ky,kx,ic]);
+        out_t acc = tensor_read<out_t>(output, [N,OH,OW,OC], [n,oy,ox,oc]);
+        out_t value = tensor_read<in_t>(input, [N,IH,IW,IC], [n,iy,ix,ic]);
+        out_t weight = tensor_read<weight_t>(weight, [OC,KH,KW,IC], [oc,ky,kx,ic]);
         value = value - input_zp;
         weight = weight - weight_zp;
-        acc = apply_add<acc_t>(acc, value * weight);
-        tensor_write<acc_t>(output, [N,OH,OW,OC], [n,oy,ox,oc], acc);
+        acc = apply_add<out_t>(acc, value * weight);
+        tensor_write<out_t>(output, [N,OH,OW,OC], [n,oy,ox,oc], acc);
     }
 }
 ----
@@ -523,7 +523,7 @@ for_each(0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= oc < OC,
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|weight_t|acc_t
+|Profile|Mode|in_t|weight_t|out_t
 
 |Any|signed 8x8|int8_t|int8_t|int32_t
 |Any|signed 8x4|int8_t|int4_t|int32_t

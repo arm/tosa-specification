@@ -18,8 +18,8 @@ Elementwise absolute value operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape|Input tensor
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Input|in_out_t*|input1|shape|Input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -27,17 +27,17 @@ Elementwise absolute value operation
 [source,c++]
 ----
 for_each(index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape, index);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
     if (value1 < 0)
-        value1 = apply_sub<in_t>(0, value1);
-    tensor_write<in_t>(output, shape, index, value1);
+        value1 = apply_sub<in_out_t>(0, value1);
+    tensor_write<in_out_t>(output, shape, index, value1);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|signed 32|int32_t
 |MI, MT|floating-point|float_t
@@ -52,8 +52,8 @@ Elementwise bitwise NOT of input tensor.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape|Input tensor
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Input|in_out_t*|input1|shape|Input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -61,16 +61,16 @@ Elementwise bitwise NOT of input tensor.
 [source,c++]
 ----
 for_each(index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape, index);
-    in_t result = ~value1;
-    tensor_write<in_t>(output, shape, index, result);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
+    in_out_t result = ~value1;
+    tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
@@ -86,8 +86,8 @@ Elementwise ceiling operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape|Input tensor
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Input|in_out_t*|input1|shape|Input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -95,16 +95,16 @@ Elementwise ceiling operation
 [source,c++]
 ----
 for_each(index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape, index);
-    in_t result = apply_ceil<in_t>(value1);
-    tensor_write<in_t>(output, shape, index, result);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
+    in_out_t result = apply_ceil<in_out_t>(value1);
+    tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |MI, MT|floating-point|float_t
 |===
@@ -118,8 +118,8 @@ Elementwise count leading zeros operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape|Input tensor
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Input|in_out_t*|input1|shape|Input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -127,15 +127,15 @@ Elementwise count leading zeros operation
 [source,c++]
 ----
 for_each(index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape, index);
-    in_t result = count_leading_zeros(value1);
-    tensor_write<in_t>(output, shape, index, result);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
+    in_out_t result = count_leading_zeros(value1);
+    tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
 
 *Supported Data Types:*
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|signed 32|int32_t
 |===
@@ -149,8 +149,8 @@ Elementwise e to the x operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape|Input tensor
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Input|in_out_t*|input1|shape|Input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -158,16 +158,16 @@ Elementwise e to the x operation
 [source,c++]
 ----
 for_each(index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape, index);
-    in_t result = apply_exp<in_t>(value1);
-    tensor_write<in_t>(output, shape, index, result);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
+    in_out_t result = apply_exp<in_out_t>(value1);
+    tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |MI, MT|floating-point|float_t
 |===
@@ -181,8 +181,8 @@ Elementwise floor operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape|Input tensor
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Input|in_out_t*|input1|shape|Input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -190,16 +190,16 @@ Elementwise floor operation
 [source,c++]
 ----
 for_each(index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape, index);
-    in_t result = apply_floor<in_t>(value1);
-    tensor_write<in_t>(output, shape, index, result);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
+    in_out_t result = apply_floor<in_out_t>(value1);
+    tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |MI, MT|floating-point|float_t
 |===
@@ -213,8 +213,8 @@ Elementwise natural logarithm operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape|Input tensor
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Input|in_out_t*|input1|shape|Input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -222,16 +222,16 @@ Elementwise natural logarithm operation
 [source,c++]
 ----
 for_each(index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape, index);
-    in_t result = apply_log<in_t>(value1);
-    tensor_write<in_t>(output, shape, index, result);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
+    in_out_t result = apply_log<in_out_t>(value1);
+    tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |MI, MT|floating-point|float_t
 |===
@@ -245,8 +245,8 @@ Elementwise logical NOT of input.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape|Input tensor
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Input|in_out_t*|input1|shape|Input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -254,16 +254,16 @@ Elementwise logical NOT of input.
 [source,c++]
 ----
 for_each(index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape1, index);
-    in_t result = !value1;
-    tensor_write<in_t>(output, shape, index, result);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index);
+    in_out_t result = !value1;
+    tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|bool|bool_t
 |===
@@ -277,31 +277,31 @@ Elementwise negation operation
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape|Input tensor
-|Attribute|in_t|input1_zp|-|Input 1 zero point. Must be zero for non-int8 types.
-|Attribute|in_t|output_zp|-|Output zero point. Must be zero for non-int8 types.
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Input|in_out_t*|input1|shape|Input tensor
+|Attribute|in_out_t|input1_zp|-|Input 1 zero point. Must be zero for non-int8 types.
+|Attribute|in_out_t|output_zp|-|Output zero point. Must be zero for non-int8 types.
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
 
 [source,c++]
 ----
-ERROR_IF(in_t != int8_t && input1_zp != 0) // Zero point only for int8_t
-ERROR_IF(in_t != int8_t && output_zp != 0) // Zero point only for int8_t
+ERROR_IF(in_out_t != int8_t && input1_zp != 0) // Zero point only for int8_t
+ERROR_IF(in_out_t != int8_t && output_zp != 0) // Zero point only for int8_t
 for_each(index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape, index);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
     acc_t value = (acc_t)value1 - input1_zp;
     value = apply_sub<acc_t>(0, value);
-    in_t result = (in_t)apply_clip<acc_t>(value + output_zp, minimum<in_t>, maximum<in_t>);
-    tensor_write<in_t>(output, shape, index, result);
+    in_out_t result = (in_out_t)apply_clip<acc_t>(value + output_zp, minimum<in_out_t>, maximum<in_out_t>);
+    tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t|acc_t
+|Profile|Mode|in_out_t|acc_t
 
 |Any|signed 8|int8_t|int32_t
 |Any|signed 16|int16_t|int32_t
@@ -318,8 +318,8 @@ Elementwise reciprocal operation. For integer operation, a TABLE should be used 
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape|Input tensor
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Input|in_out_t*|input1|shape|Input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -327,16 +327,16 @@ Elementwise reciprocal operation. For integer operation, a TABLE should be used 
 [source,c++]
 ----
 for_each(index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape1, index);
-    in_t result = 1.0 / value1;
-    tensor_write<in_t>(output, shape, index, result);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index);
+    in_out_t result = 1.0 / value1;
+    tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |MI, MT|floating-point|float_t
 |===
@@ -350,8 +350,8 @@ Elementwise reciprocal square root operation. For integer operation, a TABLE sho
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape|Input tensor
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Input|in_out_t*|input1|shape|Input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -359,16 +359,16 @@ Elementwise reciprocal square root operation. For integer operation, a TABLE sho
 [source,c++]
 ----
 for_each(index in shape) {
-    in_t value1 = tensor_read<in_t>(input1, shape1, index);
-    in_t result = 1.0 / apply_sqrt<in_t>(value1);
-    tensor_write<in_t>(output, shape, index, result);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index);
+    in_out_t result = 1.0 / apply_sqrt<in_out_t>(value1);
+    tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |MI, MT|floating-point|float_t
 |===

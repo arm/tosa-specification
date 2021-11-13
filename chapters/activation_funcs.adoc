@@ -20,10 +20,10 @@ No zero point subtraction is done to the values, thus to clamp to the zero point
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|Input|shape|Input tensor
-|Attribute|in_t|min_val|-|minimum clip value
-|Attribute|in_t|max_val|-|maximum clip value
-|Output|in_t*|Output|shape|Output tensor of same type and shape as input
+|Input|in_out_t*|Input|shape|Input tensor
+|Attribute|in_out_t|min_val|-|minimum clip value
+|Attribute|in_out_t|max_val|-|maximum clip value
+|Output|in_out_t*|Output|shape|Output tensor of same type and shape as input
 |===
 
 *Operation Function:*
@@ -31,16 +31,16 @@ No zero point subtraction is done to the values, thus to clamp to the zero point
 ----
 ERROR_IF(max_val < min_val);
 for_each(index in shape) {
-    in_t value = tensor_read<in_t>(input, shape, index);
-    value = apply_clip<in_t>(value, min_val, max_val);
-    tensor_write<in_t>(output, shape, index, value);
+    in_out_t value = tensor_read<in_out_t>(input, shape, index);
+    value = apply_clip<in_out_t>(value, min_val, max_val);
+    tensor_write<in_out_t>(output, shape, index, value);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
@@ -72,14 +72,14 @@ generate_lookup_table(&sigmoid_table, &sigmoid_reference);
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|Input|shape|Input tensor
-|Output|in_t*|Output|shape|Output tensor of same type and shape as input
+|Input|in_out_t*|Input|shape|Input tensor
+|Output|in_out_t*|Output|shape|Output tensor of same type and shape as input
 |===
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |MI, MT|floating-point|float_t
 |===
@@ -110,14 +110,14 @@ generate_lookup_table(&tanh_table, &tanh_reference);
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|Input|shape|Input tensor
-|Output|in_t*|Output|shape|Output tensor of same type and shape as input
+|Input|in_out_t*|Input|shape|Input tensor
+|Output|in_out_t*|Output|shape|Output tensor of same type and shape as input
 |===
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |MI, MT|floating-point|float_t
 |===

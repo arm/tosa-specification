@@ -18,9 +18,9 @@ No data conversion happens during a concat operation.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shapes1[]|List of input tensors. All inputs must have the same rank and data type
+|Input|in_out_t*|input1|shapes1[]|List of input tensors. All inputs must have the same rank and data type
 |Attribute|int|axis|-|Axis along which concatenation is to occur, in range from 0 to rank(shape)-1
-|Output|in_t*|output|shape|Output tensor
+|Output|in_out_t*|output|shape|Output tensor
 |===
 
 *Operation Function:*
@@ -43,8 +43,8 @@ for_each(index1 in shape) {
         // For each output location, we are looking for the
         // appropriate input tensor
         if (index2[axis] >= 0 && index2[axis] < shapes1[t][axis]) {
-            in_t value = tensor_read<in_t>(input1[t], shapes1[t], index2);
-            tensor_write<in_t>(output, shape, index1, value);
+            in_out_t value = tensor_read<in_out_t>(input1[t], shapes1[t], index2);
+            tensor_write<in_out_t>(output, shape, index1, value);
         }
         index2[axis] = index2[axis] - shapes1[t][axis];
     }
@@ -55,7 +55,7 @@ for_each(index1 in shape) {
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|Boolean|bool_t
 |Any|signed 8|int8_t
@@ -75,10 +75,10 @@ The pad_const value includes the zero point if the tensor uses a zero point.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor
+|Input|in_out_t*|input1|shape1|Input tensor
 |Attribute|int|padding|[rank(input1),2]|Amount of padding to be done
-|Attribute|in_t|pad_const|-|Constant value to be used as padding
-|Output|in_t*|output|shape|Output tensor of same type as the input tensor
+|Attribute|in_out_t|pad_const|-|Constant value to be used as padding
+|Output|in_out_t*|output|shape|Output tensor of same type as the input tensor
 |===
 
 *Operation Function:*
@@ -98,15 +98,15 @@ for_each(index in shape) {
             is_pad = true;
         }
     }
-    in_t value = is_pad ? pad_const : tensor_read<in_t>(input1, shape1, index1);
-    tensor_write<in_t>(output, shape, index, value);
+    in_out_t value = is_pad ? pad_const : tensor_read<in_out_t>(input1, shape1, index1);
+    tensor_write<in_out_t>(output, shape, index, value);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|Boolean|bool_t
 |Any|signed 8|int8_t
@@ -124,9 +124,9 @@ Returns a tensor with the same type/values as the input, with a new shape specif
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor
+|Input|in_out_t*|input1|shape1|Input tensor
 |Attribute|int|new_shape|[rank(output)]|List of values, with each element giving the size of the result tensor for the given dimension. At most one dimension may be given as -1 to automatically calculate the dimension size.
-|Output|in_t*|output|shape|Output tensor of same type, size as the input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
 *Operation Function:*
@@ -142,7 +142,7 @@ for(i = 0; i < tensor_size(shape); i++) {
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|Boolean|bool_t
 |Any|signed 8|int8_t
@@ -160,9 +160,9 @@ Returns a tensor with the same type/values as the input, with the data reversed 
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input|shape|Input tensor from 1 to 4 dims
+|Input|in_out_t*|input|shape|Input tensor from 1 to 4 dims
 |Attribute|int|axis|-|Axis to reverse, in range from 0 to rank(shape)-1
-|Output|in_t*|output|shape|Output tensor. Same shape as input tensor.
+|Output|in_out_t*|output|shape|Output tensor. Same shape as input tensor.
 |===
 
 *Operation Function:*
@@ -173,15 +173,15 @@ ERROR_IF(axis < 0 || axis >= rank(shape));
 for_each(index in shape) {
     tmp_index = index;
     tmp_index[axis] = shape[axis] - 1 - index[axis];
-    in_t value = tensor_read<in_t>(input, shape, tmp_index);
-    tensor_write<in_t>(output, shape, index, value);
+    in_out_t value = tensor_read<in_out_t>(input, shape, tmp_index);
+    tensor_write<in_out_t>(output, shape, index, value);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|Boolean|bool_t
 |Any|signed 8|int8_t
@@ -199,10 +199,10 @@ No data conversion happens during a slice operation.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor with rank from 1 to 4
+|Input|in_out_t*|input1|shape1|Input tensor with rank from 1 to 4
 |Attribute|int|start|[rank(input1)]|List of integer coordinates, of length equal to the rank of input1. Start coordinate for slicing.
 |Attribute|int|size|[rank(input1)]|List of integer size values, of length equal to the rank of input1. Size of the input to be used.
-|Output|in_t*|output|shape|Output tensor of same type as the input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type as the input tensor
 |===
 
 *Operation Function:*
@@ -225,15 +225,15 @@ for_each(index in shape) {
     for(i = 0; i < rank(shape); i++) {
        tmp_index[i] = index[i] + start[i];
     }
-    in_t value = tensor_read<in_t>(input, shape1, tmp_index);
-    tensor_write<in_t>(output, shape, index, value);
+    in_out_t value = tensor_read<in_out_t>(input, shape1, tmp_index);
+    tensor_write<in_out_t>(output, shape, index, value);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|Boolean|bool_t
 |Any|signed 8|int8_t
@@ -251,9 +251,9 @@ Replicates input1 multiplies times along each dimension.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor with rank from 1 to 4
+|Input|in_out_t*|input1|shape1|Input tensor with rank from 1 to 4
 |Attribute|int32_t|multiplies|[rank(shape1)]|Number of times to replicate input1 in each dimension
-|Output|in_t*|output|shape|Output tensor of same type, rank as the input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, rank as the input tensor
 |===
 
 *Operation Function:*
@@ -266,15 +266,15 @@ for_each(index in shape) {
         REQUIRE(shape1[i] * multiplies[i] == shape[i]);
         tmp_index[i] = index[i] % shape1[i];
     }
-    in_t value = tensor_read<in_t>(input, shape1, tmp_index);
-    tensor_write<in_t>(output, shape, index, value);
+    in_out_t value = tensor_read<in_out_t>(input, shape1, tmp_index);
+    tensor_write<in_out_t>(output, shape, index, value);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|Boolean|bool_t
 |Any|signed 8|int8_t
@@ -292,9 +292,9 @@ Permutes the dimensions based on perm.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t*|input1|shape1|Input tensor with minimum rank of one.
+|Input|in_out_t*|input1|shape1|Input tensor with minimum rank of one.
 |Attribute|int32_t|perms|[rank(input1)]|List of integers of length equal to the rank of input1. Values must be valid dimensions within shape1, and may not be repeated.
-|Output|in_t*|output|shape|Output tensor of same type, rank as the input tensor
+|Output|in_out_t*|output|shape|Output tensor of same type, rank as the input tensor
 |===
 
 *Operation Function:*
@@ -315,15 +315,15 @@ for_each(index in shape) {
         REQUIRE(shape1[perm[i]] == shape[i])
         tmp_index[perm[i]] = index[i]
     }
-    in_t value = tensor_read<in_t>(input, shape1, tmp_index);
-    tensor_write<in_t>(output, shape, index, value);
+    in_out_t value = tensor_read<in_out_t>(input, shape1, tmp_index);
+    tensor_write<in_out_t>(output, shape, index, value);
 }
 ----
 
 *Supported Data Types:*
 
 |===
-|Profile|Mode|in_t
+|Profile|Mode|in_out_t
 
 |Any|Boolean|bool_t
 |Any|signed 8|int8_t

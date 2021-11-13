@@ -19,9 +19,9 @@ Elementwise select of the output based on a condition.
 |Argument|Type|Name|Shape|Description
 
 |Input|cmp_t|input1|shape1|Input selector tensor
-|Input|in_t*|input2|shape2|Input value tensor if input1 is True
-|Input|in_t*|input3|shape3|Input value tensor if input1 is False
-|Output|in_t*|output|shape|Output tensor of same type as input2 and input3, with broadcast shape if necessary
+|Input|in_out_t*|input2|shape2|Input value tensor if input1 is True
+|Input|in_out_t*|input3|shape3|Input value tensor if input1 is False
+|Output|in_out_t*|output|shape|Output tensor of same type as input2 and input3, with broadcast shape if necessary
 |===
 
 *Operation Function:*
@@ -33,21 +33,21 @@ for_each(index in shape) {
     index2 = apply_broadcast(shape, shape2, index);
     index3 = apply_broadcast(shape, shape3, index);
     cmp_t value1 = tensor_read<cmp_t>(input1, shape1, index1);
-    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-    in_t value3 = tensor_read<in_t>(input3, shape3, index3);
-    in_t result;
+    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
+    in_out_t value3 = tensor_read<in_out_t>(input3, shape3, index3);
+    in_out_t result;
     if (value1) {
          result = value2;
     } else {
          result = value3;
     }
-    tensor_write<in_t>(output, shape, index, result);
+    tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
 
 *Supported Data Types:*
 |===
-|Profile|Mode|cmp_t|in_t
+|Profile|Mode|cmp_t|in_out_t
 
 |Any|Boolean|bool_t|bool_t
 |Any|signed 8|bool_t|int8_t
