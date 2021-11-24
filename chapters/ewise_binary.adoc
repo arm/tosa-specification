@@ -544,6 +544,7 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 [source,c++]
 ----
+ERROR_IF(in_t != int32_t && shift > 0);
 for_each(index in shape) {
     index1 = apply_broadcast(shape, shape1, index);
     index2 = apply_broadcast(shape, shape2, index);
@@ -551,7 +552,11 @@ for_each(index in shape) {
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
     out_t result;
     if (in_t == int32_t && shift > 0) {
-        result = apply_scale_32(value1, value2, shift);
+        int64_t product = (int64_t)value1 * (int64_t)value2;
+        int64_t round   = (int64_t)1 << (shift-1);
+        product = (product + round) >> shift;
+        REQUIRE(product >= minimum<int32_t> && product <= maximum<int32_t>)
+        result = product;
     } else {
         result = value1 * value2;  // low 32-bits of result for int32_t
     }
