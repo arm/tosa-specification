@@ -27,8 +27,8 @@ This condition is captured in the ERROR_IF function.
 
 *Implementation Notes*
 
-* An implementation is not required to detect unpredictable behaviour. If tosa_execute_graph() returns tosa_unpredictable then the tosa_test_compliance() function does not require any specific output from an implementation.
-* An implementation is required to detect errors in a graph that does not have unpredictable behaviour (see tosa_test_compliance).
+* An implementation is not required to detect unpredictable behavior. If tosa_execute_graph() returns tosa_unpredictable then the tosa_test_compliance() function does not require any specific output from an implementation.
+* An implementation is required to detect errors in a graph that does not have unpredictable behavior (see tosa_test_compliance).
 * An acceptable implementation is to stop and report an error on the first ERROR_IF condition that occurs. This satifies tosa_test_compliance() even if the tosa_execute_graph() was tosa_unpredictable.
 * If the tosa_execute_graphs() result is tosa_unpredictable or tosa_error, then there is no requirement on the implementation to execute any portion of the TOSA graph.
 

@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2021 ARM Limited
+// (C) COPYRIGHT 2020-2022 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -74,8 +74,8 @@ The term conformant will mean the same as compliant.
 
 ==== Baseline Inference Profile
 
-The <<Operator Graphs>> section of this specification defines a TOSA graph and the behaviour defined for a TOSA graph.
-This behaviour is captured in the pseudo-code function tosa_execute_graph().
+The <<Operator Graphs>> section of this specification defines a TOSA graph and the behavior defined for a TOSA graph.
+This behavior is captured in the pseudo-code function tosa_execute_graph().
 For a given input graph (with attributes) and input tensors there are three possible tosa_graph_result values after executing the graph:
 
 * tosa_unpredictable: The result of the graph on the given inputs cannot be relied upon.
@@ -449,7 +449,7 @@ void generate_lookup_table(int16_t *table, int32_t (*reference)(int32_t))
 
 === Floating-point
 
-TOSA does not define bit-exact behaviour of the floating-point type, since floating-point operation results can vary according to operation order (floating-point addition is not associative in general) and rounding behaviour.
+TOSA does not define bit-exact behavior of the floating-point type, since floating-point operation results can vary according to operation order (floating-point addition is not associative in general) and rounding behavior.
 If a bit-exact answer is required then integer operations should be used.
 TOSA does define that the floating-point type must support the following list of features.
 These features ensure that detection of overflow and other exceptional conditions can be handled consistently.
@@ -460,7 +460,7 @@ These features ensure that detection of overflow and other exceptional condition
 * The floating-point type must support signed zero
 * The floating-point type must support handling of infinities, NaNs, zeros as in the following table
 
-.floating-point behaviour
+.floating-point behavior
 |===
 |Case|Result
 
