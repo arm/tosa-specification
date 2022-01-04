@@ -304,8 +304,13 @@ The following function maps an index in the output tensor to an index in the inp
 
 [source,c++]
 ----
+// The index argument should be a valid location within out_shape.
+// The function returns the location within in_shape that contributes
+// to the output based on broadcasting rules.
+
 dim_t apply_broadcast(dim_t out_shape, dim_t in_shape, dim_t index) {
     ERROR_IF(rank(out_shape) != rank(in_shape));
+    ERROR_IF(rank(out_shape) != rank(index));
     for (i = 0; i < rank(out_shape); i++) {
         if (out_shape[i] != in_shape[i]) {
             ERROR_IF(in_shape[i] != 1);
