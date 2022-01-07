@@ -294,7 +294,7 @@ ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
 ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(dilation_y < 1 || dilation_x < 1);
 pad = flatten([0,0], pad, [0,0]);
-for_each(0 <= n<N, 0 <= oy < H, 0 <= ox < W; 0 <= c < (C * M), 0 <= m < M) {
+for_each(0 <= n<N, 0 <= oy < H, 0 <= ox < W; 0 <= c < C, 0 <= m < M) {
     out_t acc = 0;
     iy = oy * stride_y - pad_top;
     ix = ox * stride_x - pad_left;
