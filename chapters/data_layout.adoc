@@ -309,11 +309,17 @@ for_each(index in perms) {
     ERROR_IF(indexes_used[index] == true);
     indexes_used[index] = true;
 }
+
+// Ensure that the output shapes have the properly
+// permuted shapes
+for(i = 0; i < rank(shape); i++) {
+    ERROR_IF(shape1[perms[i]] != shape[i])
+}
+
 for_each(index in shape) {
     tmp_index = index;
     for(i = 0; i < rank(shape); i++) {
-        REQUIRE(shape1[perm[i]] == shape[i])
-        tmp_index[perm[i]] = index[i]
+        tmp_index[perms[i]] = index[i]
     }
     in_out_t value = tensor_read<in_out_t>(input, shape1, tmp_index);
     tensor_write<in_out_t>(output, shape, index, value);
