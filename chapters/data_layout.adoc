@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2021 ARM Limited
+// (C) COPYRIGHT 2020-2022 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -285,7 +285,8 @@ for_each(index in shape) {
 
 ==== TRANSPOSE
 
-Permutes the dimensions based on perm.
+Permutes the dimensions of the input tensor input1 based on the perms argument.
+Each value in the perms list must be a valid dimension of the input tensor and may not be repeated.
 
 *Arguments:*
 
