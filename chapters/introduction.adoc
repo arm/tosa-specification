@@ -348,13 +348,24 @@ networks which expect unsigned 8-bit input tensors.
 
 Most operations in TOSA do not contain quantization scaling in the operation, but in a separate RESCALE node that performs change in scale using a multipler and shift value. This TOSA specification supports two precisions of multiplier: 16-bit and 32-bit. The 32-bit multiplier version supports two rounding modes to enable simpler lowering of existing frameworks that use two stage rounding. All arithmetic is designed so that it does not overflow a 64-bit accumulator and that the final result fits in 32 bits. In particular a 48-bit value can only be scaled with the 16-bit multiplier.
 
-The apply_scale functions provide a scaling of approximately (multiplier * 2^-shift^). The shift range is limited to allow a variety of implementations. The upper limit of 62 allows it to be decomposed as two right shifts of 31. The lower limit removes special cases in the rounding. These restrictions have little practical impact since the shift value to achieve a scaling of 1.0 is 30 for apply_scale_32 with multiplier=1<<30 and 14 for apply_scale_16 with scale=1<<14. It follows that a scaling range of 2^+12^ down to 2^-32^ is supported for both functions with normalized multiplier. (Smaller scales can be obtained by denormalizing the multiplier).
+The apply_scale functions provide a scaling of approximately (multiplier * 2^-shift^).
+The shift and value range is limited to allow a variety of implementations.
+The limit of 62 on shift allows the shift to be decomposed as two right shifts of 31.
+The limit on value allows implementations that left shift the value before the mutliply in the case of shifts of 32 or less.
+For example, in the case shift=30 an implementation of the form ((value\<<2) * multiplier + round)>>32 can be used.
+A scaling range of 2^+12^ down to 2^-32^ is supported for both functions with a normalized multiplier.
+
+For example, in typical usage a scaling of m*2^-n^ where m is a fraction in the
+range 1.0 \<= m < 2.0 can be represented using multiplier=(1<<30)*m, shift=(30+n) for
+apply_scale_32() and multiplier=(1<<14)*m, shift=(14+n) for apply_scale_16().
+The values to achieve a scaling of 1.0 are shift=30, multiplier=1<<30 for apply_scale_32 and shift=14, multiplier=1<<14 for apply_scale_16.
 
 [source,c++]
 ----
 int32_t apply_scale_32(int32_t value, int32_t multipler, uint6_t shift, bool_t double_round=false) {
     REQUIRE(multiplier >= 0);
     REQUIRE(2 <= shift && shift <= 62);
+    REQUIRE(value >= (-1<<(shift-2)) && value < (1<<(shift-2));
     int64_t round = 1 << (shift - 1);
     if (double_round) {
         if (shift > 31 && value >= 0) round += 1<<30;
@@ -362,7 +373,7 @@ int32_t apply_scale_32(int32_t value, int32_t multipler, uint6_t shift, bool_t d
     }
     int64_t result = (int64_t)value * multiplier + round;
     result = result >> shift;
-    REQUIRE(result >= minimum<int32_t> && result <= maximum<int32_t>);
+    // result will fit a 32-bit range due to the REQUIRE on value
     return (int32_t)result;
 }
 
