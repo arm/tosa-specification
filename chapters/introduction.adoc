@@ -444,7 +444,9 @@ int32_t apply_lookup(int16_t *table, int32_t value)
     int32_t fraction = clipped_value & 0x7f;
     int16_t base = table[index];
     int16_t next = table[index+1];
-    int32_t return_value = (base << 7) + (next - base) * fraction;
+    int32_t slope = next - base;
+    REQUIRE(slope >= minimum<int16_t> && slope <= maximum<int16_t>)
+    int32_t return_value = (base << 7) + slope * fraction;
     return return_value;	// return interpolated value of 16 + 7 = 23 bits
 }
 ----
