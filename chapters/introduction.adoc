@@ -351,7 +351,7 @@ Most operations in TOSA do not contain quantization scaling in the operation, bu
 The apply_scale functions provide a scaling of approximately (multiplier * 2^-shift^).
 The shift and value range is limited to allow a variety of implementations.
 The limit of 62 on shift allows the shift to be decomposed as two right shifts of 31.
-The limit on value allows implementations that left shift the value before the mutliply in the case of shifts of 32 or less.
+The limit on value allows implementations that left shift the value before the multiply in the case of shifts of 32 or less.
 For example, in the case shift=30 an implementation of the form ((value\<<2) * multiplier + round)>>32 can be used.
 A scaling range of 2^+12^ down to 2^-32^ is supported for both functions with a normalized multiplier.
 
@@ -482,11 +482,22 @@ These features ensure that detection of overflow and other exceptional condition
 |===
 |Case|Result
 
-|Any input operand is a NaN | a NaN
+|Operators other than explicitly mentioned by other rules: Any input operand is a NaN | a NaN
 
+|Comparisons (EQUAL, GREATER, GREATER_EQUAL), where either or both operands is NaN | False
+
+|Comparisons ignore the sign of 0|
+
+|RSQRT (reciprocal square root) of negative numbers | a NaN
 |(&#177; 0) &#215; (&#177; infinity), (&#177; infinity) &#215; (&#177; 0) | a NaN
 
+|LOG of negative numbers | a NaN
+
+|nonzero numbers / (&#177; 0) | (&#177; infinity)
+
 |(&#177; 0) / (&#177; 0), (&#177; infinity) / (&#177; infinity) | a NaN
+
+|(&#177; infinity) * 0 | a NaN
 
 | (+infinity) - (+infinity),  (+infinity) + (-infinity) | a NaN
 

@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2021 ARM Limited
+// (C) COPYRIGHT 2021-2022 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -85,14 +85,30 @@ in_t apply_floor<in_t>(in_t input) {
 }
 
 in_t apply_log<in_t>(in_t input) {
+    if (input == 0) {
+        return -INFINITY
+    }
+    else if (input < 0) {
+        return NaN;
+    }
     return the natural logarithm of input
 }
 
 in_t apply_max<in_t>(in_t a, in_t b) {
+    if (in_t == float_t) {
+        if (isNaN(a) || isNaN(b)) {
+            return NaN;
+        }
+    }
     if (a >= b) return a; else return b;
 }
 
 in_t apply_min<in_t>(in_t a, in_t b) {
+    if (in_t == float_t) {
+        if (isNaN(a) || isNaN(b)) {
+            return NaN;
+        }
+    }
     if (a < b) return a; else return b;
 }
 
@@ -177,4 +193,7 @@ int rank(in_t input)
 
 int sum(in_t input[])
     return the sum of values of an input list
+
+bool isNaN(float input)
+    return True if floating-point input value is NaN
 ----

@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2021 ARM Limited
+// (C) COPYRIGHT 2020-2022 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -22,13 +22,23 @@ Elementwise absolute value operation
 |Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
+*Floating-point behavior:*
+|===
+|Input|-infinity|+infinity|-0|+0|NaN
+
+|Output|+infinity|+infinity|+0|+0|NaN
+|===
+
 *Operation Function:*
 
 [source,c++]
 ----
 for_each(index in shape) {
     in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
-    if (value1 < 0)
+    if (in_out_t == float_t && value1 == -0.0) {
+        value1 = 0.0;
+    }
+    if (value1 < 0.0)
         value1 = apply_sub<in_out_t>(0, value1);
     tensor_write<in_out_t>(output, shape, index, value1);
 }
@@ -88,6 +98,13 @@ Elementwise ceiling operation
 
 |Input|in_out_t*|input1|shape|Input tensor
 |Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Floating-point behavior:*
+|===
+|Input|-infinity|+infinity|-0|+0|NaN
+
+|Output|-infinity|+infinity|-0|+0|NaN
 |===
 
 *Operation Function:*
@@ -153,6 +170,13 @@ Elementwise e to the x operation
 |Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
+*Floating-point behavior:*
+|===
+|Input|-infinity|+infinity|-0|+0|NaN
+
+|Output|+0|+infinity|1|1|NaN
+|===
+
 *Operation Function:*
 
 [source,c++]
@@ -185,6 +209,13 @@ Elementwise floor operation
 |Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
+*Floating-point behavior:*
+|===
+|Input|-infinity|+infinity|-0|+0|NaN
+
+|Output|-infinity|+infinity|-0|+0|NaN
+|===
+
 *Operation Function:*
 
 [source,c++]
@@ -215,6 +246,13 @@ Elementwise natural logarithm operation
 
 |Input|in_out_t*|input1|shape|Input tensor
 |Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
+|===
+
+*Floating-point behavior:*
+|===
+|Input|-infinity|+infinity|-0|+0|NaN
+
+|Output|NaN|+infinity|-infinity|-infinity|NaN
 |===
 
 *Operation Function:*
@@ -283,6 +321,13 @@ Elementwise negation operation
 |Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
+*Floating-point behavior:*
+|===
+|Input|-infinity|+infinity|-0|+0|NaN
+
+|Output|+infinity|-infinity|+0|-0|NaN
+|===
+
 *Operation Function:*
 
 [source,c++]
@@ -322,6 +367,13 @@ Elementwise reciprocal operation. For integer operation, a TABLE should be used 
 |Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
+*Floating-point behavior:*
+|===
+|Input|-infinity|+infinity|-0|+0|NaN
+
+|Output|-0|+0|-infinity|+infinity|NaN
+|===
+
 *Operation Function:*
 
 [source,c++]
@@ -354,13 +406,26 @@ Elementwise reciprocal square root operation. For integer operation, a TABLE sho
 |Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
+*Floating-point behavior:*
+|===
+|Input|-infinity|+infinity|-0|+0|NaN
+
+|Output|NaN|+0|-infinity|+infinity|NaN
+|===
+
 *Operation Function:*
 
 [source,c++]
 ----
 for_each(index in shape) {
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index);
-    in_out_t result = 1.0 / apply_sqrt<in_out_t>(value1);
+    in_out_t result;
+    if (value1 < 0) {
+        result = NaN;
+    }
+    else {
+        result = 1.0 / apply_sqrt<in_out_t>(value1);
+    }
     tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
