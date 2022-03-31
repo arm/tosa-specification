@@ -12,6 +12,7 @@ TOSAREVISION=0.24.0 draft
 MKDIR=mkdir -p
 ASCIIDOC=asciidoctor
 ASPELL=aspell
+SHELL=/bin/bash -o pipefail
 
 HTMLDIR=out/html
 PDFDIR=out/pdf
@@ -38,14 +39,15 @@ clean:
 
 spell: out/spell.txt
 
+.PRECIOUS: out/spell.txt
 out/spell.txt: $(ADOCFILES) FORCE
 	@echo Running spell check
 	@mkdir -p $(@D)
 	@tools/get_descriptions.py $(ADOCFILES) \
 		| $(ASPELL) list -v -l en-US --encoding=UTF-8 --add-extra-dicts=./tools/dictionary.dic\
 		| sort -u > $@
-	@-if [ -s $@ ] ; then \
-		echo Spelling errors detected, check $@; \
+	@if [ -s $@ ] ; then \
+		echo Spelling errors detected, check $@; exit 1; \
 		else echo No spelling errors found ; \
 	fi
 
