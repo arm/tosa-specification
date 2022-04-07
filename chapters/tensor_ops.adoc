@@ -61,7 +61,9 @@ for_each(left_index in left_shape) {
 
 |Any|signed 8|int8_t|int32_t
 |Any|signed 16|int16_t|int32_t
-|MI, MT|floating-point|float_t|int32_t
+|MI, MT|fp16|fp16_t|int32_t
+|MI, MT|bf16|bf16_t|int32_t
+|MI, MT|fp32|fp32_t|int32_t
 |===
 
 ==== AVG_POOL2D
@@ -134,7 +136,10 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C ) {
 
 |Any|signed 8|int8_t|int32_t
 |Any|signed 16|int16_t|int32_t
-|MI, MT|floating-point|float_t|float_t
+|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t
+|MI, MT|fp16 with fp32 accumulate|fp16_t|fp32_t
+|MI, MT|bf16 with fp32 accumulate|bf16_t|fp32_t
+|MI, MT|fp32|fp32_t|fp32_t
 |===
 
 ==== CONV2D
@@ -198,7 +203,10 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
 |Any|signed 8x8|int8_t|int8_t|int32_t
 |Any|signed 8x4|int8_t|int4_t|int32_t
 |Any|signed 16x8|int16_t|int8_t|int48_t
-|MI, MT|floating-point|float_t|float_t|float_t
+|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t|fp16_t
+|MI, MT|fp16 with fp32 accumulate|fp16_t|fp16_t|fp32_t
+|MI, MT|bf16 with fp32 accumulate|bf16_t|bf16_t|fp32_t
+|MI, MT|fp32|fp32_t|fp32_t|fp32_t
 |===
 
 ==== CONV3D
@@ -265,7 +273,10 @@ for_each(0 <= n < N, 0 <= od < OD, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
 |Any|signed 8x8|int8_t|int8_t|int32_t
 |Any|signed 8x4|int8_t|int4_t|int32_t
 |Any|signed 16x8|int16_t|int8_t|int48_t
-|MI, MT|floating-point|float_t|float_t|float_t
+|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t|fp16_t
+|MI, MT|fp16 with fp32 accumulate|fp16_t|fp16_t|fp32_t
+|MI, MT|bf16 with fp32 accumulate|bf16_t|bf16_t|fp32_t
+|MI, MT|fp32|fp32_t|fp32_t|fp32_t
 |===
 
 
@@ -330,7 +341,10 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C, 0 <= m < M) {
 |Any|signed 8x8|int8_t|int8_t|int32_t
 |Any|signed 8x4|int8_t|int4_t|int32_t
 |Any|signed 16x8|int16_t|int8_t|int48_t
-|MI, MT|floating-point|float_t|float_t|float_t
+|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t|fp16_t
+|MI, MT|fp16 with fp32 accumulate|fp16_t|fp16_t|fp32_t
+|MI, MT|bf16 with fp32 accumulate|bf16_t|bf16_t|fp32_t
+|MI, MT|fp32|fp32_t|fp32_t|fp32_t
 |===
 
 ==== FFT2D
@@ -394,7 +408,8 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W) {
 
 |===
 |Profile|Mode|in_out_t
-|MI,MT|floating-point|float
+
+|MI,MT|fp32_t|fp32_t
 |===
 
 ==== FULLY_CONNECTED
@@ -442,7 +457,10 @@ for_each(0 <= n < N, 0 <= oc < OC) {
 |Any|signed 8x8|int8_t|int8_t|int32_t
 |Any|signed 8x4|int8_t|int4_t|int32_t
 |Any|signed 16x8 |int16_t|int8_t|int48_t
-|MI, MT|floating-point|float_t|float_t|float_t
+|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t|fp16_t
+|MI, MT|fp16 with fp32 accumulate|fp16_t|fp16_t|fp32_t
+|MI, MT|bf16 with fp32 accumulate|bf16_t|bf16_t|fp32_t
+|MI, MT|fp32|fp32_t|fp32_t|fp32_t
 |===
 
 ==== MATMUL
@@ -485,7 +503,10 @@ for_each(0 <= n < N, 0 <= h < H, 0 <= w < W) {
 
 |Any|signed 8x8|int8_t|int32_t
 |Any|signed 16x16|int16_t|int48_t
-|MI, MT|floating-point|float_t|float_t
+|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t
+|MI, MT|fp16 with fp32 accumulate|fp16_t|fp32_t
+|MI, MT|bf16 with fp32 accumulate|bf16_t|fp32_t
+|MI, MT|fp32|fp32_t|fp32_t
 |===
 
 ==== MAX_POOL2D
@@ -540,7 +561,9 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
 
 |Any|signed 8|int8_t
 |Any|16-bit|int16_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== RFFT2D
@@ -587,7 +610,8 @@ for_each(0 <= n < N, 0 <= oy < H/2 + 1, 0 <= ox < W/2 + 1) {
 
 |===
 |Profile|Mode|in_out_t
-|MI,MT|floating-point|float
+
+|MI,MT|fp32_t|fp32_t
 |===
 
 
@@ -650,5 +674,8 @@ for_each(0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= oc < OC,
 |Any|signed 8x8|int8_t|int8_t|int32_t
 |Any|signed 8x4|int8_t|int4_t|int32_t
 |Any|signed 16x8|int16_t|int8_t|int48_t
-|MI, MT|floating-point|float_t|float_t|float_t
+|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t|fp16_t
+|MI, MT|fp16 with fp32 accumulate|fp16_t|fp16_t|fp32_t
+|MI, MT|bf16 with fp32 accumulate|bf16_t|bf16_t|fp32_t
+|MI, MT|fp32|fp32_t|fp32_t|fp32_t
 |===

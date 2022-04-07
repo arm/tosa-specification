@@ -136,7 +136,9 @@ for_each(index in shape1) {
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== REDUCE_MIN
@@ -179,7 +181,9 @@ for_each(index in shape1) {
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== REDUCE_PRODUCT
@@ -220,7 +224,9 @@ for_each(index in shape1) {
 |===
 |Profile|Mode|in_out_t
 
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== REDUCE_SUM
@@ -262,6 +268,8 @@ for_each(index in shape1) {
 |Profile|Mode|in_out_t
 
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 

@@ -44,7 +44,9 @@ for_each(index in shape) {
 
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== SIGMOID
@@ -81,7 +83,9 @@ generate_lookup_table(&sigmoid_table, &sigmoid_reference);
 |===
 |Profile|Mode|in_out_t
 
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== TANH
@@ -119,5 +123,7 @@ generate_lookup_table(&tanh_table, &tanh_reference);
 |===
 |Profile|Mode|in_out_t
 
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===

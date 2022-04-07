@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2021 ARM Limited
+// (C) COPYRIGHT 2020-2022 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -31,7 +31,9 @@ A node containing constant data for use as the input to an operation. May hold d
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== IDENTITY
@@ -56,5 +58,7 @@ Returns a tensor with the same shape, type, and contents as the input.
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===

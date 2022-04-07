@@ -47,7 +47,9 @@ for_each(index in shape) {
 |Profile|Mode|in_t|out_t
 
 |Any|signed 32|int32_t|bool_t
-|MI, MT|floating-point|float_t|bool_t
+|MI, MT|fp16|fp16_t|bool_t
+|MI, MT|bf16|bf16_t|bool_t
+|MI, MT|fp32|fp32_t|bool_t
 |===
 
 ==== GREATER
@@ -87,7 +89,9 @@ for_each(index in shape) {
 |Profile|Mode|in_t|out_t
 
 |Any|signed 32|int32_t|bool_t
-|MI, MT|floating-point|float_t|bool_t
+|MI, MT|fp16|fp16_t|bool_t
+|MI, MT|bf16|bf16_t|bool_t
+|MI, MT|fp32|fp32_t|bool_t
 |===
 
 ==== GREATER_EQUAL
@@ -128,5 +132,7 @@ for_each(index in shape) {
 |Profile|Mode|in_t|out_t
 
 |Any|signed 32|int32_t|bool_t
-|MI, MT|floating-point|float_t|bool_t
+|MI, MT|fp16|fp16_t|bool_t
+|MI, MT|bf16|bf16_t|bool_t
+|MI, MT|fp32|fp32_t|bool_t
 |===

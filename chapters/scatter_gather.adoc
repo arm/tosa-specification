@@ -105,5 +105,7 @@ for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
 |Any|signed 8|int32_t|int8_t
 |Any|signed 16|int32_t|int16_t
 |Any|signed 32|int32_t|int32_t
-|MI,MT|float|int32_t|float
+|MI,MT|fp16|int32_t|fp16_t
+|MI,MT|bf16|int32_t|bf16_t
+|MI,MT|fp32|int32_t|fp32_t
 |===

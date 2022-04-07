@@ -106,6 +106,16 @@ The following table summarizes the three profiles:
 |Main Training|TOSA-MT|Yes|Yes|Yes
 |===
 
+=== Status
+
+The TOSA specification is a work in progress.
+
+* The Base Inference profile should be considered to be near release quality, with conformance tests available.
+* The Main Inference profile has most of the expected operators in place, but is still subject to change.
+* The reference model and conformance tests do not yet support all of the floating point types that have been defined.
+* There is not currently a conformance test suite available for Main Inference.
+* Main Training profile is pre-alpha, significant work still needs to be done for the profile, and no conformance tests are available.
+
 === Compliance
 
 This section defines when a TOSA implementation is compliant to a given TOSA specification profile.
@@ -267,10 +277,20 @@ The number formats supported by a given operator are listed in its table of supp
 | (1<<47)-1
 |Signed 48-bit two's-complement value.
 
-|float_t
+|fp16_t
 | -infinity
 | +infinity
-|floating-point number. Must have features defined in the section <<Floating-point>>.
+| 16-bit floating-point value.
+
+|bf16_t
+| -infinity
+| +infinity
+| 16-bit brain float value.
+
+|fp32_t
+| -infinity
+| +infinity
+| 32-bit floating-point value.
 |===
 
 Note: In this specification minimum<type> and maximum<type> will denote the minimum and maximum values of the data as stored in memory (ignoring the zero point).

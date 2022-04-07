@@ -152,7 +152,7 @@ The following functions provide arithmetic while defining requirements such that
 [source,c++]
 ----
 in_t apply_add<in_t>(in_t a, in_t b) {
-    if (<in_t> == float_t) return a + b;
+    if (is_floating_point(in_t)) return a + b;
     int64_t c = (int64_t)a + (int64_t)b;
     REQUIRE(c >= minimum<in_t> && c <= maximum<in_t>);
     return (in_t)c;
@@ -188,7 +188,7 @@ in_t apply_log<in_t>(in_t input) {
 }
 
 in_t apply_max<in_t>(in_t a, in_t b) {
-    if (in_t == float_t) {
+    if (is_floating_point(in_t)) {
         if (isNaN(a) || isNaN(b)) {
             return NaN;
         }
@@ -197,7 +197,7 @@ in_t apply_max<in_t>(in_t a, in_t b) {
 }
 
 in_t apply_min<in_t>(in_t a, in_t b) {
-    if (in_t == float_t) {
+    if (is_floating_point(in_t)) {
         if (isNaN(a) || isNaN(b)) {
             return NaN;
         }
@@ -214,7 +214,7 @@ in_t apply_sqrt<in_t>(in_t input) {
 }
 
 in_t apply_sub<in_t>(in_t a, in_t b) {
-    if (in_t == float_t) return a - b;
+    if (is_floating_point(in_t)) return a - b;
     int64_t c = (int64_t)a - (int64_t)b;
     REQUIRE(c >= minimum<in_t> && c <= maximum<in_t>);
     return (in_t)c;
@@ -238,6 +238,8 @@ int32_t count_leading_zeros(int32_t a) {
 ==== Numeric Conversion Helpers
 
 The following definitions are used in pseudocode to do numeric conversions.
+Where the *float_t* type is used, it represents all of the floating-point data types supported by the given profile.
+See <<Number formats>> for details on the floating-point formats.
 
 [source,c++]
 ----
@@ -275,6 +277,12 @@ Generic helper functions used to keep the pseudocode concise.
 
 [source,c++]
 ----
+
+bool_t is_floating_point(type) {
+    if (type == fp16_t || type == fp32_t || type == bf16_t)
+        return true;
+    return false;
+}
 
 int32_t idiv(int32_t input1, int32_t input2) {
     return input1 / input2; // Integer divide that truncates towards zero

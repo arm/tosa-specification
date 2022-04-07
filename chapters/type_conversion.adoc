@@ -33,9 +33,9 @@ for_each(index in shape) {
         out = (in != 0) ? true : false;
     } else if (in_t == bool_t) {
         out = (in) ? 1 : 0;
-    } else if (out_t == float_t) {
+    } else if (out_t == fp16_t || out_t == bf16_t || out_t == fp32_t) {
         out = round_to_nearest_float(in);
-    } else if (in_t == float_t) {
+    } else if (in_t == fp16_t || in_t == bf16_t || in_t == fp32_t) {
         out = apply_clip<out_t>(round_to_nearest_int(in), minimum<out_t>, maximum<out_t>);
     } else if (sizeof(out_t) >= sizeof(in_t)) {
         out = sign_extend(in);
@@ -57,18 +57,30 @@ for_each(index in shape) {
 |Any|signed 8 to bool|int8_t|bool_t
 |Any|signed 8 to signed 16|int8_t|int16_t
 |Any|signed 8 to signed 32|int8_t|int32_t
-|MI, MT|signed 8 to floating-point|int8_t|float_t
+|MI, MT|signed 8 to fp16|int8_t|fp16_t
+|MI, MT|signed 8 to bf16|int8_t|bf16_t
+|MI, MT|signed 8 to fp32|int8_t|fp32_t
 |Any|signed 16 to bool|int16_t|bool_t
 |Any|signed 16 to signed 8|int16_t|int8_t
 |Any|signed 16 to signed 32|int16_t|int32_t
-|MI, MT|signed 16 to floating-point|int16_t|float_t
+|MI, MT|signed 16 to fp16|int16_t|fp16_t
+|MI, MT|signed 16 to bf16|int16_t|bf16_t
+|MI, MT|signed 16 to fp32|int16_t|fp32_t
 |Any|signed 32 to bool|int32_t|bool_t
 |Any|signed 32 to signed 8|int32_t|int8_t
 |Any|signed 32 to signed 16|int32_t|int16_t
-|MI, MT|signed 32 to floating-point|int32_t|float_t
-|MI, MT|floating-point to signed 8|float_t|int8_t
-|MI, MT|floating-point to signed 16|float_t|int16_t
-|MI, MT|floating-point to signed 32|float_t|int32_t
+|MI, MT|signed 32 to fp16|int32_t|fp16_t
+|MI, MT|signed 32 to bf16|int32_t|bf16_t
+|MI, MT|signed 32 to fp32|int32_t|fp32_t
+|MI, MT|fp16 to signed 8|fp16_t|int8_t
+|MI, MT|fp16 to signed 16|fp16_t|int16_t
+|MI, MT|fp16 to signed 32|fp16_t|int32_t
+|MI, MT|bf16 to signed 8|bf16_t|int8_t
+|MI, MT|bf16 to signed 16|bf16_t|int16_t
+|MI, MT|bf16 to signed 32|bf16_t|int32_t
+|MI, MT|fp32 to signed 8|fp32_t|int8_t
+|MI, MT|fp32 to signed 16|fp32_t|int16_t
+|MI, MT|fp32 to signed 32|fp32_t|int32_t
 |===
 
 ==== RESCALE

@@ -44,7 +44,9 @@ for_each(index in shape) {
 |Profile|Mode|in_out_t
 
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== ARITHMETIC_RIGHT_SHIFT
@@ -483,7 +485,9 @@ for_each(index in shape) {
 |Profile|Mode|in_out_t
 
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== MINIMUM
@@ -521,7 +525,9 @@ for_each(index in shape) {
 |Profile|Mode|in_out_t
 
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== MUL
@@ -571,7 +577,9 @@ for_each(index in shape) {
 |Any|signed 8|int8_t|int32_t
 |Any|signed 16|int16_t|int32_t
 |Any|signed 32|int32_t|int32_t
-|MI, MT|floating-point|float_t|float_t
+|MI, MT|fp16|fp16_t|fp16_t
+|MI, MT|bf16|bf16_t|bf16_t
+|MI, MT|fp32|fp32_t|fp32_t
 |===
 
 ==== POW
@@ -608,7 +616,9 @@ for_each(index in shape) {
 |===
 |Profile|Mode|in_out_t
 
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== SUB
@@ -646,7 +656,9 @@ for_each(index in shape) {
 |Profile|Mode|in_out_t
 
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ====   TABLE

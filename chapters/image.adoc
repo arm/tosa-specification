@@ -81,41 +81,45 @@ ERROR_IF(OH != idiv_check((IH-1)*scale_y_n - offset_y + border_y, scale_y_d) + 1
 ERROR_IF(OW != idiv_check((IW-1)*scale_x_n - offset_x + border_x, scale_x_d) + 1);
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
     out_t acc;
-    y = oy * scale_y_d + offset_y;
-    x = ox * scale_x_d + offset_x;
-    iy = floor(y / scale_y_n);
-    ix = floor(x / scale_x_n);
-    if (resize_t == float_t) {
-        dy = ((float_t)y / (float_t)scale_y_n) - iy;
-        dx = ((float_t)x / (float_t)scale_x_n) - ix;
+    resize_t dx, dy;
+
+    int32_t y = oy * scale_y_d + offset_y;
+    int32_t x = ox * scale_x_d + offset_x;
+    int16_t iy = floor(y / scale_y_n);
+    int16_t ix = floor(x / scale_x_n);
+
+    if (is_floating_point(resize_t)) {
+        dy = ((resize_t)y / (resize_t)scale_y_n) - iy;
+        dx = ((resize_t)x / (resize_t)scale_x_n) - ix;
     } else {
         dy = y - iy * scale_y_n;
         dx = y - ix * scale_x_n;
     }
     // Note that -1 <= iy < IH and -1 <= ix < IW
-    iy0 = apply_max(iy, 0);
-    iy1 = apply_min(iy+1, IH-1);
-    ix0 = apply_max(ix, 0);
-    ix1 = apply_min(ix+1, IW-1);
+    int16_t iy0 = apply_max(iy, 0);
+    int16_t iy1 = apply_min(iy+1, IH-1);
+    int16_t ix0 = apply_max(ix, 0);
+    int16_t ix1 = apply_min(ix+1, IW-1);
     if (mode==BILINEAR) {
-        v00 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix0,c]);
-        v01 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c]);
-        v10 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c]);
-        v11 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c]);
+        in_t v00 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix0,c]);
+        in_t v01 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c]);
+        in_t v10 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c]);
+        in_t v11 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c]);
         acc  = v00 * (scale_y_n - dy) * (scale_x_n - dx);
         acc += v01 * (scale_y_n - dy) * dx;
         acc += v10 * dy * (scale_x_n - dx);
         acc += v11 * dy * dx;
         tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc);
     } else if (mode==NEAREST) {
-        if (resize_t == float_t) {
+        int32_t iy, ix;
+        if (is_floating_point(resize_t)) {
             iy = (dy >= 0.5) ? iy1 : iy0;
             ix = (dx >= 0.5) ? ix1 : ix0;
         } else {
             iy = (2*dy >= scale_y_n) ? iy1 : iy0;
             ix = (2*dx >= scale_x_n) ? ix1 : ix0;
         }
-        v = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy,ix,c]);
+        in_t v = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy,ix,c]);
         tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], v);
     }
 }
@@ -130,7 +134,9 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
 |Any|signed 8,  nearest |int16_t|int8_t|int8_t
 |Any|signed 16, bilinear|int16_t|int16_t|int48_t
 |Any|signed 16, nearest |int16_t|int16_t|int16_t
-|MI,MT|floating-point   |float_t|float_t|float_t
+|MI,MT|fp16|fp32_t|fp16_t|fp16_t
+|MI,MT|bf16|fp32_t|bf16_t|bf16_t
+|MI,MT|fp32|fp32_t|fp32_t|fp32_t
 |===
 
 *Resize Modes:*

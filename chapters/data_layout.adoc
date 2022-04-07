@@ -61,7 +61,9 @@ for_each(index1 in shape) {
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== PAD
@@ -112,7 +114,9 @@ for_each(index in shape) {
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== RESHAPE
@@ -156,7 +160,9 @@ for_each(index in shape) {
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== REVERSE
@@ -195,7 +201,9 @@ for_each(index in shape) {
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== SLICE
@@ -247,7 +255,9 @@ for_each(index in shape) {
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== TILE
@@ -288,7 +298,9 @@ for_each(index in shape) {
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===
 
 ==== TRANSPOSE
@@ -344,5 +356,7 @@ for_each(index in shape) {
 |Any|signed 8|int8_t
 |Any|signed 16|int16_t
 |Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
+|MI, MT|fp16|fp16_t
+|MI, MT|bf16|bf16_t
+|MI, MT|fp32|fp32_t
 |===

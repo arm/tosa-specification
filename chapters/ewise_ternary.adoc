@@ -53,5 +53,7 @@ for_each(index in shape) {
 |Any|signed 8|bool_t|int8_t
 |Any|signed 16|bool_t|int16_t
 |Any|signed 32|bool_t|int32_t
-|MI, MT|floating-point|bool_t|float_t
+|MI, MT|bool_t|fp16|fp16_t
+|MI, MT|bool_t|bf16|bf16_t
+|MI, MT|bool_t|fp32|fp32_t
 |===
