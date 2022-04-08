@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2021 ARM Limited
+// (C) COPYRIGHT 2020-2022 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -18,8 +18,8 @@ Casts a tensor from one data type to another.
 |===
 |Argument|Type|Name|Shape|Description
 
-|Input|in_t|input|shape|Input tensor
-|Output|out_t|output|shape|Output tensor
+|Input|in_t*|input|shape|Input tensor
+|Output|out_t*|output|shape|Output tensor
 |===
 
 *Operation Function:*
@@ -84,8 +84,8 @@ Rescale quantized values into a new domain. This function scales by factor: mult
 |Output|out_t*|output|shape|Output tensor with the same shape as input
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|out_t|output_zp|-|Output tensor zero point. Must be zero for non-int8 types.
-|Input (MT profile) Attribute (BI/MI profiles)|mul_t|multiplier[NC]|-|Scaling multiplier array
-|Input (MT profile) Attribute (BI/MI profiles)|uint6_t|shift[NC] |-|Scaling shift array
+|Input (MT profile) Attribute (BI/MI profiles)|mul_t|multiplier|[NC]|Scaling multiplier array
+|Input (MT profile) Attribute (BI/MI profiles)|uint6_t|shift|[NC]|Scaling shift array
 |Attribute|bool_t|scale32|-|if (scale32) mul_t=int32_t else mul_t=int16_t
 |Attribute|bool_t|double_round|-|Select double round mode
 |Attribute|bool_t|per_channel|-|if (per_channel) NC=shape[dims-1] else NC=1
