@@ -185,6 +185,13 @@ int idiv(int input1, int input2) {
     return input1 / input2; // Integer divide that truncates towards zero
 }
 
+// Integer division that checks input1 is a multiple of input2
+
+int idiv_check(int input1, int input2) {
+    ERROR_IF(input1 % input2 != 0); // input1 must be a multiple of input2
+    return input1 / input2;         // exact quotient without rounding
+}
+
 int length(in_t input)
     return number of elements in input list
 

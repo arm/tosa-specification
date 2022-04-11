@@ -67,8 +67,8 @@ input position (IH-1,IW-1).
 [source,c++]
 ----
 // Derive the output dimensions from the input dimensions
-OH = floor(((IH-1)*(1<<shift) - offset_y)/stride_y)) + 1 + border_y
-OW = floor(((IW-1)*(1<<shift) - offset_x)/stride_x)) + 1 + border_x
+OH = idiv((IH-1)*(1<<shift) - offset_y, stride_y) + 1 + border_y;
+OW = idiv((IW-1)*(1<<shift) - offset_x, stride_x) + 1 + border_x;
 // Ensure the image size is supported by GPU APIs and that for integer
 // implementations, position * stride does not overflow int32_t.
 ERROR_IF(max(OH,OW,IH,IW) >= 16384);

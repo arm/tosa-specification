@@ -80,13 +80,16 @@ When calculating the average, only the number of valid input tensor values, but 
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
 |Attribute|in_out_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|in_out_t|output_zp|-|Output tensor zero point. Must be zero for non-int8 types.
-|Output|in_out_t*|output|[N,H,W,C]|Output tensor 4D
+|Output|in_out_t*|output|[N,OH,OW,C]|Output tensor 4D
 |===
 
 *Operation Function:*
 
 [source,c++]
 ----
+// Derive output dimensions from input dimensions and padding
+OH = idiv_check(IH + pad_top + pad_bottom - kernel_y, stride_y) + 1;
+OW = idiv_check(IW + pad_left + pad_right - kernel_x, stride_x) + 1;
 ERROR_IF(in_out_t != int8_t && input_zp != 0); // Zero point only for int8_t
 ERROR_IF(in_out_t != int8_t && output_zp != 0); // Zero point only for int8_t
 ERROR_IF(kernel_y < 1 || kernel_x < 1); // kernel size must be >= 1
@@ -96,12 +99,8 @@ ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
 // a divide-by-zero.
 ERROR_IF(pad_right >= kernel_x || pad_left >= kernel_x);
 ERROR_IF(pad_top >= kernel_y || pad_bottom >= kernel_y);
-// Output shape must match expected shape given the input shape
-// and arguments provided
-ERROR_IF(H != idiv((IH + pad_top + pad_bottom + stride_y - kernel_y), stride_y));
-ERROR_IF(W != idiv((IW + pad_left + pad_right + stride_x - kernel_x), stride_x));
 
-for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
+for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C ) {
     in_out_t output_val;
     acc_t acc = 0;
     int count = 0;
@@ -126,7 +125,7 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
         acc = apply_scale_32(acc, scale.multiplier, scale.shift, false);
         output_val = (in_out_t)apply_clip<acc_t>(acc + output_zp, minimum<in_out_t>, maximum<in_out_t>)
     }
-    tensor_write<in_out_t>(output, [N,H,W,C], [n,oy,ox,c], output_val);
+    tensor_write<in_out_t>(output, [N,OH,OW,C], [n,oy,ox,c], output_val);
 }
 ----
 
@@ -156,20 +155,23 @@ Performs a 2D convolution over the given tensor input, using the weight tensor.
 |Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|out_t*|output|[N,H,W,OC]|Output tensor
+|Output|out_t*|output|[N,OH,OW,OC]|Output tensor
 |===
 
 *Operation Function*
 
 [source,c++]
 ----
+// Derive output dimensions from input dimensions and padding
+OH = idiv_check(IH-1 + pad_top + pad_bottom - (KH-1)*dilation_y, stride_y) + 1;
+OW = idiv_check(IW-1 + pad_left + pad_right - (KW-1)*dilation_x, stride_x) + 1;
 ERROR_IF(in_t != int8_t && input_zp != 0); // Zero point only for int8_t
 ERROR_IF(weight_t != int8_t && weight_zp != 0);
 ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
 ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(dilation_y < 1 || dilation_x < 1);
 pad = flatten([0,0], pad, [0,0]);
-for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
+for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
     out_t acc = 0;
     iy = oy * stride_y - pad_top;
     ix = ox * stride_x - pad_left;
@@ -185,7 +187,7 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
         }
     }
     acc = apply_add<out_t>(acc, bias[oc]);
-    tensor_write<out_t>(output, [N,H,W,OC], [n,oy,ox,oc], acc);
+    tensor_write<out_t>(output, [N,OH,OW,OC], [n,oy,ox,oc], acc);
 }
 ----
 
@@ -217,20 +219,24 @@ Performs a 3D convolution over the given input tensor.
 |Attribute|int*|dilation|[3]|[dilation_d, dilation_y, dilation_x]
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|out_t*|output|[N,D,H,W,OC]|Output tensor
+|Output|out_t*|output|[N,OD,OH,OW,OC]|Output tensor
 |===
 
 *Operation Function*
 
 [source,c++]
 ----
+// Derive output dimensions from input dimensions and padding
+OD = idiv_check(ID-1 + pad_d0 + pad_d1      - (KD-1)*dilation_d, stride_d) + 1;
+OH = idiv_check(IH-1 + pad_top + pad_bottom - (KH-1)*dilation_y, stride_y) + 1;
+OW = idiv_check(IW-1 + pad_left + pad_right - (KW-1)*dilation_x, stride_x) + 1;
 ERROR_IF(in_t != int8_t && input_zp != 0); // Zero point only for int8_t
 ERROR_IF(weight_t != int8_t && weight_zp != 0);
 ERROR_IF(pad_d0 < 0 || pad_d1 < 0 || pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
 ERROR_IF(stride_d < 1 || stride_y < 1 || stride_x < 1);
 ERROR_IF(dilation_d < 1 || dilation_y < 1 || dilation_x < 1);
 pad = flatten([0,0], pad, [0,0]);
-for_each(0 <= n < N, 0 <= od < D, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
+for_each(0 <= n < N, 0 <= od < OD, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
     out_t acc = 0;
     id = od * stride_d - pad_d0;
     iy = oy * stride_y - pad_top;
@@ -248,7 +254,7 @@ for_each(0 <= n < N, 0 <= od < D, 0 <= oy < H, 0 <= ox < W; 0 <= oc < OC) {
         }
     }
     acc = apply_add<out_t>(acc, bias[oc]);
-    tensor_write<out_t>(output, [N,D,H,W,OC], [n,od,oy,ox,oc], acc);
+    tensor_write<out_t>(output, [N,OD,OH,OW,OC], [n,od,oy,ox,oc], acc);
 }
 ----
 
@@ -281,20 +287,23 @@ Performs 2D convolutions separately over each channel of the given tensor input,
 |Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|out_t*|output|[N,H,W,C*M]|Output tensor
+|Output|out_t*|output|[N,OH,OW,C*M]|Output tensor
 |===
 
 *Operation Function*
 
 [source,c++]
 ----
+// Derive output dimensions from input dimensions and padding
+OH = idiv_check(IH-1 + pad_top + pad_bottom - (KH-1)*dilation_y, stride_y) + 1;
+OW = idiv_check(IW-1 + pad_left + pad_right - (KW-1)*dilation_x, stride_x) + 1;
 ERROR_IF(in_t != int8_t && input_zp != 0); // Zero point only for int8_t
 ERROR_IF(weight_t != int8_t && weight_zp != 0);
 ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
 ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(dilation_y < 1 || dilation_x < 1);
 pad = flatten([0,0], pad, [0,0]);
-for_each(0 <= n<N, 0 <= oy < H, 0 <= ox < W; 0 <= c < C, 0 <= m < M) {
+for_each(0 <= n<N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C, 0 <= m < M) {
     out_t acc = 0;
     iy = oy * stride_y - pad_top;
     ix = ox * stride_x - pad_left;
@@ -302,7 +311,7 @@ for_each(0 <= n<N, 0 <= oy < H, 0 <= ox < W; 0 <= c < C, 0 <= m < M) {
         y = iy + ky * dilation_y;
         x = ix + kx * dilation_x;
         if (0 <= y < IH && 0 <= x < IW) {
-            out_t value  = tensor_read<in_t>(input, [N,H,W,C], [n,y,x,c]);
+            out_t value  = tensor_read<in_t>(input, [N,IH,IW,C], [n,y,x,c]);
             out_t weight = tensor_read<weight_t>(weight, [KH,KW,C,M], [ky,kx,c,m]);
             value  = value - input_zp;
             weight = weight - weight_zp;
@@ -310,7 +319,7 @@ for_each(0 <= n<N, 0 <= oy < H, 0 <= ox < W; 0 <= c < C, 0 <= m < M) {
         }
     }
     acc = apply_add<out_t>(acc, bias[(c * M) + m]);
-    tensor_write<out_t>(output, [N,H,W,C * M], [n,oy,ox,c * M + m], acc);
+    tensor_write<out_t>(output, [N,OH,OW,C * M], [n,oy,ox,c * M + m], acc);
 }
 ----
 
@@ -428,13 +437,16 @@ This performs a max pooling over the given input tensor. A sliding window of siz
 |Attribute|int*|kernel|[2]|[kernel_y, kernel_x]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
-|Output|in_out_t*|output|[N,H,W,C]|Output tensor 4D
+|Output|in_out_t*|output|[N,OH,OW,C]|Output tensor 4D
 |===
 
 *Operation Function:*
 
 [source,c++]
 ----
+// Derive output dimensions from input dimensions and padding
+OH = idiv_check(IH + pad_top + pad_bottom - kernel_y, stride_y) + 1;
+OW = idiv_check(IW + pad_left + pad_right - kernel_x, stride_x) + 1;
 ERROR_IF(kernel_y < 1 || kernel_x < 1); // kernel size must be >= 1
 ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
@@ -442,10 +454,6 @@ ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
 // input values will be used.
 ERROR_IF(pad_right >= kernel_x || pad_left >= kernel_x);
 ERROR_IF(pad_top >= kernel_y || pad_bottom >= kernel_y);
-// Output shape must match expected shape given the input shape
-// and arguments provided
-ERROR_IF(H != idiv((IH + pad_top + pad_bottom + stride_y - kernel_y), stride_y));
-ERROR_IF(W != idiv((IW + pad_left + pad_right + stride_x - kernel_x), stride_x));
 
 for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     in_out_t acc = minimum_value<in_out_t>;
@@ -459,7 +467,7 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
             acc = apply_max(acc, value);
         }
     }
-    tensor_write<in_out_t>(output, [N,H,W,C], [n,oy,ox,c], acc);
+    tensor_write<in_out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc);
 }
 ----
 
@@ -485,7 +493,7 @@ Performs a 2D transposed convolution over the given tensor input, using the weig
 |Input|in_t*|input|[N,IH,IW,IC]|Input tensor
 |Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
 |Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[OC]|Per output channel bias data.
-|Attribute|int*|out_pad|[2]|[out_pad_top, out_pad_left]
+|Attribute|int*|out_pad|[4]|[out_pad_top, out_pad_bottom, out_pad_left, out_pad_right]
 |Attribute|int*|stride|[2]|[stride_y, stride_x]
 |Attribute|int*|out_shape|[4]|[N,OH,OW,OC]
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
@@ -497,9 +505,13 @@ Performs a 2D transposed convolution over the given tensor input, using the weig
 
 [source,c++]
 ----
+// Derive output dimensions from input dimensions and padding
+OH = (IH-1)*stride_y - out_pad_top - out_pad_bottom + KH;
+OW = (IW-1)*stride_x - out_pad_left - out_pad_right + KW;
 ERROR_IF(in_t != int8_t  && input_zp != 0); // Zero point only allowed for int8_t
 ERROR_IF(weight_t != int8_t && weight_zp != 0);
-ERROR_IF(out_pad_top < 0 || out_pad_left < 0);
+ERROR_IF(out_pad_top < 0 || out_pad_bottom < 0);
+ERROR_IF(out_pad_left < 0 || out_pad_right < 0);
 ERROR_IF(stride_y < 1 || stride_x < 1);
 for_each(index in out_shape) {
     tensor_write<out_t>(output, [N,OH,OW,OC], index, bias[index[3]])
