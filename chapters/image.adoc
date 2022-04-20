@@ -13,36 +13,37 @@
 
 Resizes a tensor. Resize is only allowed in the H and W dimensions.
 
+The height dimension is scaled by factor (scale_y_n/scale_y_d).
+The width dimension is scaled by factor (scale_x_n/scale_x_d).
+
 The NEAREST_NEIGHBOR mode returns the value of the input tensor closest to the
 calculated sample position for both floating-point and integer data formats.
 
 Floating-point BILINEAR mode returns a bilinearly interpolated output value
 based on the four closest input sample positions.
 
-For integer BILINEAR interpolation mode, the output value is calculated by using
-the shift value along with the other parameters to create a fixed point scaling
-factor for each input. These values are then summed to create the value for
-output, which has 2 * shift fractional bits. To convert back to the original
-integer size, the output value must be rescaled.
+For integer BILINEAR interpolation mode, the output value must
+be scaled by 1/(scale_y_n * scale_x_n) in a following operation to
+complete the interpolation (for example with a RESCALE operator).
 
 The following examples show practical uses of the parameters:
 
 * For approximate uniform input sampling between (0, 0) and (IH-1, IW-1) set
-stride_y = ( (IH-1) * (1<<shift) ) / (OH-1),
-stride_x = ( (IW-1) * (1<<shift) ) / (OW-1),
-offset_x=0, offset_y=0, border_x=0, border_y=0.
+** scale_y_n/scale_y_d = (OH-1)/(IH-1) as integer ratios
+** scale_x_n/scale_x_d = (OW-1)/(IW-1) as integer ratios
+** offset_x = 0, offset_y = 0, border_x = 0, border_y = 0
 
-* For power of two upscale by factor (1<<k) the following parameters can
-be used for fixed point upscales:
-** For upscale [OH-1,OW-1] = (1<<k) * [IH-1, IW-1] set
-shift=k, stride_y=1, stride_x=1, offset_x=0, offset_y=0,
-border_x=0, border_y=0.
-** For upscale [OH,OW] = (1<<k) * [IH,IW] set
-shift=(k+1), stride_y=2, stride_x=2, offset_x=-(1<<k)+1, offset_y=-(1<<k)+1,
-border_x=1<<(k-1), border_y=1<<(k-1). This samples approximately
-the input area (-0.5, -0.5) to (IH-0.5, IW-0.5).
+* For power of two upscale [OH-1,OW-1] = (1<<k) * [IH-1, IW-1],
+sampling between (0,0) and (IH-1,IW-1), set:
+** scale_y_n = (1<<k), scale_y_d = 1, offset_y = 0, border_y = 0
+** scale_x_n = (1<<k), scale_x_d = 1, offset_x = 0, border_x = 0
 
-The output dimensions are derived from the input dimensions by inverting
+* For power of two upscale [OH,OW] = (1<<k) * [IH,IW],
+sampling range approximately (-0.5, -0.5) to (IH-0.5, IW-0.5), set:
+** scale_y_n = 2<<k, scale_y_d = 2, offset_y = -(1<<k)+1, border_y = (1<<k)-1
+** scale_x_n = 2<<k, scale_x_d = 2, offset_x = -(1<<k)+1, border_x = (1<<k)-1
+
+The output dimensions can be derived from the input dimensions by inverting
 the scale as described in the pseudocode. The [border_y, border_x] values
 adjust the output size to allow fractional sampling beyond integer
 input position (IH-1,IW-1).
@@ -53,11 +54,9 @@ input position (IH-1,IW-1).
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|[N,IH,IW,C]|Input tensor
-|Attribute|int32_t* |output_size|[2]|[OH,OW]
-|Attribute|resize_t*|stride|[2]|[stride_y, stride_x]
-|Attribute|resize_t*|offset|[2]|[offset_y, offset_x]
+|Attribute|int16_t *|scale|[4]|[scale_y_n, scale_y_d, scale_x_n, scale_x_d]
+|Attribute|int16_t *|offset|[2]|[offset_y, offset_x]
 |Attribute|int32_t* |border|[2]|[border_y, border_x]
-|Attribute|int32_t  |shift|-|Shift value (must be zero if resize_t is float)
 |Attribute|mode_t|mode|-|BILINEAR or NEAREST
 |Output|out_t*|output|[N,OH,OW,C]|Output tensor
 |===
@@ -66,39 +65,30 @@ input position (IH-1,IW-1).
 
 [source,c++]
 ----
-// Derive the output dimensions from the input dimensions
-OH = idiv((IH-1)*(1<<shift) - offset_y, stride_y) + 1 + border_y;
-OW = idiv((IW-1)*(1<<shift) - offset_x, stride_x) + 1 + border_x;
 // Ensure the image size is supported by GPU APIs and that for integer
 // implementations, position * stride does not overflow int32_t.
 ERROR_IF(max(OH,OW,IH,IW) >= 16384);
-ERROR_IF(stride_x <= 0 || stride_y <= 0);
-if (resize_t == float_t) {
-    // The shift attribute is not used for floating point
-    ERROR_IF(shift != 0);
-    ERROR_IF(stride_x > IW || stride_y > IH);
-} else {
-    // if in_t=int8_t ensure that an int32_t accumulator can be used
-    ERROR_IF(shift < 1 || shift > 11);
-    // set a consistent lower limit of 1/16 downscale
-    // independent of the shift value to simplify implementations
-    ERROR_IF(stride_x >= (16 << shift));
-    ERROR_IF(stride_y >= (16 << shift));
-    // offset range is similarly limited to maximum 16 pixels irrespective
-    // of shift. Both stride and offset fit in int16_t when shift=11.
-    ERROR_IF(offset_x <= (-16 << shift) || offset_x >= (16 << shift));
-    ERROR_IF(offset_y <= (-16 << shift) || offset_y >= (16 << shift));
-}
+ERROR_IF(scale_y_n <= 0 || scale_y_d <=0 || scale_x_n <=0 || scale_x_d <=0);
+// if in_t=int8_t ensure that an int32_t accumulator can be used
+ERROR_IF(scale_y_n > (1<<11) || scale_x_n > (1<<11));
+// set a consistent lower limit of 1/16 downscale to simplify implementations
+ERROR_IF(scale_y_d >= 16 * scale_y_n || scale_x_d >= 16 * scale_x_n);
+ERROR_IF(offset_y <= -16 * scale_y_n || offset_y >= 16 * scale_y_n);
+ERROR_IF(offset_x <= -16 * scale_x_n || offset_x >= 16 * scale_x_n);
+ERROR_IF(OH != idiv_check((IH-1)*scale_n_y - offset_y + border_y, scale_d_y) + 1);
+ERROR_IF(OW != idiv_check((IW-1)*scale_n_x - offset_x + border_x, scale_d_x) + 1);
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
-    unit = (resize_t == float_t) ? 1.0 : (1 << shift);
-    y = oy * stride_y + offset_y;
-    x = ox * stride_x + offset_x;
+    out_t acc;
+    y = oy * scale_y_d + offset_y;
+    x = ox * scale_x_d + offset_x;
+    iy = floor(y / scale_y_n);
+    ix = floor(x / scale_x_n);
     if (resize_t == float_t) {
-        iy = (int32_t)apply_floor(y); dy = y - (float_t)iy;
-        ix = (int32_t)apply_floor(x); dx = x - (float_t)ix;
+        dy = ((float_t)y / (float_t)scale_y_n) - iy;
+        dx = ((float_t)x / (float_t)scale_x_n) - ix;
     } else {
-        iy = y >> shift; dy = y - (iy<<shift);
-        ix = x >> shift; dx = x - (ix<<shift);
+        dy = y - iy * scale_y_n;
+        dx = y - ix * scale_x_n;
     }
     iy0 = apply_max(iy, 0);
     iy1 = apply_min(iy+1, IH-1);
@@ -110,12 +100,19 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
         v01 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c]);
         v10 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c]);
         v11 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c]);
-        out_t acc = v00 * (unit - dy) * (unit - dx) + v01 * (unit - dy) * dx;
-        acc = acc + v10 * dy * (unit-dx) + v11 * dy * dx;
+        acc  = v00 * (scale_y_n - dy) * (scale_x_n - dx);
+        acc += v01 * (scale_y_n - dy) * dx;
+        acc += v10 * dy * (scale_x_n - dx);
+        acc += v11 * dy * dx;
         tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc);
     } else if (mode==NEAREST) {
-        iy = (dy >= unit/2) ? iy1 : iy0;
-        ix = (dx >= unit/2) ? ix1 : ix0;
+        if (resize_t == float_t) {
+            iy = (dy >= 0.5) ? iy1 : iy0;
+            ix = (dx >= 0.5) ? ix1 : ix0;
+        } else {
+            iy = (2*dy >= scale_y_n) ? iy1 : iy0;
+            ix = (2*dx >= scale_x_n) ? ix1 : ix0;
+        }
         v = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy,ix,c]);
         tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], v);
     }
