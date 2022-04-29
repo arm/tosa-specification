@@ -181,24 +181,24 @@ Generic helper functions used to keep the pseudocode concise.
 [source,c++]
 ----
 
-int idiv(int input1, int input2) {
+int32_t idiv(int32_t input1, int32_t input2) {
     return input1 / input2; // Integer divide that truncates towards zero
 }
 
 // Integer division that checks input1 is a multiple of input2
 
-int idiv_check(int input1, int input2) {
+int32_t idiv_check(int32_t input1, int32_t input2) {
     ERROR_IF(input1 % input2 != 0); // input1 must be a multiple of input2
     return input1 / input2;         // exact quotient without rounding
 }
 
-int length(in_t input)
+int32_t length(in_t input)
     return number of elements in input list
 
-int rank(in_t input)
+int32_t rank(in_t input)
     return rank of an input tensor
 
-int sum(in_t input[])
+int32_t sum(in_t input[])
     return the sum of values of an input list
 
 bool isNaN(float input)

@@ -58,7 +58,7 @@ The sigmoid table has 513 entries each of 16-bit precision and covering the inpu
 
 [source,c++]
 ----
-int sigmoid_reference(int x) {|// input x range is -256 to + 256 inclusive
+int16_t sigmoid_reference(int16_t x) { // input x range is -256 to + 256 inclusive
     F64 v = (double)x / (double)16;
     v = 1.0/(1.0 + exp(-v));
     return round_to_nearest_int(32768.0 * v);
@@ -95,7 +95,7 @@ The tanh_table has 513 entries each of 16-bit precision and covering the input r
 
 [source,c++]
 ----
-int tanh_reference(int x) {  // input x range is -256 to +256 inclusive
+int16_t tanh_reference(int16_t x) {  // input x range is -256 to +256 inclusive
     F64 v = (double)x/(double)32;
     v = exp(-2.0*v);
     v = (1.0-v)/(1.0+v);

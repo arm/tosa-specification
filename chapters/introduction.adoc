@@ -405,7 +405,7 @@ In places where a divide is required, we also use the function below to calculat
 scale_t reciprocal_scale(uint32_t value) {
     REQUIRE(value > 0);
     scale_t scale;
-    int k = 32 - count_leading_zeros(value - 1); // (1 << k) / 2 < value <= (1 << k)
+    int32_t k = 32 - count_leading_zeros(value - 1); // (1 << k) / 2 < value <= (1 << k)
     int64_t numerator = ((1 << 30) + 1) << k;
     scale.multiplier = numerator / value; // (1 << 30) <= multiplier < (1 << 31)
     scale.shift = 30 + k;

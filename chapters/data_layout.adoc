@@ -19,7 +19,7 @@ No data conversion happens during a concat operation.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_out_t*|input1|shapes1[]|List of input tensors. All inputs must have the same rank and data type
-|Attribute|int|axis|-|Axis along which concatenation is to occur, in range from 0 to rank(shape)-1
+|Attribute|int32_t|axis|-|Axis along which concatenation is to occur, in range from 0 to rank(shape)-1
 |Output|in_out_t*|output|shape|Output tensor
 |===
 
@@ -76,7 +76,7 @@ The pad_const value includes the zero point if the tensor uses a zero point.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_out_t*|input1|shape1|Input tensor
-|Attribute|int|padding|[rank(input1),2]|Amount of padding to be done
+|Attribute|int32_t|padding|[rank(input1),2]|Amount of padding to be done
 |Attribute|in_out_t|pad_const|-|Constant value to be used as padding
 |Output|in_out_t*|output|shape|Output tensor of same type as the input tensor
 |===
@@ -125,7 +125,7 @@ Returns a tensor with the same type/values as the input, with a new shape specif
 |Argument|Type|Name|Shape|Description
 
 |Input|in_out_t*|input1|shape1|Input tensor
-|Attribute|int|new_shape|[rank(output)]|List of values, with each element giving the size of the result tensor for the given dimension. At most one dimension may be given as -1 to automatically calculate the dimension size.
+|Attribute|int32_t|new_shape|[rank(output)]|List of values, with each element giving the size of the result tensor for the given dimension. At most one dimension may be given as -1 to automatically calculate the dimension size.
 |Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
@@ -161,7 +161,7 @@ Returns a tensor with the same type/values as the input, with the data reversed 
 |Argument|Type|Name|Shape|Description
 
 |Input|in_out_t*|input|shape|Input tensor from 1 to 4 dims
-|Attribute|int|axis|-|Axis to reverse, in range from 0 to rank(shape)-1
+|Attribute|int32_t|axis|-|Axis to reverse, in range from 0 to rank(shape)-1
 |Output|in_out_t*|output|shape|Output tensor. Same shape as input tensor.
 |===
 
@@ -200,8 +200,8 @@ No data conversion happens during a slice operation.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_out_t*|input1|shape1|Input tensor with rank from 1 to 4
-|Attribute|int|start|[rank(input1)]|List of integer coordinates, of length equal to the rank of input1. Start coordinate for slicing.
-|Attribute|int|size|[rank(input1)]|List of integer size values, of length equal to the rank of input1. Size of the input to be used.
+|Attribute|int32_t|start|[rank(input1)]|List of integer coordinates, of length equal to the rank of input1. Start coordinate for slicing.
+|Attribute|int32_t|size|[rank(input1)]|List of integer size values, of length equal to the rank of input1. Size of the input to be used.
 |Output|in_out_t*|output|shape|Output tensor of same type as the input tensor
 |===
 

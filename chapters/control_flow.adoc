@@ -70,7 +70,7 @@ ERROR_IF(tosa_output_shape(cond_graph) != tosa_list_shape([bool_t]));
 
 // The iteration number 'i' is included to give unique names to variables
 // in each iteration of the loop and is not required by implementations
-int i=0;                 // iteration number
+int32_t i=0;             // iteration number
 list[i] = input_list;    // copy input data as list[0]
 tosa_execute_graph(cond_graph, list[i], [condition[i]]);   // initial condition
 while (condition[i]) {

@@ -53,11 +53,11 @@ input position (IH-1,IW-1).
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|[N,IH,IW,C]|Input tensor
-|Attribute|int*|output_size|[2]|[OH,OW]
+|Attribute|int32_t* |output_size|[2]|[OH,OW]
 |Attribute|resize_t*|stride|[2]|[stride_y, stride_x]
 |Attribute|resize_t*|offset|[2]|[offset_y, offset_x]
-|Attribute|int*     |border|[2]|[border_y, border_x]
-|Attribute|int      |shift|-|Shift value (must be zero if resize_t is float)
+|Attribute|int32_t* |border|[2]|[border_y, border_x]
+|Attribute|int32_t  |shift|-|Shift value (must be zero if resize_t is float)
 |Attribute|mode_t|mode|-|BILINEAR or NEAREST
 |Output|out_t*|output|[N,OH,OW,C]|Output tensor
 |===
@@ -94,8 +94,8 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
     y = oy * stride_y + offset_y;
     x = ox * stride_x + offset_x;
     if (resize_t == float_t) {
-        iy = (int)apply_floor(y); dy = y - (float_t)iy;
-        ix = (int)apply_floor(x); dx = x - (float_t)ix;
+        iy = (int32_t)apply_floor(y); dy = y - (float_t)iy;
+        ix = (int32_t)apply_floor(x); dx = x - (float_t)ix;
     } else {
         iy = y >> shift; dy = y - (iy<<shift);
         ix = x >> shift; dx = x - (ix<<shift);
