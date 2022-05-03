@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2021 ARM Limited
+// (C) COPYRIGHT 2020-2022 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -19,7 +19,7 @@ This returns the index with the largest value across the given axis of the input
 |Argument|Type|Name|Shape|Description
 
 |Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int|axis|-|Axis in range from 0 to rank(shape1)-1
+|Attribute|int32_t|axis|-|Axis in range from 0 to rank(shape1)-1
 |Output|out_t*|output|shape|Output tensor, with rank = rank(shape1)-1
 |===
 
@@ -75,9 +75,9 @@ When calculating the average, only the number of valid input tensor values, but 
 |Argument|Type|Name|Shape|Description
 
 |Input|in_out_t*|input|[N,IH,IW,C]|Input tensor 4D
-|Attribute|int*|kernel|[2]|[kernel_y, kernel_x]
-|Attribute|int*|stride|[2]|[stride_y, stride_x]
-|Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
+|Attribute|int32_t*|kernel|[2]|[kernel_y, kernel_x]
+|Attribute|int32_t*|stride|[2]|[stride_y, stride_x]
+|Attribute|int32_t*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
 |Attribute|in_out_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|in_out_t|output_zp|-|Output tensor zero point. Must be zero for non-int8 types.
 |Output|in_out_t*|output|[N,OH,OW,C]|Output tensor 4D
@@ -149,9 +149,9 @@ Performs a 2D convolution over the given tensor input, using the weight tensor.
 |Input|in_t*|input|[N,IH,IW,IC]|Input tensor
 |Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
 |Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[OC]|Per output channel bias data.
-|Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
-|Attribute|int*|stride|[2]|[stride_y, stride_x]
-|Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
+|Attribute|int32_t*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
+|Attribute|int32_t*|stride|[2]|[stride_y, stride_x]
+|Attribute|int32_t*|dilation|[2]|[dilation_y, dilation_x]
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
 |Output|out_t*|output|[N,OH,OW,OC]|Output tensor
@@ -213,9 +213,9 @@ Performs a 3D convolution over the given input tensor.
 |Input|in_t*|input|[N,ID,IH,IW,IC]|Input tensor
 |Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KD,KH,KW,IC]|Weight kernel size KDxKHxKW
 |Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[OC]|Per output channel bias data.
-|Attribute|int*|pad|[6]|[pad_d0, pad_d1, pad_top, pad_bottom, pad_left, pad_right]
-|Attribute|int*|stride|[3]|[stride_d, stride_y, stride_x]
-|Attribute|int*|dilation|[3]|[dilation_d, dilation_y, dilation_x]
+|Attribute|int32_t*|pad|[6]|[pad_d0, pad_d1, pad_top, pad_bottom, pad_left, pad_right]
+|Attribute|int32_t*|stride|[3]|[stride_d, stride_y, stride_x]
+|Attribute|int32_t*|dilation|[3]|[dilation_d, dilation_y, dilation_x]
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
 |Output|out_t*|output|[N,OD,OH,OW,OC]|Output tensor
@@ -281,9 +281,9 @@ Performs 2D convolutions separately over each channel of the given tensor input,
 |Input|in_t*|input|[N,H,W,C]|Input tensor
 |Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[KH,KW,C,M]|Weight kernel size KH x KW
 |Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[C*M]|Per output channel bias data.
-|Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
-|Attribute|int*|stride|[2]|[stride_y, stride_x]
-|Attribute|int*|dilation|[2]|[dilation_y, dilation_x]
+|Attribute|int32_t*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
+|Attribute|int32_t*|stride|[2]|[stride_y, stride_x]
+|Attribute|int32_t*|dilation|[2]|[dilation_y, dilation_x]
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
 |Output|out_t*|output|[N,OH,OW,C*M]|Output tensor
@@ -433,9 +433,9 @@ This performs a max pooling over the given input tensor. A sliding window of siz
 |Argument|Type|Name|Shape|Description
 
 |Input|in_out_t*|input|[N,IH,IW,C]|Input tensor 4D
-|Attribute|int*|kernel|[2]|[kernel_y, kernel_x]
-|Attribute|int*|stride|[2]|[stride_y, stride_x]
-|Attribute|int*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
+|Attribute|int32_t*|kernel|[2]|[kernel_y, kernel_x]
+|Attribute|int32_t*|stride|[2]|[stride_y, stride_x]
+|Attribute|int32_t*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
 |Output|in_out_t*|output|[N,OH,OW,C]|Output tensor 4D
 |===
 
@@ -491,9 +491,9 @@ Performs a 2D transposed convolution over the given tensor input, using the weig
 |Input|in_t*|input|[N,IH,IW,IC]|Input tensor
 |Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
 |Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[OC]|Per output channel bias data.
-|Attribute|int*|out_pad|[4]|[out_pad_top, out_pad_bottom, out_pad_left, out_pad_right]
-|Attribute|int*|stride|[2]|[stride_y, stride_x]
-|Attribute|int*|out_shape|[4]|[N,OH,OW,OC]
+|Attribute|int32_t*|out_pad|[4]|[out_pad_top, out_pad_bottom, out_pad_left, out_pad_right]
+|Attribute|int32_t*|stride|[2]|[stride_y, stride_x]
+|Attribute|int32_t*|out_shape|[4]|[N,OH,OW,OC]
 |Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
 |Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
 |Output|out_t*|output|[N,OH,OW,OC]|Output tensor
