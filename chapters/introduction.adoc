@@ -199,12 +199,12 @@ For details of interpreting the quantized data, see the <<Quantization Scaling>>
 |int4_t
 | -7
 | +7
-|Signed 4-bit two's-complement values. Excludes -8 to maintain a symmetric about zero range for weights.
+|Signed 4-bit two's-complement value. Excludes -8 to maintain a symmetric about zero range for weights.
 
 |int8_t
 | -128
 | +127
-|Signed 8-bit two's-complement values.
+|Signed 8-bit two's-complement value.
 
 |uint8_t
 | 0
@@ -214,7 +214,12 @@ For details of interpreting the quantized data, see the <<Quantization Scaling>>
 |int16_t
 | -32768
 | +32767
-|Signed 16-bit two's-complement values.
+|Signed 16-bit two's-complement value.
+
+|uint16_t
+| 0
+| 65535
+|Unsigned 16-bit value.
 
 |int32_t
 | -(1<<31)
