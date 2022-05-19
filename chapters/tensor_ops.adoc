@@ -244,7 +244,7 @@ for_each(0 <= n < N, 0 <= od < OD, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
         d = id + kd * dilation_d;
         y = iy + ky * dilation_y;
         x = ix + kx * dilation_x;
-        if (0 <= x < IW && 0 <= y < IH && 0 <= d <= ID) {
+        if (0 <= x < IW && 0 <= y < IH && 0 <= d < ID) {
             out_t value  = tensor_read<in_t>(input, [N,ID,IH,IW,IC], [n,d,y,x,ic]);
             out_t weight = tensor_read<weight_t>(weight,[OC,KD,KH,KW,IC],[oc,kd,ky,kx,ic]);
             value  = value - input_zp;
@@ -302,7 +302,7 @@ ERROR_IF(OH != idiv_check(IH - 1 + pad_top + pad_bottom - (KH - 1) * dilation_y,
 ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x, stride_x) + 1);
 
 pad = flatten([0,0], pad, [0,0]);
-for_each(0 <= n<N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C, 0 <= m < M) {
+for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C, 0 <= m < M) {
     out_t acc = 0;
     iy = oy * stride_y - pad_top;
     ix = ox * stride_x - pad_left;
