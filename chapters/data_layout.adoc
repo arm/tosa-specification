@@ -244,7 +244,7 @@ for_each(index in shape) {
 
 ==== TILE
 
-Replicates input1 multiplies times along each dimension.
+Replicates input1 multiples times along each dimension.
 
 *Arguments:*
 
@@ -252,7 +252,7 @@ Replicates input1 multiplies times along each dimension.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_out_t*|input1|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|multiplies|[rank(shape1)]|Number of times to replicate input1 in each dimension
+|Attribute|int32_t|multiples|[rank(shape1)]|Number of times to replicate input1 in each dimension
 |Output|in_out_t*|output|shape|Output tensor of same type, rank as the input tensor
 |===
 
@@ -263,7 +263,7 @@ Replicates input1 multiplies times along each dimension.
 for_each(index in shape) {
     tmp_index = index;
     for(i = 0; i < rank(shape); i++) {
-        REQUIRE(shape1[i] * multiplies[i] == shape[i]);
+        ERROR_IF(shape1[i] * multiples[i] != shape[i]);
         tmp_index[i] = index[i] % shape1[i];
     }
     in_out_t value = tensor_read<in_out_t>(input, shape1, tmp_index);
