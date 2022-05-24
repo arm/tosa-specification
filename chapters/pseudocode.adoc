@@ -203,4 +203,13 @@ int32_t sum(in_t input[])
 
 bool isNaN(float input)
     return True if floating-point input value is NaN
+
+// Input is the shape of the given tensor
+int32_t tensor_size(int32_t input[]) {
+    int32_t size = 1;
+    for (int32_t i=0; i < rank(input); i++) {
+        size *= input[i];
+    }
+    return size;
+}
 ----

@@ -125,7 +125,7 @@ Returns a tensor with the same type/values as the input, with a new shape specif
 |Argument|Type|Name|Shape|Description
 
 |Input|in_out_t*|input1|shape1|Input tensor
-|Attribute|int32_t|new_shape|[rank(output)]|List of values, with each element giving the size of the result tensor for the given dimension. At most one dimension may be given as -1 to automatically calculate the dimension size.
+|Attribute|int32_t|new_shape|[rank(shape)]|List of values, with each element giving the size of the result tensor for the given dimension.
 |Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
 |===
 
@@ -134,8 +134,24 @@ Returns a tensor with the same type/values as the input, with a new shape specif
 [source,c++]
 ----
 ERROR_IF(tensor_size(shape1) != tensor_size(shape));
-for(i = 0; i < tensor_size(shape); i++) {
-    output[i] = input[i];
+
+for_each(index in shape) {
+    // Calculate flattened index for the output location (index)
+    int32_t calculated_index = 0;
+    int32_t multiplier = 1;
+    for(r = rank(shape) - 1; r >= 0; r--) {
+        calculated_index += index[r] * multiplier;
+        multiplier *= shape[r];
+    }
+    // Now convert to the location in the input
+    int32_t tmp_index[];
+    for(r = rank(shape1) - 1; r >= 0; r--) {
+        tmp_index[r] = calculated_index % shape1[r];
+        calculated_index /= shape1[r];
+    }
+    // Now read/write the value
+    in_out_t val = tensor_read<in_out_t>(input, shape1, tmp_index);
+    tensor_write<in_out_t>(output, shape, index, val);
 }
 ----
 
