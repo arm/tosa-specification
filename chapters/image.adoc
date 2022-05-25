@@ -73,10 +73,12 @@ ERROR_IF(scale_y_n <= 0 || scale_y_d <=0 || scale_x_n <=0 || scale_x_d <=0);
 ERROR_IF(scale_y_n > (1<<11) || scale_x_n > (1<<11));
 // set a consistent lower limit of 1/16 downscale to simplify implementations
 ERROR_IF(scale_y_d >= 16 * scale_y_n || scale_x_d >= 16 * scale_x_n);
-ERROR_IF(offset_y <= -16 * scale_y_n || offset_y >= 16 * scale_y_n);
-ERROR_IF(offset_x <= -16 * scale_x_n || offset_x >= 16 * scale_x_n);
-ERROR_IF(OH != idiv_check((IH-1)*scale_n_y - offset_y + border_y, scale_d_y) + 1);
-ERROR_IF(OW != idiv_check((IW-1)*scale_n_x - offset_x + border_x, scale_d_x) + 1);
+ERROR_IF(offset_y < -scale_y_n || offset_y >= 16*scale_y_n);
+ERROR_IF(offset_x < -scale_x_n || offset_x >= 16*scale_x_n);
+ERROR_IF(border_y < -16*scale_y_n || border_y >= scale_y_n);
+ERROR_IF(border_x < -16*scale_x_n || border_x >= scale_x_n);
+ERROR_IF(OH != idiv_check((IH-1)*scale_y_n - offset_y + border_y, scale_y_d) + 1);
+ERROR_IF(OW != idiv_check((IW-1)*scale_x_n - offset_x + border_x, scale_x_d) + 1);
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
     out_t acc;
     y = oy * scale_y_d + offset_y;
@@ -90,11 +92,11 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
         dy = y - iy * scale_y_n;
         dx = y - ix * scale_x_n;
     }
+    // Note that -1 <= iy < IH and -1 <= ix < IW
     iy0 = apply_max(iy, 0);
     iy1 = apply_min(iy+1, IH-1);
     ix0 = apply_max(ix, 0);
     ix1 = apply_min(ix+1, IW-1);
-    REQUIRE(ix0 <= ix1 && iy0 <= iy1);
     if (mode==BILINEAR) {
         v00 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix0,c]);
         v01 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c]);
