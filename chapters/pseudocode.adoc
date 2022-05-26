@@ -50,9 +50,102 @@ void ERROR_IF(condition) {
 }
 ----
 
+=== Tensor Access Helpers
+
+==== Tensor Utilities
+
+[source,c++]
+----
+size_t tensor_index_to_offset(dim_t shape, dim_t index) {
+    // Ensure this is a proper tensor with each dimension having size >= 1
+    for_each(dimension_size in shape) {
+        REQUIRE(dimension_size >= 1);
+    }
+    size_t offset = 0;
+    for (int32_t i = 0; i < rank(shape); i++) {
+        REQUIRE(index[i] >= 0 && index[i] < shape[i]);
+        offset = offset * shape[i] + index[i];
+    }
+    return offset;
+}
+
+dim_t tensor_offset_to_index(dim_t shape, size_t offset) {
+    // Index is a dim_t with rank equal to the rank of shape
+    dim_t index(rank(shape));
+    for(int32_t r = rank(shape1) - 1; r >= 0; r--) {
+        index[r] = offset % shape1[r];
+        calculated_index /= shape[r];
+    }
+    return index;
+}
+
+// Input is the shape of the given tensor
+size_t tensor_size(dim_t shape) {
+    size_t size = 1;
+    for (int32_t i=0; i < rank(shape); i++) {
+        size *= input[i];
+    }
+    return size;
+}
+----
+
+==== Tensor Read
+
+tensor_read reads a single data value out of the given tensor.
+The shape argument contains the shape of the tensor.
+Index is the coordinates within the tensor of the value to be read.
+
+[source,c++]
+----
+in_t tensor_read<in_t>(in_t *address, dim_t shape, dim_t index) {
+    size_t offset = tensor_index_to_offset(shape, index);
+    return address[offset];
+}
+----
+
+==== Tensor Write
+
+tensor_write writes a single data value into the given tensor.
+The shape argument contains the shape of the tensor.
+Index is the coordinates within the tensor of the value to be written.
+value is the value to be written to the given coordinate.
+
+[source,c++]
+----
+void tensor_write<type>(<type> *address, dim_t shape, dim_t index, <type> value) {
+    size_t offset = tensor_index_to_offset(shape, index);
+    address[offset] = value;
+}
+----
+
+==== Broadcast Helper
+
+The following function maps an index in the output tensor to an index in the input tensor.
+
+[source,c++]
+----
+// The index argument should be a valid location within out_shape.
+// The function returns the location within in_shape that contributes
+// to the output based on broadcasting rules.
+
+dim_t apply_broadcast(dim_t out_shape, dim_t in_shape, dim_t index) {
+    ERROR_IF(rank(out_shape) != rank(in_shape));
+    ERROR_IF(rank(out_shape) != rank(index));
+    for (int32_t i = 0; i < rank(out_shape); i++) {
+        if (out_shape[i] != in_shape[i]) {
+            ERROR_IF(in_shape[i] != 1);
+            index[i] = 0;
+        }
+    }
+    return index;
+}
+----
+
 === General Pseudocode Helpers
 
 This section contains general pseudocode utility functions used throughout the specification.
+
+==== Arithmetic Helpers
 
 The following functions provide arithmetic while defining requirements such that values stay in the valid range.
 
@@ -142,6 +235,8 @@ int32_t count_leading_zeros(int32_t a) {
 }
 ----
 
+==== Numeric Conversion Helpers
+
 The following definitions are used in pseudocode to do numeric conversions.
 
 [source,c++]
@@ -203,15 +298,6 @@ int32_t sum(in_t input[])
 
 bool isNaN(float input)
     return True if floating-point input value is NaN
-
-// Input is the shape of the given tensor
-int32_t tensor_size(int32_t input[]) {
-    int32_t size = 1;
-    for (int32_t i=0; i < rank(input); i++) {
-        size *= input[i];
-    }
-    return size;
-}
 
 float_t pi()
     returns value of pi

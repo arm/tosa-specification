@@ -46,16 +46,55 @@ hardware such as NPUs/TPUs.
 
 The TOSA Specification is written as AsciiDoc mark-up and developed in its raw
 mark-up form, managed through a git repository here:
-https://git.mlplatform.org/tosa/specification.git/. The specification is
-developed and versioned much like software. While the mark-up is legible and can
-be read fairly easily in its raw form, it’s recommended to build or “render” the
-mark-up into a PDF document, or similar. To do this, please follow the
-instructions in the README.md in the root of the specification repository.
+https://git.mlplatform.org/tosa/specification.git/.
+The specification is developed and versioned much like software.
+While the mark-up is legible and can be read fairly easily in its raw form, it is recommended to build or “render” the mark-up into PDF or HTML.
+To do this, please follow the instructions in the README.md in the root of the specification repository.
+
+=== Operator Selection Principles
+
+TOSA defines a set of primitive operators to which higher level operators can be lowered in a consistent way.
+To remain effective and efficient to implement, the set of operators must be constrained to a reasonably small set of primitive operations out of which others can be constructed.
+The following principles govern the selection of operators within TOSA.
+
+.Principles
+[cols="1,5,5"]
+|===
+|ID|Principle|Reason for this
+
+|P0
+|An operator shall be a primitive operation or building block that cannot be decomposed into simpler whole tensor operations.
+|If the operator can be broken down, then we should look at the component operators.
+
+|P1
+|An operator shall be a usable as a component out of which more complex operations can be constructed.
+|Single use operators have a high architectural cost and a more reusable version should be considered instead.
+
+|P2
+|Precision should be appropriate for the input and output data types.
+|Precision higher than that needed to calculate the result leads to extra implementation cost.
+
+|P3
+|Numerical definition of common sub-operations should be consistent between operators (for example: value scaling).
+|Consistent sub-operation definition reduces the operator implementation cost.
+
+|P4
+|The valid input and output ranges for all operands shall be specified.
+|Ranges are required to make consistent (numerically agreeing) implementations possible.
+
+|P5
+|Integer operators shall be implementable in a bit-exact form with good efficiency on CPU, GPU and hardware targets.
+|Reduces implementation cost and gives consistent inference results.
+|===
 
 === Profiles
 
-TOSA supports three profiles that enable efficient implementation on different classes of device. The Base-Inference profile is intended for embedded integer/fixed-point designs performing inference only.  The Main-Inference profile is intended for general inference functionality including integer and floating-point data types.  The Main-Training profile adds training operators in addition to inference operators.
-This version of the specification covers the Base and Main inference profiles. Main Training profile is expected in a later version of the specification.
+TOSA supports three profiles that enable efficient implementation on different classes of device.
+The Base Inference profile is intended for embedded integer/fixed-point designs performing inference only.
+The Main Inference profile is intended for general inference functionality including integer and floating-point data types.
+The Main Training profile adds training operators in addition to inference operators.
+This version of the specification covers the Base Inference and Main Inference profiles.
+Main Training profile is expected in a later version of the specification.
 The following table summarizes the three profiles:
 
 .Profiles
@@ -72,7 +111,7 @@ The following table summarizes the three profiles:
 This section defines when a TOSA implementation is compliant to a given TOSA specification profile.
 The term conformant will mean the same as compliant.
 
-==== Baseline Inference Profile
+==== Baseline Inference Profile Compliance
 
 The <<Operator Graphs>> section of this specification defines a TOSA graph and the behavior defined for a TOSA graph.
 This behavior is captured in the pseudo-code function tosa_execute_graph().
@@ -123,45 +162,41 @@ An implementation is compliant to the Main Inference or Main Training profiles i
 
 Note that for graphs containing floating point there is no strict precision requirement that must be met, but that the precision achieved must be reported.
 
-=== Operator Selection
+=== Tensor Definitions
 
-TOSA defines a set of primitive operators to which higher level operators can be lowered in a consistent way. To remain effective and efficient to implement the set of operators must be constrained to a reasonably small set of primitive operations out of which others can be constructed. The following principles govern the selection of operators within TOSA.
+==== Tensors
 
-.Principles
-[cols="1,5,5"]
-|===
-|ID|Principle|Reason for this
+Tensors are multidimensional arrays of data.
+Tensors have metadata associated with them that describe characteristics of the tensor, including:
 
-|P0
-|An operator shall be a primitive operation or building block that cannot be broken down into simpler whole tensor operations
-|If the operator can be broken down, then we should look at the component operators.
+* Data Type
+* Shape
 
-|P1
-|An operator shall be a usable as a component out of which more complex operations can be constructed
-|Single use operators have a high architectural cost and a more reusable version should be considered instead.
+The number of dimensions in a shape is called the rank.
+A tensor with rank equal to zero is permitted.
+In that case, the tensor has a single entry.
+A tensor shape is an array of integers of size equal to the rank of the tensor.
+Each element in the tensor shape describes the number of elements in the dimension.
+The tensor shape in each dimension must be greater than or equal to 1.
+For tensor access information, see <<Tensor Access Helpers>>.
+Tensor dimensions are given in the pseudocode as type dim_t.
+dim_t is a vector of int32_t values, with the length of the vector defining the rank of the tensor.
+Tensor elements are addressed using dim_t values, where each element of the vector indicates the offset of the requested element within the corresponding dimension.
 
-|P2
-|Precision should be appropriate for the input and output data types
-|Precision higher than that needed to calculate the result leads to extra implementation cost
+==== Tensor size limit
 
-|P3
-|Numerical definition of common sub-operations should be consistent between operators (for example: value scaling)
-|Consistent sub-operation definition reduces the operator implementation cost
+Tensor size is limited by the data type size_t. In this version of the specification, size_t is defined as (1<<32) - 1, and can be represented with an unsigned 32-bit integer.
 
-|P4
-|The valid input and output ranges for all operands shall be specified
-|Ranges are required to makes consistent (numerically agreeing) implementations possible
-
-|P5
-|Integer operators shall be implementable in a bit-exact form with good efficiency on CPU, GPU and hardware targets.
-|Reduces implementation cost and gives consistent inference result
-|===
-
-=== Supported Features
 
 ==== Data Layouts
 
-The following data layouts are supported in TOSA. Data layouts are specified such that the rightmost dimension is the fastest changing.
+The following data layouts are supported in TOSA.
+TOSA operations are defined in terms of a linear packed tensor layout.
+In a linear packed layout a rank r tensor has elements of dimension (r-1) consecutive.
+The next to increment is dimension (r-2) and so on.
+For a specification of this layout see the tensor read and write functions in section <<Tensor Access Helpers>>.
+
+An implementation of TOSA can choose a different tensor memory layout provided that the operation behavior is maintained.
 
 .Data Layouts
 [cols="1,4,4"]
@@ -175,16 +210,17 @@ The following data layouts are supported in TOSA. Data layouts are specified suc
 |DOHWI|Depth, Output Channels, Filter Height, Filter Width, Input Channels|Weights for 3D convolution
 |===
 
-==== Floating-point
+==== Broadcasting
 
-The base inference profile of TOSA requires support for the quantized integer operations. Floating-point support is included in the main inference profile.
+In operations where broadcasting is supported, an input shape dimension can be broadcast to an output shape dimension if the input shape dimension is 1.
+TOSA broadcast requires the rank of both tensors to be the same.
+A RESHAPE can be done to create a compatible tensor with appropriate dimensions of size 1.
+To map indexes in an output tensor to that of an input tensor, see <<Broadcast Helper>>.
 
-==== Number Formats
+==== Supported Number Formats
 
 The following number formats are defined in TOSA.
-The number formats supported by an operator are listed in a per-operator table of supported types.
-The integer types may be used to represent quantized data.
-For details of interpreting the quantized data, see the <<Quantization Scaling>> section.
+The number formats supported by a given operator are listed in its table of supported types.
 
 .Number formats
 [cols="1,1,1,5"]
@@ -237,121 +273,47 @@ For details of interpreting the quantized data, see the <<Quantization Scaling>>
 |floating-point number. Must have features defined in the section <<Floating-point>>.
 |===
 
-Note: In this specification minimum<type> and maximum<type> will denote the minimum and maximum values of the data as stored in memory (ignoring the zero point). The minimum and maximum values for each type is given in the preceeding table.
+Note: In this specification minimum<type> and maximum<type> will denote the minimum and maximum values of the data as stored in memory (ignoring the zero point).
+The minimum and maximum values for each type is given in the preceeding table.
 
-Note: Integer number formats smaller than 8 bits may be used provided that the numerical result is the same as using a sequence of 8-bit TOSA operations. For example, a convolution with low precision data must equal that of running the convolution at 8 bits and then clipping the result to the peritted output range. This ensures that a Base Inference profile TOSA implementation can calculate the same result.
+Note: Integer number formats smaller than 8 bits may be used provided that the numerical result is the same as using a sequence of 8-bit TOSA operations.
+For example, a convolution with low precision data must equal that of running the convolution at 8 bits and then clipping the result to the peritted output range.
+This ensures that a Base Inference profile TOSA implementation can calculate the same result.
 
-==== Tensor Metadata
+=== Integer Behavior
 
-Tensors have an associated tensorinfo that contains information about the tensor including:
+Integer calculations must be standard two's-complement or unsigned calculations.
+If overflow occurs doing integer calculation, the result is unpredictable, as indicated by the REQUIRE checks in the pseudocode for the operators.
 
-* Data Type
-* Shape
+Unsigned 8 and 16-bit values are only allowed in the RESCALE operation, to allow for compatibility with networks which expect unsigned 8-bit or 16-bit tensors for input and output.
 
-The number of dimensions in a shape is called the rank.
-Thus a tensor shape is an array of integers of size rank(shape) with shape[i] giving the the number of elements for dimension i.
-The tensor shape in each dimension must be greater than or equal to 1.
-The following pseudocode represents the operations that will happen to data elements as they are read in to be processed, or have their results written out.
+==== Quantization
 
-*Functionality of tensor read*
+Machine Learning frameworks may represent tensors with a quantized implementation, using integer values to represent the original floating-point numbers.
+TOSA integer operations do not perform any implicit scaling to represent quantized values.
+Required zero point values are passed to the operator as necessary, and will be processed according to the pseudocode for each operator.
 
-tensor_read reads a single data value out of the given tensor.
-The shape argument contains the shape of the tensor.
-Index is the coordinates within the tensor of the value to be read.
+To convert a network containing quantized tensors to TOSA, generate explicit RESCALE operators for any change of quantization scaling.
+This reduces quantized operations to purely integer operations.
 
-[source,c++]
-----
-in_t tensor_read<in_t>(in_t *address, dim_t shape, dim_t index) {
-    // Ensure this is a proper tensor with each dimension having size >= 1
-    for_each(dimension_size in shape) {
-        REQUIRE(dimension_size >= 1);
-    }
-    unsigned offset = 0;
-    for (i = 0; i < rank(shape); i++) {
-        REQUIRE(index[i] >= 0 && index[i] < shape[i]);
-        offset = offset * shape[i] + index[i];
-    }
-    return address[offset];
-}
-----
+As an example, an ADD between two quantized tensors requires the integer values represent the same range.
+The scale parameters for RESCALE can be calculated to ensure that the resulting tensors represent the same range.
+Then the ADD is performed, and a RESCALE can be used to ensure that the result is scaled properly.
 
-*Functionality of tensor write*
+RESCALE provides support for per-tensor and per-channel scaling values to ensure compatibility with a range of possible quantization implementations.
 
-tensor_write writes a single data value into the given tensor.
-The shape argument contains the shape of the tensor.
-Index is the coordinates within the tensor of the value to be written.
-value is the value to be written to the given coordinate.
 
-[source,c++]
-----
-tensor_write<type>(<type> *address, dim_t shape, dim_t index, <type> value) {
-    unsigned offset = 0;
-    // Ensure this is a proper tensor with each dimension having size >= 1
-    for_each(dimension_size in shape) {
-        REQUIRE(dimension_size >= 1);
-    }
-    for (i = 0; i < rank(shape); i++) {
-        REQUIRE(index[i] >= 0 && index[i] < shape[i]);
-        offset = offset * shape[i] + index[i];
-    }
-    address[offset] = value;
-}
-----
 
-==== Broadcasting
+==== Precision scaling
 
-In operations where broadcasting is supported, an input shape dimension can be broadcast to an output shape dimension if the dimensions are equal or the input shape dimension is 1. TOSA broadcast requires the rank of both tensors
-to be the same. A RESHAPE can be done to create a compatible tensor with appropriate dimensions of size 1.
+TOSA uses the RESCALE operation to scale between values with differing precision.
+The RESCALE operator is defined using an integer multiply, add, and shift.
+This guarantees that all TOSA implementations will return the same result for a RESCALE, including those with no support for floating-point numbers.
 
-*Functionality of broadcast*
-
-The following function maps an index in the output tensor to an index in the input tensor.
-
-[source,c++]
-----
-// The index argument should be a valid location within out_shape.
-// The function returns the location within in_shape that contributes
-// to the output based on broadcasting rules.
-
-dim_t apply_broadcast(dim_t out_shape, dim_t in_shape, dim_t index) {
-    ERROR_IF(rank(out_shape) != rank(in_shape));
-    ERROR_IF(rank(out_shape) != rank(index));
-    for (i = 0; i < rank(out_shape); i++) {
-        if (out_shape[i] != in_shape[i]) {
-            ERROR_IF(in_shape[i] != 1);
-            index[i] = 0;
-        }
-    }
-    return index;
-}
-----
-
-=== Quantization
-
-==== Quantization Basics
-
-When converting the floating-point values used in training to quantized integer values used on devices for inference, we need to know the range of values to be represented by the integers. The frameworks use slightly different parameters and data types to do this conversion. For example, TensorFlow passes a min and max floating-point values for quantization. TensorFlow Lite and PyTorch use a floating-point scale factor, and an integer zero point. TFLite and PyTorch also allow for symmetric quantization where the zero point value is not used.
-In the initial quantization work, tensors were quantized with a single set of parameters for the entire tensor. Recently, frameworks have added support for different quantization parameters on a per channel basis. This per channel quantization thus carries a vector of scales and zero points to be used on each channel. TOSA will support per channel quantization, but only for the weight tensor used in convolution operators.
-Quantization parameters in floating-point cause imprecision.
-In some instances, the software may need to calculate post-op scaling values on hardware that does not have a floating-point unit.
-Arm NPUs have fixed output scaling hardware that uses fixed point arithmetic to calculate the output values.
-When calculating these multiplicands and shift amounts, different floating-point precisions may cause results to differ.
-To remove this dependency on floating-point values, there are two design choices being made:
-
-* Quantization parameters will be associated with operations rather than tensors. The operations are where the scaling is taking place, and thus can be specified such that the hardware fixed point calculations can be represented exactly, such that any hardware designed to the TOSA specification will return the same quantized values.
-* Quantization parameters will be given in integer values, as multiplicands and shifts. Specific bit widths and signed/unsignedness will be provided with each operator.
-
-When compiling a network to TOSA, we expect that a compiler would lower all possible subgraphs to TOSA, keeping the quantization parameters with the tensors, and then do an additional pass where the quantization values for the operators are calculated based on the input and output tensors for the operation.
-
-TOSA currently supports signed 8-bit quantization, unsigned 8-bit quantization, and
-signed 16-bit quantization. 8-bit values support an optional zero point, denoting
-which value in the 8-bit range represents the value zero. Unsigned 8-bit values
-are only allowed in the RESCALE operation, to allow for compatibility with
-networks which expect unsigned 8-bit input tensors.
-
-==== Quantization Scaling
-
-Most operations in TOSA do not contain quantization scaling in the operation, but in a separate RESCALE node that performs change in scale using a multipler and shift value. This TOSA specification supports two precisions of multiplier: 16-bit and 32-bit. The 32-bit multiplier version supports two rounding modes to enable simpler lowering of existing frameworks that use two stage rounding. All arithmetic is designed so that it does not overflow a 64-bit accumulator and that the final result fits in 32 bits. In particular a 48-bit value can only be scaled with the 16-bit multiplier.
+This TOSA specification supports two precisions of multiplier: 16-bit and 32-bit.
+The 32-bit multiplier version supports two rounding modes to enable simpler lowering of existing frameworks that use two stage rounding.
+All arithmetic is designed so that it does not overflow a 64-bit accumulator and that the final result fits in 32 bits.
+In particular a 48-bit value can only be scaled with the 16-bit multiplier.
 
 The apply_scale functions provide a scaling of approximately (multiplier * 2^-shift^).
 The shift and value range is limited to allow a variety of implementations.
@@ -418,16 +380,17 @@ scale_t reciprocal_scale(uint32_t value) {
 }
 ----
 
-==== Quantized Convolutions
+==== Integer Convolutions
 
-For convolution, the input is not required to be scaled before the convolution occurs.
+For the convolution operators, the input is not required to be scaled.
+The integer versions of the convolution operators will subtract the zero point from the integer values as defined for each operator.
 The convolution produces an accumulator output of type int32_t or int48_t.
 This accumulator output is then scaled to the final output range using the RESCALE operator.
 The scale applied in the RESCALE operator should be set to multiplier and shift values such that: multiplier * 2^-shift^ = (input scale * weight scale) / output_scale.
 Here, input_scale, weight_scale and output_scale are the conversion factors from integer to floating-point for the input, weight and output tensor values respectively.
 If per-channel scaling is needed then the per-channel option of the RESCALE operation should be used.
 
-==== Quantized Elementwise Operators
+==== Integer Elementwise Operators
 
 When two quantized tensors are used in an operation, they must represent the same numeric range for the result to be valid.
 In this case, TOSA expects that RESCALE operators will be used as necessary to generate 32-bit integer values in a common range.
@@ -472,6 +435,7 @@ void generate_lookup_table(int16_t *table, int32_t (*reference)(int32_t))
 
 === Floating-point
 
+Floating-point support is included in the main inference profile.
 TOSA does not define bit-exact behavior of the floating-point type, since floating-point operation results can vary according to operation order (floating-point addition is not associative in general) and rounding behavior.
 If a bit-exact answer is required then integer operations should be used.
 TOSA does define that the floating-point type must support the following list of features.

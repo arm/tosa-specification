@@ -137,18 +137,10 @@ ERROR_IF(tensor_size(shape1) != tensor_size(shape));
 
 for_each(index in shape) {
     // Calculate flattened index for the output location (index)
-    int32_t calculated_index = 0;
-    int32_t multiplier = 1;
-    for(r = rank(shape) - 1; r >= 0; r--) {
-        calculated_index += index[r] * multiplier;
-        multiplier *= shape[r];
-    }
+    size_t offset = tensor_index_to_offset(shape, index);
     // Now convert to the location in the input
-    int32_t tmp_index[];
-    for(r = rank(shape1) - 1; r >= 0; r--) {
-        tmp_index[r] = calculated_index % shape1[r];
-        calculated_index /= shape1[r];
-    }
+    dim_t tmp_index = tensor_offset_to_index(shape1, offset);
+
     // Now read/write the value
     in_out_t val = tensor_read<in_out_t>(input, shape1, tmp_index);
     tensor_write<in_out_t>(output, shape, index, val);
