@@ -342,12 +342,12 @@ No normalization is applied on either the forward or inverse versions of the ope
 
 // output[h][w] = \sum_{m=0}^{H-1}\sum_{n=0}^{W-1}input[m][n] * \exp\left(-2\pi i\left(\frac{mh}{H} + \frac{nw}{W}\right)\right)
 
-.Calculation for the forward FFT2D calculation (direction=false)
+.Calculation for the forward FFT2D calculation (inverse=false)
 image::forward_fft2d.svg["forward FFT definition", align="center"]
 
 // output[h][w] = \sum_{m=0}^{H-1}\sum_{n=0}^{W-1}input[m][n] * \exp\left(2\pi i\left(\frac{mh}{H} + \frac{nw}{W}\right)\right)
 
-.Calculation for the inverse FFT2D calculation (direction=true)
+.Calculation for the inverse FFT2D calculation (inverse=true)
 image::inverse_fft2d.svg["inverse FFT definition", align="center"]
 
 *Arguments:*
