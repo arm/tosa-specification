@@ -8,7 +8,7 @@
 # by a licensing agreement from ARM Limited.
 #
 
-TOSAREVISION=0.24.0 draft
+TOSAREVISION=0.30.0
 MKDIR=mkdir -p
 ASCIIDOC=asciidoctor
 ASPELL=aspell
