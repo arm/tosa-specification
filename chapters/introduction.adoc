@@ -352,7 +352,7 @@ The values to achieve a scaling of 1.0 are shift=30, multiplier=1<<30 for apply_
 int32_t apply_scale_32(int32_t value, int32_t multipler, uint6_t shift, bool_t double_round=false) {
     REQUIRE(multiplier >= 0);
     REQUIRE(2 <= shift && shift <= 62);
-    REQUIRE(value >= (-1<<(shift-2)) && value < (1<<(shift-2));
+    REQUIRE(value >= (-1 << (shift - 1)) && value < (1 << (shift - 1));
     int64_t round = 1 << (shift - 1);
     if (double_round) {
         if (shift > 31 && value >= 0) round += 1<<30;
