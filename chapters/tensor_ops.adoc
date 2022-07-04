@@ -396,19 +396,19 @@ include::{generated}/operators/TRANSPOSE_CONV2D.adoc[]
 ----
 ERROR_IF(in_t != int8_t  && input_zp != 0); // Zero point only allowed for int8_t
 ERROR_IF(weight_t != int8_t && weight_zp != 0);
-ERROR_IF(out_pad_top < 0 || out_pad_bottom < 0);
-ERROR_IF(out_pad_left < 0 || out_pad_right < 0);
+ERROR_IF(out_pad_top <= -KH || out_pad_bottom <= -KH);
+ERROR_IF(out_pad_left <= -KW || out_pad_right <= -KW);
 ERROR_IF(stride_y < 1 || stride_x < 1);
-ERROR_IF(OH != (IH - 1) * stride_y - out_pad_top - out_pad_bottom + KH);
-ERROR_IF(OW != (IW - 1) * stride_x - out_pad_left - out_pad_right + KW);
+ERROR_IF(OH != (IH - 1) * stride_y + out_pad_top + out_pad_bottom + KH);
+ERROR_IF(OW != (IW - 1) * stride_x + out_pad_left + out_pad_right + KW);
 
 for_each(index in out_shape) {
     tensor_write<out_t>(output, [N,OH,OW,OC], index, bias[index[3]])
 }
 for_each(0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= oc < OC,
           0 <= ic < IC, 0 <= ky < KH,  0 <= kx < KW) {
-    oy = iy * stride_y - out_pad_top  + ky;
-    ox = ix * stride_x - out_pad_left + kx;
+    oy = iy * stride_y + out_pad_top + ky;
+    ox = ix * stride_x + out_pad_left + kx;
     if (oy >= 0 && oy < OH && ox >= 0 && ox < OW) {
         out_t acc = tensor_read<out_t>(output, [N,OH,OW,OC], [n,oy,ox,oc]);
         out_t value = tensor_read<in_t>(input, [N,IH,IW,IC], [n,iy,ix,ic]);
