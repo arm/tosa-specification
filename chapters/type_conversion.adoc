@@ -65,7 +65,7 @@ for_each(index in shape) {
     ERROR_IF(!scale32 && double_round);
     int48_t value = tensor_read<in_t>(input, shape, index);
     value = value - input_zp;
-    int c = (per_channel) ? index[dims-1] : 0;
+    int c = (per_channel) ? index[rank(input) - 1] : 0;
     int32_t result = (scale32) ?
         apply_scale_32(value, multiplier[c], shift[c], double_round) :
         apply_scale_16(value, multiplier[c], shift[c]);

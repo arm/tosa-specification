@@ -901,7 +901,7 @@
         <name>POW</name>
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape1">
-            <description>Input tensor from 1 to 4 dims</description>
+            <description>Input tensor</description>
           </argument>
           <argument category="input" name="input2" type="in_out_t*" shape="shape2">
             <description>Input tensor with the same rank as input1</description>
@@ -1650,7 +1650,7 @@
         <name>REVERSE</name>
         <arguments>
           <argument category="input" name="input" type="in_out_t*" shape="shape">
-            <description>Input tensor from 1 to 4 dims</description>
+            <description>Input tensor with rank from 1 to 4</description>
           </argument>
           <argument category="attribute" name="axis" type="int32_t" shape="-">
             <description>Axis to reverse, in range from 0 to rank(shape)-1</description>
@@ -2004,7 +2004,7 @@ used.</description>
         <name>RESCALE</name>
         <arguments>
           <argument category="input" name="input" type="in_t" shape="shape">
-            <description>Input tensor from 1 to 4 dims</description>
+            <description>Input tensor</description>
           </argument>
           <argument category="output" name="output" type="out_t" shape="shape">
             <description>Output tensor with the same shape as input</description>
@@ -2028,7 +2028,7 @@ used.</description>
             <description>Select double round mode</description>
           </argument>
           <argument category="attribute" name="per_channel" type="bool_t" shape="-">
-            <description>if (per_channel) NC=shape[dims-1] else NC=1</description>
+            <description>if (per_channel) NC=shape[rank(shape)-1] else NC=1</description>
           </argument>
         </arguments>
         <types>
