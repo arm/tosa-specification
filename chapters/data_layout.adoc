@@ -13,15 +13,7 @@
 Concatenate a list of tensors along a given axis.
 No data conversion happens during a concat operation.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shapes1[]|List of input tensors. All inputs must have the same rank and data type
-|Attribute|int32_t|axis|-|Axis along which concatenation is to occur, in range from 0 to rank(shape)-1
-|Output|in_out_t*|output|shape|Output tensor
-|===
+include::{generated}/operators/CONCAT.adoc[]
 
 *Operation Function:*
 
@@ -52,36 +44,13 @@ for_each(index1 in shape) {
 
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Boolean|bool_t
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== PAD
 
 Pads a tensor along the borders of each dimension with a supplied value.
 Returns a new tensor with the padding included.
 The pad_const value includes the zero point if the tensor uses a zero point.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Attribute|int32_t|padding|[rank(shape1),2]|Number of pad elements at the start and end of each dimension
-|Attribute|in_out_t|pad_const|-|Constant value to be used as padding
-|Output|in_out_t*|output|shape|Output tensor of same type as the input tensor
-|===
+include::{generated}/operators/PAD.adoc[]
 
 *Operation Function:*
 
@@ -107,33 +76,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Boolean|bool_t
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== RESHAPE
 
 Returns a tensor with the same type/values as the input, with a new shape specified by the shape argument. Reshape may operate on tensors of any rank. No data conversion happens during a reshape operation.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Attribute|int32_t|new_shape|[rank(shape)]|List of values, with each element giving the size of the result tensor for the given dimension.
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
+include::{generated}/operators/RESHAPE.adoc[]
 
 *Operation Function:*
 
@@ -153,33 +100,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Boolean|bool_t
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== REVERSE
 
 Returns a tensor with the same type/values as the input, with the data reversed along the given axis. No data conversion happens during a reverse operation.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input|shape|Input tensor from 1 to 4 dims
-|Attribute|int32_t|axis|-|Axis to reverse, in range from 0 to rank(shape)-1
-|Output|in_out_t*|output|shape|Output tensor. Same shape as input tensor.
-|===
+include::{generated}/operators/REVERSE.adoc[]
 
 *Operation Function:*
 
@@ -194,34 +119,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Boolean|bool_t
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== SLICE
 
 Extracts a slice of the input1 on the given axis, beginning at the start coordinates, and extending for size elements in each direction.
 No data conversion happens during a slice operation.
 
-*Arguments:*
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|start|[rank(input1)]|List of integer coordinates, of length equal to the rank of input1. Start coordinate for slicing.
-|Attribute|int32_t|size|[rank(input1)]|List of integer size values, of length equal to the rank of input1. Size of the input to be used.
-|Output|in_out_t*|output|shape|Output tensor of same type as the input tensor
-|===
+include::{generated}/operators/SLICE.adoc[]
 
 *Operation Function:*
 
@@ -248,33 +151,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Boolean|bool_t
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== TILE
 
 Replicates input1 multiples times along each dimension.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|multiples|[rank(shape1)]|Number of times to replicate input1 in each dimension
-|Output|in_out_t*|output|shape|Output tensor of same type, rank as the input tensor
-|===
+include::{generated}/operators/TILE.adoc[]
 
 *Operation Function:*
 
@@ -291,34 +172,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Boolean|bool_t
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== TRANSPOSE
 
 Permutes the dimensions of the input tensor input1 based on the perms argument.
 Each value in the perms list must be a valid dimension of the input tensor and may not be repeated.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor with minimum rank of one.
-|Attribute|int32_t|perms|[rank(input1)]|List of integers of length equal to the rank of input1. Values must be valid dimensions within shape1, and may not be repeated.
-|Output|in_out_t*|output|shape|Output tensor of same type, rank as the input tensor
-|===
+include::{generated}/operators/TRANSPOSE.adoc[]
 
 *Operation Function:*
 
@@ -348,17 +207,3 @@ for_each(index in shape) {
     tensor_write<in_out_t>(output, shape, index, value);
 }
 ----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Boolean|bool_t
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===

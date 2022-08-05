@@ -13,15 +13,7 @@
 
 This returns the index with the largest value across the given axis of the input tensor.
 
-*Arguments*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis in range from 0 to rank(shape1)-1
-|Output|out_t*|output|shape|Output tensor, with rank = rank(shape1)-1
-|===
+include::{generated}/operators/ARGMAX.adoc[]
 
 *Operation Function:*
 
@@ -54,36 +46,13 @@ for_each(left_index in left_shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|out_t
-
-|Any|signed 8|int8_t|int32_t
-|Any|signed 16|int16_t|int32_t
-|MI, MT|fp16|fp16_t|int32_t
-|MI, MT|bf16|bf16_t|int32_t
-|MI, MT|fp32|fp32_t|int32_t
-|===
-
 ==== AVG_POOL2D
 
 This performs an average pooling over the given input tensor.
 A sliding window of size given by <kernel size> is passed over the input tensor, with the mean value being placed in the output tensor.
 When calculating the average, only the number of valid input tensor values, but not padding, are used to calculate the divisor.
-*Arguments:*
 
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input|[N,IH,IW,C]|Input tensor 4D
-|Attribute|int32_t*|kernel|[2]|[kernel_y, kernel_x]
-|Attribute|int32_t*|stride|[2]|[stride_y, stride_x]
-|Attribute|int32_t*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
-|Attribute|in_out_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
-|Attribute|in_out_t|output_zp|-|Output tensor zero point. Must be zero for non-int8 types.
-|Output|in_out_t*|output|[N,OH,OW,C]|Output tensor 4D
-|===
+include::{generated}/operators/AVG_POOL2D.adoc[]
 
 *Operation Function:*
 
@@ -130,37 +99,11 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C ) {
 }
 ----
 
-*Supported Data Types:*
-|===
-|Profile|Mode|in_out_t|acc_t
-
-|Any|signed 8|int8_t|int32_t
-|Any|signed 16|int16_t|int32_t
-|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t
-|MI, MT|fp16 with fp32 accumulate|fp16_t|fp32_t
-|MI, MT|bf16 with fp32 accumulate|bf16_t|fp32_t
-|MI, MT|fp32|fp32_t|fp32_t
-|===
-
 ==== CONV2D
 
 Performs a 2D convolution over the given tensor input, using the weight tensor.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input|[N,IH,IW,IC]|Input tensor
-|Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
-|Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[OC]|Per output channel bias data.
-|Attribute|int32_t*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
-|Attribute|int32_t*|stride|[2]|[stride_y, stride_x]
-|Attribute|int32_t*|dilation|[2]|[dilation_y, dilation_x]
-|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
-|Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|out_t*|output|[N,OH,OW,OC]|Output tensor
-|===
+include::{generated}/operators/CONV2D.adoc[]
 
 *Operation Function*
 
@@ -195,39 +138,11 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|weight_t|out_t
-
-|Any|signed 8x8|int8_t|int8_t|int32_t
-|Any|signed 8x4|int8_t|int4_t|int32_t
-|Any|signed 16x8|int16_t|int8_t|int48_t
-|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t|fp16_t
-|MI, MT|fp16 with fp32 accumulate|fp16_t|fp16_t|fp32_t
-|MI, MT|bf16 with fp32 accumulate|bf16_t|bf16_t|fp32_t
-|MI, MT|fp32|fp32_t|fp32_t|fp32_t
-|===
-
 ==== CONV3D
 
 Performs a 3D convolution over the given input tensor.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input|[N,ID,IH,IW,IC]|Input tensor
-|Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KD,KH,KW,IC]|Weight kernel size KDxKHxKW
-|Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[OC]|Per output channel bias data.
-|Attribute|int32_t*|pad|[6]|[pad_d0, pad_d1, pad_top, pad_bottom, pad_left, pad_right]
-|Attribute|int32_t*|stride|[3]|[stride_d, stride_y, stride_x]
-|Attribute|int32_t*|dilation|[3]|[dilation_d, dilation_y, dilation_x]
-|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
-|Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|out_t*|output|[N,OD,OH,OW,OC]|Output tensor
-|===
+include::{generated}/operators/CONV3D.adoc[]
 
 *Operation Function*
 
@@ -265,40 +180,11 @@ for_each(0 <= n < N, 0 <= od < OD, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|weight_t|out_t
-
-|Any|signed 8x8|int8_t|int8_t|int32_t
-|Any|signed 8x4|int8_t|int4_t|int32_t
-|Any|signed 16x8|int16_t|int8_t|int48_t
-|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t|fp16_t
-|MI, MT|fp16 with fp32 accumulate|fp16_t|fp16_t|fp32_t
-|MI, MT|bf16 with fp32 accumulate|bf16_t|bf16_t|fp32_t
-|MI, MT|fp32|fp32_t|fp32_t|fp32_t
-|===
-
-
 ==== DEPTHWISE_CONV2D
 
 Performs 2D convolutions separately over each channel of the given tensor input, using the weight tensor.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input|[N,H,W,C]|Input tensor
-|Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[KH,KW,C,M]|Weight kernel size KH x KW
-|Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[C*M]|Per output channel bias data.
-|Attribute|int32_t*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
-|Attribute|int32_t*|stride|[2]|[stride_y, stride_x]
-|Attribute|int32_t*|dilation|[2]|[dilation_y, dilation_x]
-|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
-|Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|out_t*|output|[N,OH,OW,C*M]|Output tensor
-|===
+include::{generated}/operators/DEPTHWISE_CONV2D.adoc[]
 
 *Operation Function*
 
@@ -333,20 +219,6 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C, 0 <= m < M) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|weight_t|out_t
-
-|Any|signed 8x8|int8_t|int8_t|int32_t
-|Any|signed 8x4|int8_t|int4_t|int32_t
-|Any|signed 16x8|int16_t|int8_t|int48_t
-|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t|fp16_t
-|MI, MT|fp16 with fp32 accumulate|fp16_t|fp16_t|fp32_t
-|MI, MT|bf16 with fp32 accumulate|bf16_t|bf16_t|fp32_t
-|MI, MT|fp32|fp32_t|fp32_t|fp32_t
-|===
-
 ==== FFT2D
 
 Performs a batched complex 2D Fast Fourier Transform over the input.
@@ -364,17 +236,7 @@ image::forward_fft2d.svg["forward FFT definition", align="center"]
 .Calculation for the inverse FFT2D calculation (inverse=true)
 image::inverse_fft2d.svg["inverse FFT definition", align="center"]
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input_real|[N,H,W]|Real part of the complex input. H,W must be powers of two.
-|Input|in_out_t*|input_imag|[N,H,W]|Imaginary part of the complex input. H,W must be powers of two.
-|Attribute|bool_t|inverse|-|false for forward FFT, true for inverse FFT
-|Output|in_out_t*|output_real|[N,H,W]|Real part of the complex output
-|Output|in_out_t*|output_imag|[N,H,W]|Imaginary part of the complex output.
-|===
+include::{generated}/operators/FFT2D.adoc[]
 
 *Operation Function*
 
@@ -404,30 +266,11 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|MI,MT|fp32_t|fp32_t
-|===
-
 ==== FULLY_CONNECTED
 
 Performs a fully connected network.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input|[N,IC]|Input tensor
-|Attribute|weight_t*|weight|[OC,IC]|Weights
-|Attribute|out_t*|bias|[OC]|Per output channel bias data.
-|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
-|Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|out_t*|output|[N,OC]|Output tensor
-|===
+include::{generated}/operators/FULLY_CONNECTED.adoc[]
 
 *Operation Function*
 
@@ -449,34 +292,11 @@ for_each(0 <= n < N, 0 <= oc < OC) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|weight_t|out_t
-
-|Any|signed 8x8|int8_t|int8_t|int32_t
-|Any|signed 8x4|int8_t|int4_t|int32_t
-|Any|signed 16x8 |int16_t|int8_t|int48_t
-|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t|fp16_t
-|MI, MT|fp16 with fp32 accumulate|fp16_t|fp16_t|fp32_t
-|MI, MT|bf16 with fp32 accumulate|bf16_t|bf16_t|fp32_t
-|MI, MT|fp32|fp32_t|fp32_t|fp32_t
-|===
-
 ==== MATMUL
+
 Performs two dimensional matrix multiplications. This allows both inputs to be activations, rather than reserving weights as an attribute in the FULLY_CONNECTED operator.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|A|[N,H,C]|Input tensor A, N matrices of size HxC
-|Input|in_t*|B|[N,C,W]|Input tensor B, N matrices of size CxW
-|Attribute|in_t|A_zp|-|Input tensor A zero point. Must be zero for non-int8 types.
-|Attribute|in_t|B_zp|-|Input tensor B zero point. Must be zero for non-int8 types.
-|Output|out_t*|output|[N,H,W]|Output tensor, N matrices of size HxW
-|===
+include::{generated}/operators/MATMUL.adoc[]
 
 *Operation Function*
 
@@ -496,33 +316,11 @@ for_each(0 <= n < N, 0 <= h < H, 0 <= w < W) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|out_t
-
-|Any|signed 8x8|int8_t|int32_t
-|Any|signed 16x16|int16_t|int48_t
-|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t
-|MI, MT|fp16 with fp32 accumulate|fp16_t|fp32_t
-|MI, MT|bf16 with fp32 accumulate|bf16_t|fp32_t
-|MI, MT|fp32|fp32_t|fp32_t
-|===
-
 ==== MAX_POOL2D
+
 This performs a max pooling over the given input tensor. A sliding window of size given by <kernel size> is passed over the input tensor, with the maximum value being placed in the output tensor.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input|[N,IH,IW,C]|Input tensor 4D
-|Attribute|int32_t*|kernel|[2]|[kernel_y, kernel_x]
-|Attribute|int32_t*|stride|[2]|[stride_y, stride_x]
-|Attribute|int32_t*|pad|[4]|[pad_top, pad_bottom, pad_left, pad_right]
-|Output|in_out_t*|output|[N,OH,OW,C]|Output tensor 4D
-|===
+include::{generated}/operators/MAX_POOL2D.adoc[]
 
 *Operation Function:*
 
@@ -554,18 +352,6 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 8|int8_t
-|Any|16-bit|int16_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== RFFT2D
 
 Performs a batched 2D real-valued Fast Fourier Transform over the input where the input tensor consists of real values producing complex valued output.
@@ -575,15 +361,7 @@ Imaginary values with locations h=0,H/2 or w=0,W/2 are zero.
 
 image::forward_fft2d.svg["forward FFT definition", align="center"]
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input|[N,H,W]|Real input. H,W must be powers of two.
-|Output|in_out_t*|output_real|[N,H/2 + 1,W/2 + 1]|Real part of the complex output
-|Output|in_out_t*|output_imag|[N,H/2 + 1,W/2 + 1]|Imaginary part of the complex output.
-|===
+include::{generated}/operators/RFFT2D.adoc[]
 
 *Operation Function*
 
@@ -606,34 +384,11 @@ for_each(0 <= n < N, 0 <= oy < H/2 + 1, 0 <= ox < W/2 + 1) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|MI,MT|fp32_t|fp32_t
-|===
-
-
 ==== TRANSPOSE_CONV2D
 
 Performs a 2D transposed convolution over the given tensor input, using the weights tensor.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input|[N,IH,IW,IC]|Input tensor
-|Input (MT profile) Attribute (BI/MI profiles)|weight_t*|weight|[OC,KH,KW,IC]|Weight kernel size KH x KW
-|Input (MT profile) Attribute (BI/MI profiles)|out_t*|bias|[OC]|Per output channel bias data.
-|Attribute|int32_t*|out_pad|[4]|[out_pad_top, out_pad_bottom, out_pad_left, out_pad_right]
-|Attribute|int32_t*|stride|[2]|[stride_y, stride_x]
-|Attribute|int32_t*|out_shape|[4]|[N,OH,OW,OC]
-|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
-|Attribute|weight_t|weight_zp|-|Weight zero point. Must be zero for non-int8 types.
-|Output|out_t*|output|[N,OH,OW,OC]|Output tensor
-|===
+include::{generated}/operators/TRANSPOSE_CONV2D.adoc[]
 
 *Operation Function*
 
@@ -665,17 +420,3 @@ for_each(0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= oc < OC,
     }
 }
 ----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|weight_t|out_t
-
-|Any|signed 8x8|int8_t|int8_t|int32_t
-|Any|signed 8x4|int8_t|int4_t|int32_t
-|Any|signed 16x8|int16_t|int8_t|int48_t
-|MI, MT|fp16 with fp16 accumulate|fp16_t|fp16_t|fp16_t
-|MI, MT|fp16 with fp32 accumulate|fp16_t|fp16_t|fp32_t
-|MI, MT|bf16 with fp32 accumulate|bf16_t|bf16_t|fp32_t
-|MI, MT|fp32|fp32_t|fp32_t|fp32_t
-|===

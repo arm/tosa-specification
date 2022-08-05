@@ -13,14 +13,7 @@
 
 Elementwise absolute value operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape|Input tensor
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
+include::{generated}/operators/ABS.adoc[]
 
 *Floating-point behavior:*
 |===
@@ -44,27 +37,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 32|int32_t
-|MI, MT|floating-point|float_t
-|===
-
 ==== BITWISE_NOT
 
 Elementwise bitwise NOT of input tensor.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape|Input tensor
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
+include::{generated}/operators/BITWISE_NOT.adoc[]
 
 *Operation Function:*
 
@@ -77,28 +54,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|===
-
 ==== CEIL
 
 Elementwise ceiling operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape|Input tensor
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
+include::{generated}/operators/CEIL.adoc[]
 
 *Floating-point behavior:*
 |===
@@ -118,26 +78,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|MI, MT|floating-point|float_t
-|===
-
 ==== CLZ
 
 Elementwise count leading zeros operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape|Input tensor
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
+include::{generated}/operators/CLZ.adoc[]
 
 *Operation Function:*
 
@@ -150,25 +95,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 32|int32_t
-|===
-
 ==== EXP
 
 Elementwise e to the x operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape|Input tensor
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
+include::{generated}/operators/EXP.adoc[]
 
 *Floating-point behavior:*
 |===
@@ -188,28 +119,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== FLOOR
 
 Elementwise floor operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape|Input tensor
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
+include::{generated}/operators/FLOOR.adoc[]
 
 *Floating-point behavior:*
 |===
@@ -229,28 +143,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== LOG
 
 Elementwise natural logarithm operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape|Input tensor
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
+include::{generated}/operators/LOG.adoc[]
 
 *Floating-point behavior:*
 |===
@@ -270,28 +167,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== LOGICAL_NOT
 
 Elementwise logical NOT of input.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape|Input tensor
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
+include::{generated}/operators/LOGICAL_NOT.adoc[]
 
 *Operation Function:*
 
@@ -304,28 +184,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|bool|bool_t
-|===
-
 ==== NEGATE
 
 Elementwise negation operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape|Input tensor
-|Attribute|in_out_t|input1_zp|-|Input 1 zero point. Must be zero for non-int8 types.
-|Attribute|in_out_t|output_zp|-|Output zero point. Must be zero for non-int8 types.
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
+include::{generated}/operators/NEGATE.adoc[]
 
 *Floating-point behavior:*
 |===
@@ -349,31 +212,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t|acc_t
-
-|Any|signed 8|int8_t|int32_t
-|Any|signed 16|int16_t|int32_t
-|Any|signed 32|int32_t|int32_t
-|MI, MT|fp16|fp16_t|fp16_t
-|MI, MT|bf16|bf16_t|bf16_t
-|MI, MT|fp32|fp32_t|fp32_t
-|===
-
 ==== RECIPROCAL
 
 Elementwise reciprocal operation. For integer operation, a TABLE should be used with the appropriate ranges.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape|Input tensor
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
+include::{generated}/operators/RECIPROCAL.adoc[]
 
 *Floating-point behavior:*
 |===
@@ -393,28 +236,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== RSQRT
 
 Elementwise reciprocal square root operation. For integer operation, a TABLE should be used with the appropriate ranges.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape|Input tensor
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
+include::{generated}/operators/RSQRT.adoc[]
 
 *Floating-point behavior:*
 |===
@@ -439,13 +265,3 @@ for_each(index in shape) {
     tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===

@@ -15,17 +15,7 @@ TOSA implements two control flow operators, for conditional branching and loop b
 
 Evaluates a Boolean condition and then takes one of two distinct execution paths. This implements the semantic if-then-else structure.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Description
-
-|Input |tensor_list_t  |input_list |List of input tensors
-|Input |bool_t         |condition  |Input condition as rank-0 tensor
-|Attribute|tosa_graph_t|then_graph |TOSA graph to execute if condition is true
-|Attribute|tosa_graph_t|else_graph |TOSA graph to execute if condition is false
-|Output|tensor_list_t  |output_list|List of output tensors
-|===
+include::{generated}/operators/COND_IF.adoc[]
 
 *Operation Function:*
 
@@ -47,16 +37,7 @@ if (condition) {
 
 Generates and evaluates a Bool condition and either executes a loop body or exits the loop. This action is performed repeatedly after updating and re-evaluating the Boolean condition every iteration. This implements the semantic foreach or while iterative loop structure.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Description
-
-|Input |tensor_list_t  |input_list |List of input tensors
-|Attribute|tosa_graph_t|cond_graph |TOSA graph to evaluate the condition
-|Attribute|tosa_graph_t|body_graph |TOSA graph to execute the loop body
-|Output|tensor_list_t  |output_list|List of output tensors
-|===
+include::{generated}/operators/WHILE_LOOP.adoc[]
 
 *Operation Function:*
 

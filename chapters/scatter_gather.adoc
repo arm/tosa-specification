@@ -14,15 +14,7 @@
 Generate a tensor for which each element in the output is a subtensor of the values tensor based on the indices.
 N is the number of batches, W the number of indices in each batch, K the range of each index and C the number data channels for each index.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|value_t*|values|[N,K,C]|3D value tensor
-|Input|index_t*|indices|[N,W]|2D index tensor
-|Output|value_t*|output|[N,W,C]|3D output tensor
-|===
+include::{generated}/operators/GATHER.adoc[]
 
 *Operation Function:*
 
@@ -36,17 +28,6 @@ for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|index_t|value_t
-
-|Any|signed 8|int32_t|int8_t
-|Any|signed 16|int32_t|int16_t
-|Any|signed 32|int32_t|int32_t
-|MI,MT|float|int32_t|float
-|===
-
 ==== SCATTER
 
 The values_out tensor is set to the values_in tensor with data modified as follows: data from the input tensor is inserted at the positions specified by the indices tensor.
@@ -54,20 +35,7 @@ N is the number of batches, W the number of indices in each batch, K the range o
 It is not permitted to repeat the same output index within a single SCATTER operation and so each output index occurs at most once.
 In use cases that require multiple updates to the same output position, these must be decomposed into multiple SCATTER operations.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|value_t*|values_in|[N,K,C]|3D values in tensor
-|Input|index_t*|indices|[N,W]|2D index tensor
-|Input|value_t*|input|[N,W,C]|3D input tensor
-|Output|value_t*|values_out|[N,K,C]|3D values out tensor
-|===
-
-*Quantization Parameters:*
-
-None
+include::{generated}/operators/SCATTER.adoc[]
 
 *Operation Function:*
 
@@ -96,16 +64,3 @@ for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
     output_modified[n,k,c] = true;
 }
 ----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|index_t|value_t
-
-|Any|signed 8|int32_t|int8_t
-|Any|signed 16|int32_t|int16_t
-|Any|signed 32|int32_t|int32_t
-|MI,MT|fp16|int32_t|fp16_t
-|MI,MT|bf16|int32_t|bf16_t
-|MI,MT|fp32|int32_t|fp32_t
-|===

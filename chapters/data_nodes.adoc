@@ -13,52 +13,11 @@
 
 A node containing constant data for use as the input to an operation. May hold data in any of the supported data formats.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Attribute|out_t*|values|shape|Constant values
-|Output|out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|out_t
-
-|Any|Boolean|bool_t
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
+include::{generated}/operators/CONST.adoc[]
 
 ==== IDENTITY
 
 Returns a tensor with the same shape, type, and contents as the input.
 
-*Arguments:*
+include::{generated}/operators/IDENTITY.adoc[]
 
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape|Input tensor
-|Output|in_out_t*|output|shape|Output tensor of same type, size as the input tensor
-|===
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Boolean|bool_t
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===

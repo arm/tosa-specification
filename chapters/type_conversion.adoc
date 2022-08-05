@@ -13,14 +13,7 @@
 
 Casts a tensor from one data type to another.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input|shape|Input tensor
-|Output|out_t*|output|shape|Output tensor
-|===
+include::{generated}/operators/CAST.adoc[]
 
 *Operation Function:*
 
@@ -46,62 +39,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|out_t
-
-|Any|bool to signed 8|bool_t|int8_t
-|Any|bool to signed 16|bool_t|int16_t
-|Any|bool to signed 32|bool_t|int32_t
-|Any|signed 8 to bool|int8_t|bool_t
-|Any|signed 8 to signed 16|int8_t|int16_t
-|Any|signed 8 to signed 32|int8_t|int32_t
-|MI, MT|signed 8 to fp16|int8_t|fp16_t
-|MI, MT|signed 8 to bf16|int8_t|bf16_t
-|MI, MT|signed 8 to fp32|int8_t|fp32_t
-|Any|signed 16 to bool|int16_t|bool_t
-|Any|signed 16 to signed 8|int16_t|int8_t
-|Any|signed 16 to signed 32|int16_t|int32_t
-|MI, MT|signed 16 to fp16|int16_t|fp16_t
-|MI, MT|signed 16 to bf16|int16_t|bf16_t
-|MI, MT|signed 16 to fp32|int16_t|fp32_t
-|Any|signed 32 to bool|int32_t|bool_t
-|Any|signed 32 to signed 8|int32_t|int8_t
-|Any|signed 32 to signed 16|int32_t|int16_t
-|MI, MT|signed 32 to fp16|int32_t|fp16_t
-|MI, MT|signed 32 to bf16|int32_t|bf16_t
-|MI, MT|signed 32 to fp32|int32_t|fp32_t
-|MI, MT|fp16 to signed 8|fp16_t|int8_t
-|MI, MT|fp16 to signed 16|fp16_t|int16_t
-|MI, MT|fp16 to signed 32|fp16_t|int32_t
-|MI, MT|bf16 to signed 8|bf16_t|int8_t
-|MI, MT|bf16 to signed 16|bf16_t|int16_t
-|MI, MT|bf16 to signed 32|bf16_t|int32_t
-|MI, MT|fp32 to signed 8|fp32_t|int8_t
-|MI, MT|fp32 to signed 16|fp32_t|int16_t
-|MI, MT|fp32 to signed 32|fp32_t|int32_t
-|===
-
 ==== RESCALE
 
 Rescale quantized values into a new domain. This function scales by factor: multiplier * 2^-shift^.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input|shape|Input tensor from 1 to 4 dims
-|Output|out_t*|output|shape|Output tensor with the same shape as input
-|Attribute|in_t|input_zp|-|Input tensor zero point. Must be zero for non-int8 types.
-|Attribute|out_t|output_zp|-|Output tensor zero point. Must be zero for non-int8 types.
-|Input (MT profile) Attribute (BI/MI profiles)|mul_t*|multiplier|[NC]|Scaling multiplier array
-|Input (MT profile) Attribute (BI/MI profiles)|uint6_t*|shift|[NC]|Scaling shift array
-|Attribute|bool_t|scale32|-|if (scale32) mul_t=int32_t else mul_t=int16_t
-|Attribute|bool_t|double_round|-|Select double round mode
-|Attribute|bool_t|per_channel|-|if (per_channel) NC=shape[dims-1] else NC=1
-|===
+include::{generated}/operators/RESCALE.adoc[]
 
 *Operation Function:*
 
@@ -131,28 +73,3 @@ for_each(index in shape) {
     tensor_write<out_t>(output, shape, index, result);
 }
 ----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|out_t
-
-|Any|signed 8 to signed 8|int8_t|int8_t
-|Any|signed 8 to signed 16|int8_t|int16_t
-|Any|signed 8 to signed 32|int8_t|int32_t
-|Any|signed 8 to unsigned 8|int8_t|uint8_t
-|Any|signed 16 to signed 8|int16_t|int8_t
-|Any|signed 16 to signed 16|int16_t|int16_t
-|Any|signed 16 to signed 32|int16_t|int32_t
-|Any|signed 16 to unsigned 8|int16_t|uint8_t
-|Any|signed 16 to unsigned 16|int16_t|uint16_t
-|Any|signed 32 to signed 8|int32_t|int8_t
-|Any|signed 32 to signed 16|int32_t|int16_t
-|Any|signed 32 to signed 32|int32_t|int32_t
-|Any|signed 48 to signed 8|int48_t|int8_t
-|Any|signed 48 to signed 16|int48_t|int16_t
-|Any|signed 48 to signed 32|int48_t|int32_t
-|Any|unsigned 8 to signed 8|uint8_t|int8_t
-|Any|unsigned 8 to signed 16|uint8_t|int16_t
-|Any|unsigned 16 to signed 16|uint16_t|int16_t
-|===

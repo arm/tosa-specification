@@ -11,20 +11,12 @@
 === Activation Functions
 
 ==== CLAMP
+
 Clamp to an arbitrary minimum and maximum value.
 Maximum and minimum values are specified as values in the range of the input type.
 No zero point subtraction is done to the values, thus to clamp to the zero point value, the zero point itself should be supplied as the minimum value.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|Input|shape|Input tensor
-|Attribute|in_out_t|min_val|-|minimum clip value
-|Attribute|in_out_t|max_val|-|maximum clip value
-|Output|in_out_t*|Output|shape|Output tensor of same type and shape as input
-|===
+include::{generated}/operators/CLAMP.adoc[]
 
 *Operation Function:*
 [source,c++]
@@ -36,18 +28,6 @@ for_each(index in shape) {
     tensor_write<in_out_t>(output, shape, index, value);
 }
 ----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
 
 ==== SIGMOID
 
@@ -69,24 +49,7 @@ int16_t sigmoid_reference(int16_t x) { // input x range is -256 to + 256 inclusi
 generate_lookup_table(&sigmoid_table, &sigmoid_reference);
 ----
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|Input|shape|Input tensor
-|Output|in_out_t*|Output|shape|Output tensor of same type and shape as input
-|===
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
+include::{generated}/operators/SIGMOID.adoc[]
 
 ==== TANH
 
@@ -109,21 +72,4 @@ int16_t tanh_reference(int16_t x) {  // input x range is -256 to +256 inclusive
 generate_lookup_table(&tanh_table, &tanh_reference);
 ----
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|Input|shape|Input tensor
-|Output|in_out_t*|Output|shape|Output tensor of same type and shape as input
-|===
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
+include::{generated}/operators/TANH.adoc[]

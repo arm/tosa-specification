@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!-- Type definitions -->
+
+<xs:simpleType name="profile">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="BI"/>
+    <xs:enumeration value="MI"/>
+    <xs:enumeration value="MT"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="datatype">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="bool_t"/>
+    <xs:enumeration value="int4_t"/>
+    <xs:enumeration value="int8_t"/>
+    <xs:enumeration value="uint8_t"/>
+    <xs:enumeration value="int16_t"/>
+    <xs:enumeration value="uint16_t"/>
+    <xs:enumeration value="int32_t"/>
+    <xs:enumeration value="int48_t"/>
+    <xs:enumeration value="fp16_t"/>
+    <xs:enumeration value="bf16_t"/>
+    <xs:enumeration value="fp32_t"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="typename">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="in_t"/>
+    <xs:enumeration value="out_t"/>
+    <xs:enumeration value="in_out_t"/>
+    <xs:enumeration value="acc_t"/>
+    <xs:enumeration value="weight_t"/>
+    <xs:enumeration value="cmp_t"/>
+    <xs:enumeration value="resize_t"/>
+    <xs:enumeration value="index_t"/>
+    <xs:enumeration value="value_t"/>
+    <xs:enumeration value="table_t"/>
+    <xs:enumeration value="TABLE_SIZE"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="argumentcategory">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="input"/>
+    <xs:enumeration value="output"/>
+    <xs:enumeration value="attribute"/>
+    <xs:enumeration value="input(MT)|attribute(BI,MI)"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<!-- Element definitions -->
+
+<xs:element name="profile">
+  <xs:complexType>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name" type="profile" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="profiles">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="profile" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<!-- TODO pattern for attribute name -->
+<!-- TODO enumerations/patterns for attribute type -->
+<!-- TODO enumerations/patterns for attribute shape -->
+<xs:element name="argument">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="description" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="category" type="argumentcategory" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="type" type="xs:string" use="required"/>
+    <xs:attribute name="shape" type="xs:string" use="required"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="arguments">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="argument" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="type">
+  <xs:complexType>
+    <xs:attribute name="name" type="typename" use="required"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="types">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="typesupport">
+  <xs:complexType>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="profile"/>
+    </xs:choice>
+    <xs:attribute name="mode" type="xs:string" use="required"/>
+    <xs:attribute name="in_t" type="datatype"/>
+    <xs:attribute name="out_t" type="datatype"/>
+    <xs:attribute name="in_out_t" type="datatype"/>
+    <xs:attribute name="weight_t" type="datatype"/>
+    <xs:attribute name="acc_t" type="datatype"/>
+    <xs:attribute name="cmp_t" type="datatype"/>
+    <xs:attribute name="resize_t" type="datatype"/>
+    <xs:attribute name="index_t" type="datatype"/>
+    <xs:attribute name="value_t" type="datatype"/>
+    <xs:attribute name="table_t" type="datatype"/>
+    <xs:attribute name="TABLE_SIZE" type="xs:int"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="operator">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="name"/> <!-- TODO pattern -->
+      <xs:element ref="arguments"/>
+      <xs:element ref="types" minOccurs="0" />
+      <xs:element ref="typesupport" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="operatorgroup">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="operator" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="operators">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="operatorgroup" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="tosa">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="profiles"/>
+      <xs:element ref="operators"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>

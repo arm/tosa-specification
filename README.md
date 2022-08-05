@@ -12,6 +12,8 @@ using the following tools:
 * Asciidoctor 1.5.5 or later ([Asciidoctor](https://asciidoctor.org))
 * Asciidoctor-pdf
 * GNU Make 4.1 or later
+* xmllint
+* Python 3.8 or later
 
 The default `make` build creates both an html and a pdf version of the specification
 in out/html and out/pdf

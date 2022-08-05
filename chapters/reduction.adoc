@@ -13,15 +13,7 @@
 
 Reduce a tensor along the given axis with a logical AND operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
-|Output|in_out_t*|output|shape|Output tensor. Same rank as the input tensor.
-|===
+include::{generated}/operators/REDUCE_ALL.adoc[]
 
 *Operation Function:*
 
@@ -44,27 +36,11 @@ for_each(index in shape1) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Boolean|bool_t
-|===
-
 ==== REDUCE_ANY
 
 Reduce a tensor along the given axis with a logical OR operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
-|Output|in_out_t*|output|shape|Output tensor. Same rank as the input tensor.
-|===
+include::{generated}/operators/REDUCE_ANY.adoc[]
 
 *Operation Function:*
 
@@ -87,27 +63,11 @@ for_each(index in shape1) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Boolean|bool_t
-|===
-
 ==== REDUCE_MAX
 
 Reduce a tensor along the given axis with a maximum operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
-|Output|in_out_t*|output|shape|Output tensor. Same rank as the input tensor.
-|===
+include::{generated}/operators/REDUCE_MAX.adoc[]
 
 *Operation Function:*
 
@@ -128,31 +88,11 @@ for_each(index in shape1) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== REDUCE_MIN
 
 Reduce a tensor along the given axis with a minimum operation
 
-*Arguments:*
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
-|Output|in_out_t*|output|shape|Output tensor. Same rank as the input tensor.
-|===
+include::{generated}/operators/REDUCE_MIN.adoc[]
 
 *Operation Function:*
 
@@ -173,32 +113,11 @@ for_each(index in shape1) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== REDUCE_PRODUCT
 
 Reduce a tensor along the given axis by computing the product of the axis.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
-|Output|in_out_t*|output|shape|Output tensor. Same rank as the input tensor.
-|===
+include::{generated}/operators/REDUCE_PRODUCT.adoc[]
 
 *Operation Function:*
 
@@ -219,29 +138,11 @@ for_each(index in shape1) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== REDUCE_SUM
 
 Reduce a tensor along the given axis by computing the sum of the axis.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input|shape1|Input tensor with rank from 1 to 4
-|Attribute|int32_t|axis|-|Axis to reduce, in range from 0 to rank(shape1)-1
-|Output|in_out_t*|output|shape|Output tensor. Same rank as the input tensor.
-|===
+include::{generated}/operators/REDUCE_SUM.adoc[]
 
 *Operation Function:*
 
@@ -261,15 +162,3 @@ for_each(index in shape1) {
     tensor_write<in_out_t>(output, shape, out_index, state);
 }
 ----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-

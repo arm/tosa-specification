@@ -13,16 +13,7 @@
 
 Elementwise select of the output based on a condition.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|cmp_t|input1|shape1|Input selector tensor
-|Input|in_out_t*|input2|shape2|Input value tensor if input1 is True
-|Input|in_out_t*|input3|shape3|Input value tensor if input1 is False
-|Output|in_out_t*|output|shape|Output tensor of same type as input2 and input3, with broadcast shape if necessary
-|===
+include::{generated}/operators/SELECT.adoc[]
 
 *Operation Function:*
 
@@ -44,16 +35,3 @@ for_each(index in shape) {
     tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
-
-*Supported Data Types:*
-|===
-|Profile|Mode|cmp_t|in_out_t
-
-|Any|Boolean|bool_t|bool_t
-|Any|signed 8|bool_t|int8_t
-|Any|signed 16|bool_t|int16_t
-|Any|signed 32|bool_t|int32_t
-|MI, MT|bool_t|fp16|fp16_t
-|MI, MT|bool_t|bf16|bf16_t
-|MI, MT|bool_t|fp32|fp32_t
-|===

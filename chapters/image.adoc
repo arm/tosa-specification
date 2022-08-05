@@ -49,17 +49,14 @@ the scale as described in the pseudocode. The [border_y, border_x] values
 adjust the output size to allow fractional sampling beyond integer
 input position (IH - 1,IW - 1).
 
-*Arguments:*
+include::{generated}/operators/RESIZE.adoc[]
 
+*Resize Modes:*
 |===
-|Argument|Type|Name|Shape|Description
+|Mode|Description
 
-|Input|in_t*|input|[N,IH,IW,C]|Input tensor
-|Attribute|int16_t *|scale|[4]|[scale_y_n, scale_y_d, scale_x_n, scale_x_d]
-|Attribute|int16_t *|offset|[2]|[offset_y, offset_x]
-|Attribute|int32_t* |border|[2]|[border_y, border_x]
-|Attribute|mode_t|mode|-|BILINEAR or NEAREST
-|Output|out_t*|output|[N,OH,OW,C]|Output tensor
+|NEAREST|Nearest Neighbor
+|BILINEAR|Bilinear interpoloation
 |===
 
 *Operation Function*
@@ -129,25 +126,3 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
     }
 }
 ----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|resize_t|in_t|out_t
-
-|Any|signed 8,  bilinear|int16_t|int8_t|int32_t
-|Any|signed 8,  nearest |int16_t|int8_t|int8_t
-|Any|signed 16, bilinear|int16_t|int16_t|int48_t
-|Any|signed 16, nearest |int16_t|int16_t|int16_t
-|MI,MT|fp16|fp32_t|fp16_t|fp16_t
-|MI,MT|bf16|fp32_t|bf16_t|bf16_t
-|MI,MT|fp32|fp32_t|fp32_t|fp32_t
-|===
-
-*Resize Modes:*
-|===
-|Mode|Description
-
-|NEAREST|Nearest Neighbor
-|BILINEAR|Bilinear interpoloation
-|===

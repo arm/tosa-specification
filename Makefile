@@ -13,31 +13,42 @@ MKDIR=mkdir -p
 ASCIIDOC=asciidoctor
 ASPELL=aspell
 SHELL=/bin/bash -o pipefail
+XMLLINT = xmllint
 
 HTMLDIR=out/html
 PDFDIR=out/pdf
+GENDIR=out/gen
 
-COMMON_ARGS= -a revnumber="$(TOSAREVISION)"
+COMMON_ARGS= -a revnumber="$(TOSAREVISION)" -a generated="$(abspath $(GENDIR))"
 
 SPECSRC := tosa_spec.adoc
-ADOCFILES = $(wildcard chapters/[A-Za-z]*.adoc)
+ADOCFILES = $(wildcard chapters/[A-Za-z]*.adoc) $(wildcard $(GENDIR)/*/*.adoc)
 SPECFILES = $(ADOCFILES) tosa.css
 FIGURES = $(wildcard figures/*.svg)
+SPECXML := tosa.xml
+SPECSCHEMA := tosa.xsd
+GENSCRIPTS := tools/tosa.py tools/genspec.py
+
+GEN := $(GENDIR)/gen.stamp
 
 .DELETE_ON_ERROR:
 
-.PHONY: all html pdf clean spell copy_html_figures
+.PHONY: all html pdf clean spell copy_html_figures lint
 
 all: spell html pdf
 
-html: copy_html_figures $(HTMLDIR)/tosa_spec.html
+html: lint copy_html_figures $(HTMLDIR)/tosa_spec.html
 
-pdf: $(PDFDIR)/tosa_spec.pdf
+pdf: lint $(PDFDIR)/tosa_spec.pdf
 
 clean:
 	$(RM) $(HTMLDIR)/tosa_spec.html
-	rm -rf $(HTMLDIR)/figures
+	$(RM) -rf $(HTMLDIR)/figures
 	$(RM) $(PDFDIR)/tosa_spec.pdf
+	$(RM) -r $(GENDIR)
+	$(RM) out/lint.txt
+
+lint: out/lint.txt
 
 spell: out/spell.txt
 
@@ -57,11 +68,20 @@ out/spell.txt: $(ADOCFILES) FORCE
 		else echo No spelling errors found ; \
 	fi
 
-$(HTMLDIR)/tosa_spec.html: $(SPECSRC) $(SPECFILES)
+.PRECIOUS: out/lint.txt
+out/lint.txt: $(SPECXML) $(SPECSCHEMA)
+	echo Linting XML
+	$(XMLLINT) --noout --schema $(SPECSCHEMA) $(SPECXML)
+
+$(GEN): $(SPECXML) $(GENSCRIPTS)
+	tools/genspec.py --xml $(SPECXML) --outdir $(GENDIR)
+	@touch $@
+
+$(HTMLDIR)/tosa_spec.html: $(SPECSRC) $(SPECFILES) $(GEN)
 	$(MKDIR) $(HTMLDIR)
 	$(ASCIIDOC) -b html5 -a stylesheet=tosa.css $(COMMON_ARGS) -o $@ $<
 
-$(PDFDIR)/tosa_spec.pdf: $(SPECSRC) $(SPECFILES)
+$(PDFDIR)/tosa_spec.pdf: $(SPECSRC) $(SPECFILES) $(GEN)
 	$(MKDIR) $(PDFDIR)
 	$(ASCIIDOC) -r asciidoctor-pdf -b pdf $(COMMON_ARGS) -o $@ $(SPECSRC)
 

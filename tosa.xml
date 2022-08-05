@@ -1,0 +1,2160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tosa SYSTEM "tosa.dtd">
+<tosa>
+  <profiles>
+    <profile name="BI">Base Inference</profile>
+    <profile name="MI">Main Inference</profile>
+    <profile name="MT">Main Training</profile>
+  </profiles>
+  <operators>
+    <operatorgroup name="tensor">
+      <operator>
+        <name>ARGMAX</name>
+        <arguments>
+          <argument category="input" name="input" type="in_t*" shape="shape1">
+            <description>Input tensor with rank from 1 to 4</description>
+          </argument>
+          <argument category="attribute" name="axis" type="int32_t" shape="-">
+            <description>Axis in range from 0 to rank(shape1)-1</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="shape">
+            <description>Output tensor, with rank = rank(shape1)-1</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t' />
+          <type name='out_t' />
+        </types>
+        <typesupport mode="signed 8" in_t="int8_t" out_t="int32_t"/>
+        <typesupport mode="signed 16" in_t="int16_t" out_t="int32_t" />
+        <typesupport mode="fp16" in_t="fp16_t" out_t="int32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_t="bf16_t" out_t="int32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_t="fp32_t" out_t="int32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>AVG_POOL2D</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="[N,IH,IW,C]">
+            <description>Input tensor 4D</description>
+          </argument>
+          <argument category="attribute" name="kernel" type="int32_t*" shape="[2]">
+            <description>[kernel_y, kernel_x]</description>
+          </argument>
+          <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
+            <description>[stride_y, stride_x]</description>
+          </argument>
+          <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
+            <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
+          </argument>
+          <argument category="attribute" name="input_zp" type="in_out_t" shape="-">
+            <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="attribute" name="output_zp" type="in_out_t" shape="-">
+            <description>Output tensor zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="[N,OH,OW,C]">
+            <description>Output tensor 4D</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t' />
+          <type name='acc_t' />
+        </types>
+        <typesupport mode="signed 8 with int32 accumulate" in_out_t="int8_t" acc_t="int32_t" />
+        <typesupport mode="signed 16 with int32 accumulate" in_out_t="int16_t" acc_t="int32_t" />
+        <typesupport mode="fp16 with fp16 accumulate" in_out_t="fp16_t" acc_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp16 with fp32 accumulate" in_out_t="fp16_t" acc_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16 with fp32 accumulate" in_out_t="bf16_t" acc_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 with fp32 accumulate" in_out_t="fp32_t" acc_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>CONV2D</name>
+        <arguments>
+          <argument category="input" name="input" type="in_t*" shape="[N,IH,IW,IC]">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input(MT)|attribute(BI,MI)" name="weight" type="weight_t*" shape="[OC,KH,KW,IC]">
+            <description>Weight kernel size KH x KW</description>
+          </argument>
+          <argument category="input(MT)|attribute(BI,MI)" name="bias" type="out_t*" shape="[OC]">
+            <description>Per output channel bias data.</description>
+          </argument>
+          <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
+            <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
+          </argument>
+          <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
+            <description>[stride_y, stride_x]</description>
+          </argument>
+          <argument category="attribute" name="dilation" type="int32_t*" shape="[2]">
+            <description>[dilation_y, dilation_x]</description>
+          </argument>
+          <argument category="attribute" name="input_zp" type="in_t" shape="-">
+            <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="attribute" name="weight_zp" type="weight_t" shape="-">
+            <description>Weight zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="[N,OH,OW,OC]">
+            <description>Output tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t' />
+          <type name='weight_t' />
+          <type name='out_t' />
+        </types>
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" weight_t="int8_t" out_t="int32_t" />
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="int8_t" weight_t="int4_t" out_t="int32_t" />
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="int16_t" weight_t="int8_t" out_t="int48_t" />
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>CONV3D</name>
+        <arguments>
+          <argument category="input" name="input" type="in_t*" shape="[N,ID,IH,IW,IC]">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input(MT)|attribute(BI,MI)" name="weight" type="weight_t*" shape="[OC,KD,KH,KW,IC]">
+            <description>Weight kernel size KDxKHxKW</description>
+          </argument>
+          <argument category="input(MT)|attribute(BI,MI)" name="bias" type="out_t*" shape="[OC]">
+            <description>Per output channel bias data.</description>
+          </argument>
+          <argument category="attribute" name="pad" type="int32_t*" shape="[6]">
+            <description>[pad_d0, pad_d1, pad_top, pad_bottom, pad_left, pad_right]</description>
+          </argument>
+          <argument category="attribute" name="stride" type="int32_t*" shape="[3]">
+            <description>[stride_d, stride_y, stride_x]</description>
+          </argument>
+          <argument category="attribute" name="dilation" type="int32_t*" shape="[3]">
+            <description>[dilation_d, dilation_y, dilation_x]</description>
+          </argument>
+          <argument category="attribute" name="input_zp" type="in_t" shape="-">
+            <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="attribute" name="weight_zp" type="weight_t" shape="-">
+            <description>Weight zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="[N,OD,OH,OW,OC]">
+            <description>Output tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t' />
+          <type name='weight_t' />
+          <type name='out_t' />
+        </types>
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" weight_t="int8_t" out_t="int32_t" />
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="int8_t" weight_t="int4_t" out_t="int32_t" />
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="int16_t" weight_t="int8_t" out_t="int48_t" />
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>DEPTHWISE_CONV2D</name>
+        <arguments>
+          <argument category="input" name="input" type="in_t*" shape="[N,H,W,C]">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input(MT)|attribute(BI,MI)" name="weight" type="weight_t*" shape="[KH,KW,C,M]">
+            <description>Weight kernel size KH x KW</description>
+          </argument>
+          <argument category="input(MT)|attribute(BI,MI)" name="bias" type="out_t*" shape="[C*M]">
+            <description>Per output channel bias data.</description>
+          </argument>
+          <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
+            <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
+          </argument>
+          <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
+            <description>[stride_y, stride_x]</description>
+          </argument>
+          <argument category="attribute" name="dilation" type="int32_t*" shape="[2]">
+            <description>[dilation_y, dilation_x]</description>
+          </argument>
+          <argument category="attribute" name="input_zp" type="in_t" shape="-">
+            <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="attribute" name="weight_zp" type="weight_t" shape="-">
+            <description>Weight zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="[N,OH,OW,C*M]">
+            <description>Output tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t' />
+          <type name='weight_t' />
+          <type name='out_t' />
+        </types>
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" weight_t="int8_t" out_t="int32_t" />
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="int8_t" weight_t="int4_t" out_t="int32_t" />
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="int16_t" weight_t="int8_t" out_t="int48_t" />
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>FFT2D</name>
+        <arguments>
+          <argument category="input" name="input_real" type="in_out_t*" shape="[N,H,W]">
+            <description>Real part of the complex input. H,W must be powers of two.</description>
+          </argument>
+          <argument category="input" name="input_imag" type="in_out_t*" shape="[N,H,W]">
+            <description>Imaginary part of the complex input. H,W must be powers of two.</description>
+          </argument>
+          <argument category="attribute" name="inverse" type="bool_t" shape="-">
+            <description>false for forward FFT, true for inverse FFT</description>
+          </argument>
+          <argument category="output" name="output_real" type="in_out_t*" shape="[N,H,W]">
+            <description>Real part of the complex output.</description>
+          </argument>
+          <argument category="output" name="output_imag" type="in_out_t*" shape="[N,H,W]">
+            <description>Imaginary part of the complex output.</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t' />
+        </types>
+        <typesupport mode="fp32" in_out_t="fp32_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>FULLY_CONNECTED</name>
+        <arguments>
+          <argument category="input" name="input" type="in_t*" shape="[N,IC]">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="attribute" name="weight" type="weight_t*" shape="[OC,IC]">
+            <description>Weights</description>
+          </argument>
+          <argument category="attribute" name="bias" type="out_t*" shape="[OC]">
+            <description>Per output channel bias data.</description>
+          </argument>
+          <argument category="attribute" name="input_zp" type="in_t" shape="-">
+            <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="attribute" name="weight_zp" type="weight_t" shape="-">
+            <description>Weight zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="[N,OC]">
+            <description>Output tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t' />
+          <type name='weight_t' />
+          <type name='out_t' />
+        </types>
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" weight_t="int8_t" out_t="int32_t" />
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="int8_t" weight_t="int4_t" out_t="int32_t" />
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="int16_t" weight_t="int8_t" out_t="int48_t" />
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>MATMUL</name>
+        <arguments>
+          <argument category="input" name="A" type="in_t*" shape="[N,H,C]">
+            <description>Input tensor A, N matrices of size HxC</description>
+          </argument>
+          <argument category="input" name="B" type="in_t*" shape="[N,C,W]">
+            <description>Input tensor B, N matrices of size CxW</description>
+          </argument>
+          <argument category="attribute" name="A_zp" type="in_t" shape="-">
+            <description>Input tensor A zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="attribute" name="B_zp" type="in_t" shape="-">
+            <description>Input tensor B zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="[N,H,W]">
+            <description>Output tensor, N matrices of size HxW</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t' />
+          <type name='out_t' />
+        </types>
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" weight_t="int8_t" out_t="int32_t" />
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="int16_t" weight_t="int8_t" out_t="int48_t" />
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>MAX_POOL2D</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="[N,IH,IW,C]">
+            <description>Input tensor 4D</description>
+          </argument>
+          <argument category="attribute" name="kernel" type="int32_t*" shape="[2]">
+            <description>[kernel_y, kernel_x]</description>
+          </argument>
+          <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
+            <description>[stride_y, stride_x]</description>
+          </argument>
+          <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
+            <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="[N,OH,OW,C]">
+            <description>Output tensor 4D</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t' />
+        </types>
+        <typesupport mode="signed 8" in_out_t="int8_t" />
+        <typesupport mode="16-bit" in_out_t="int16_t" />
+        <typesupport mode="fp16" in_out_t="fp16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>RFFT2D</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="[N,H,W]">
+            <description>Real input. H,W must be powers of two.</description>
+          </argument>
+          <argument category="output" name="output_real" type="in_out_t*" shape="[N,H/2 + 1,W/2 + 1]">
+            <description>Real part of the complex output</description>
+          </argument>
+          <argument category="output" name="output_imag" type="in_out_t*" shape="[N,H/2 + 1,W/2 + 1]">
+            <description>Imaginary part of the complex output.</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t' />
+        </types>
+        <typesupport mode="fp32" in_out_t="fp32_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>TRANSPOSE_CONV2D</name>
+        <arguments>
+          <argument category="input" name="input" type="in_t*" shape="[N,IH,IW,IC]">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input(MT)|attribute(BI,MI)" name="weight" type="weight_t*" shape="[OC,KH,KW,IC]">
+            <description>Weight kernel size KH x KW</description>
+          </argument>
+          <argument category="input(MT)|attribute(BI,MI)" name="bias" type="out_t*" shape="[OC]">
+            <description>Per output channel bias data.</description>
+          </argument>
+          <argument category="attribute" name="out_pad" type="int32_t*" shape="[4]">
+            <description>[out_pad_top, out_pad_bottom, out_pad_left, out_pad_right]</description>
+          </argument>
+          <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
+            <description>[stride_y, stride_x]</description>
+          </argument>
+          <argument category="attribute" name="out_shape" type="int32_t*" shape="[4]">
+            <description>[N,OH,OW,OC]</description>
+          </argument>
+          <argument category="attribute" name="input_zp" type="in_t" shape="-">
+            <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="attribute" name="weight_zp" type="weight_t" shape="-">
+            <description>Weight zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="[N,OH,OW,OC]">
+            <description>Output tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t' />
+          <type name='weight_t' />
+          <type name='out_t' />
+        </types>
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" weight_t="int8_t" out_t="int32_t" />
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="int8_t" weight_t="int4_t" out_t="int32_t" />
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="int16_t" weight_t="int8_t" out_t="int48_t" />
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="activation">
+      <operator>
+        <name>CLAMP</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="attribute" name="min_val" type="in_out_t" shape="-">
+            <description>Minimum clip value</description>
+          </argument>
+          <argument category="attribute" name="max_val" type="in_out_t" shape="-">
+            <description>Maximum clip value</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type and shape as input</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>SIGMOID</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type and shape as input</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>TANH</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type and shape as input</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="elementwise-binary">
+      <operator>
+        <name>ADD</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>ARITHMETIC_RIGHT_SHIFT</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="attribute" name="round" type="bool_t" shape="-">
+            <description>If true then the shift is rounded</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+      </operator>
+      <operator>
+        <name>BITWISE_AND</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+      </operator>
+      <operator>
+        <name>BITWISE_OR</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+      </operator>
+      <operator>
+        <name>BITWISE_XOR</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+      </operator>
+      <operator>
+        <name>INTDIV</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+      </operator>
+      <operator>
+        <name>LOGICAL_AND</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="boolean" in_out_t="bool_t"/>
+      </operator>
+      <operator>
+        <name>LOGICAL_LEFT_SHIFT</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+      </operator>
+      <operator>
+        <name>LOGICAL_RIGHT_SHIFT</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+      </operator>
+      <operator>
+        <name>LOGICAL_OR</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="boolean" in_out_t="bool_t"/>
+      </operator>
+      <operator>
+        <name>LOGICAL_XOR</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="boolean" in_out_t="bool_t"/>
+      </operator>
+      <operator>
+        <name>MAXIMUM</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>MINIMUM</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>MUL</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="uint6_t" shape="-">
+            <description>Result right shift (int32_t data type only)</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t'/>
+          <type name='out_t'/>
+        </types>
+        <typesupport mode="signed 8" in_t="int8_t" out_t="int32_t"/>
+        <typesupport mode="signed 16" in_t="int16_t" out_t="int32_t"/>
+        <typesupport mode="signed 32" in_t="int32_t" out_t="int32_t"/>
+        <typesupport mode="fp16" in_t="fp16_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_t="bf16_t" out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_t="fp32_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>POW</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor from 1 to 4 dims</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="fp16" in_out_t="fp16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>SUB</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>TABLE</name>
+        <arguments>
+          <argument category="input" name="input" type="in_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input(MT)|attribute(BI,MI)" name="table" type="table_t*" shape="[TABLE_SIZE]">
+            <description>Lookup table tensor</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="shape">
+            <description>Output tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t'/>
+          <type name='table_t'/>
+          <type name='out_t'/>
+          <type name='TABLE_SIZE'/>
+        </types>
+        <typesupport mode="signed 8" in_t="int8_t" table_t="int8_t" TABLE_SIZE="256" out_t="int8_t"/>
+        <typesupport mode="signed 16" in_t="int16_t" table_t="int16_t" TABLE_SIZE="513" out_t="int32_t"/>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="elementwise-unary">
+      <operator>
+        <name>ABS</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>BITWISE_NOT</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+      </operator>
+      <operator>
+        <name>CEIL</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="fp16" in_out_t="fp16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>CLZ</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+      </operator>
+      <operator>
+        <name>EXP</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>FLOOR</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>LOG</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>LOGICAL_NOT</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="Boolean" in_out_t="bool_t"/>
+      </operator>
+      <operator>
+        <name>NEGATE</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="attribute" name="input1_zp" type="in_out_t" shape="-">
+            <description>Input 1 zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="attribute" name="output_zp" type="in_out_t" shape="-">
+            <description>Output zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+          <type name='acc_t'/>
+        </types>
+        <typesupport mode="signed 8" in_out_t="int8_t" acc_t="int32_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t" acc_t="int32_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t" acc_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t" acc_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t" acc_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t" acc_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>RECIPROCAL</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>RSQRT</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="elementwise-ternary">
+      <operator>
+        <name>SELECT</name>
+        <arguments>
+          <argument category="input" name="input1" type="cmp_t" shape="shape1">
+            <description>Input selector tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+            <description>Input value tensor if input1 is True</description>
+          </argument>
+          <argument category="input" name="input3" type="in_out_t*" shape="shape3">
+            <description>Input value tensor if input1 is False</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type as input2 and input3, with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='cmp_t'/>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="Boolean" cmp_t="bool_t" in_out_t="bool_t"/>
+        <typesupport mode="signed 8" cmp_t="bool_t" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" cmp_t="bool_t" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" cmp_t="bool_t" in_out_t="int32_t"/>
+        <typesupport mode="fp16" cmp_t="bool_t" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" cmp_t="bool_t" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" cmp_t="bool_t" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="comparison">
+      <operator>
+        <name>EQUAL</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t'/>
+          <type name='out_t'/>
+        </types>
+        <typesupport mode="signed 32" in_t="int32_t" out_t="bool_t"/>
+        <typesupport mode="fp16" in_t="fp16_t" out_t="bool_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_t="bf16_t" out_t="bool_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_t="fp32_t" out_t="bool_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>GREATER</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t'/>
+          <type name='out_t'/>
+        </types>
+        <typesupport mode="signed 32" in_t="int32_t" out_t="bool_t"/>
+        <typesupport mode="fp16" in_t="fp16_t" out_t="bool_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_t="bf16_t" out_t="bool_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_t="fp32_t" out_t="bool_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>GREATER_EQUAL</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="input" name="input2" type="in_t*" shape="shape2">
+            <description>Input tensor with the same rank as input1</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="shape">
+            <description>Output tensor with broadcast shape if necessary</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t'/>
+          <type name='out_t'/>
+        </types>
+        <typesupport mode="signed 32" in_t="int32_t" out_t="bool_t"/>
+        <typesupport mode="fp16" in_t="fp16_t" out_t="bool_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_t="bf16_t" out_t="bool_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_t="fp32_t" out_t="bool_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="reduction">
+      <operator>
+        <name>REDUCE_ALL</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="shape1">
+            <description>Input tensor with rank from 1 to 4</description>
+          </argument>
+          <argument category="attribute" name="axis" type="int32_t" shape="-">
+            <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor. Same rank as the input tensor.</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="boolean" in_out_t="bool_t"/>
+      </operator>
+      <operator>
+        <name>REDUCE_ANY</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="shape1">
+            <description>Input tensor with rank from 1 to 4</description>
+          </argument>
+          <argument category="attribute" name="axis" type="int32_t" shape="-">
+            <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor. Same rank as the input tensor.</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="boolean" in_out_t="bool_t"/>
+      </operator>
+      <operator>
+        <name>REDUCE_MAX</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="shape1">
+            <description>Input tensor with rank from 1 to 4</description>
+          </argument>
+          <argument category="attribute" name="axis" type="int32_t" shape="-">
+            <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor. Same rank as the input tensor.</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>REDUCE_MIN</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="shape1">
+            <description>Input tensor with rank from 1 to 4</description>
+          </argument>
+          <argument category="attribute" name="axis" type="int32_t" shape="-">
+            <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor. Same rank as the input tensor.</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>REDUCE_PRODUCT</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="shape1">
+            <description>Input tensor with rank from 1 to 4</description>
+          </argument>
+          <argument category="attribute" name="axis" type="int32_t" shape="-">
+            <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor. Same rank as the input tensor.</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>REDUCE_SUM</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="shape1">
+            <description>Input tensor with rank from 1 to 4</description>
+          </argument>
+          <argument category="attribute" name="axis" type="int32_t" shape="-">
+            <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor. Same rank as the input tensor.</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="data-layout">
+      <operator>
+        <name>CONCAT</name>
+        <arguments>
+          <!-- FIXME express list of tensors better -->
+          <argument category="input" name="input1" type="in_out_t*" shape="shapes1[]">
+            <description>List of input tensors. All inputs must have the same rank and data type</description>
+          </argument>
+          <argument category="attribute" name="axis" type="int32_t" shape="-">
+            <description>Axis along which concatenation is to occur, in range from 0 to rank(shape)-1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="boolean" in_out_t="bool_t"/>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>PAD</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="attribute" name="padding" type="int32_t" shape="[rank(shape1),2]">
+            <description>Number of pad elements at the start and end of each dimension</description>
+          </argument>
+          <argument category="attribute" name="pad_const" type="in_out_t" shape="-">
+            <description>Constant value to be used as padding</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="boolean" in_out_t="bool_t"/>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>RESHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="attribute" name="new_shape" type="int32_t" shape="[rank(output)]">
+            <description>List of values, with each element giving the size of the result tensor for the given dimension. At most one dimension may be given as -1 to automatically calculate the dimension size.</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="boolean" in_out_t="bool_t"/>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>REVERSE</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="shape">
+            <description>Input tensor from 1 to 4 dims</description>
+          </argument>
+          <argument category="attribute" name="axis" type="int32_t" shape="-">
+            <description>Axis to reverse, in range from 0 to rank(shape)-1</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor. Same shape as input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="boolean" in_out_t="bool_t"/>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>SLICE</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor with rank from 1 to 4</description>
+          </argument>
+          <argument category="attribute" name="start" type="int32_t" shape="[rank(input1)]">
+            <description>List of integer coordinates, of length equal to the rank of input1. Start coordinate for slicing.</description>
+          </argument>
+          <argument category="attribute" name="size" type="int32_t" shape="[rank(input1)]">
+            <description>List of integer size values, of length equal to the rank of input1. Size of the input to be
+used.</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="boolean" in_out_t="bool_t"/>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>TILE</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor with rank from 1 to 4</description>
+          </argument>
+          <argument category="attribute" name="multiplies" type="int32_t" shape="[rank(shape1)]">
+            <description>Number of times to replicate input1 in each dimension</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, rank as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="boolean" in_out_t="bool_t"/>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>TRANSPOSE</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+            <description>Input tensor with minimum rank of one.</description>
+          </argument>
+          <argument category="attribute" name="perms" type="int32_t" shape="[rank(input1)]">
+            <description>List of integers of length equal to the rank of input1. Values must be valid dimensions within shape1, and may not be repeated.</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type, rank as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="boolean" in_out_t="bool_t"/>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="scatter-gather">
+      <operator>
+        <name>GATHER</name>
+        <arguments>
+          <argument category="input" name="values" type="value_t*" shape="[N,K,C]">
+            <description>3D value tensor</description>
+          </argument>
+          <argument category="input" name="indices" type="index_t*" shape="[N,W]">
+            <description>2D index tensor</description>
+          </argument>
+          <argument category="output" name="output" type="value_t*" shape="[N,W,C]">
+            <description>3D output tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='index_t'/>
+          <type name='value_t'/>
+        </types>
+        <typesupport mode="signed 8" index_t="int32_t" value_t="int8_t"/>
+        <typesupport mode="signed 16" index_t="int32_t" value_t="int16_t"/>
+        <typesupport mode="signed 32" index_t="int32_t" value_t="int32_t"/>
+        <typesupport mode="fp16" index_t="int32_t" value_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" index_t="int32_t" value_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" index_t="int32_t" value_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>SCATTER</name>
+        <arguments>
+          <argument category="input" name="values_in" type="value_t*" shape="[N,K,C]">
+            <description>3D values in tensor</description>
+          </argument>
+          <argument category="input" name="indices" type="index_t*" shape="[N,W]">
+            <description>2D index tensor</description>
+          </argument>
+          <argument category="input" name="input" type="value_t*" shape="[N,W,C]">
+            <description>3D input tensor</description>
+          </argument>
+          <argument category="output" name="values_out" type="value_t*" shape="[N,K,C]">
+            <description>3D output tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='index_t'/>
+          <type name='value_t'/>
+        </types>
+        <typesupport mode="signed 8" index_t="int32_t" value_t="int8_t"/>
+        <typesupport mode="signed 16" index_t="int32_t" value_t="int16_t"/>
+        <typesupport mode="signed 32" index_t="int32_t" value_t="int32_t"/>
+        <typesupport mode="fp16" index_t="int32_t" value_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" index_t="int32_t" value_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" index_t="int32_t" value_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="image">
+      <operator>
+        <name>RESIZE</name>
+        <arguments>
+          <argument category="input" name="input" type="in_t*" shape="[N,IH,IW,C]">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="attribute" name="scale" type="int16_t*" shape="[4]">
+            <description>[scale_y_n, scale_y_d, scale_x_n, scale_x_d]</description>
+          </argument>
+          <argument category="attribute" name="offset" type="int16_t*" shape="[2]">
+            <description>[offset_y, offset_x]</description>
+          </argument>
+          <argument category="attribute" name="border" type="int32_t*" shape="[2]">
+            <description>[border_y, border_x]</description>
+          </argument>
+          <argument category="attribute" name="mode" type="mode_t" shape="-">
+            <description>BILINEAR or NEAREST</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="[N,OH,OW,C]">
+            <description>Output tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='resize_t'/>
+          <type name='in_t'/>
+          <type name='out_t'/>
+        </types>
+        <typesupport mode="signed 8, bilinear" resize_t="int16_t" in_t="int8_t" out_t="int32_t"/>
+        <typesupport mode="signed 8, nearest" resize_t="int16_t" in_t="int8_t" out_t="int8_t"/>
+        <typesupport mode="signed 16, bilinear" resize_t="int16_t" in_t="int16_t" out_t="int48_t"/>
+        <typesupport mode="signed 16, nearest" resize_t="int16_t" in_t="int16_t" out_t="int16_t"/>
+        <typesupport mode="fp16" resize_t="fp16_t" in_t="fp32_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" resize_t="fp32_t" in_t="bf16_t" out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" resize_t="fp32_t" in_t="fp32_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="type-conversion">
+      <operator>
+        <name>CAST</name>
+        <arguments>
+          <argument category="input" name="input" type="in_t" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="out_t" shape="shape">
+            <description>Output tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t'/>
+          <type name='out_t'/>
+        </types>
+        <typesupport mode="bool to signed 8" in_t="bool_t" out_t="int8_t"/>
+        <typesupport mode="bool to signed 16" in_t="bool_t" out_t="int16_t"/>
+        <typesupport mode="bool to signed 32" in_t="bool_t" out_t="int32_t"/>
+        <typesupport mode="signed 8 to bool" in_t="int8_t" out_t="bool_t"/>
+        <typesupport mode="signed 8 to signed 16" in_t="int8_t" out_t="int16_t"/>
+        <typesupport mode="signed 8 to signed 32" in_t="int8_t" out_t="int32_t"/>
+        <typesupport mode="signed 8 to fp16" in_t="int8_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="signed 8 to bf16" in_t="int8_t" out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="signed 8 to fp32" in_t="int8_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="signed 16 to bool" in_t="int16_t" out_t="bool_t"/>
+        <typesupport mode="signed 16 to signed 8" in_t="int16_t" out_t="int8_t"/>
+        <typesupport mode="signed 16 to signed 32" in_t="int16_t" out_t="int32_t"/>
+        <typesupport mode="signed 16 to fp16" in_t="int16_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="signed 16 to bf16" in_t="int16_t" out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="signed 16 to fp32" in_t="int16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="signed 32 to bool" in_t="int32_t" out_t="bool_t"/>
+        <typesupport mode="signed 32 to signed 8" in_t="int32_t" out_t="int8_t"/>
+        <typesupport mode="signed 32 to signed 16" in_t="int32_t" out_t="int16_t"/>
+        <typesupport mode="signed 32 to fp16" in_t="int32_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="signed 32 to bf16" in_t="int32_t" out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="signed 32 to fp32" in_t="int32_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16 to signed 8" in_t="bf16_t" out_t="int8_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16 to signed 16" in_t="bf16_t" out_t="int16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16 to signed 32" in_t="bf16_t" out_t="int32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp16 to signed 8" in_t="fp16_t" out_t="int8_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp16 to signed 16" in_t="fp16_t" out_t="int16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp16 to signed 32" in_t="fp16_t" out_t="int32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 to signed 8" in_t="fp32_t" out_t="int8_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 to signed 16" in_t="fp32_t" out_t="int16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 to signed 32" in_t="fp32_t" out_t="int32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>RESCALE</name>
+        <arguments>
+          <argument category="input" name="input" type="in_t" shape="shape">
+            <description>Input tensor from 1 to 4 dims</description>
+          </argument>
+          <argument category="output" name="output" type="out_t" shape="shape">
+            <description>Output tensor with the same shape as input</description>
+          </argument>
+          <argument category="attribute" name="input_zp" type="in_t" shape="-">
+            <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="attribute" name="output_zp" type="out_t" shape="-">
+            <description>Output tensor zero point. Must be zero for non-int8 types.</description>
+          </argument>
+          <argument category="input(MT)|attribute(BI,MI)" name="multiplier" type="mul_t*" shape="[NC]">
+            <description>Scaling multiplier array</description>
+          </argument>
+          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="uint6_t*" shape="[NC]">
+            <description>Scaling shift array</description>
+          </argument>
+          <argument category="attribute" name="scale32" type="bool_t" shape="-">
+            <description>if (scale32) mul_t=int32_t else mul_t=int16_t</description>
+          </argument>
+          <argument category="attribute" name="double_round" type="bool_t" shape="-">
+            <description>Select double round mode</description>
+          </argument>
+          <argument category="attribute" name="per_channel" type="bool_t" shape="-">
+            <description>if (per_channel) NC=shape[dims-1] else NC=1</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t'/>
+          <type name='out_t'/>
+        </types>
+        <typesupport mode="signed 8 to signed 8" in_t="int8_t" out_t="int8_t"/>
+        <typesupport mode="signed 8 to signed 16" in_t="int8_t" out_t="int16_t"/>
+        <typesupport mode="signed 8 to signed 32" in_t="int8_t" out_t="int32_t"/>
+        <typesupport mode="signed 8 to unsigned 8" in_t="int8_t" out_t="uint8_t"/>
+        <typesupport mode="signed 16 to signed 8" in_t="int16_t" out_t="int8_t"/>
+        <typesupport mode="signed 16 to signed 16" in_t="int16_t" out_t="int16_t"/>
+        <typesupport mode="signed 16 to signed 32" in_t="int16_t" out_t="int32_t"/>
+        <typesupport mode="signed 16 to unsigned 8" in_t="int16_t" out_t="uint8_t"/>
+        <typesupport mode="signed 16 to unsigned 16" in_t="int16_t" out_t="uint16_t"/>
+        <typesupport mode="signed 32 to signed 8" in_t="int32_t" out_t="int8_t"/>
+        <typesupport mode="signed 32 to signed 16" in_t="int32_t" out_t="int16_t"/>
+        <typesupport mode="signed 32 to signed 32" in_t="int32_t" out_t="int32_t"/>
+        <typesupport mode="signed 48 to signed 8" in_t="int48_t" out_t="int8_t"/>
+        <typesupport mode="signed 48 to signed 16" in_t="int48_t" out_t="int16_t"/>
+        <typesupport mode="signed 48 to signed 32" in_t="int48_t" out_t="int32_t"/>
+        <typesupport mode="unsigned 8 to signed 8" in_t="uint8_t" out_t="int8_t"/>
+        <typesupport mode="unsigned 8 to signed 16" in_t="uint8_t" out_t="int16_t"/>
+        <typesupport mode="unsigned 16 to signed 16" in_t="uint16_t" out_t="int16_t"/>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="data-node">
+      <operator>
+        <name>CONST</name>
+        <arguments>
+          <argument category="attribute" name="values" type="out_t*" shape="shape">
+            <description>Constant values</description>
+          </argument>
+          <argument category="output" name="output" type="out_t*" shape="shape">
+            <description>Output tensor of the same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='out_t' />
+        </types>
+        <typesupport mode="Boolean" out_t="bool_t" />
+        <typesupport mode="signed 8" out_t="int8_t" />
+        <typesupport mode="signed 16" out_t="int16_t" />
+        <typesupport mode="signed 32" out_t="int32_t" />
+        <typesupport mode="fp16" out_t="fp16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" out_t="bf16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" out_t="fp32_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>IDENTITY</name>
+        <arguments>
+          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of the same type, size as the input tensor</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t' />
+        </types>
+        <typesupport mode="Boolean" in_out_t="bool_t" />
+        <typesupport mode="signed 8" in_out_t="int8_t" />
+        <typesupport mode="signed 16" in_out_t="int16_t" />
+        <typesupport mode="signed 32" in_out_t="int32_t" />
+        <typesupport mode="fp16" in_out_t="fp16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="control-flow">
+      <operator>
+        <name>COND_IF</name>
+        <arguments>
+          <argument category="input" name="input_list" type="tensor_list_t" shape="-">
+            <description>List of input tensors</description>
+          </argument>
+          <argument category="input" name="condition" type="bool_t" shape="-">
+            <description>Input condition as rank-0 tensor</description>
+          </argument>
+          <argument category="attribute" name="then_graph" type="tosa_graph_t" shape="-">
+            <description>TOSA graph to execute if condition is true</description>
+          </argument>
+          <argument category="attribute" name="else_graph" type="tosa_graph_t" shape="-">
+            <description>TOSA graph to execute if condition is false</description>
+          </argument>
+          <argument category="output" name="output_list" type="tensor_list_t" shape="-">
+            <description>List of output tensors</description>
+          </argument>
+        </arguments>
+      </operator>
+      <operator>
+        <name>WHILE_LOOP</name>
+        <arguments>
+          <argument category="input" name="input_list" type="tensor_list_t" shape="-">
+            <description>List of input tensors</description>
+          </argument>
+          <argument category="attribute" name="cond_graph" type="tosa_graph_t" shape="-">
+            <description>TOSA graph to evaluate the condition</description>
+          </argument>
+          <argument category="attribute" name="body_graph" type="tosa_graph_t" shape="-">
+            <description>TOSA graph to execute the loop body</description>
+          </argument>
+          <argument category="output" name="output_list" type="tensor_list_t" shape="-">
+            <description>List of output tensors</description>
+          </argument>
+        </arguments>
+      </operator>
+    </operatorgroup>
+  </operators>
+</tosa>

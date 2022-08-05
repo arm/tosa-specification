@@ -14,15 +14,7 @@
 Elementwise addition of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/ADD.adoc[]
 
 *Operation Function:*
 
@@ -38,32 +30,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== ARITHMETIC_RIGHT_SHIFT
 
 Elementwise arithmetic right shift of input1 by the amount specified in input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Attribute|bool_t|round|-|If true then the shift is rounded
-|Output|in_out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/ARITHMETIC_RIGHT_SHIFT.adoc[]
 
 *Operation Function:*
 
@@ -89,30 +61,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|===
-
 ==== BITWISE_AND
 
 Elementwise bitwise AND of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor of same type as the input tensors, with broadcast shape if necessary
-|===
+include::{generated}/operators/BITWISE_AND.adoc[]
 
 *Operation Function:*
 
@@ -128,30 +82,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|===
-
 ==== BITWISE_OR
 
 Elementwise bitwise OR of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/BITWISE_OR.adoc[]
 
 *Operation Function:*
 
@@ -167,30 +103,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|===
-
 ==== BITWISE_XOR
 
 Elementwise bitwise XOR of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/BITWISE_XOR.adoc[]
 
 *Operation Function:*
 
@@ -206,16 +124,6 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|===
-
 ==== INTDIV
 
 Elementwise integer divide of input1 by input2.
@@ -224,15 +132,7 @@ Expected use is for operations on non-scaled integers.
 Floating point divide should use RECIPROCAL and MUL.
 Quantized integer divide should use TABLE (for 1/x) and MUL.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/INTDIV.adoc[]
 
 *Operation Function:*
 
@@ -252,27 +152,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 32|int32_t
-|===
-
 ==== LOGICAL_AND
 
 Elementwise logical AND of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/LOGICAL_AND.adoc[]
 
 *Operation Function:*
 
@@ -288,28 +173,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Bool|bool_t
-|===
-
 ==== LOGICAL_LEFT_SHIFT
 
 Elementwise left shift of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/LOGICAL_LEFT_SHIFT.adoc[]
 
 *Operation Function:*
 
@@ -326,30 +195,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|===
-
 ==== LOGICAL_RIGHT_SHIFT
 
 Elementwise logical right shift of input1 by the amount specified in input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/LOGICAL_RIGHT_SHIFT.adoc[]
 
 *Operation Function:*
 
@@ -366,30 +217,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 8|int8_t
-|Any|signed 16|int16_t
-|Any|signed 32|int32_t
-|===
-
 ==== LOGICAL_OR
 
 Elementwise logical OR of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/LOGICAL_OR.adoc[]
 
 *Operation Function:*
 
@@ -405,28 +238,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Bool|bool_t
-|===
-
 ==== LOGICAL_XOR
 
 Elementwise logical XOR of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor of same type as the input tensors, with broadcast shape if necessary
-|===
+include::{generated}/operators/LOGICAL_XOR.adoc[]
 
 *Operation Function:*
 
@@ -442,28 +259,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|Bool|bool_t
-|===
-
 ==== MAXIMUM
 
 Elementwise max of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/MAXIMUM.adoc[]
 
 *Operation Function:*
 
@@ -479,31 +280,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== MINIMUM
 
 Elementwise minimum of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/MINIMUM.adoc[]
 
 *Operation Function:*
 
@@ -519,32 +301,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== MUL
 
 Elementwise multiplication (Hadamard product) of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input1|shape1|Input tensor
-|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
-|Input (MT profile) Attribute (BI/MI profiles)|uint6_t|shift|-|Result right shift (int32_t data type only)
-|Output|out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/MUL.adoc[]
 
 *Operation Function:*
 
@@ -570,32 +332,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-|===
-|Profile|Mode|in_t|out_t
-
-|Any|signed 8|int8_t|int32_t
-|Any|signed 16|int16_t|int32_t
-|Any|signed 32|int32_t|int32_t
-|MI, MT|fp16|fp16_t|fp16_t
-|MI, MT|bf16|bf16_t|bf16_t
-|MI, MT|fp32|fp32_t|fp32_t
-|===
-
 ==== POW
 
 Elementwise input1 value raised to the power of input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor from 1 to 4 dims
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor of same type as the input tensors, with broadcast shape if necessary
-|===
+include::{generated}/operators/POW.adoc[]
 
 *Operation Function:*
 
@@ -611,30 +353,12 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
-
 ==== SUB
 
 Elementwise subtraction of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_out_t*|input1|shape1|Input tensor
-|Input|in_out_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|in_out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/SUB.adoc[]
 
 *Operation Function:*
 
@@ -649,17 +373,6 @@ for_each(index in shape) {
     tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_out_t
-
-|Any|signed 32|int32_t
-|MI, MT|fp16|fp16_t
-|MI, MT|bf16|bf16_t
-|MI, MT|fp32|fp32_t
-|===
 
 ====   TABLE
 
@@ -677,15 +390,7 @@ An int16_t to int16_t table lookup can be constructed in TOSA as follows:
 * Use the TABLE operator to produce a fixed point 16.7 interpolated result
 * Use RESCALE (in_t=int32_t, out_t=int16_t, scale=1<<14, shift=21) to scale the output to int16_t range (or alternate scale as required)
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|Input|shape|Input tensor
-|Input (MT profile) Attribute (BI/MI profiles)|table_t*|table|[TABLE_SIZE]|Lookup table tensor
-|Output|out_t*|output|shape|Output tensor
-|===
+include::{generated}/operators/TABLE.adoc[]
 
 *Operation Function:*
 
@@ -704,13 +409,3 @@ for_each(index in shape) {
     tensor_write<out_t>(output, shape, index, result);
 }
 ----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|table_t|TABLE_SIZE|out_t
-
-|Any|signed 8|int8_t|int8_t|256|int8_t
-|Any|signed 16|int16_t|int16_t|513|int32_t
-|===
-

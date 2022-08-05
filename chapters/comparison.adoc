@@ -13,15 +13,7 @@
 
 Elementwise comparison operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input1|shape1|Input tensor
-|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/EQUAL.adoc[]
 
 *Operation Function:*
 
@@ -41,30 +33,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|out_t
-
-|Any|signed 32|int32_t|bool_t
-|MI, MT|fp16|fp16_t|bool_t
-|MI, MT|bf16|bf16_t|bool_t
-|MI, MT|fp32|fp32_t|bool_t
-|===
-
 ==== GREATER
 
 Elementwise greater than comparison operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input1|shape1|Input tensor
-|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/GREATER.adoc[]
 
 *Operation Function:*
 
@@ -84,29 +57,11 @@ for_each(index in shape) {
 }
 ----
 
-*Supported Data Types:*
-|===
-|Profile|Mode|in_t|out_t
-
-|Any|signed 32|int32_t|bool_t
-|MI, MT|fp16|fp16_t|bool_t
-|MI, MT|bf16|bf16_t|bool_t
-|MI, MT|fp32|fp32_t|bool_t
-|===
-
 ==== GREATER_EQUAL
 
 Elementwise comparison operation
 
-*Arguments:*
-
-|===
-|Argument|Type|Name|Shape|Description
-
-|Input|in_t*|input1|shape1|Input tensor
-|Input|in_t*|input2|shape2|Input tensor with the same rank as input1
-|Output|out_t*|output|shape|Output tensor with broadcast shape if necessary
-|===
+include::{generated}/operators/GREATER_EQUAL.adoc[]
 
 *Operation Function:*
 
@@ -125,14 +80,3 @@ for_each(index in shape) {
     tensor_write<out_t>(output, shape, index, result);
 }
 ----
-
-*Supported Data Types:*
-
-|===
-|Profile|Mode|in_t|out_t
-
-|Any|signed 32|int32_t|bool_t
-|MI, MT|fp16|fp16_t|bool_t
-|MI, MT|bf16|bf16_t|bool_t
-|MI, MT|fp32|fp32_t|bool_t
-|===
