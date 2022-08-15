@@ -78,7 +78,7 @@ The pad_const value includes the zero point if the tensor uses a zero point.
 |Argument|Type|Name|Shape|Description
 
 |Input|in_out_t*|input1|shape1|Input tensor
-|Attribute|int32_t|padding|[rank(input1),2]|Amount of padding to be done
+|Attribute|int32_t|padding|[rank(shape1),2]|Number of pad elements at the start and end of each dimension
 |Attribute|in_out_t|pad_const|-|Constant value to be used as padding
 |Output|in_out_t*|output|shape|Output tensor of same type as the input tensor
 |===
@@ -87,9 +87,11 @@ The pad_const value includes the zero point if the tensor uses a zero point.
 
 [source,c++]
 ----
-// Padding sizes must be >= 0.
-for_each(pad_size in padding) {
-    ERROR_IF(pad_size < 0);
+// Check output shape matches the padded input shape
+ERROR_IF(rank(shape) != rank(shape1));
+for (i = 0; i < rank(shape); i++) {
+    ERROR_IF(padding[i,0] < 0 || padding[i,1] < 0);
+    ERROR_IF(shape[i] != padding[i, 0] + shape1[i] + padding[i, 1]);
 }
 for_each(index in shape) {
     index1 = index;
