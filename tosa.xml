@@ -94,10 +94,10 @@
           <argument category="input" name="input" type="in_t*" shape="[N,IH,IW,IC]">
             <description>Input tensor</description>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="weight" type="weight_t*" shape="[OC,KH,KW,IC]">
+          <argument category="input" name="weight" type="weight_t*" shape="[OC,KH,KW,IC]">
             <description>Weight kernel size KH x KW</description>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="bias" type="out_t*" shape="[OC]">
+          <argument category="input" name="bias" type="out_t*" shape="[OC]">
             <description>Per output channel bias data.</description>
           </argument>
           <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
@@ -150,10 +150,10 @@
           <argument category="input" name="input" type="in_t*" shape="[N,ID,IH,IW,IC]">
             <description>Input tensor</description>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="weight" type="weight_t*" shape="[OC,KD,KH,KW,IC]">
+          <argument category="input" name="weight" type="weight_t*" shape="[OC,KD,KH,KW,IC]">
             <description>Weight kernel size KDxKHxKW</description>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="bias" type="out_t*" shape="[OC]">
+          <argument category="input" name="bias" type="out_t*" shape="[OC]">
             <description>Per output channel bias data.</description>
           </argument>
           <argument category="attribute" name="pad" type="int32_t*" shape="[6]">
@@ -206,10 +206,10 @@
           <argument category="input" name="input" type="in_t*" shape="[N,H,W,C]">
             <description>Input tensor</description>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="weight" type="weight_t*" shape="[KH,KW,C,M]">
+          <argument category="input" name="weight" type="weight_t*" shape="[KH,KW,C,M]">
             <description>Weight kernel size KH x KW</description>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="bias" type="out_t*" shape="[C*M]">
+          <argument category="input" name="bias" type="out_t*" shape="[C*M]">
             <description>Per output channel bias data.</description>
           </argument>
           <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
@@ -436,10 +436,10 @@
           <argument category="input" name="input" type="in_t*" shape="[N,IH,IW,IC]">
             <description>Input tensor</description>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="weight" type="weight_t*" shape="[OC,KH,KW,IC]">
+          <argument category="input" name="weight" type="weight_t*" shape="[OC,KH,KW,IC]">
             <description>Weight kernel size KH x KW</description>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="bias" type="out_t*" shape="[OC]">
+          <argument category="input" name="bias" type="out_t*" shape="[OC]">
             <description>Per output channel bias data.</description>
           </argument>
           <argument category="attribute" name="out_pad" type="int32_t*" shape="[4]">
