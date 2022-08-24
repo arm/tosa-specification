@@ -353,21 +353,21 @@
           <type name='in_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" weight_t="int8_t" out_t="int32_t" />
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="int16_t" weight_t="int8_t" out_t="int48_t" />
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" out_t="int32_t" />
+        <typesupport mode="signed 16x16 with int48 accumulate" in_t="int16_t" out_t="int48_t" />
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t">
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" out_t="fp32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t">
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" out_t="fp32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t">
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" out_t="fp32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
