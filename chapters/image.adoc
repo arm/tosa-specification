@@ -89,13 +89,15 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
     int32_t x = ox * scale_x_d + offset_x;
     int16_t iy = floor(y / scale_y_n);
     int16_t ix = floor(x / scale_x_n);
+    int16_t ry = y - iy * scale_y_n;  // (y % scale_y_n)
+    int16_t rx = x - ix * scale_x_n;  // (x % scale_x_n)
 
     if (is_floating_point(resize_t)) {
-        dy = ((resize_t)y / (resize_t)scale_y_n) - iy;
-        dx = ((resize_t)x / (resize_t)scale_x_n) - ix;
+        dy = (resize_t)ry / (resize_t)scale_y_n;
+        dx = (resize_t)rx / (resize_t)scale_x_n;
     } else {
-        dy = y - iy * scale_y_n;
-        dx = y - ix * scale_x_n;
+        dy = ry;
+        dx = rx;
     }
     // Note that -1 <= iy < IH and -1 <= ix < IW
     int16_t iy0 = apply_max(iy, 0);

@@ -1886,11 +1886,11 @@ used.</description>
         <typesupport mode="signed 8, nearest" resize_t="int16_t" in_t="int8_t" out_t="int8_t"/>
         <typesupport mode="signed 16, bilinear" resize_t="int16_t" in_t="int16_t" out_t="int48_t"/>
         <typesupport mode="signed 16, nearest" resize_t="int16_t" in_t="int16_t" out_t="int16_t"/>
-        <typesupport mode="fp16" resize_t="fp16_t" in_t="fp32_t" out_t="fp16_t">
+        <typesupport mode="fp16" resize_t="fp16_t" in_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="bf16" resize_t="fp32_t" in_t="bf16_t" out_t="bf16_t">
+        <typesupport mode="bf16" resize_t="bf16_t" in_t="bf16_t" out_t="bf16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
