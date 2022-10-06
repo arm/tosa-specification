@@ -1975,6 +1975,10 @@ used.</description>
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
+        <typesupport mode="bf16 to fp32" in_t="bf16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16 to signed 8" in_t="fp16_t" out_t="int8_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1987,6 +1991,10 @@ used.</description>
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
+        <typesupport mode="fp16 to fp32" in_t="fp16_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp32 to signed 8" in_t="fp32_t" out_t="int8_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1996,6 +2004,14 @@ used.</description>
           <profile name="MT"/>
         </typesupport>
         <typesupport mode="fp32 to signed 32" in_t="fp32_t" out_t="int32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 to bf16" in_t="fp32_t" out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 to fp16" in_t="fp32_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
