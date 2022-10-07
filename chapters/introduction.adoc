@@ -190,13 +190,16 @@ Each element in the tensor shape describes the number of elements in the dimensi
 The tensor shape in each dimension must be greater than or equal to 1.
 For tensor access information, see <<Tensor Access Helpers>>.
 Tensor dimensions are given in the pseudocode as type dim_t.
-dim_t is a vector of int32_t values, with the length of the vector defining the rank of the tensor.
+dim_t is a vector of index_t values, with the length of the vector defining the rank of the tensor.
 Tensor elements are addressed using dim_t values, where each element of the vector indicates the offset of the requested element within the corresponding dimension.
 
 ==== Tensor size limit
 
-Tensor size is limited by the data type size_t. In this version of the specification, size_t is defined as (1<<32) - 1, and can be represented with an unsigned 32-bit integer.
-
+The tensor overall size in elements is limited by the data type size_t.
+In this version of the specification, size_t is defined as an unsigned 32-bit integer representing size from 1 to (1<<32) - 1.
+A tensor dimension co-ordinate is limited by the data type index_t.
+In this version of the specification, index_t is defined as a signed 32-bit integer.
+Indices used to access tensors must be non-negative.
 
 ==== Data Layouts
 
@@ -349,7 +352,7 @@ The values to achieve a scaling of 1.0 are shift=30, multiplier=1<<30 for apply_
 
 [source,c++]
 ----
-int32_t apply_scale_32(int32_t value, int32_t multipler, uint6_t shift, bool_t double_round=false) {
+int32_t apply_scale_32(int32_t value, int32_t multiplier, uint6_t shift, bool_t double_round=false) {
     REQUIRE(multiplier >= 0);
     REQUIRE(2 <= shift && shift <= 62);
     REQUIRE(value >= (-1 << (shift - 1)) && value < (1 << (shift - 1));

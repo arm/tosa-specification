@@ -21,8 +21,8 @@ include::{generated}/operators/ADD.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     in_out_t result = apply_add<in_out_t>(value1, value2);
@@ -42,8 +42,8 @@ include::{generated}/operators/ARITHMETIC_RIGHT_SHIFT.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
 
@@ -73,8 +73,8 @@ include::{generated}/operators/BITWISE_AND.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     in_out_t result = value1 & value2;
@@ -94,8 +94,8 @@ include::{generated}/operators/BITWISE_OR.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     in_out_t result = value1 | value2;
@@ -115,8 +115,8 @@ include::{generated}/operators/BITWISE_XOR.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     in_out_t result = value1 ^ value2;
@@ -139,8 +139,8 @@ include::{generated}/operators/INTDIV.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     REQUIRE(value2 != 0);
@@ -164,8 +164,8 @@ include::{generated}/operators/LOGICAL_AND.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     in_out_t result = value1 && value2;
@@ -185,8 +185,8 @@ include::{generated}/operators/LOGICAL_LEFT_SHIFT.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     REQUIRE(0 <= value2 && value2 <= 31);
@@ -207,8 +207,8 @@ include::{generated}/operators/LOGICAL_RIGHT_SHIFT.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     REQUIRE(0 <= value2 && value2 <= 31);
@@ -229,8 +229,8 @@ include::{generated}/operators/LOGICAL_OR.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     in_out_t result = value1 || value2;
@@ -250,8 +250,8 @@ include::{generated}/operators/LOGICAL_XOR.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     in_out_t result = value1 != value2;
@@ -271,8 +271,8 @@ include::{generated}/operators/MAXIMUM.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     in_out_t result = apply_max(value1, value2);
@@ -292,8 +292,8 @@ include::{generated}/operators/MINIMUM.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     in_out_t result = apply_min(value1, value2);
@@ -314,8 +314,8 @@ include::{generated}/operators/MUL.adoc[]
 ----
 ERROR_IF(in_t != int32_t && shift > 0);
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
     out_t result;
@@ -344,8 +344,8 @@ include::{generated}/operators/POW.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     in_out_t result = apply_pow<in_out_t>(value1, value2);
@@ -365,8 +365,8 @@ include::{generated}/operators/SUB.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     in_out_t result = apply_sub<in_out_t>(value1, value2);

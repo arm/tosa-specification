@@ -56,11 +56,9 @@ void ERROR_IF(condition) {
 
 [source,c++]
 ----
+// Convert tensor index co-ordinates to an element offset
 size_t tensor_index_to_offset(dim_t shape, dim_t index) {
-    // Ensure this is a proper tensor with each dimension having size >= 1
-    for_each(dimension_size in shape) {
-        REQUIRE(dimension_size >= 1);
-    }
+    size_t size = tensor_size(shape);  // check tensor shape is valid
     size_t offset = 0;
     for (int32_t i = 0; i < rank(shape); i++) {
         REQUIRE(index[i] >= 0 && index[i] < shape[i]);
@@ -69,21 +67,24 @@ size_t tensor_index_to_offset(dim_t shape, dim_t index) {
     return offset;
 }
 
+// Convert an element offset to tensor index co-ordinates
 dim_t tensor_offset_to_index(dim_t shape, size_t offset) {
-    // Index is a dim_t with rank equal to the rank of shape
-    dim_t index(rank(shape));
-    for(int32_t r = rank(shape1) - 1; r >= 0; r--) {
-        index[r] = offset % shape1[r];
-        calculated_index /= shape[r];
+    size_t size = tensor_size(shape);  // check tensor shape is valid
+    REQUIRE(offset < size);
+    dim_t index(rank(shape));    // index has rank(shape) indicies
+    for(int32_t i = rank(shape) - 1; i >= 0; i--) {
+        index[i] = offset % shape[i];
+        offset /= shape[i];
     }
     return index;
 }
 
-// Input is the shape of the given tensor
+// Check the tensor shape is valid and return the tensor size in elements
 size_t tensor_size(dim_t shape) {
     size_t size = 1;
-    for (int32_t i=0; i < rank(shape); i++) {
-        size *= input[i];
+    for (int32_t i = 0; i < rank(shape); i++) {
+        REQUIRE(1 <= shape[i] && shape[i] <= maximum<size_t> / size);
+        size *= shape[i];
     }
     return size;
 }

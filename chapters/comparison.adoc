@@ -20,8 +20,8 @@ include::{generated}/operators/EQUAL.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
     out_t result;
@@ -44,8 +44,8 @@ include::{generated}/operators/GREATER.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
     out_t result;
@@ -68,8 +68,8 @@ include::{generated}/operators/GREATER_EQUAL.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    index1 = apply_broadcast(shape, shape1, index);
-    index2 = apply_broadcast(shape, shape2, index);
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
     out_t result;

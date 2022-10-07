@@ -27,7 +27,7 @@ for_each(index in shape) {
     tensor_write<in_out_t>(output, shape, index, true);
 }
 for_each(index in shape1) {
-    out_index = index;
+    dim_t out_index = index;
     out_index[axis] = 0;
     in_out_t value = tensor_read<in_out_t>(input, shape1, index);
     in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
@@ -54,7 +54,7 @@ for_each(index in shape) {
     tensor_write<in_out_t>(output, shape, index, false);
 }
 for_each(index in shape1) {
-    out_index = index;
+    dim_t out_index = index;
     out_index[axis] = 0;
     in_out_t value = tensor_read<in_out_t>(input, shape1, index);
     in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
@@ -79,7 +79,7 @@ for_each(index in shape) {
     tensor_write<in_out_t>(output, shape, index, minimum<in_out_t>);
 }
 for_each(index in shape1) {
-    out_index = index;
+    dim_t out_index = index;
     out_index[axis] = 0;
     in_out_t value = tensor_read<in_out_t>(input, shape1, index);
     in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
@@ -104,7 +104,7 @@ for_each(index in shape) {
     tensor_write<in_out_t>(output, shape, index, maximum<in_out_t>);
 }
 for_each(index in shape1) {
-    out_index = index;
+    dim_t out_index = index;
     out_index[axis] = 0;
     in_out_t value = tensor_read<in_out_t>(input, shape1, index);
     in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
@@ -129,7 +129,7 @@ for_each(index in shape) {
     tensor_write<in_out_t>(output, shape, index, 1.0);
 }
 for_each(index in shape1) {
-    out_index = index;
+    dim_t out_index = index;
     out_index[axis] = 0;
     in_out_t value = tensor_read<in_out_t>(input, shape1, index);
     in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
@@ -154,7 +154,7 @@ for_each(index in shape) {
     tensor_write<in_out_t>(output, shape, index, 0);
 }
 for_each(index in shape1) {
-    out_index = index;
+    dim_t out_index = index;
     out_index[axis] = 0;
     in_out_t value = tensor_read<in_out_t>(input, shape1, index);
     in_out_t state = tensor_read<in_out_t>(output, shape, out_index);

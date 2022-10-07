@@ -36,11 +36,11 @@ for_each(left_index in left_shape) {
         in_t max_value = minimum_value<in_t>;
         out_t max_index = 0;
         for (i = 0; i < shape[axis]; i++) {
-            index = flatten(left_index, [i], right_index);
+            dim_t index = flatten(left_index, [i], right_index);
             in_t value = tensor_read<in_t>(input, shape1, index);
             if (value > max_value) { max_value = value; max_index = i; }
         }
-        index = flatten(left_index, right_index);
+        dim_t index = flatten(left_index, right_index);
         tensor_write<out_t>(output, shape, index, max_index);
     }
 }
@@ -74,11 +74,11 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C ) {
     in_out_t output_val;
     acc_t acc = 0;
     int count = 0;
-    iy = oy * stride_y - pad_top;
-    ix = ox * stride_x - pad_left;
+    index_t iy = oy * stride_y - pad_top;
+    index_t ix = ox * stride_x - pad_left;
     for_each(0 <= ky < kernel_y, 0 <= kx < kernel_x) {
-        y = iy + ky;
-        x = ix + kx;
+        index_t y = iy + ky;
+        index_t x = ix + kx;
         // Only values from the input tensor are used to calculate the
         // average, padding does not count
         if (0 <= y < IH and 0 <= x < IW) {
@@ -120,11 +120,11 @@ ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x,
 pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
     out_t acc = 0;
-    iy = oy * stride_y - pad_top;
-    ix = ox * stride_x - pad_left;
+    index_t iy = oy * stride_y - pad_top;
+    index_t ix = ox * stride_x - pad_left;
     for_each(0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
-        y = iy + ky * dilation_y;
-        x = ix + kx * dilation_x;
+        index_t y = iy + ky * dilation_y;
+        index_t x = ix + kx * dilation_x;
         if (0 <= y < IH && 0 <= x < IW) {
             out_t value  = tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,ic]);
             out_t weight = tensor_read<weight_t>(weight, [OC,KH,KW,IC], [oc,ky,kx,ic]);
@@ -160,13 +160,13 @@ ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x,
 pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= od < OD, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
     out_t acc = 0;
-    id = od * stride_d - pad_d0;
-    iy = oy * stride_y - pad_top;
-    ix = ox * stride_x - pad_left;
+    index_t id = od * stride_d - pad_d0;
+    index_t iy = oy * stride_y - pad_top;
+    index_t ix = ox * stride_x - pad_left;
     for_each(0 <= kd < KD, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
-        d = id + kd * dilation_d;
-        y = iy + ky * dilation_y;
-        x = ix + kx * dilation_x;
+        index_t d = id + kd * dilation_d;
+        index_t y = iy + ky * dilation_y;
+        index_t x = ix + kx * dilation_x;
         if (0 <= x < IW && 0 <= y < IH && 0 <= d < ID) {
             out_t value  = tensor_read<in_t>(input, [N,ID,IH,IW,IC], [n,d,y,x,ic]);
             out_t weight = tensor_read<weight_t>(weight,[OC,KD,KH,KW,IC],[oc,kd,ky,kx,ic]);
@@ -201,11 +201,11 @@ ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x,
 pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C, 0 <= m < M) {
     out_t acc = 0;
-    iy = oy * stride_y - pad_top;
-    ix = ox * stride_x - pad_left;
+    index_t iy = oy * stride_y - pad_top;
+    index_t ix = ox * stride_x - pad_left;
     for_each(0 <= ky < KH, 0 <= kx < KW) {
-        y = iy + ky * dilation_y;
-        x = ix + kx * dilation_x;
+        index_t y = iy + ky * dilation_y;
+        index_t x = ix + kx * dilation_x;
         if (0 <= y < IH && 0 <= x < IW) {
             out_t value  = tensor_read<in_t>(input, [N,IH,IW,C], [n,y,x,c]);
             out_t weight = tensor_read<weight_t>(weight, [KH,KW,C,M], [ky,kx,c,m]);
@@ -338,11 +338,11 @@ ERROR_IF(OW != idiv_check(IW + pad_left + pad_right - kernel_x, stride_x) + 1);
 
 for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
     in_out_t acc = minimum_value<in_out_t>;
-    iy = oy * stride_y - pad_top;
-    ix = ox * stride_x - pad_left;
+    index_t iy = oy * stride_y - pad_top;
+    index_t ix = ox * stride_x - pad_left;
     for_each( 0 <= ky < kernel_y, 0 <= kx < kernel_x ) {
-        y = iy + ky;
-        x = ix + kx;
+        index_t y = iy + ky;
+        index_t x = ix + kx;
         if (y >= 0 && y < IH && x >= 0 && x < IW) {
             in_out_t value = tensor_read<in_out_t>(input, [N,IH,IW,C], [n,y,x,c]);
             acc = apply_max(acc, value);
@@ -407,8 +407,8 @@ for_each(index in out_shape) {
 }
 for_each(0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= oc < OC,
           0 <= ic < IC, 0 <= ky < KH,  0 <= kx < KW) {
-    oy = iy * stride_y + out_pad_top + ky;
-    ox = ix * stride_x + out_pad_left + kx;
+    index_t oy = iy * stride_y + out_pad_top + ky;
+    index_t ox = ix * stride_x + out_pad_left + kx;
     if (oy >= 0 && oy < OH && ox >= 0 && ox < OW) {
         out_t acc = tensor_read<out_t>(output, [N,OH,OW,OC], [n,oy,ox,oc]);
         out_t value = tensor_read<in_t>(input, [N,IH,IW,IC], [n,iy,ix,ic]);

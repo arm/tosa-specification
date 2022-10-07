@@ -29,7 +29,7 @@ for_each(input_shape in shapes1) {
     }
 }
 for_each(index1 in shape) {
-    index2 = index1;
+    dim_t index2 = index1;
     for (tensor t = 0; t < length(input1); t++) {
         // Continue to concatenate along axis from each tensor
         // For each output location, we are looking for the
@@ -63,7 +63,7 @@ for (i = 0; i < rank(shape); i++) {
     ERROR_IF(shape[i] != padding[i, 0] + shape1[i] + padding[i, 1]);
 }
 for_each(index in shape) {
-    index1 = index;
+    dim_t index1 = index;
     bool_t is_pad = false;
     for(i = 0; i < rank(shape); i++) {
         index1[i] = index1[i] - padding[i,0];
@@ -112,7 +112,7 @@ include::{generated}/operators/REVERSE.adoc[]
 ----
 ERROR_IF(axis < 0 || axis >= rank(shape));
 for_each(index in shape) {
-    tmp_index = index;
+    dim_t tmp_index = index;
     tmp_index[axis] = shape[axis] - 1 - index[axis];
     in_out_t value = tensor_read<in_out_t>(input, shape, tmp_index);
     tensor_write<in_out_t>(output, shape, index, value);
@@ -142,7 +142,7 @@ for_each(index in rank(input1)) {
 }
 
 for_each(index in shape) {
-    tmp_index = index;
+    dim_t tmp_index = index;
     for(i = 0; i < rank(shape); i++) {
        tmp_index[i] = index[i] + start[i];
     }
@@ -162,7 +162,7 @@ include::{generated}/operators/TILE.adoc[]
 [source,c++]
 ----
 for_each(index in shape) {
-    tmp_index = index;
+    dim_t tmp_index = index;
     for(i = 0; i < rank(shape); i++) {
         ERROR_IF(shape1[i] * multiples[i] != shape[i]);
         tmp_index[i] = index[i] % shape1[i];
@@ -199,7 +199,7 @@ for(i = 0; i < rank(shape); i++) {
 }
 
 for_each(index in shape) {
-    tmp_index = index;
+    dim_t tmp_index = index;
     for(i = 0; i < rank(shape); i++) {
         tmp_index[perms[i]] = index[i]
     }
