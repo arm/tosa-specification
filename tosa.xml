@@ -1867,7 +1867,7 @@ used.</description>
           <argument category="attribute" name="offset" type="int16_t*" shape="[2]">
             <description>[offset_y, offset_x]</description>
           </argument>
-          <argument category="attribute" name="border" type="int32_t*" shape="[2]">
+          <argument category="attribute" name="border" type="int16_t*" shape="[2]">
             <description>[border_y, border_x]</description>
           </argument>
           <argument category="attribute" name="mode" type="mode_t" shape="-">
