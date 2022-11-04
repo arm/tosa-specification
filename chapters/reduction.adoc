@@ -15,8 +15,6 @@ Reduce a tensor along the given axis with a logical AND operation
 
 include::{generated}/operators/REDUCE_ALL.adoc[]
 
-*Operation Function:*
-
 [source,c]
 ----
 ERROR_IF(axis < 0  || axis >= rank(shape1));
@@ -41,8 +39,6 @@ for_each(index in shape1) {
 Reduce a tensor along the given axis with a logical OR operation
 
 include::{generated}/operators/REDUCE_ANY.adoc[]
-
-*Operation Function:*
 
 [source,c]
 ----
@@ -69,8 +65,6 @@ Reduce a tensor along the given axis with a maximum operation
 
 include::{generated}/operators/REDUCE_MAX.adoc[]
 
-*Operation Function:*
-
 [source,c]
 ----
 ERROR_IF(axis < 0  || axis >= rank(shape1));
@@ -93,8 +87,6 @@ for_each(index in shape1) {
 Reduce a tensor along the given axis with a minimum operation
 
 include::{generated}/operators/REDUCE_MIN.adoc[]
-
-*Operation Function:*
 
 [source,c]
 ----
@@ -119,8 +111,6 @@ Reduce a tensor along the given axis by computing the product of the axis.
 
 include::{generated}/operators/REDUCE_PRODUCT.adoc[]
 
-*Operation Function:*
-
 [source,c]
 ----
 ERROR_IF(axis < 0  || axis >= rank(shape1));
@@ -143,8 +133,6 @@ for_each(index in shape1) {
 Reduce a tensor along the given axis by computing the sum of the axis.
 
 include::{generated}/operators/REDUCE_SUM.adoc[]
-
-*Operation Function:*
 
 [source,c]
 ----

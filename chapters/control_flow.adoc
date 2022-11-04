@@ -17,8 +17,6 @@ Evaluates a Boolean condition and then takes one of two distinct execution paths
 
 include::{generated}/operators/COND_IF.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(then_graph));
@@ -38,8 +36,6 @@ if (condition) {
 Generates and evaluates a Bool condition and either executes a loop body or exits the loop. This action is performed repeatedly after updating and re-evaluating the Boolean condition every iteration. This implements the semantic foreach or while iterative loop structure.
 
 include::{generated}/operators/WHILE_LOOP.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----

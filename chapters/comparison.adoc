@@ -15,8 +15,6 @@ Elementwise comparison operation
 
 include::{generated}/operators/EQUAL.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -39,8 +37,6 @@ Elementwise greater than comparison operation
 
 include::{generated}/operators/GREATER.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -62,8 +58,6 @@ for_each(index in shape) {
 Elementwise comparison operation
 
 include::{generated}/operators/GREATER_EQUAL.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----

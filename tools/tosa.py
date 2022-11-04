@@ -9,12 +9,13 @@ class TOSAOperatorArgumentCategory:
 
 
 class TOSAOperatorArgument:
-    def __init__(self, name, description, categories, ty, shape):
+    def __init__(self, name, description, categories, ty, shape, levellimits):
         self.name = name
         self.description = description
         self.categories = categories
         self.type = ty
         self.shape = shape
+        self.levellimits = levellimits
 
 
 class TOSAOperatorDataTypeSupport:
@@ -87,6 +88,11 @@ class TOSASpec:
         argcats = []
         argtype = arg.get("type")
         shape = arg.get("shape")
+        levellimits = []
+        for levellimit in arg.findall("levellimit"):
+            value = levellimit.get("value")
+            limit = levellimit.get("limit")
+            levellimits.append([value, limit])
 
         cats = re.findall(
             r"(input|output|attribute)\(?([A-Z,]+)?\)?", arg.get("category")
@@ -94,4 +100,4 @@ class TOSASpec:
         for cat in cats:
             argcats.append(TOSAOperatorArgumentCategory(cat[0], cat[1].split(",")))
 
-        return TOSAOperatorArgument(name, desc, argcats, argtype, shape)
+        return TOSAOperatorArgument(name, desc, argcats, argtype, shape, levellimits)

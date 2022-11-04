@@ -45,7 +45,7 @@ The following function denotes the execution of a TOSA graph, on an input tensor
 
 [source,c++]
 ----
-tosa_execute_graph(tosa_graph_t graph, tosa_list_t input_list, tosa_list_t output_list) {
+tosa_execute_graph(tosa_graph_t graph, tosa_list_t input_list, tosa_list_t output_list, tosa_level_t level) {
     ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(graph));
     ERROR_IF(tensor_list_shape(output_list) != tosa_output_shape(graph));
     for_each(operator in graph order) {
@@ -53,7 +53,8 @@ tosa_execute_graph(tosa_graph_t graph, tosa_list_t input_list, tosa_list_t outpu
         ERROR_IF(operator attributes do not meet requirement of operator Arguments attributes)
         ERROR_IF(operator output tensors do not meet requirement of operator Arguments outputs)
         ERROR_IF(operator data types do not meet requirement of operator Supported Data Types)
-        <Execute operator as defined by the Operation Function pseduo-code>
+        // Execute the operator as defined by the operation function pseduo-code
+        tosa_execute_operator(operator, level);
     }
 }
 ----

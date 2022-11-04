@@ -15,8 +15,6 @@ Casts a tensor from one data type to another.
 
 include::{generated}/operators/CAST.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -44,8 +42,6 @@ for_each(index in shape) {
 Rescale quantized values into a new domain. This function scales by factor: multiplier * 2^-shift^.
 
 include::{generated}/operators/RESCALE.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----

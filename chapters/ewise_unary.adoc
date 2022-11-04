@@ -22,8 +22,6 @@ include::{generated}/operators/ABS.adoc[]
 |Output|+infinity|+infinity|+0|+0|NaN
 |===
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -42,8 +40,6 @@ for_each(index in shape) {
 Elementwise bitwise NOT of input tensor.
 
 include::{generated}/operators/BITWISE_NOT.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -67,8 +63,6 @@ include::{generated}/operators/CEIL.adoc[]
 |Output|-infinity|+infinity|-0|+0|NaN
 |===
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -83,8 +77,6 @@ for_each(index in shape) {
 Elementwise count leading zeros operation
 
 include::{generated}/operators/CLZ.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -108,8 +100,6 @@ include::{generated}/operators/EXP.adoc[]
 |Output|+0|+infinity|1|1|NaN
 |===
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -131,8 +121,6 @@ include::{generated}/operators/FLOOR.adoc[]
 
 |Output|-infinity|+infinity|-0|+0|NaN
 |===
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -156,8 +144,6 @@ include::{generated}/operators/LOG.adoc[]
 |Output|NaN|+infinity|-infinity|-infinity|NaN
 |===
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -172,8 +158,6 @@ for_each(index in shape) {
 Elementwise logical NOT of input.
 
 include::{generated}/operators/LOGICAL_NOT.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -196,8 +180,6 @@ include::{generated}/operators/NEGATE.adoc[]
 
 |Output|+infinity|-infinity|+0|-0|NaN
 |===
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -225,8 +207,6 @@ include::{generated}/operators/RECIPROCAL.adoc[]
 |Output|-0|+0|-infinity|+infinity|NaN
 |===
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -248,8 +228,6 @@ include::{generated}/operators/RSQRT.adoc[]
 
 |Output|NaN|+0|-infinity|+infinity|NaN
 |===
-
-*Operation Function:*
 
 [source,c++]
 ----

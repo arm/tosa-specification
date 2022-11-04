@@ -6,6 +6,10 @@
     <profile name="MI">Main Inference</profile>
     <profile name="MT">Main Training</profile>
   </profiles>
+  <levels>
+    <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048">No level</level>
+    <level name="8K"   max_rank="6"  max_kernel="8192"       max_stride="8192"       max_scale="64"  >Level 8K</level>
+  </levels>
   <operators>
     <operatorgroup name="tensor">
       <operator>
@@ -48,12 +52,20 @@
           </argument>
           <argument category="attribute" name="kernel" type="int32_t*" shape="[2]">
             <description>[kernel_y, kernel_x]</description>
+            <levellimit value="kernel_y" limit="MAX_KERNEL"/>
+            <levellimit value="kernel_x" limit="MAX_KERNEL"/>
           </argument>
           <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
             <description>[stride_y, stride_x]</description>
+            <levellimit value="stride_y" limit="MAX_STRIDE"/>
+            <levellimit value="stride_x" limit="MAX_STRIDE"/>
           </argument>
           <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
+            <levellimit value="pad_top"    limit="MAX_KERNEL"/>
+            <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
+            <levellimit value="pad_left"   limit="MAX_KERNEL"/>
+            <levellimit value="pad_right"  limit="MAX_KERNEL"/>
           </argument>
           <argument category="attribute" name="input_zp" type="in_out_t" shape="-">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
@@ -96,15 +108,23 @@
           </argument>
           <argument category="input" name="weight" type="weight_t*" shape="[OC,KH,KW,IC]">
             <description>Weight kernel size KH x KW</description>
+            <levellimit value="dilation_y * KH" limit="MAX_KERNEL"/>
+            <levellimit value="dilation_x * KW" limit="MAX_KERNEL"/>
           </argument>
           <argument category="input" name="bias" type="out_t*" shape="[OC]">
             <description>Per output channel bias data.</description>
           </argument>
           <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
+            <levellimit value="pad_top"    limit="MAX_KERNEL"/>
+            <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
+            <levellimit value="pad_left"   limit="MAX_KERNEL"/>
+            <levellimit value="pad_right"  limit="MAX_KERNEL"/>
           </argument>
           <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
             <description>[stride_y, stride_x]</description>
+            <levellimit value="stride_y" limit="MAX_STRIDE"/>
+            <levellimit value="stride_x" limit="MAX_STRIDE"/>
           </argument>
           <argument category="attribute" name="dilation" type="int32_t*" shape="[2]">
             <description>[dilation_y, dilation_x]</description>
@@ -152,15 +172,27 @@
           </argument>
           <argument category="input" name="weight" type="weight_t*" shape="[OC,KD,KH,KW,IC]">
             <description>Weight kernel size KDxKHxKW</description>
+            <levellimit value="dilation_d * KD" limit="MAX_KERNEL"/>
+            <levellimit value="dilation_y * KH" limit="MAX_KERNEL"/>
+            <levellimit value="dilation_x * KW" limit="MAX_KERNEL"/>
           </argument>
           <argument category="input" name="bias" type="out_t*" shape="[OC]">
             <description>Per output channel bias data.</description>
           </argument>
           <argument category="attribute" name="pad" type="int32_t*" shape="[6]">
             <description>[pad_d0, pad_d1, pad_top, pad_bottom, pad_left, pad_right]</description>
+            <levellimit value="pad_d0"     limit="MAX_KERNEL"/>
+            <levellimit value="pad_d1"     limit="MAX_KERNEL"/>
+            <levellimit value="pad_top"    limit="MAX_KERNEL"/>
+            <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
+            <levellimit value="pad_left"   limit="MAX_KERNEL"/>
+            <levellimit value="pad_right"  limit="MAX_KERNEL"/>
           </argument>
           <argument category="attribute" name="stride" type="int32_t*" shape="[3]">
             <description>[stride_d, stride_y, stride_x]</description>
+            <levellimit value="stride_y" limit="MAX_STRIDE"/>
+            <levellimit value="stride_x" limit="MAX_STRIDE"/>
+            <levellimit value="stride_d" limit="MAX_STRIDE"/>
           </argument>
           <argument category="attribute" name="dilation" type="int32_t*" shape="[3]">
             <description>[dilation_d, dilation_y, dilation_x]</description>
@@ -208,15 +240,23 @@
           </argument>
           <argument category="input" name="weight" type="weight_t*" shape="[KH,KW,C,M]">
             <description>Weight kernel size KH x KW</description>
+            <levellimit value="dilation_y * KH" limit="MAX_KERNEL"/>
+            <levellimit value="dilation_x * KW" limit="MAX_KERNEL"/>
           </argument>
           <argument category="input" name="bias" type="out_t*" shape="[C*M]">
             <description>Per output channel bias data.</description>
           </argument>
           <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
+            <levellimit value="pad_top"    limit="MAX_KERNEL"/>
+            <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
+            <levellimit value="pad_left"   limit="MAX_KERNEL"/>
+            <levellimit value="pad_right"  limit="MAX_KERNEL"/>
           </argument>
           <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
             <description>[stride_y, stride_x]</description>
+            <levellimit value="stride_y" limit="MAX_STRIDE"/>
+            <levellimit value="stride_x" limit="MAX_STRIDE"/>
           </argument>
           <argument category="attribute" name="dilation" type="int32_t*" shape="[2]">
             <description>[dilation_y, dilation_x]</description>
@@ -261,6 +301,8 @@
         <arguments>
           <argument category="input" name="input_real" type="in_out_t*" shape="[N,H,W]">
             <description>Real part of the complex input. H,W must be powers of two.</description>
+            <levellimit value="H" limit="MAX_KERNEL"/>
+            <levellimit value="W" limit="MAX_KERNEL"/>
           </argument>
           <argument category="input" name="input_imag" type="in_out_t*" shape="[N,H,W]">
             <description>Imaginary part of the complex input. H,W must be powers of two.</description>
@@ -380,12 +422,20 @@
           </argument>
           <argument category="attribute" name="kernel" type="int32_t*" shape="[2]">
             <description>[kernel_y, kernel_x]</description>
+            <levellimit value="kernel_y" limit="MAX_KERNEL"/>
+            <levellimit value="kernel_x" limit="MAX_KERNEL"/>
           </argument>
           <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
             <description>[stride_y, stride_x]</description>
+            <levellimit value="stride_y" limit="MAX_STRIDE"/>
+            <levellimit value="stride_x" limit="MAX_STRIDE"/>
           </argument>
           <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
+            <levellimit value="pad_top"    limit="MAX_KERNEL"/>
+            <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
+            <levellimit value="pad_left"   limit="MAX_KERNEL"/>
+            <levellimit value="pad_right"  limit="MAX_KERNEL"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="[N,OH,OW,C]">
             <description>Output tensor 4D</description>
@@ -414,6 +464,8 @@
         <arguments>
           <argument category="input" name="input" type="in_out_t*" shape="[N,H,W]">
             <description>Real input. H,W must be powers of two.</description>
+            <levellimit value="H" limit="MAX_KERNEL"/>
+            <levellimit value="W" limit="MAX_KERNEL"/>
           </argument>
           <argument category="output" name="output_real" type="in_out_t*" shape="[N,H/2 + 1,W/2 + 1]">
             <description>Real part of the complex output</description>
@@ -438,15 +490,23 @@
           </argument>
           <argument category="input" name="weight" type="weight_t*" shape="[OC,KH,KW,IC]">
             <description>Weight kernel size KH x KW</description>
+            <levellimit value="KH" limit="MAX_KERNEL"/>
+            <levellimit value="KW" limit="MAX_KERNEL"/>
           </argument>
           <argument category="input" name="bias" type="out_t*" shape="[OC]">
             <description>Per output channel bias data.</description>
           </argument>
           <argument category="attribute" name="out_pad" type="int32_t*" shape="[4]">
             <description>[out_pad_top, out_pad_bottom, out_pad_left, out_pad_right]</description>
+            <levellimit value="out_pad_top"    limit="MAX_KERNEL"/>
+            <levellimit value="out_pad_bottom" limit="MAX_KERNEL"/>
+            <levellimit value="out_pad_left"   limit="MAX_KERNEL"/>
+            <levellimit value="out_pad_right"  limit="MAX_KERNEL"/>
           </argument>
           <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
             <description>[stride_y, stride_x]</description>
+            <levellimit value="stride_y" limit="MAX_STRIDE"/>
+            <levellimit value="stride_x" limit="MAX_STRIDE"/>
           </argument>
           <argument category="attribute" name="out_shape" type="int32_t*" shape="[4]">
             <description>[N,OH,OW,OC]</description>
@@ -493,6 +553,7 @@
         <arguments>
           <argument category="input" name="input" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="min_val" type="in_out_t" shape="-">
             <description>Minimum clip value</description>
@@ -527,6 +588,7 @@
         <arguments>
           <argument category="input" name="input" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type and shape as input</description>
@@ -553,6 +615,7 @@
         <arguments>
           <argument category="input" name="input" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type and shape as input</description>
@@ -587,6 +650,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -620,6 +684,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -640,6 +705,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -660,6 +726,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -680,6 +747,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -700,6 +768,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -718,6 +787,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -736,6 +806,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -756,6 +827,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -776,6 +848,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -794,6 +867,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -812,6 +886,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -842,6 +917,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -875,6 +951,7 @@
           </argument>
           <argument category="output" name="output" type="out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -908,6 +985,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -937,6 +1015,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -967,6 +1046,7 @@
           </argument>
           <argument category="output" name="output" type="out_t*" shape="shape">
             <description>Output tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -985,6 +1065,7 @@
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -1012,6 +1093,7 @@
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -1029,6 +1111,7 @@
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -1055,6 +1138,7 @@
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -1070,6 +1154,7 @@
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -1096,6 +1181,7 @@
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -1122,6 +1208,7 @@
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -1148,6 +1235,7 @@
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -1199,6 +1287,7 @@
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -1225,6 +1314,7 @@
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -1262,6 +1352,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type as input2 and input3, with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1298,6 +1389,7 @@
           </argument>
           <argument category="output" name="output" type="out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1329,6 +1421,7 @@
           </argument>
           <argument category="output" name="output" type="out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1360,6 +1453,7 @@
           </argument>
           <argument category="output" name="output" type="out_t*" shape="shape">
             <description>Output tensor with broadcast shape if necessary</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1555,6 +1649,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1591,6 +1686,7 @@
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type as the input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1618,12 +1714,14 @@
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape1">
             <description>Input tensor</description>
+            <levellimit value="rank(shape1)" limit="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="new_shape" type="int32_t" shape="[rank(output)]">
             <description>List of values, with each element giving the size of the result tensor for the given dimension. At most one dimension may be given as -1 to automatically calculate the dimension size.</description>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, size as the input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1651,6 +1749,7 @@
         <arguments>
           <argument category="input" name="input" type="in_out_t*" shape="shape">
             <description>Input tensor with rank from 1 to 4</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="int32_t" shape="-">
             <description>Axis to reverse, in range from 0 to rank(shape)-1</description>
@@ -1760,6 +1859,7 @@ used.</description>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, rank as the input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1863,6 +1963,8 @@ used.</description>
           </argument>
           <argument category="attribute" name="scale" type="int16_t*" shape="[4]">
             <description>[scale_y_n, scale_y_d, scale_x_n, scale_x_d]</description>
+            <levellimit value="scale_y_n/scale_y_d" limit="MAX_SCALE"/>
+            <levellimit value="scale_x_n/scale_x_d" limit="MAX_SCALE"/>
           </argument>
           <argument category="attribute" name="offset" type="int16_t*" shape="[2]">
             <description>[offset_y, offset_x]</description>
@@ -1906,6 +2008,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input" type="in_t" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="out_t" shape="shape">
             <description>Output tensor</description>
@@ -2021,6 +2124,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input" type="in_t" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="out_t" shape="shape">
             <description>Output tensor with the same shape as input</description>

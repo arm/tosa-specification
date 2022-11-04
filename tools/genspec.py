@@ -44,6 +44,16 @@ class TOSASpecAsciidocGenerator:
                 entry += "\n"
                 file.write(entry)
             file.write("|===\n")
+        file.write("\n*Operation Function:*\n\n")
+        leveltext = ""
+        for arg in op.arguments:
+            if (len(arg.levellimits) > 0):
+                for limit in arg.levellimits:
+                   leveltext += "    LEVEL_CHECK(" + limit[0] + " <= " + limit[1] + ");\n"
+        if (len(leveltext) > 0):
+            file.write(
+                f"[source,c++]\n----\nif (level != tosa_level_none) {{\n{leveltext}}}\n----\n"
+            )
 
     def generate(self, outdir):
         opdir = os.path.join(outdir, "operators")

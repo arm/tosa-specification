@@ -15,8 +15,6 @@ No data conversion happens during a concat operation.
 
 include::{generated}/operators/CONCAT.adoc[]
 
-*Operation Function:*
-
 [source,c]
 ----
 ERROR_IF(axis < 0 || axis >= rank(shapes1[0]));
@@ -52,8 +50,6 @@ The pad_const value includes the zero point if the tensor uses a zero point.
 
 include::{generated}/operators/PAD.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 // Check output shape matches the padded input shape
@@ -82,8 +78,6 @@ Returns a tensor with the same type/values as the input, with a new shape specif
 
 include::{generated}/operators/RESHAPE.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 ERROR_IF(tensor_size(shape1) != tensor_size(shape));
@@ -106,8 +100,6 @@ Returns a tensor with the same type/values as the input, with the data reversed 
 
 include::{generated}/operators/REVERSE.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 ERROR_IF(axis < 0 || axis >= rank(shape));
@@ -125,8 +117,6 @@ Extracts a slice of input1, beginning at the start coordinates, and extending fo
 No data conversion happens during a slice operation.
 
 include::{generated}/operators/SLICE.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -157,8 +147,6 @@ Replicates input1 multiples times along each dimension.
 
 include::{generated}/operators/TILE.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -178,8 +166,6 @@ Permutes the dimensions of the input tensor input1 based on the perms argument.
 Each value in the perms list must be a valid dimension of the input tensor and may not be repeated.
 
 include::{generated}/operators/TRANSPOSE.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----

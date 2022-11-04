@@ -48,6 +48,12 @@ void ERROR_IF(condition) {
         tosa_graph_result = tosa_error;
     }
 }
+
+void LEVEL_CHECK(condition) {
+    // If a level is specified and the level condition fails then
+    // the result is unpredictable.
+    REQUIRE(condition);
+}
 ----
 
 === Tensor Access Helpers

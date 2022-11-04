@@ -11,6 +11,22 @@
   </xs:restriction>
 </xs:simpleType>
 
+<xs:simpleType name="levelname">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="none"/>
+    <xs:enumeration value="8K"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="levelmax">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="MAX_KERNEL"/>
+    <xs:enumeration value="MAX_STRIDE"/>
+    <xs:enumeration value="MAX_SCALE"/>
+    <xs:enumeration value="MAX_RANK"/>
+  </xs:restriction>
+</xs:simpleType>
+
 <xs:simpleType name="datatype">
   <xs:restriction base="xs:string">
     <xs:enumeration value="bool_t"/>
@@ -64,10 +80,39 @@
   </xs:complexType>
 </xs:element>
 
+<xs:element name="level">
+  <xs:complexType>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name"       type="levelname" use="required"/>
+        <xs:attribute name="max_rank"   type="xs:int" use="required"/>
+        <xs:attribute name="max_kernel" type="xs:int" use="required"/>
+        <xs:attribute name="max_stride" type="xs:int" use="required"/>
+        <xs:attribute name="max_scale"  type="xs:int" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="levellimit">
+  <xs:complexType>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+    <xs:attribute name="limit" type="levelmax"  use="required"/>
+  </xs:complexType>
+</xs:element>
+
 <xs:element name="profiles">
   <xs:complexType>
     <xs:sequence>
       <xs:element ref="profile" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="levels">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="level" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 </xs:element>
@@ -79,6 +124,7 @@
   <xs:complexType>
     <xs:sequence>
       <xs:element name="description" type="xs:string"/>
+      <xs:element ref="levellimit" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="category" type="argumentcategory" use="required"/>
     <xs:attribute name="name" type="xs:string" use="required"/>
@@ -161,6 +207,7 @@
   <xs:complexType>
     <xs:sequence>
       <xs:element ref="profiles"/>
+      <xs:element ref="levels"/>
       <xs:element ref="operators"/>
     </xs:sequence>
   </xs:complexType>

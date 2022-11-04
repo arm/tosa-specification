@@ -106,6 +106,26 @@ The following table summarizes the three profiles:
 |Main Training|TOSA-MT|Yes|Yes|Yes
 |===
 
+=== Levels
+
+A TOSA level defines operator parameter ranges that an implementation shall support.
+This is distinct from a profile that defines the operations and data-types supported.
+This version of the specification defines two TOSA levels:
+
+* No level : allows the full range of parameters specified by the operations according to the operation data types.
+* Level 8K : ranges are expected to be sufficient for applications with frame sizes up to 8K.
+
+Later versions of the specification may define additional levels.
+The following table defines the value ranges for Level 1.0.
+These ranges are checked using the LEVEL_CHECK() function with the operator descriptions.
+
+.Level maximums
+|===
+| Level | tosa_level_t    | MAX_RANK | MAX_KERNEL | MAX_STRIDE | MAX_SCALE
+| None  | tosa_level_none | NA       | NA         | NA         | NA
+| 8K    | tosa_level_8k   | 6        | 8192       | 8192       | 64
+|===
+
 === Status
 
 The TOSA specification is a work in progress.
@@ -118,7 +138,7 @@ The TOSA specification is a work in progress.
 
 === Compliance
 
-This section defines when a TOSA implementation is compliant to a given TOSA specification profile.
+This section defines when a TOSA implementation is compliant to a given TOSA specification profile and level.
 The term conformant will mean the same as compliant.
 
 ==== Baseline Inference Profile Compliance
@@ -141,11 +161,11 @@ In terms of psuedo-code, if *graph* is a TOSA graph consisting of Baseline Infer
 
 [source,c++]
 ----
-bool tosa_test_compliance(tosa_graph_t graph, tosa_list_t input_list) {
+bool tosa_test_compliance(tosa_graph_t graph, tosa_list_t input_list, tosa_level_t level) {
     shape_list_t output_list_spec = tosa_allocate_list(tosa_output_shape(graph));
     shape_list_t output_list_test = tosa_allocate_list(tosa_output_shape(graph));
     tosa_graph_result = tosa_valid    // result starts as valid
-    tosa_execute_graph(graph, input_list, output_list_spec);
+    tosa_execute_graph(graph, input_list, output_list_spec, level);
     if (tosa_graph_result == tosa_unpredictable) {
         return true;    // No requirement to match an unpredictable result
     }

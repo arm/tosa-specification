@@ -16,8 +16,6 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 include::{generated}/operators/ADD.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -36,8 +34,6 @@ Elementwise arithmetic right shift of input1 by the amount specified in input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 include::{generated}/operators/ARITHMETIC_RIGHT_SHIFT.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -68,8 +64,6 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 include::{generated}/operators/BITWISE_AND.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -89,8 +83,6 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 include::{generated}/operators/BITWISE_OR.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -109,8 +101,6 @@ Elementwise bitwise XOR of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 include::{generated}/operators/BITWISE_XOR.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -133,8 +123,6 @@ Floating point divide should use RECIPROCAL and MUL.
 Quantized integer divide should use TABLE (for 1/x) and MUL.
 
 include::{generated}/operators/INTDIV.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -159,8 +147,6 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 include::{generated}/operators/LOGICAL_AND.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -179,8 +165,6 @@ Elementwise left shift of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 include::{generated}/operators/LOGICAL_LEFT_SHIFT.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -202,8 +186,6 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 include::{generated}/operators/LOGICAL_RIGHT_SHIFT.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -224,8 +206,6 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 include::{generated}/operators/LOGICAL_OR.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -244,8 +224,6 @@ Elementwise logical XOR of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 include::{generated}/operators/LOGICAL_XOR.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -266,8 +244,6 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 include::{generated}/operators/MAXIMUM.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -287,8 +263,6 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 include::{generated}/operators/MINIMUM.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -307,8 +281,6 @@ Elementwise multiplication (Hadamard product) of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 include::{generated}/operators/MUL.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -339,8 +311,6 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 include::{generated}/operators/POW.adoc[]
 
-*Operation Function:*
-
 [source,c++]
 ----
 for_each(index in shape) {
@@ -359,8 +329,6 @@ Elementwise subtraction of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
 include::{generated}/operators/SUB.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----
@@ -391,8 +359,6 @@ An int16_t to int16_t table lookup can be constructed in TOSA as follows:
 * Use RESCALE (in_t=int32_t, out_t=int16_t, scale=1<<14, shift=21) to scale the output to int16_t range (or alternate scale as required)
 
 include::{generated}/operators/TABLE.adoc[]
-
-*Operation Function:*
 
 [source,c++]
 ----

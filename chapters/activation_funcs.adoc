@@ -18,7 +18,6 @@ No zero point subtraction is done to the values, thus to clamp to the zero point
 
 include::{generated}/operators/CLAMP.adoc[]
 
-*Operation Function:*
 [source,c++]
 ----
 ERROR_IF(max_val < min_val);
