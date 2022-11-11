@@ -69,7 +69,8 @@ for_each(index in shape) {
     int32_t result = (scale32) ?
         apply_scale_32(value, multiplier[c], shift[c], double_round) :
         apply_scale_16(value, multiplier[c], shift[c]);
-    result = (out_t)apply_clip<int32_t>(result + output_zp, minimum<out_t>, maximum<out_t>);
-    tensor_write<out_t>(output, shape, index, result);
+    result = apply_add<int32_t>(result, output_zp);
+    out_t out = (out_t)apply_clip<int32_t>(result, minimum<out_t>, maximum<out_t>);
+    tensor_write<out_t>(output, shape, index, out);
 }
 ----
