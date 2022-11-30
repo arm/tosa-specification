@@ -2244,8 +2244,8 @@ used.</description>
           <argument category="input" name="input_list" type="tensor_list_t" shape="-">
             <description>List of input tensors</description>
           </argument>
-          <argument category="input" name="condition" type="bool_t" shape="-">
-            <description>Input condition as rank-0 tensor</description>
+          <argument category="input" name="condition" type="bool_t*" shape="shape">
+            <description>Input condition as a size 1 tensor</description>
           </argument>
           <argument category="attribute" name="then_graph" type="tosa_graph_t" shape="-">
             <description>TOSA graph to execute if condition is true</description>
