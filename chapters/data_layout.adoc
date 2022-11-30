@@ -121,7 +121,7 @@ for_each(index in shape) {
 
 ==== SLICE
 
-Extracts a slice of the input1 on the given axis, beginning at the start coordinates, and extending for size elements in each direction.
+Extracts a slice of input1, beginning at the start coordinates, and extending for size elements in each direction.
 No data conversion happens during a slice operation.
 
 include::{generated}/operators/SLICE.adoc[]
