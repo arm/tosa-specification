@@ -50,7 +50,6 @@
     <xs:enumeration value="in_out_t"/>
     <xs:enumeration value="acc_t"/>
     <xs:enumeration value="weight_t"/>
-    <xs:enumeration value="cmp_t"/>
     <xs:enumeration value="resize_t"/>
     <xs:enumeration value="index_t"/>
     <xs:enumeration value="value_t"/>
@@ -175,7 +174,6 @@
     <xs:attribute name="in_out_t" type="datatype"/>
     <xs:attribute name="weight_t" type="datatype"/>
     <xs:attribute name="acc_t" type="datatype"/>
-    <xs:attribute name="cmp_t" type="datatype"/>
     <xs:attribute name="resize_t" type="datatype"/>
     <xs:attribute name="index_t" type="datatype"/>
     <xs:attribute name="value_t" type="datatype"/>

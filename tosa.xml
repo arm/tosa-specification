@@ -1342,7 +1342,7 @@
       <operator>
         <name>SELECT</name>
         <arguments>
-          <argument category="input" name="input1" type="cmp_t" shape="shape1">
+          <argument category="input" name="input1" type="bool_t" shape="shape1">
             <description>Input selector tensor</description>
           </argument>
           <argument category="input" name="input2" type="in_out_t*" shape="shape2">
@@ -1357,22 +1357,21 @@
           </argument>
         </arguments>
         <types>
-          <type name='cmp_t'/>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="Boolean" cmp_t="bool_t" in_out_t="bool_t"/>
-        <typesupport mode="signed 8" cmp_t="bool_t" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" cmp_t="bool_t" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" cmp_t="bool_t" in_out_t="int32_t"/>
-        <typesupport mode="fp16" cmp_t="bool_t" in_out_t="fp16_t">
+        <typesupport mode="Boolean" in_out_t="bool_t"/>
+        <typesupport mode="signed 8" in_out_t="int8_t"/>
+        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="bf16" cmp_t="bool_t" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp32" cmp_t="bool_t" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
