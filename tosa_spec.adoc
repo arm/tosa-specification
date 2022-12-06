@@ -7,7 +7,9 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-= TOSA {revnumber} specification
+include::{generated}/version.adoc[]
+
+= TOSA {tosa-version-string} specification
 :numbered:
 :toc: left
 :toclevels: 3

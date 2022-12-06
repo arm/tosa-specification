@@ -70,6 +70,15 @@
 
 <!-- Element definitions -->
 
+<xs:element name="version">
+  <xs:complexType>
+    <xs:attribute name="major" type="xs:int" use="required"/>
+    <xs:attribute name="minor" type="xs:int" use="required"/>
+    <xs:attribute name="patch" type="xs:int" use="required"/>
+    <xs:attribute name="draft" type="xs:boolean" use="required"/>
+  </xs:complexType>
+</xs:element>
+
 <xs:element name="profile">
   <xs:complexType>
     <xs:simpleContent>
@@ -206,6 +215,7 @@
 <xs:element name="tosa">
   <xs:complexType>
     <xs:sequence>
+      <xs:element ref="version" minOccurs="1" maxOccurs="1"/>
       <xs:element ref="profiles"/>
       <xs:element ref="levels"/>
       <xs:element ref="operators"/>

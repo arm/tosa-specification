@@ -56,6 +56,19 @@ class TOSASpecAsciidocGenerator:
             )
 
     def generate(self, outdir):
+        os.makedirs(outdir, exist_ok=True)
+
+        # Generate version information
+        major = self.spec.version_major
+        minor = self.spec.version_minor
+        patch = self.spec.version_patch
+        with open(os.path.join(outdir, "version.adoc"), 'w') as f:
+            f.write(':tosa-version-string: {}.{}.{}'.format(major, minor, patch))
+            if self.spec.version_is_draft:
+                f.write(' draft')
+            f.write('\n')
+
+        # Generator operators
         opdir = os.path.join(outdir, "operators")
         os.makedirs(opdir, exist_ok=True)
         for group in self.spec.operatorgroups:

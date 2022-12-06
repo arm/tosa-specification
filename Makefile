@@ -8,7 +8,6 @@
 # by a licensing agreement from ARM Limited.
 #
 
-TOSAREVISION=0.50.0
 MKDIR=mkdir -p
 ASCIIDOC=asciidoctor
 ASPELL=aspell
@@ -19,7 +18,7 @@ HTMLDIR=out/html
 PDFDIR=out/pdf
 GENDIR=out/gen
 
-COMMON_ARGS= -a revnumber="$(TOSAREVISION)" -a generated="$(abspath $(GENDIR))"
+COMMON_ARGS= -a generated="$(abspath $(GENDIR))"
 
 SPECSRC := tosa_spec.adoc
 ADOCFILES = $(wildcard chapters/[A-Za-z]*.adoc) $(wildcard $(GENDIR)/*/*.adoc)

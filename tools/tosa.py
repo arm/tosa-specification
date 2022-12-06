@@ -47,8 +47,19 @@ class TOSASpec:
         self.__load_spec()
 
     def __load_spec(self):
+        self.__load_version()
         for group in self.xmlroot.findall("./operators/operatorgroup"):
             self.operatorgroups.append(self.__load_operator_group(group))
+
+    def __load_version(self):
+        version = self.xmlroot.find("./version")
+        self.version_major = int(version.get("major"))
+        self.version_minor = int(version.get("minor"))
+        self.version_patch = int(version.get("patch"))
+        if version.get("draft") == "true":
+            self.version_is_draft = True
+        else:
+            self.version_is_draft = False
 
     def __load_operator_group(self, group):
         name = group.get("name")
