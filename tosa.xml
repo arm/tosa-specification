@@ -1898,21 +1898,20 @@ used.</description>
           </argument>
         </arguments>
         <types>
-          <type name='index_t'/>
           <type name='value_t'/>
         </types>
-        <typesupport mode="signed 8" index_t="int32_t" value_t="int8_t"/>
-        <typesupport mode="signed 16" index_t="int32_t" value_t="int16_t"/>
-        <typesupport mode="signed 32" index_t="int32_t" value_t="int32_t"/>
-        <typesupport mode="fp16" index_t="int32_t" value_t="fp16_t">
+        <typesupport mode="signed 8" value_t="int8_t"/>
+        <typesupport mode="signed 16" value_t="int16_t"/>
+        <typesupport mode="signed 32" value_t="int32_t"/>
+        <typesupport mode="fp16" value_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="bf16" index_t="int32_t" value_t="bf16_t">
+        <typesupport mode="bf16" value_t="bf16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp32" index_t="int32_t" value_t="fp32_t">
+        <typesupport mode="fp32" value_t="fp32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
@@ -1934,21 +1933,20 @@ used.</description>
           </argument>
         </arguments>
         <types>
-          <type name='index_t'/>
           <type name='value_t'/>
         </types>
-        <typesupport mode="signed 8" index_t="int32_t" value_t="int8_t"/>
-        <typesupport mode="signed 16" index_t="int32_t" value_t="int16_t"/>
-        <typesupport mode="signed 32" index_t="int32_t" value_t="int32_t"/>
-        <typesupport mode="fp16" index_t="int32_t" value_t="fp16_t">
+        <typesupport mode="signed 8" value_t="int8_t"/>
+        <typesupport mode="signed 16" value_t="int16_t"/>
+        <typesupport mode="signed 32" value_t="int32_t"/>
+        <typesupport mode="fp16" value_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="bf16" index_t="int32_t" value_t="bf16_t">
+        <typesupport mode="bf16" value_t="bf16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp32" index_t="int32_t" value_t="fp32_t">
+        <typesupport mode="fp32" value_t="fp32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
