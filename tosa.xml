@@ -68,6 +68,9 @@
             <levellimit value="pad_left"   limit="MAX_KERNEL"/>
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
           </argument>
+          <argument category="attribute" name="acc_size" type="acc_t" shape="-">
+            <description>Enumerated type, must be one of INT32, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
+          </argument>
           <argument category="attribute" name="input_zp" type="in_out_t" shape="-">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
           </argument>
