@@ -2196,6 +2196,7 @@ used.</description>
         <typesupport mode="signed 8" out_t="int8_t" />
         <typesupport mode="signed 16" out_t="int16_t" />
         <typesupport mode="signed 32" out_t="int32_t" />
+        <typesupport mode="signed 48" out_t="int48_t" />
         <typesupport mode="fp16" out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
