@@ -468,10 +468,10 @@
             <levellimit value="H" limit="MAX_KERNEL"/>
             <levellimit value="W" limit="MAX_KERNEL"/>
           </argument>
-          <argument category="output" name="output_real" type="in_out_t*" shape="[N,H/2 + 1,W/2 + 1]">
+          <argument category="output" name="output_real" type="in_out_t*" shape="[N,H,W/2 + 1]">
             <description>Real part of the complex output</description>
           </argument>
-          <argument category="output" name="output_imag" type="in_out_t*" shape="[N,H/2 + 1,W/2 + 1]">
+          <argument category="output" name="output_imag" type="in_out_t*" shape="[N,H,W/2 + 1]">
             <description>Imaginary part of the complex output.</description>
           </argument>
         </arguments>
