@@ -1,6 +1,22 @@
 import re
 import xml.etree.ElementTree as ET
 
+# possible shapes: shape1, [2], [N,H,W,C]
+# returns (checkable, rank)
+# checkable is false if shape doesn't contain []
+def get_rank_from_shape(shape):
+    if '[' not in shape or '[]' in shape:
+        return (False, -1)
+    # Check for fixed rank requirement [N]
+    m = re.match(r'\[(\d+)\]', shape)
+    if m:
+        return (True, 1)
+    # Check for comma separated rank descriptors, return count
+    m = re.match(r'\[(.*)\]', shape)
+    if m:
+        return (True, len(m.group(1).split(',')))
+    else:
+        raise RuntimeError(f'Unable to parse shape {shape}')
 
 class TOSAOperatorArgumentCategory:
     def __init__(self, name, profiles=None):
@@ -20,13 +36,14 @@ class TOSALevel:
         self.maximums = maximums
 
 class TOSAOperatorArgument:
-    def __init__(self, name, description, categories, ty, shape, levellimits):
+    def __init__(self, name, description, categories, ty, shape, levellimits, rank):
         self.name = name
         self.description = description
         self.categories = categories
         self.type = ty
         self.shape = shape
         self.levellimits = levellimits
+        self.rank = rank
 
 
 class TOSAOperatorDataTypeSupport:
@@ -103,7 +120,7 @@ class TOSASpec:
         types = []
         typesupports = []
         for arg in op.findall("arguments/argument"):
-            args.append(self.__load_operator_argument(arg))
+            args.append(self.__load_operator_argument(arg, name))
 
         # TODO add pseudo-code to operator object?
 
@@ -122,13 +139,26 @@ class TOSASpec:
             typesupports.append(TOSAOperatorDataTypeSupport(tsmode, tsmap, tsprofiles))
         return TOSAOperator(name, args, types, typesupports)
 
-    def __load_operator_argument(self, arg):
+    def __load_operator_argument(self, arg, op_name):
         name = arg.get("name")
         desc = arg.find("description").text.strip()
         argcats = []
         argtype = arg.get("type")
         shape = arg.get("shape")
         levellimits = []
+        rank = []
+        r = arg.find("rank")
+        if r != None:
+            if shape == "-":
+                raise RuntimeError(f"rank is not empty, but shape is '-' for {op_name}: {name}")
+            rank = [r.get('min'),r.get('max')]
+            # validate rank against the shape argument
+            (shape_check, shape_rank) = get_rank_from_shape(shape)
+            if shape_check and (shape_rank < int(rank[0]) or shape_rank > int(rank[1])):
+                raise RuntimeError(f"Description of shape rank doesn't match XML rank min/max: {op_name} {name} shape: {shape} shape_rank: {shape_rank} min/max: {rank[0]} {rank[1]}")
+        else:
+            if shape != "-":
+                raise RuntimeError(f"Rank not present for {op_name}: {name} when shape is {shape}")
         for levellimit in arg.findall("levellimit"):
             value = levellimit.get("value")
             limit = levellimit.get("limit")
@@ -140,7 +170,7 @@ class TOSASpec:
         for cat in cats:
             argcats.append(TOSAOperatorArgumentCategory(cat[0], cat[1].split(",")))
 
-        return TOSAOperatorArgument(name, desc, argcats, argtype, shape, levellimits)
+        return TOSAOperatorArgument(name, desc, argcats, argtype, shape, levellimits, rank)
 
     def __load_enum(self, arg):
         name = arg.get("name")

@@ -3,7 +3,6 @@ import os
 
 import tosa
 
-
 class TOSASpecAsciidocGenerator:
     def __init__(self, spec):
         self.spec = spec
@@ -19,8 +18,9 @@ class TOSASpecAsciidocGenerator:
 
     def generate_operator(self, op, file):
         file.write("\n*Arguments:*\n")
+        file.write("[cols='2,1,1,1,2,4']")
         file.write("\n|===\n")
-        file.write("|Argument|Type|Name|Shape|Description\n\n")
+        file.write("|Argument|Type|Name|Shape|Rank|Description\n\n")
         for arg in op.arguments:
             cats = arg.categories
             if len(cats) > 1:
@@ -33,8 +33,15 @@ class TOSASpecAsciidocGenerator:
                     sep = " "
             else:
                 cattext = cats[0].name.title()
+            if len(arg.rank) > 0:
+                if (arg.rank[0] == arg.rank[1]):
+                    rank = f'{arg.rank[0]}'
+                else:
+                    rank = f'{arg.rank[0]} to {arg.rank[1]}'
+            else:
+                rank = ""
             file.write(
-                f"|{cattext}|{arg.type}|{arg.name}|{arg.shape}|{arg.description}\n"
+                f"|{cattext}|{arg.type}|{arg.name}|{arg.shape}|{rank}|{arg.description}\n"
             )
         file.write("|===\n")
         if op.typesupports:
@@ -112,7 +119,11 @@ if __name__ == "__main__":
     parser.add_argument("--outdir", required=True, help="Output directory")
     args = parser.parse_args()
 
-    spec = tosa.TOSASpec(args.xml)
+    try:
+        spec = tosa.TOSASpec(args.xml)
+    except RuntimeError as e:
+        print(f"Failure reading/validating XML spec: {str(e)}")
+        exit(1)
 
     generator = TOSASpecAsciidocGenerator(spec)
     generator.generate(args.outdir)

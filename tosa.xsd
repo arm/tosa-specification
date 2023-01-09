@@ -125,6 +125,29 @@
   </xs:complexType>
 </xs:element>
 
+<!--- Valid values for the rank choices, either an integer or a string
+      starting with MAX_RANK (to allow things like MAX_RANK - 1)
+-->
+<xs:simpleType name="validRank">
+  <xs:union>
+    <xs:simpleType>
+      <xs:restriction base="xs:integer"/>
+    </xs:simpleType>
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:pattern value="MAX_RANK.*"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:union>
+</xs:simpleType>
+
+<xs:element name="rank">
+  <xs:complexType>
+    <xs:attribute name="min" type="validRank" use="required"/>
+    <xs:attribute name="max" type="validRank" use="required"/>
+  </xs:complexType>
+</xs:element>
+
 <!-- TODO pattern for attribute name -->
 <!-- TODO enumerations/patterns for attribute type -->
 <!-- TODO enumerations/patterns for attribute shape -->
@@ -152,6 +175,7 @@
     <xs:sequence>
       <xs:element name="description" type="xs:string"/>
       <xs:element ref="levellimit" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="rank" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
     <xs:attribute name="category" type="argumentcategory" use="required"/>
     <xs:attribute name="name" type="xs:string" use="required"/>
