@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2022 ARM Limited
+// (C) COPYRIGHT 2020-2023 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -161,7 +161,7 @@ for_each(index in shape) {
 
 ==== LOGICAL_LEFT_SHIFT
 
-Elementwise left shift of input1 and input2.
+Elementwise logical left shift of input1 by the amount specified in input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 include::{generated}/operators/LOGICAL_LEFT_SHIFT.adoc[]
