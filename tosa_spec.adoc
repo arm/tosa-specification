@@ -23,3 +23,5 @@ include::chapters/introduction.adoc[]
 include::chapters/operators.adoc[]
 
 include::chapters/pseudocode.adoc[]
+
+include::chapters/appendix_a.adoc[]

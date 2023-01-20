@@ -1,0 +1,66 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2023 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+== Appendix A
+
+NOTE: This appendix is at an early stage of development at this point in time
+
+=== Random data generation
+
+The following function generates a pseudo-random floating-point value in the range -1.0 to +1.0 for use as test data.
+It uses a modulo (1<<32) recurrent sequence with multiplier derived from "TOSASETS" and the set number.
+
+[source,c++]
+----
+float set_data(uint32_t set, uint32_t index)
+{
+    uint32_t m = (8*set + 1) * 0x705A5E75;   // mod (1<<32) calculation
+    uint32_t r = m + 1;                      // mod (1<<32) calculation
+    for (uint32_t i = 0; i < index; i++) {
+        r = r * m + 1;                       // mod (1<<32) calculation
+    }
+    float  sign = (r>>31)==0 ? +1 : -1;
+    return sign * (float)(r & 0x7FFFFFFF) / (float)(0x7FFFFFFF);
+}
+----
+
+=== Dot product floating-point test data sets
+
+Each test set is indexed by a pair (S, N) where:
+
+* S is the test set number
+* N is the number of elements in a single test vector
+
+Each test set (S, N) contains multiple tests that statistics are calculated over.
+The parameter T is the number of tests in a given set.
+In the table below, t is the test number within a set in the range 0 to T-1.
+
+[cols="1,1,1,5,5"]
+|===
+| Set S | N range | T | x[k] formula for k < N | w[k] formula for k < N
+
+| 0
+| 2-25,50,100,1000
+| 10
+| x[k]=set_data(S, 2*t*N+2*k) < 0 ? 0.0 : set_data(S, 2*t*N+2*k+1)
+| w[k]=set_data(S, 2*t*N+2*k) < 0 ? set_data(S, 2*t*N+2*k+1) : 0.0
+
+| 1
+| 2-25,50,100,1000
+| 1000
+| x[k]=2.0*set_data(S,  2*t*N + k)
+| w[k]=2.0*set_data(S, (2*t+1)*N + k)
+
+| 2
+| 2-25,50,100,1000
+| 1000
+| x[0]=1.0, x[k]=set_data(S, 2*t*N + k)/sqrt(N) for k>0
+| w[0]=1.0, w[k]=set_data(S, (2*t+1)*N + k)/sqrt(N) for k>0
+
+|===

@@ -252,10 +252,11 @@ See <<Number formats>> for details on the floating-point formats.
 ----
 int round_to_nearest_int(float_t f)
   Converts the floating-point value to f, with rounding to the nearest integer value.
+  For the required precision see the section: Main inference precision requirements.
 
 float_t round_to_nearest_float(in_t f)
   Converts the input value into floating-point, rounding to the nearest representable value.
-  The behavior for ties is implementation dependent.
+  For the required precision see the section: Main inference precision requirements.
 
 out_t sign_extend(in_t input)
   Only valid for two's complement integer values where out_t has more bits than in_t.

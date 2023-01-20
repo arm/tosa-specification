@@ -23,6 +23,7 @@ DEPTHWISE
 Elementwise
 FFT
 fft
+fp
 foreach
 Fulbourn
 GPUs
@@ -41,6 +42,7 @@ md
 MERCHANTABILITY
 MUL
 multipler
+NaN
 NPUs
 pre
 precisions
@@ -71,6 +73,8 @@ tensorinfo
 TFLite
 tosa
 TOSA
+TOSASETS
 TPUs
+ulp
 unary
 Unary
