@@ -1679,7 +1679,7 @@
         <name>PAD</name>
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape1">
-            <description>Input tensor</description>
+            <description>Input tensor with minimum rank of one.</description>
           </argument>
           <argument category="attribute" name="padding" type="int32_t" shape="[rank(shape1),2]">
             <description>Number of pad elements at the start and end of each dimension</description>
@@ -1719,7 +1719,7 @@
             <description>Input tensor</description>
             <levellimit value="rank(shape1)" limit="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="new_shape" type="int32_t" shape="[rank(output)]">
+          <argument category="attribute" name="new_shape" type="int32_t" shape="[rank(shape)]">
             <description>List of values, with each element giving the size of the result tensor for the given dimension. At most one dimension may be given as -1 to automatically calculate the dimension size.</description>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
@@ -1751,7 +1751,7 @@
         <name>REVERSE</name>
         <arguments>
           <argument category="input" name="input" type="in_out_t*" shape="shape">
-            <description>Input tensor with rank from 1 to 4</description>
+            <description>Input tensor with minimum rank of one.</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="int32_t" shape="-">
@@ -1785,14 +1785,15 @@
         <name>SLICE</name>
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape1">
-            <description>Input tensor with rank from 1 to 4</description>
+            <description>Input tensor with minimum rank of one.</description>
           </argument>
-          <argument category="attribute" name="start" type="int32_t" shape="[rank(input1)]">
+          <argument category="attribute" name="start" type="int32_t" shape="[rank(shape1)]">
             <description>List of integer coordinates, of length equal to the rank of input1. Start coordinate for slicing.</description>
           </argument>
-          <argument category="attribute" name="size" type="int32_t" shape="[rank(input1)]">
+          <argument category="attribute" name="size" type="int32_t" shape="[rank(shape1)]">
             <description>List of integer size values, of length equal to the rank of input1. Size of the input to be
 used.</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type as the input tensor</description>
@@ -1822,13 +1823,14 @@ used.</description>
         <name>TILE</name>
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape1">
-            <description>Input tensor with rank from 1 to 4</description>
+            <description>Input tensor with minimum rank of one.</description>
           </argument>
           <argument category="attribute" name="multiplies" type="int32_t" shape="[rank(shape1)]">
             <description>Number of times to replicate input1 in each dimension</description>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
             <description>Output tensor of same type, rank as the input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1857,7 +1859,7 @@ used.</description>
           <argument category="input" name="input1" type="in_out_t*" shape="shape1">
             <description>Input tensor with minimum rank of one.</description>
           </argument>
-          <argument category="attribute" name="perms" type="int32_t" shape="[rank(input1)]">
+          <argument category="attribute" name="perms" type="int32_t" shape="[rank(shape1)]">
             <description>List of integers of length equal to the rank of input1. Values must be valid dimensions within shape1, and may not be repeated.</description>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
