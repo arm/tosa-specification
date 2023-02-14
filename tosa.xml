@@ -69,7 +69,7 @@
             <levellimit value="pad_left"   limit="MAX_KERNEL"/>
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
           </argument>
-          <argument category="attribute" name="acc_size" type="acc_t" shape="-">
+          <argument category="attribute" name="acc_size" type="acc_size_t" shape="-">
             <description>Enumerated type, must be one of INT32, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
           </argument>
           <argument category="attribute" name="input_zp" type="in_out_t" shape="-">
@@ -1977,7 +1977,7 @@ used.</description>
           <argument category="attribute" name="border" type="int16_t*" shape="[2]">
             <description>[border_y, border_x]</description>
           </argument>
-          <argument category="attribute" name="mode" type="mode_t" shape="-">
+          <argument category="attribute" name="mode" type="resize_t" shape="-">
             <description>BILINEAR or NEAREST</description>
           </argument>
           <argument category="output" name="output" type="out_t*" shape="[N,OH,OW,C]">
@@ -2283,4 +2283,16 @@ used.</description>
       </operator>
     </operatorgroup>
   </operators>
+
+  <enum name="resize_t" description="Valid resize types">
+    <enumval value="0" name="NEAREST_NEIGHBOR" description="Nearest neighbor resize"/>
+    <enumval value="1" name="BILINEAR" description="Bilinear resize"/>
+  </enum>
+
+  <enum name="acc_size_t" description="Allowed accumulator sizes">
+    <enumval value="0" name="INT32" description="32-bit integer"/>
+    <enumval value="1" name="FP16" description="16-bit floating-point"/>
+    <enumval value="2" name="FP32" description="32-bit floating-point"/>
+  </enum>
+
 </tosa>

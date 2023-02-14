@@ -126,6 +126,25 @@
 <!-- TODO pattern for attribute name -->
 <!-- TODO enumerations/patterns for attribute type -->
 <!-- TODO enumerations/patterns for attribute shape -->
+
+<xs:element name="enumval">
+  <xs:complexType>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="value" type="xs:integer"/>
+    <xs:attribute name="description" type="xs:string"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="enum">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="enumval" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="description" type="xs:string" use="required"/>
+  </xs:complexType>
+</xs:element>
+
 <xs:element name="argument">
   <xs:complexType>
     <xs:sequence>
@@ -213,6 +232,7 @@
       <xs:element ref="profiles"/>
       <xs:element ref="levels"/>
       <xs:element ref="operators"/>
+      <xs:element ref="enum" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 </xs:element>

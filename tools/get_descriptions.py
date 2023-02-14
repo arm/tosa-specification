@@ -49,5 +49,7 @@ for name in args.filenames:
                 # skip comments
                 elif re.match(r"\w*\/\/", text):
                     continue
+                elif re.match(r"include::", text):
+                    continue
                 else:
                     print(text)

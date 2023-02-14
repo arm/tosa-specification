@@ -7,6 +7,12 @@ class TOSAOperatorArgumentCategory:
         self.name = name
         self.profiles = profiles
 
+class TOSAEnum:
+    def __init__(self, name, description, values):
+        self.name = name
+        self.description = description
+        self.values = values
+
 
 class TOSAOperatorArgument:
     def __init__(self, name, description, categories, ty, shape, levellimits):
@@ -44,12 +50,15 @@ class TOSASpec:
         tree = ET.parse(xmlpath)
         self.xmlroot = tree.getroot()
         self.operatorgroups = []
+        self.enums = []
         self.__load_spec()
 
     def __load_spec(self):
         self.__load_version()
         for group in self.xmlroot.findall("./operators/operatorgroup"):
             self.operatorgroups.append(self.__load_operator_group(group))
+        for enum in self.xmlroot.findall("./enum"):
+            self.enums.append(self.load_enum(enum))
 
     def __load_version(self):
         version = self.xmlroot.find("./version")
@@ -112,3 +121,11 @@ class TOSASpec:
             argcats.append(TOSAOperatorArgumentCategory(cat[0], cat[1].split(",")))
 
         return TOSAOperatorArgument(name, desc, argcats, argtype, shape, levellimits)
+
+    def load_enum(self, arg):
+        name = arg.get("name")
+        desc = arg.get("description").strip()
+        values = []
+        for val in arg.findall("enumval"):
+            values.append((val.get("name"), val.get("value"), val.get("description")))
+        return TOSAEnum(name, desc, values)

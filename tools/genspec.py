@@ -8,6 +8,15 @@ class TOSASpecAsciidocGenerator:
     def __init__(self, spec):
         self.spec = spec
 
+    def generate_enum(self, enum, file):
+        file.write(f"\n=== {enum.name}\n")
+        file.write(f"{enum.description}\n")
+        file.write("|===\n")
+        file.write("|Name|Value|Description\n\n")
+        for val in enum.values:
+            file.write(f"|{val[0]}|{val[1]}|{val[2]}\n")
+        file.write("|===\n")
+
     def generate_operator(self, op, file):
         file.write("\n*Arguments:*\n")
         file.write("\n|===\n")
@@ -75,7 +84,9 @@ class TOSASpecAsciidocGenerator:
             for op in group.operators:
                 with open(os.path.join(opdir, op.name + ".adoc"), "w") as f:
                     self.generate_operator(op, f)
-
+        with open(os.path.join(outdir, "enums.adoc"), 'w') as f:
+            for enum in self.spec.enums:
+                self.generate_enum(enum, f)
 
 if __name__ == "__main__":
     import argparse
