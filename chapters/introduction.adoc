@@ -300,14 +300,17 @@ For each data test set (S, N) consisting of T tests the following must hold:
 * if `y_bnd[t] == 0` then
 ** `y_imp[t]` must be zero and set `y_err[t] = 0`
 * if `y_bnd[t] > 0` then set:
-** `y_err[t] = abs(y_imp[t] - y_ref[t]) * (1<<(M+1)) / y_bnd[t]` calculated using fp64 arithmetic
-* For each test t the following must be satified:
+** `y_err[t] = (y_imp[t] - y_ref[t]) * (1<<(M+1)) / y_bnd[t]` calculated using fp64 arithmetic
+* For each test t the following must be satisfied:
 ** `y_ref[t], y_bnd[t], y_imp[t]` must be finite
-** `y_err[t] \<= N`
-* Calculate the mean-square (variance from 0) of y_err using 64 bit IEEE floating point arithmetic:
-**  `y_var = (y_err[0] * y_err[0] + ... + y_err[N-1] * y_err[N-1]) / T`
-* The mean-square must satisfy:
-**  `y_var \<= N/3`
+** `abs(y_err[t]) \<= N`
+* Calculate the sum of y_err using fp64 arithmetic:
+** `y_err_sum   = y_err[0] + .... + y_err[T-1]`
+* Calculate the sum of y_err squared using fp64 arithmetic:
+** `y_err_sumsq = y_err[0] * y_err[0] + ... + y_err[T-1] * y_err[T-1]`
+* The error sum and sum squares must satisfy the following. The first equation bounds the bias and the second the error variance.
+** `abs(y_err_sum) \<= 2*sqrt(N*T)`
+** `y_err_sumsq \<= 0.4*N*T`
 
 === Tensor Definitions
 
