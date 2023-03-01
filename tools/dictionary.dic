@@ -1,6 +1,7 @@
 personal_ws-1.1 en 500
 activations
 adoc
+acc
 ARGMAX
 AsciiDoc
 BILINEAR
@@ -44,6 +45,7 @@ MUL
 multipler
 NaN
 NPUs
+OC
 pre
 precisions
 pseudocode

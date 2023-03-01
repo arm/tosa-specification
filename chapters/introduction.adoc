@@ -135,7 +135,10 @@ The TOSA specification is a work in progress.
 === Compliance
 
 This section defines when a TOSA implementation is compliant to a given TOSA specification profile and level.
-The term conformant will mean the same as compliant.
+To be compliant an implementation must achieve the results and accuracy defined by this specification.
+TOSA also defines a set of conformance tests.
+A compliant implementation must pass the conformance tests.
+The conformance tests are not exhaustive, so an implementation that passes the conformance tests may not be compliant if there is a non-compliance that is undetected by the tests.
 
 ==== Base Inference Profile Compliance
 
@@ -177,7 +180,7 @@ bool tosa_test_compliance(tosa_graph_t graph, tosa_list_t input_list, tosa_level
 }
 ----
 
-==== Main Inference Profile
+==== Main Inference Profile Compliance
 
 A Main Inference compliant implementation must satisfy the following:
 
@@ -216,7 +219,7 @@ The following criteria apply to all operations:
 | Operation | Accuracy bound
 
 | <<ARGMAX>>, <<MAX_POOL2D>>, <<CLAMP>>, <<MAXIMUM>>, <<MINIMUM>>, <<ABS>>, <<NEGATE>>, , <<CONST>>, <<IDENTITY>>
-| The result must be exact.
+| Non NaN results must be exact.
 
 | <<EQUAL>>, <<GREATER>>, <<GREATER_EQUAL>>
 | The result must be exact with: +
@@ -228,16 +231,22 @@ The following criteria apply to all operations:
 The dot product must meet the <<Dot product accuracy requirements>>
 
 | <<FFT2D>>, <<RFFT2D>>
-| Each output can be expressed as a dot product of an input vector with a costant vector. +
+| Each output can be expressed as a dot product of an input vector with a constant coefficient vector. +
 The dot product must meet the <<Dot product accuracy requirements>>
 
-| <<ADD>>, <<MUL>>, <<SUB>>, <<CEIL>>, <<FLOOR>>, <<CAST>>
+| <<ADD>>, <<MUL>>, <<SUB>>, <<CEIL>>, <<FLOOR>>
 | Floating-point result overflows must be set to infinity of the correct sign. +
 Floating-point result underflows must be set to zero of the correct sign. +
-Integer result overflows must be saturated. +
 Addition of infinites of different signs must produce a NaN. +
 Subtraction of infinities of the same sign must produce a NaN. +
 Multiplication of an infinity by a zero must produce a NaN. +
+Otherwise for fp32_t the result must be rounded to the nearest representable value using the round to nearest, ties to even rounding mode. +
+Otherwise for fp16_t and bf16_t the result must be within 0.5 ulp of the mathematical result.
+
+| <<CAST>>
+| Floating-point result overflows must be set to infinity of the correct sign. +
+Floating-point result underflows must be set to zero of the correct sign. +
+Cast from floating-point to integer result overflows must be saturated. +
 Otherwise for fp32_t the result must be rounded to the nearest representable value using the round to nearest, ties to even rounding mode. +
 Otherwise for fp16_t and bf16_t the result must be within 0.5 ulp of the mathematical result.
 
@@ -264,7 +273,7 @@ Otherwise the result must be within 5 ulp of the mathematical result.
 This dot product must meet the <<Dot product accuracy requirements>>
 
 | <<AVG_POOL2D>>
-| Each output can be expressed as a dot product of an input vector with a vector with elements 1/d where d is the kernel size. +
+| Each output can be expressed as a dot product of an input vector with a vector with elements 1/KS where KS is the kernel size. +
 This dot product must meet the <<Dot product accuracy requirements>>
 
 | <<REDUCE_PRODUCT>>
@@ -277,36 +286,65 @@ where `E = pow(1 + pow(2, -M-1), N) - 1`. In this expression M is the number of 
 
 ===== Dot product accuracy requirements
 
-This section gives accuracy constraints for operations where the result is a sum of products of N floating-point inputs:
+This section assumes an operation acting on two tensors named 'input' and 'weight'.
+Each output tensor element can be expressed as a dot product of elements between the input and weight tensors.
+The dot product has length KS, the kernel size.
+Note: KS is defined for each relevant operator in the appendix section <<Main Inference operator test data>>.
 
-`y = x[0] * w[0] + x[1] * w[1] + ... + x[N-1] * w[N-1]`
+In other words each output element `out` can be expressed as a dot product between input elements `in[k]` and weight elements `w[k]`:
 
-Let M be the number of mantissa bits in the accumulator.
-So M=23 for an `fp32_t` accumulator and M=10 for an `fp16_t` accumulator.
+`out = in[0] * w[0] + in[1] * w[1] + ... + in[KS-1] * w[KS-1]`
 
-In this section "fp64 arithmetic" refers to double-precision floating-point arithmetic defined by <<Other publications>>[1].
+The positions of `in[k]` and `w[k]` in the input and weight tensors depends on the operation being performed (for example a convolution).
 
-Appendix A, defines a number of <<Dot product floating-point test data sets>>.
-For each data test set (S, N) consisting of T tests the following must hold:
+This section defines the accuracy required for these operations.
+The term "fp64 arithmetic" refers to double-precision floating-point arithmetic defined by <<Other publications>>[1].
 
-* For each test t in the range 0 to T-1, calculate:
-** `y_imp[t] = x[0] * w[0] + ... + x[N-1] * w[N-1]` calculated by the implementation
-** `y_ref[t] = x[0] * w[0] + ... + x[N-1] * w[N-1]` calculated using fp64 arithmetic
-** `y_bnd[t] = abs(x[0] * w[0]) + ... + abs(x[N-1] * w[N-1])` calculated using fp64 arithmetic
-* if `y_bnd[t] == 0` then
-** `y_imp[t]` must be zero and set `y_err[t] = 0`
-* if `y_bnd[t] > 0` then set:
-** `y_err[t] = (y_imp[t] - y_ref[t]) * (1<<(M+1)) / y_bnd[t]` calculated using fp64 arithmetic
-* For each test t the following must be satisfied:
-** `y_ref[t], y_bnd[t], y_imp[t]` must be finite
-** `abs(y_err[t]) \<= N`
-* Calculate the sum of y_err using fp64 arithmetic:
-** `y_err_sum   = y_err[0] + .... + y_err[T-1]`
-* Calculate the sum of y_err squared using fp64 arithmetic:
-** `y_err_sumsq = y_err[0] * y_err[0] + ... + y_err[T-1] * y_err[T-1]`
-* The error sum and sum squares must satisfy the following. The first equation bounds the bias and the second the error variance.
-** `abs(y_err_sum) \<= 2*sqrt(N*T)`
-** `y_err_sumsq \<= 0.4*N*T`
+For an operation with given sizes and attributes to be compliant the following must hold for each data set S defined in <<Appendix A>>:
+
+* Let input be the input tensor generated by <<Main Inference operator test data>> for test set S
+* Let weight be the weight tensor generated by <<Main Inference operator test data>> for test set S
+* Let output_ref be the output tensor calculated by the operation using fp64 arithemic
+* Let output_imp be the output tensor calculated by the implementation to test
+* Let input_abs  be the input  tensor with each element replaced with its absolute value
+* Let weight_abs be the weight tensor with each element replaced with its absolute value
+* Let output_bnd be the output tensor calculated using fp64 arithmetic on input_abs and weight_abs
+
+The following checks must then pass:
+
+[source,c++]
+----
+size_t T = tensor_size(output_shape)  // number dot product results
+fp64_t out_err_sum = 0.0;
+fp64_t out_err_sumsq = 0.0;
+fp64_t acc_prec;  // 1<<(M+1) where M is the number of mantissa bits
+switch (acc_t) {
+    case fp32_t: acc_prec = (fp64_t)(1<<24); break;
+    case fp16_t: acc_prec = (fp64_t)(1<<11); break;
+    default: ERROR_IF(true);
+}
+for_each(index in output_shape) {
+    fp64_t out_bnd = tensor_read<fp64_t>(output_bnd, output_shape, index);
+    fp64_t out_ref = tensor_read<fp64_t>(output_ref, output_shape, index);
+    acc_t  out_imp = tensor_read<acc_t> (output_imp, output_shape, index);
+    fp64_t out_err;
+    if (out_bnd == 0.0) {
+        REQUIRE(out_ref == 0.0 && out_imp == 0.0);
+        out_err = 0.0;
+    } else {  // out_bnd > 0.0
+        out_err = ((fp64_t)out_imp - out_ref)*acc_prec/out_bnd;
+        REQUIRE(abs(out_err) <= KS);
+    }
+    out_err_sum   += out_err;
+    out_err_sumsq += out_err * out_err;
+}
+if (S!=1 && S!=2) {
+    // check output error bias magnitude for data sets S which are not positive biased
+    REQUIRE(abs(out_err_sum) <= 2*sqrt(KS*T));
+}
+// check output error variance magnitude
+REQUIRE(out_err_sumsq <= 0.4*KS*T)
+----
 
 === Tensor Definitions
 

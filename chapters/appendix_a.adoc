@@ -30,37 +30,257 @@ float set_data(uint32_t set, uint32_t index)
 }
 ----
 
-=== Dot product floating-point test data sets
+=== Main Inference test data generator
 
-Each test set is indexed by a pair (S, N) where:
+This section describes the function tosa_mi_data(S, KS, p, k, i) that generates test data for main inference compliance.
+This function takes the following arguments:
 
-* S is the test set number
-* N is the number of elements in a single test vector
+* S is the test set number which identifies which generator is used
+* KS is the kernel size
+* p is the parameter number of 0 for the first input (usually data) and 1 for the second input (usually weights)
+* k is the index within the kernel in the range 0 \<= k < KS
+* i is the index within the tensor to write
 
-Each test set (S, N) contains multiple tests that statistics are calculated over.
-The parameter T is the number of tests in a given set.
-In the table below, t is the test number within a set in the range 0 to T-1.
-
-[cols="1,1,1,5,5"]
-|===
-| Set S | N range | T | x[k] formula for k < N | w[k] formula for k < N
-
-| 0
-| 2-25,50,100,1000
-| 10
-| x[k]=set_data(S, 2*t*N+2*k) < 0 ? 0.0 : set_data(S, 2*t*N+2*k+1)
-| w[k]=set_data(S, 2*t*N+2*k) < 0 ? set_data(S, 2*t*N+2*k+1) : 0.0
-
-| 1
-| 2-25,50,100,1000
-| 1000
-| x[k]=2.0*set_data(S,  2*t*N + k)
-| w[k]=2.0*set_data(S, (2*t+1)*N + k)
-
-| 2
-| 2-25,50,100,1000
-| 1000
-| x[0]=1.0, x[k]=set_data(S, 2*t*N + k)/sqrt(N) for k>0
-| w[0]=1.0, w[k]=set_data(S, (2*t+1)*N + k)/sqrt(N) for k>0
+Some test data values are scaled by the bound parameter B which is defined in the table below.
+B is set to be the largest value that is both representable by the input type and such that B*B does not overflow the accumulator precision.
 
 |===
+| inputs type | accumulator type | B value
+| fp16        | fp16             | (1<<8)  - (1/8)  = 255.875
+| fp16        | fp32             | (1<<16) - (1<<5) = 65504
+| bf16        | fp32             | (1<<64) - (1<<56)
+| fp32        | fp32             | (1<<64) - (1<<40)
+|===
+
+==== Test set S=0 generator
+
+The aim of this generator is to check that sum of products with zero gives zero result.
+
+[cols="1,9"]
+|===
+| p | tosa_mi_data(S, KS, p, k, i) =
+| 0 | set_data(2*S, i) < 0 ? 0.0 : set_data(2*S+1, i)
+| 1 | set_data(2*S, i) < 0 ? set_data(2*S+1, i) : 0.0
+|===
+
+==== Test set S=1
+
+The aim of this test set is to check values with large exponents.
+
+[cols="1,9"]
+|===
+| p | tosa_mi_data(S, KS, p, k, i) =
+| 0 | (B/sqrt(N))*(0.75 + 0.25*set_data(2*S+0, i))
+| 1 | (B/sqrt(N))*(0.75 + 0.25*set_data(2*S+1, i))
+|===
+
+==== Test set S=2
+
+The aim of this test set is to check rounding error when accumulating small values onto a large value.
+In this case the small values are of similar magnitude.
+If the implementation changes the order of the sum, then the test data must also be reordered so that the largest values occur first in the sum.
+
+[cols="1,9"]
+|===
+| p | tosa_mi_data(S, KS, p, k, i) =
+| 0 | (k==0) ? 1.0 : set_data(2*S+0, i)/sqrt(KS)
+| 1 | (k==0) ? 1.0 : set_data(2*S+1, i)/sqrt(KS)
+|===
+
+==== Test set S=3
+
+The aim of this test set is to check rounding error when accumulating small values onto a large value.
+In this case the small values are of varying magnitude.
+If the implementation changes the order of the sum, then the test data must also be reordered so that the largest values occur first in the sum.
+
+[cols="1,9"]
+|===
+| p | tosa_mi_data(S, KS, p, k, i) =
+| 0 | (k==0) ? 16.0 : exp(2*set_data(2*S+0, 2*i+0)) * set_data(2*S+0, 2*i+1)
+| 1 | (k==0) ? 16.0 : exp(2*set_data(2*S+1, 2*i+0)) * set_data(2*S+1, 2*i+1)
+|===
+
+==== Test set S=4
+
+The aim of this test set is to check a mixture of zero and non-zero products.
+
+[cols="1,9"]
+|===
+| p | tosa_mi_data(S, KS, p, k, i) =
+| 0 | (k==KS/2) ? +0.5 : (set_data(2*S, i) < 0 ? 0.0 : B*set_data(2*S+1, i))
+| 1 | (k==KS/2) ? -0.5 : (set_data(2*S, i) < 0 ? B*set_data(2*S+1, i) : 0.0)
+|===
+
+==== Test set S=5
+
+The aim of this test set is to check signed inputs of large range.
+
+[cols="1,9"]
+|===
+| p | tosa_mi_data(S, KS, p, k, i) =
+| 0 | (B/sqrt(KS))*set_data(2*S+0, i)
+| 1 | (B/sqrt(KS))*set_data(2*S+1, i)
+|===
+
+=== Main Inference operator test data
+
+For each operator, this section defines how to generate test data for test set S.
+For the results to be statistically significant the operation must calculate at least MIN_DOT_PRODUCTS dot products.
+For most operations this means that the output tensor must have at least MIN_DOT_PRODUCTS output values.
+For most operations batch size can be increased if necessary so that this holds.
+For this version of the specification, MIN_DOT_PRODUCTS is set to 1000.
+
+==== CONV2D
+
+The following generates input test data for test set S.
+For compliant implementation, the test must pass whenever the attributes satisfy:
+`N*OH*OW*OC >= MIN_DOT_PRODUCTS`
+
+[source,c++]
+----
+KS = KW*KH*IC;
+for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
+  input [ n, iy, ix, ic] = tosa_mi_data(S, KS, 0, ((iy % KH)*KW+(ix % KW))*IC+ic, ((n*IH+iy)*IW+ix)*IC+ic);
+}
+for (0 <= oc < OC, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
+  weight[oc, ky, kx, ic] = tosa_mi_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
+}
+----
+
+==== CONV3D
+
+The following generates input test data for test set S.
+For compliant implementation, the test must pass whenever the attributes satisfy:
+`N*OD*OH*OW*OC >= MIN_DOT_PRODUCTS`
+
+[source,c++]
+----
+KS = KD*KW*KH*IC;
+for (0 <= n < N, 0 <= id < UD, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
+  input [ n, id, iy, ix, ic] = tosa_mi_data(S, KS, 0, (((id % KD)*KH+(iy % KH))*KW+(ix % KW))*IC+ic, (((n*ID+id)*IH+iy)*IW+ix)*IC+ic);
+}
+for (0 <= oc < OC, 0 <= kd < KD, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
+  weight[oc, kd, ky, kx, ic] = tosa_mi_data(S, KS, 1, ((kd*KH+ky)*KW+kx)*IC+ic, (((oc*KD+kd)*KH+ky)*KW+kx)*IC+ic);
+}
+----
+
+==== DEPTHWISE_CONV2D
+
+The following generates input test data for test set S.
+For compliant implementation, the test must pass whenever the attributes satisfy:
+`N*OH*OW*C*M >= MIN_DOT_PRODUCTS`
+
+[source,c++]
+----
+KS = KW*KH*C;
+for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= c < C) {
+  input [ n, iy, ix, c] = tosa_mi_data(S, KS, 0, ((iy % KH)*KW+(ix % KW))*C+c, ((n*IH+iy)*IW+ix)*C+c);
+}
+for (0 <= ky < KH, 0 <= kx < KW, 0 <= c < C, 0 <= m < M) {
+  weight[ky, kx,  c, m] = tosa_mi_data(S, KS, 1, (ky*KW+kx)*C+c, ((ky*KW+kx)*C+c)*M+m);
+}
+----
+
+==== FULLY_CONNECTED
+
+The following generates input test data for test set S.
+For compliant implementation, the test must pass whenever the attributes satisfy:
+`N*OC >= MIN_DOT_PRODUCTS`
+
+[source,c++]
+----
+KS = IC;
+for (0 <= n < N, 0 <= ic < IC) {
+  input [ n, ic] = tosa_mi_data(S, KS, 0, ic,  n*IC+ic);
+}
+for (0 <= oc < OC, 0 <= ic < IC) {
+  weight[oc, ic] = tosa_mi_data(S, KS, 1, ic, oc*IC+ic);
+}
+----
+
+==== MATMUL
+
+The following generates input test data for test set S.
+For compliant implementation, the test must pass whenever the attributes satisfy:
+`N*H*W >= MIN_DOT_PRODUCTS`
+
+[source,c++]
+----
+KS = C;
+for (0 <= n < N, 0 <= y < H, 0 <= c < C) {
+  A[n, y, c] = tosa_mi_data(S, KS, 0, c, (n*H+y)*C+c);
+}
+for (0 <= n < N, 0 <= c < C, 0 <= x < W) {
+  B[n, c, x] = tosa_mi_data(S, KS, 1, c, (n*C+c)*W+x);
+}
+----
+
+==== TRANSPOSE_CONV2D
+
+The following generates input test data for test set S.
+For compliant implementation, the test must pass whenever the attributes satisfy:
+`N*OH*OW*OC >= MIN_DOT_PRODUCTS`
+
+[source,c++]
+----
+KS = KW*KH*IC;
+for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
+  input [ n, iy, ix, ic] = tosa_mi_data(S, KS, 0, ((iy % KH)*KW+(ix % KW))*IC+ic, ((n*IH+iy)*IW+ix)*IC+ic);
+}
+for (0 <= oc < OC, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
+  weight[oc, ky, kx, ic] = tosa_mi_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
+}
+----
+
+==== FFT2D
+
+The following generates input test data for test set S.
+For compliant implementation, the test must pass whenever the attributes satisfy:
+`N*H*W >= MIN_DOT_PRODUCTS`
+
+[source,c++]
+----
+KS = 2*H*W;
+for (0 <= n < N, 0 <= y < H, 0 <= x < W) {
+  input_real[n, y, x] = tosa_mi_data(S, KS, 0, y*W+x, ((0*N+n)*H+y)*IW+x);
+  input_imag[n, y, x] = tosa_mi_data(S, KS, 0, y*W+x, ((1*N+n)*H+y)*IW+x);
+}
+for (0 <= y < H, 0 <= x < W, 0 <= m < H, 0 <= n < W) {
+  weight_real[y, x, m, n] = real(exp(2*pi*i*((m*h/H) + (n*w/W))));
+  weight_imag[y, x, m, n] = imag(exp(2*pi*i*((m*h/H) + (n*w/W))));
+}
+----
+
+==== REDUCE_SUM
+
+The following generates input test data for test set S.
+For compliant implementation, the test must pass whenever the attributes satisfy:
+`tensor_size(shape) >= MIN_DOT_PRODUCTS`
+
+[source,c++]
+----
+KS = shape1[axis];
+for (index in shape1) {
+  input[index] = tosa_mi_data(S, KS, 0, index[axis], tensor_index_to_offset(index));
+}
+for (0 <= c < KS) {
+  weight[c] = 1;
+}
+----
+
+==== AVG_POOL2D
+
+The following generates input test data for test set S.
+For compliant implementation, the test must pass whenever the attributes satisfy:
+`N*OH*OW*C >= MIN_DOT_PRODUCTS`
+
+[source,c++]
+----
+KS = KY*KX;
+for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= c < C) {
+  input [ n, iy, ix, c] = tosa_mi_data(S, KS, 0, ((iy % KH)*KW+(ix % KW))*C+c, ((n*IH+iy)*IW+ix)*C+c);
+}
+for (0 <= ky < KH, 0 <= kx < KW, 0 <= c < C, 0 <= m < M) {
+  weight[ky, kx] = 1/KS;
+}
+----
