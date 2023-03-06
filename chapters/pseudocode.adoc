@@ -125,7 +125,25 @@ void tensor_write<type>(<type> *address, dim_t shape, dim_t index, <type> value)
 }
 ----
 
-==== Broadcast Helper
+==== Broadcast Helpers
+
+The following function derives the broadcast output shape from the input shapes.
+
+[source,c++]
+----
+dim_t broadcast_shape(dim_t shape1, dim_t shape2) {
+    ERROR_IF(rank(shape1) != rank(shape2));
+    dim_t shape = shape1;
+    for (int32_t i = 0; i < rank(shape); i++) {
+        if (shape[i] == 1) {
+            shape[i] = shape2[i];
+        } else {
+            ERROR_IF(shape2[i] != 1 && shape2[i] != shape[i]);
+        }
+    }
+    return shape;
+}
+----
 
 The following function maps an index in the output tensor to an index in the input tensor.
 

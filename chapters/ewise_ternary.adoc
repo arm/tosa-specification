@@ -17,6 +17,7 @@ include::{generated}/operators/SELECT.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(broadcast_shape(shape1, shape2), shape3));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);

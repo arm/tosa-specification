@@ -18,6 +18,7 @@ include::{generated}/operators/ADD.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -37,6 +38,7 @@ include::{generated}/operators/ARITHMETIC_RIGHT_SHIFT.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -66,6 +68,7 @@ include::{generated}/operators/BITWISE_AND.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -85,6 +88,7 @@ include::{generated}/operators/BITWISE_OR.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -104,6 +108,7 @@ include::{generated}/operators/BITWISE_XOR.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -126,6 +131,7 @@ include::{generated}/operators/INTDIV.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -149,6 +155,7 @@ include::{generated}/operators/LOGICAL_AND.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -168,6 +175,7 @@ include::{generated}/operators/LOGICAL_LEFT_SHIFT.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -188,6 +196,7 @@ include::{generated}/operators/LOGICAL_RIGHT_SHIFT.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -208,6 +217,7 @@ include::{generated}/operators/LOGICAL_OR.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -227,6 +237,7 @@ include::{generated}/operators/LOGICAL_XOR.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -246,6 +257,7 @@ include::{generated}/operators/MAXIMUM.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -265,6 +277,7 @@ include::{generated}/operators/MINIMUM.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -284,6 +297,7 @@ include::{generated}/operators/MUL.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 ERROR_IF(in_t != int32_t && shift > 0);
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
@@ -313,6 +327,7 @@ include::{generated}/operators/POW.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -332,6 +347,7 @@ include::{generated}/operators/SUB.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);

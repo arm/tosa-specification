@@ -17,6 +17,7 @@ include::{generated}/operators/EQUAL.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -39,6 +40,7 @@ include::{generated}/operators/GREATER.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
@@ -61,6 +63,7 @@ include::{generated}/operators/GREATER_EQUAL.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);
