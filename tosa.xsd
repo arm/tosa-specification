@@ -51,7 +51,6 @@
     <xs:enumeration value="acc_t"/>
     <xs:enumeration value="weight_t"/>
     <xs:enumeration value="resize_t"/>
-    <xs:enumeration value="value_t"/>
     <xs:enumeration value="table_t"/>
     <xs:enumeration value="TABLE_SIZE"/>
   </xs:restriction>
@@ -174,7 +173,6 @@
     <xs:attribute name="weight_t" type="datatype"/>
     <xs:attribute name="acc_t" type="datatype"/>
     <xs:attribute name="resize_t" type="datatype"/>
-    <xs:attribute name="value_t" type="datatype"/>
     <xs:attribute name="table_t" type="datatype"/>
     <xs:attribute name="TABLE_SIZE" type="xs:int"/>
   </xs:complexType>

@@ -21,8 +21,8 @@ include::{generated}/operators/GATHER.adoc[]
 for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
     index_t k = tensor_read<index_t>(indices, [N,W], [n,w]);
     REQUIRE(0 <= k && k < K);
-    value_t value = tensor_read<value_t>(values, [N,K,C], [n,k,c]);
-    tensor_write<value_t>(output, [N,W,C], [n,w,c], value);
+    in_out_t value = tensor_read<in_out_t>(values, [N,K,C], [n,k,c]);
+    tensor_write<in_out_t>(output, [N,W,C], [n,w,c], value);
 }
 ----
 
@@ -45,8 +45,8 @@ bool_t output_modified[N,K,C];
 // Copy the values_in tensor to the values_out tensor.
 // Values not written by the scatter operation are unchanged in the output.
 for_each(0 <= n < N, 0 <= k < K, 0 <= c < C) {
-    value_t value = tensor_read<value_t>(values_in, [N,K,C], [n,k,c]);
-    tensor_write<value_t>(values_out, [N,K,C], [n, k, c], value);
+    in_out_t value = tensor_read<in_out_t>(values_in, [N,K,C], [n,k,c]);
+    tensor_write<in_out_t>(values_out, [N,K,C], [n, k, c], value);
     output_modified[n,k,c]=false;
 }
 
@@ -55,8 +55,8 @@ for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
     index_t k = tensor_read<index_t>(indices, [N,W], [n,w]);
     REQUIRE(0 <= k && k < K);
     REQUIRE(output_modified[n,k,c] == false);
-    value_t value = tensor_read<value_t>(input, [N,W,C], [n,w,c]);
-    tensor_write<value_t>(values_out, [N,K,C], [n, k, c], value);
+    in_out_t value = tensor_read<in_out_t>(input, [N,W,C], [n,w,c]);
+    tensor_write<in_out_t>(values_out, [N,K,C], [n, k, c], value);
     output_modified[n,k,c] = true;
 }
 ----
