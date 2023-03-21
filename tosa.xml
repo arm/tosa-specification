@@ -17,7 +17,8 @@
         <name>ARGMAX</name>
         <arguments>
           <argument category="input" name="input" type="in_t*" shape="shape1">
-            <description>Input tensor with rank from 1 to 4</description>
+            <description>Input tensor</description>
+            <levellimit value="rank(shape1)" limit="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="int32_t" shape="-">
             <description>Axis in range from 0 to rank(shape1)-1</description>

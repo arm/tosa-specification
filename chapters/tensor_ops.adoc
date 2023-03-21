@@ -17,7 +17,7 @@ include::{generated}/operators/ARGMAX.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(axis < 0 || axis >= rank(shape1) || rank(shape1) > 4);
+ERROR_IF(axis < 0 || axis >= rank(shape1));
 if (axis == 0) {
     left_shape = [];
 } else {
