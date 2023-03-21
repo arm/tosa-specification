@@ -1825,7 +1825,7 @@ used.</description>
           <argument category="input" name="input1" type="in_out_t*" shape="shape1">
             <description>Input tensor with minimum rank of one.</description>
           </argument>
-          <argument category="attribute" name="multiplies" type="int32_t" shape="[rank(shape1)]">
+          <argument category="attribute" name="multiples" type="int32_t" shape="[rank(shape1)]">
             <description>Number of times to replicate input1 in each dimension</description>
           </argument>
           <argument category="output" name="output" type="in_out_t*" shape="shape">
