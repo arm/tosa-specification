@@ -1256,6 +1256,7 @@
         <arguments>
           <argument category="input" name="input1" type="in_out_t*" shape="shape">
             <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="input1_zp" type="in_out_t" shape="-">
             <description>Input 1 zero point. Must be zero for non-int8 types.</description>
