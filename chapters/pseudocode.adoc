@@ -62,7 +62,7 @@ void LEVEL_CHECK(condition) {
 
 [source,c++]
 ----
-// Convert tensor index co-ordinates to an element offset
+// Convert tensor index coordinates to an element offset
 size_t tensor_index_to_offset(dim_t shape, dim_t index) {
     size_t size = tensor_size(shape);  // check tensor shape is valid
     size_t offset = 0;
@@ -73,7 +73,7 @@ size_t tensor_index_to_offset(dim_t shape, dim_t index) {
     return offset;
 }
 
-// Convert an element offset to tensor index co-ordinates
+// Convert an element offset to tensor index coordinates
 dim_t tensor_offset_to_index(dim_t shape, size_t offset) {
     size_t size = tensor_size(shape);  // check tensor shape is valid
     REQUIRE(offset < size);

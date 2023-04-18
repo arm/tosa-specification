@@ -337,8 +337,9 @@ Tensor elements are addressed using dim_t values, where each element of the vect
 
 The tensor overall size in elements is limited by the data type size_t.
 In this version of the specification, size_t is defined as an unsigned 32-bit integer representing size from 1 to (1<<32) - 1.
-A tensor dimension co-ordinate is limited by the data type index_t.
+The size of tensors along each of their dimensions is limited by the data type index_t.
 In this version of the specification, index_t is defined as a signed 32-bit integer.
+This means that the maximum size of a tensor along each dimension is (1<<31) - 1 and therefore the maximum coordinate value is (1<<31) - 2.
 Indices used to access tensors must be non-negative.
 
 ==== Data Layouts
