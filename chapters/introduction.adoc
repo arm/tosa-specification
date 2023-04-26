@@ -120,11 +120,7 @@ The following table defines the value ranges for Level 1.0.
 These ranges are checked using the LEVEL_CHECK() function with the operator descriptions.
 
 .Level maximums
-|===
-| Level | tosa_level_t    | MAX_RANK | MAX_KERNEL | MAX_STRIDE | MAX_SCALE
-| None  | tosa_level_none | NA       | NA         | NA         | NA
-| 8K    | tosa_level_8k   | 6        | 8192       | 8192       | 64
-|===
+include::{generated}/levels.adoc[]
 
 === Status
 

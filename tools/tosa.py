@@ -13,6 +13,11 @@ class TOSAEnum:
         self.description = description
         self.values = values
 
+class TOSALevel:
+    def __init__(self, name, desc, maximums):
+        self.name = name
+        self.desc = desc
+        self.maximums = maximums
 
 class TOSAOperatorArgument:
     def __init__(self, name, description, categories, ty, shape, levellimits):
@@ -49,12 +54,15 @@ class TOSASpec:
     def __init__(self, xmlpath):
         tree = ET.parse(xmlpath)
         self.xmlroot = tree.getroot()
+        self.levels = []
         self.operatorgroups = []
         self.enums = []
         self.__load_spec()
 
     def __load_spec(self):
         self.__load_version()
+        for level in self.xmlroot.findall("./levels/level"):
+            self.levels.append(self.__load_level(level))
         for group in self.xmlroot.findall("./operators/operatorgroup"):
             self.operatorgroups.append(self.__load_operator_group(group))
         for enum in self.xmlroot.findall("./enum"):
@@ -69,6 +77,17 @@ class TOSASpec:
             self.version_is_draft = True
         else:
             self.version_is_draft = False
+
+    def __load_level(self, level):
+        name = level.get("name")
+        desc = level.text.strip()
+        maximums = {
+            'MAX_RANK': level.get("max_rank"),
+            'MAX_KERNEL': level.get("max_kernel"),
+            'MAX_STRIDE': level.get("max_stride"),
+            'MAX_SCALE': level.get("max_scale"),
+        }
+        return TOSALevel(name, desc, maximums)
 
     def __load_operator_group(self, group):
         name = group.get("name")

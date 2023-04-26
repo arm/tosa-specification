@@ -58,11 +58,9 @@ class TOSASpecAsciidocGenerator:
         for arg in op.arguments:
             if (len(arg.levellimits) > 0):
                 for limit in arg.levellimits:
-                   leveltext += "    LEVEL_CHECK(" + limit[0] + " <= " + limit[1] + ");\n"
+                   leveltext += "LEVEL_CHECK(" + limit[0] + " <= " + limit[1] + ");\n"
         if (len(leveltext) > 0):
-            file.write(
-                f"[source,c++]\n----\nif (level != tosa_level_none) {{\n{leveltext}}}\n----\n"
-            )
+            file.write(f"[source,c++]\n----\n{leveltext}\n----\n")
 
     def generate(self, outdir):
         os.makedirs(outdir, exist_ok=True)
@@ -76,6 +74,24 @@ class TOSASpecAsciidocGenerator:
             if self.spec.version_is_draft:
                 f.write(' draft')
             f.write('\n')
+
+        # Generate level maximums table
+        with open(os.path.join(outdir, "levels.adoc"), 'w') as f:
+            f.write('|===\n')
+            f.write('|tosa_level_t')
+            for level in self.spec.levels:
+                f.write('|tosa_level_{}'.format(level.name))
+            f.write('\n')
+            f.write('|Description')
+            for level in self.spec.levels:
+                f.write('|{}'.format(level.desc))
+            f.write('\n')
+            for param in self.spec.levels[0].maximums:
+                f.write('|{}'.format(param))
+                for level in self.spec.levels:
+                    f.write('|{}'.format(level.maximums[param]))
+                f.write('\n')
+            f.write('|===\n')
 
         # Generator operators
         opdir = os.path.join(outdir, "operators")
