@@ -1977,7 +1977,7 @@ used.</description>
           <argument category="attribute" name="border" type="int16_t*" shape="[2]">
             <description>[border_y, border_x]</description>
           </argument>
-          <argument category="attribute" name="mode" type="resize_t" shape="-">
+          <argument category="attribute" name="mode" type="resize_mode_t" shape="-">
             <description>BILINEAR or NEAREST</description>
           </argument>
           <argument category="output" name="output" type="out_t*" shape="[N,OH,OW,C]">
@@ -2284,7 +2284,7 @@ used.</description>
     </operatorgroup>
   </operators>
 
-  <enum name="resize_t" description="Valid resize types">
+  <enum name="resize_mode_t" description="Valid resize types">
     <enumval value="0" name="NEAREST_NEIGHBOR" description="Nearest neighbor resize"/>
     <enumval value="1" name="BILINEAR" description="Bilinear resize"/>
   </enum>

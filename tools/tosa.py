@@ -66,7 +66,7 @@ class TOSASpec:
         for group in self.xmlroot.findall("./operators/operatorgroup"):
             self.operatorgroups.append(self.__load_operator_group(group))
         for enum in self.xmlroot.findall("./enum"):
-            self.enums.append(self.load_enum(enum))
+            self.enums.append(self.__load_enum(enum))
 
     def __load_version(self):
         version = self.xmlroot.find("./version")
@@ -142,10 +142,15 @@ class TOSASpec:
 
         return TOSAOperatorArgument(name, desc, argcats, argtype, shape, levellimits)
 
-    def load_enum(self, arg):
+    def __load_enum(self, arg):
         name = arg.get("name")
         desc = arg.get("description").strip()
         values = []
         for val in arg.findall("enumval"):
             values.append((val.get("name"), val.get("value"), val.get("description")))
         return TOSAEnum(name, desc, values)
+
+    def get_enum_by_name(self, name):
+        for e in self.enums:
+            if e.name == name:
+                return e
