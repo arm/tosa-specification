@@ -359,14 +359,20 @@ Tensors have metadata associated with them that describe characteristics of the 
 
 The number of dimensions in a shape is called the rank.
 A tensor with rank equal to zero is permitted.
-In that case, the tensor has a single entry.
+In that case, the tensor has a single entry and is also known as a scalar.
 A tensor shape is an array of integers of size equal to the rank of the tensor.
 Each element in the tensor shape describes the number of elements in the dimension.
 The tensor shape in each dimension must be greater than or equal to 1.
 For tensor access information, see <<Tensor Access Helpers>>.
-Tensor dimensions are given in the pseudocode as type dim_t.
-dim_t is a vector of index_t values, with the length of the vector defining the rank of the tensor.
-Tensor elements are addressed using dim_t values, where each element of the vector indicates the offset of the requested element within the corresponding dimension.
+
+The shape of a tensor of non-zero rank is itself a tensor of rank 1 with elements of type shape_t.
+The single dimension has size which is the rank of the original tensor.
+In this specification a shape-tensor means a rank 1 tensor with elements of type shape_t.
+The components of a shape tensor are rank 0 tensors of type shape_t.
+
+Some operations can process rank 0 or rank 1 tensors of type shape_t.
+For these operations, shape_t is permitted as an input or output tensor data type.
+In this version of the specification, shape_t values must be resolvable to constants at backend compile time.
 
 ==== Tensor size limit
 
@@ -378,6 +384,8 @@ The size of tensors along each of their dimensions is limited by the data type i
 This type must be able to hold integers in the range 0 to (1++<<++MAX_LOG2_SIZE) - 1 where MAX_LOG2_SIZE is defined in <<Levels>>.
 This means that the maximum size of a tensor along each dimension is (1<<MAX_LOG2_SIZE) - 1 and therefore the maximum coordinate value is (1<<MAX_LOG2_SIZE) - 2.
 Indices used to access tensors must be non-negative.
+
+The type shape_t, used in shape tensors, must be able to hold integers in the range -(1++<<++MAX_LOG2_SIZE) to (1++<<++MAX_LOG2_SIZE) - 1.
 
 ==== Data Layouts
 
@@ -558,7 +566,7 @@ The values to achieve a scaling of 1.0 are shift=30, multiplier=1<<30 for apply_
 int32_t apply_scale_32(int32_t value, int32_t multiplier, int8_t shift, bool_t double_round=false) {
     REQUIRE(multiplier >= 0);
     REQUIRE(2 <= shift && shift <= 62);
-    REQUIRE(value >= (-1 << (shift - 1)) && value < (1 << (shift - 1));
+    REQUIRE(value >= (-1 << (shift - 1)) && value < (1 << (shift - 1)));
     int64_t round = 1 << (shift - 1);
     if (double_round) {
         if (shift > 31 && value >= 0) round += 1<<30;

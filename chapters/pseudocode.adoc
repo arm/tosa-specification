@@ -94,6 +94,12 @@ size_t tensor_size(dim_t shape) {
     }
     return size;
 }
+
+// Return the size of the tensor in the given axis
+// For a rank=0 tensor, returns 1 for all axes
+size_t shape_dim(dim_t shape, int axis) {
+    return (axis >= rank(shape)) ? 1 : shape[axis];
+}
 ----
 
 ==== Tensor Read

@@ -17,13 +17,14 @@ include::{generated}/operators/CONCAT.adoc[]
 
 [source,c]
 ----
-ERROR_IF(axis < 0 || axis >= rank(shapes1[0]));
-ERROR_IF(shape[axis] != sum(shape1[k][axis] for all k))
+ERROR_IF(axis < 0 || axis >= max(1,rank(shapes1[0])));
+ERROR_IF(shape[axis] != sum(shape_dim(shapes1[k], axis) for all k))
+ERROR_IF(in_out_t == shape_t && rank(shape) > 1);
 // The following checks ensure all inputs are compatible for concatenation
 for_each(input_shape in shapes1) {
     ERROR_IF(rank(input_shape) != rank(shapes1[0]));
     for_each(index in input_shape) {
-        ERROR_IF(input_shape[index] != shapes1[0][index] && index != axis);
+        ERROR_IF(index != axis && input_shape[index] != shapes1[0][index]);
     }
 }
 for_each(index1 in shape) {
@@ -32,11 +33,11 @@ for_each(index1 in shape) {
         // Continue to concatenate along axis from each tensor
         // For each output location, we are looking for the
         // appropriate input tensor
-        if (index2[axis] >= 0 && index2[axis] < shapes1[t][axis]) {
+        if (index2[axis] >= 0 && index2[axis] < shape_dim(shapes1[t], axis)) {
             in_out_t value = tensor_read<in_out_t>(input1[t], shapes1[t], index2);
             tensor_write<in_out_t>(output, shape, index1, value);
         }
-        index2[axis] = index2[axis] - shapes1[t][axis];
+        index2[axis] = index2[axis] - shape_dim(shapes1[t], axis);
     }
 }
 
@@ -70,6 +71,18 @@ for_each(index in shape) {
     in_out_t value = is_pad ? pad_const : tensor_read<in_out_t>(input1, shape1, index1);
     tensor_write<in_out_t>(output, shape, index, value);
 }
+----
+
+==== DIM
+
+Returns a rank 0 tensor of the size of the input tensor for the given axis.
+
+include::{generated}/operators/DIM.adoc[]
+
+[source,c++]
+----
+ERROR_IF(axis >= rank(shape));
+tensor_write<shape_t>(output, [], [], shape_dim(shape, axis));
 ----
 
 ==== RESHAPE

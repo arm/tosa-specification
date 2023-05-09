@@ -773,6 +773,7 @@
           <type name='in_out_t'/>
         </types>
         <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="shape" in_out_t="shape_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
@@ -907,6 +908,7 @@
           <type name='in_out_t'/>
         </types>
         <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="shape" in_out_t="shape_t"/>
       </operator>
       <operator>
         <name>LOGICAL_AND</name>
@@ -1118,6 +1120,7 @@
         <typesupport mode="signed 8" in_t="int8_t" out_t="int32_t"/>
         <typesupport mode="signed 16" in_t="int16_t" out_t="int32_t"/>
         <typesupport mode="signed 32" in_t="int32_t" out_t="int32_t"/>
+        <typesupport mode="shape" in_t="shape_t" out_t="shape_t"/>
         <typesupport mode="fp16" in_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1185,6 +1188,7 @@
           <type name='in_out_t'/>
         </types>
         <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="shape" in_out_t="shape_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1863,7 +1867,7 @@
         <arguments>
           <argument category="input" name="input1" type="tensor_list_t" shape="shapes1" tensor-element-type="in_out_t">
             <description>List of input tensors. All inputs must have the same rank and data type</description>
-            <rank min="1" max="MAX_RANK"/>
+            <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis along which concatenation is to occur, in range from 0 to rank(shape)-1</description>
@@ -1882,6 +1886,7 @@
         <typesupport mode="signed 8" in_out_t="int8_t"/>
         <typesupport mode="signed 16" in_out_t="int16_t"/>
         <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="shape" in_out_t="shape_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1902,7 +1907,7 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="padding" type="tensor_t" shape="[rank(shape1),2]" tensor-element-type="int32_t">
+          <argument category="input" name="padding" type="tensor_t" shape="[rank(shape1),2]" tensor-element-type="shape_t">
             <description>Number of pad elements at the start and end of each dimension</description>
             <rank min="2" max="2"/>
           </argument>
@@ -1937,6 +1942,43 @@
         </typesupport>
       </operator>
       <operator>
+        <name>DIM</name>
+        <arguments>
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_t">
+            <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
+            <rank min="1" max="MAX_RANK"/>
+          </argument>
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
+            <description>Axis in range from 0 to rank(shape) - 1</description>
+            <rank min="0" max="0"/>
+          </argument>
+          <argument category="output" name="output" type="tensor_t" shape="-" tensor-element-type="shape_t" >
+            <description>Output rank 0 tensor giving the size of the shape for the given axis</description>
+            <rank min="0" max="0"/>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t'/>
+        </types>
+        <typesupport mode="boolean" in_t="bool_t"/>
+        <typesupport mode="signed 8" in_t="int8_t"/>
+        <typesupport mode="signed 16" in_t="int16_t"/>
+        <typesupport mode="signed 32" in_t="int32_t"/>
+        <typesupport mode="fp16" in_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
         <name>RESHAPE</name>
         <arguments>
           <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
@@ -1944,8 +1986,8 @@
             <levellimit value="rank(shape1)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="new_shape" type="tensor_t" shape="[rank(shape)]" tensor-element-type="int32_t">
-            <description>List of values, with each element giving the size of the result tensor for the given dimension. At most one dimension may be given as -1 to automatically calculate the dimension size.</description>
+          <argument category="input" name="shape" type="tensor_t" shape="[rank(shape)]" tensor-element-type="shape_t">
+            <description>1D shape tensor giving the new shape.</description>
             <rank min="1" max="1"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
@@ -1998,6 +2040,7 @@
         <typesupport mode="signed 8" in_out_t="int8_t"/>
         <typesupport mode="signed 16" in_out_t="int16_t"/>
         <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="shape" in_out_t="shape_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2060,7 +2103,7 @@ used.</description>
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="multiples" type="tensor_t" shape="[rank(shape1)]" tensor-element-type="int32_t">
+          <argument category="input" name="multiples" type="tensor_t" shape="[rank(shape1)]" tensor-element-type="shape_t">
             <description>Number of times to replicate input1 in each dimension</description>
             <rank min="1" max="1"/>
           </argument>
@@ -2212,17 +2255,17 @@ used.</description>
             <description>Input tensor</description>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="attribute" name="scale" type="tensor_t" shape="[4]" tensor-element-type="int16_t">
+          <argument category="input" name="scale" type="tensor_t" shape="[4]" tensor-element-type="shape_t">
             <description>[scale_y_n, scale_y_d, scale_x_n, scale_x_d]</description>
             <levellimit value="scale_y_n/scale_y_d" limit="MAX_SCALE"/>
             <levellimit value="scale_x_n/scale_x_d" limit="MAX_SCALE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="offset" type="tensor_t" shape="[2]" tensor-element-type="int16_t">
+          <argument category="input" name="offset" type="tensor_t" shape="[2]" tensor-element-type="shape_t">
             <description>[offset_y, offset_x]</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="border" type="tensor_t" shape="[2]" tensor-element-type="int16_t">
+          <argument category="input" name="border" type="tensor_t" shape="[2]" tensor-element-type="shape_t">
             <description>[border_y, border_x]</description>
             <rank min="1" max="1"/>
           </argument>
@@ -2464,6 +2507,7 @@ used.</description>
         <typesupport mode="signed 16" out_t="int16_t" />
         <typesupport mode="signed 32" out_t="int32_t" />
         <typesupport mode="signed 48" out_t="int48_t" />
+        <typesupport mode="shape" out_t="shape_t" />
         <typesupport mode="fp16" out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
