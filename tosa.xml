@@ -664,6 +664,33 @@
         </typesupport>
       </operator>
       <operator>
+        <name>ERF</name>
+        <arguments>
+          <argument category="input" name="input" type="in_out_t*" shape="shape">
+            <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
+          </argument>
+          <argument category="output" name="output" type="in_out_t*" shape="shape">
+            <description>Output tensor of same type and shape as input</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
         <name>SIGMOID</name>
         <arguments>
           <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_out_t">

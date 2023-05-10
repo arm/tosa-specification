@@ -28,6 +28,32 @@ for_each(index in shape) {
 }
 ----
 
+==== ERF
+
+// erf(z) = \frac{2}{\sqrt{\pi}} \int_{0}^{z} e^{-t^2} dt
+Error function:
+
+.Calculation for the error function
+image::erf.svg["Error function", align="center"]
+
+For quantized integer data types, the TABLE operator should be used instead with
+the following definition.
+
+The ERF table has 513 entries each of 16-bit precision and covering the input range -4.0 to +4.0 in steps of 1/64.
+
+[source,c++]
+----
+int16_t erf_reference(int16_t x) { // input x range is -256 to + 256 inclusive
+    F64 v = (double)x / (double)64;
+    v = erf(v);
+    return round_to_nearest_int(32768.0 * v);
+}
+
+generate_lookup_table(&erf_table, &erf_reference);
+----
+
+include::{generated}/operators/ERF.adoc[]
+
 ==== SIGMOID
 
 Applies the sigmoid logistic function to each element of the input tensor.

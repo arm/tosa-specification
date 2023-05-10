@@ -22,6 +22,8 @@ CPUs
 denormalizing
 DEPTHWISE
 Elementwise
+ERF
+erf
 FFT
 fft
 fp

@@ -260,7 +260,7 @@ Otherwise:the result must be within 1 ulp of the mathematical result.
 Otherwise if the input is a zero the output must be an infinity of the same sign. +
 Otherwise the result must be within 1 ulp of the mathematical result.
 
-| <<SIGMOID>>, <<TANH>>, <<POW>>, <<EXP>>, <<LOG>>
+| <<SIGMOID>>, <<TANH>>, <<POW>>, <<EXP>>, <<LOG>>, <<ERF>>
 | If the input to LOG is less than zero then the result must be a NaN. +
 If the inputs to POW are both zero then the result must be a NaN. +
 If the first input to POW is less than zero and the second input is not an integer then the result must be a NaN. +
