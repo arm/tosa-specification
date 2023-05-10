@@ -2447,12 +2447,12 @@ used.</description>
       <operator>
         <name>COND_IF</name>
         <arguments>
-          <argument category="input" name="input_list" type="tensor_list_t" shape="-">
-            <description>List of input tensors</description>
-          </argument>
           <argument category="input" name="condition" type="bool_t*" shape="shape">
             <description>Input condition as a size 1 tensor</description>
             <rank min="1" max="MAX_RANK"/>
+          </argument>
+          <argument category="input" name="input_list" type="tensor_list_t" shape="-">
+            <description>List of input tensors</description>
           </argument>
           <argument category="attribute" name="then_graph" type="tosa_graph_t" shape="-">
             <description>TOSA graph to execute if condition is true</description>
