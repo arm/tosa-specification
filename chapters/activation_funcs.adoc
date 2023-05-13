@@ -30,17 +30,24 @@ for_each(index in shape) {
 
 ==== SIGMOID
 
-Sigmoid function: output = 1 / (1 + exp(-input))
+Applies the sigmoid logistic function to each element of the input tensor.
 
-For quantized integer data types, the TABLE operator should be used instead with
-the following definition.
+// sigmoid(x) = \frac{1}{1 + e^{-x}}
 
-The sigmoid table has 513 entries each of 16-bit precision and covering the input range -16.0 to +16.0 in steps of 1/16.
+.Calculation for the sigmoid function
+image::sigmoid.svg["Sigmoid definition"]
 
+For quantized integer data types, the TABLE operator should be used instead.
+Each implementation may choose an appropriate TABLE given the scale and zero point of the input data.
+Eight or sixteen bit precision tables may be used based on the input tensor to the sigmoid function.
+Below we give an example table generation for 16-bit sigmoid.
+This sigmoid table has 513 entries each of 16-bit precision and covering the input range -16.0 to +16.0 in steps of 1/16.
+
+.Code for generating 16-bit sigmoid table
 [source,c++]
 ----
 int16_t sigmoid_reference(int16_t x) { // input x range is -256 to + 256 inclusive
-    F64 v = (double)x / (double)16;
+    fp64_t v = (fp64_t)x / (fp64_t)16;
     v = 1.0/(1.0 + exp(-v));
     return round_to_nearest_int(32768.0 * v);
 }
@@ -50,19 +57,34 @@ generate_lookup_table(&sigmoid_table, &sigmoid_reference);
 
 include::{generated}/operators/SIGMOID.adoc[]
 
+[source,c++]
+----
+for_each(index in shape) {
+    in_out_t value1 = tensor_read<in_out_t>(input, shape, index);
+    value = sigmoid<in_out_t>(value1);
+    tensor_write<in_out_t>(output, shape, index, value);
+}
+----
+
 ==== TANH
 
 Parameterized hyperbolic tangent.
+// tanh(x) = \frac{1 - e^{-2x}}{1 + e^{-2x}}
 
-For quantized integer data types, the TABLE operator should be used instead with
-the following definition.
+.Calculation for the sigmoid function
+image::tanh.svg["Hyperbolic tangent definition"]
 
-The tanh_table has 513 entries each of 16-bit precision and covering the input range -8.0 to +8.0 in steps of 1/32. The table is specified by:
+For quantized integer data types, the TABLE operator should be used instead.
+Each implementation may choose an appropriate TABLE given the scale and zero point of the input data.
+Eight or sixteen bit precision tables may be used based on the input tensor to the sigmoid function.
+Below we give an example table generation for 16-bit hyperbolic tangent.
+This tanh_table has 513 entries each of 16-bit precision and covering the input range -8.0 to +8.0 in steps of 1/32.
 
+.Calculation of an example 16-bit tanh table
 [source,c++]
 ----
 int16_t tanh_reference(int16_t x) {  // input x range is -256 to +256 inclusive
-    F64 v = (double)x/(double)32;
+    fp64_t v = (fp64_t)x/(fp64_t)32;
     v = exp(-2.0*v);
     v = (1.0-v)/(1.0+v);
     return round_to_nearest_int(32768.0 * v);
@@ -72,3 +94,12 @@ generate_lookup_table(&tanh_table, &tanh_reference);
 ----
 
 include::{generated}/operators/TANH.adoc[]
+
+[source,c++]
+----
+for_each(index in shape) {
+    in_out_t value1 = tensor_read<in_out_t>(input, shape, index);
+    value = tanh<in_out_t>(value1);
+    tensor_write<in_out_t>(output, shape, index, value);
+}
+----

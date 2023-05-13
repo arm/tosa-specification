@@ -480,7 +480,17 @@ Signed zero must be supported.
 |fp32_t
 | -infinity
 | +infinity
-| 16-bit single-precision floating-point defined by <<Other publications>>[1]. +
+| 32-bit single-precision floating-point defined by <<Other publications>>[1]. +
+Normal values must be supported. +
+Denormal values must either be supported or flushed to zero. +
+Positive and negative infinity must be supported. +
+At least one NaN encoding must be supported. +
+Signed zero must be supported.
+
+|fp64_t
+| -infinity
+| + infinity
+| 64-bit double-precision floating-point defined by <<Other publications>>[1]. +
 Normal values must be supported. +
 Denormal values must either be supported or flushed to zero. +
 Positive and negative infinity must be supported. +
