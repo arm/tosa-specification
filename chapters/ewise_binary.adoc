@@ -297,8 +297,9 @@ include::{generated}/operators/MUL.adoc[]
 
 [source,c++]
 ----
+REQUIRE(0 <= shift && shift <= 63);
+REQUIRE(in_t == int32_t || shift == 0);
 ERROR_IF(shape != broadcast_shape(shape1, shape2));
-ERROR_IF(in_t != int32_t && shift > 0);
 for_each(index in shape) {
     dim_t index1 = apply_broadcast(shape, shape1, index);
     dim_t index2 = apply_broadcast(shape, shape2, index);

@@ -1052,7 +1052,7 @@
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="uint6_t" shape="-">
+          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="int8_t" shape="-">
             <description>Result right shift (int32_t data type only)</description>
           </argument>
           <argument category="output" name="output" type="out_t*" shape="shape">
@@ -2338,7 +2338,7 @@ used.</description>
             <description>Scaling multiplier array</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="uint6_t*" shape="[NC]">
+          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="int8_t*" shape="[NC]">
             <description>Scaling shift array</description>
             <rank min="1" max="1"/>
           </argument>

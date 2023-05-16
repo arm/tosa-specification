@@ -544,7 +544,7 @@ The values to achieve a scaling of 1.0 are shift=30, multiplier=1<<30 for apply_
 
 [source,c++]
 ----
-int32_t apply_scale_32(int32_t value, int32_t multiplier, uint6_t shift, bool_t double_round=false) {
+int32_t apply_scale_32(int32_t value, int32_t multiplier, int8_t shift, bool_t double_round=false) {
     REQUIRE(multiplier >= 0);
     REQUIRE(2 <= shift && shift <= 62);
     REQUIRE(value >= (-1 << (shift - 1)) && value < (1 << (shift - 1));
@@ -559,7 +559,7 @@ int32_t apply_scale_32(int32_t value, int32_t multiplier, uint6_t shift, bool_t 
     return (int32_t)result;
 }
 
-int32_t apply_scale_16(int48_t value, int16_t multipler, uint6_t shift) {
+int32_t apply_scale_16(int48_t value, int16_t multipler, int8_t shift) {
     REQUIRE(multiplier >= 0);
     REQUIRE(2 <= shift && shift <= 62);
     int64_t round = (1 << (shift - 1));
@@ -576,7 +576,7 @@ In some functions, the multiplier and shift are combined into a scale_t structur
 ----
 typedef struct {
     int32_t multiplier;
-    uint6_t shift;
+    int8_t shift;
 } scale_t;
 ----
 

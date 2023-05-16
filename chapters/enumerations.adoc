@@ -11,6 +11,6 @@
 
 Where enumerated types are specified for an operator, the provided value must be a valid enumerant for that type.
 The included tables provide reference values for the enumerations.
-Implementations do not need to use these values, they may subtitue other values as long as they are functionally equivalent.
+Implementations do not need to use these values, they may substitute other values as long as they are functionally equivalent.
 
 include::{generated}/enums.adoc[]
