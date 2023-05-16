@@ -30,6 +30,7 @@
 
 <xs:simpleType name="datatype">
   <xs:restriction base="xs:string">
+    <xs:enumeration value="-"/>
     <xs:enumeration value="bool_t"/>
     <xs:enumeration value="int4_t"/>
     <xs:enumeration value="int8_t"/>
@@ -44,6 +45,13 @@
   </xs:restriction>
 </xs:simpleType>
 
+<xs:simpleType name="enumtypename">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="resize_mode_t"/>
+    <xs:enumeration value="acc_size_t"/>
+  </xs:restriction>
+</xs:simpleType>
+
 <xs:simpleType name="typename">
   <xs:restriction base="xs:string">
     <xs:enumeration value="in_t"/>
@@ -53,6 +61,8 @@
     <xs:enumeration value="weight_t"/>
     <xs:enumeration value="resize_t"/>
     <xs:enumeration value="table_t"/>
+    <xs:enumeration value="index_t"/>
+    <xs:enumeration value="mul_t"/>
     <xs:enumeration value="TABLE_SIZE"/>
   </xs:restriction>
 </xs:simpleType>
@@ -64,6 +74,18 @@
     <xs:enumeration value="attribute"/>
     <xs:enumeration value="input(MT)|attribute(BI,MI)"/>
   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="argument-type">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="tensor_t"/>
+    <xs:enumeration value="tensor_list_t"/>
+    <xs:enumeration value="tosa_graph_t"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="argument-tensor-element-type">
+  <xs:union memberTypes="datatype typename enumtypename"/>
 </xs:simpleType>
 
 <!-- Element definitions -->
@@ -179,7 +201,8 @@
     </xs:sequence>
     <xs:attribute name="category" type="argumentcategory" use="required"/>
     <xs:attribute name="name" type="xs:string" use="required"/>
-    <xs:attribute name="type" type="xs:string" use="required"/>
+    <xs:attribute name="type" type="argument-type" use="required"/>
+    <xs:attribute name="tensor-element-type" type="argument-tensor-element-type" use="required"/>
     <xs:attribute name="shape" type="xs:string" use="required"/>
   </xs:complexType>
 </xs:element>

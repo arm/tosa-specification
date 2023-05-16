@@ -16,15 +16,16 @@
       <operator>
         <name>ARGMAX</name>
         <arguments>
-          <argument category="input" name="input" type="in_t*" shape="shape1">
+          <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape1)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="int32_t" shape="-">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis in range from 0 to rank(shape1) - 1</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor, with rank = rank(shape1) - 1</description>
             <rank min="0" max="MAX_RANK - 1"/>
           </argument>
@@ -51,23 +52,23 @@
       <operator>
         <name>AVG_POOL2D</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="[N,IH,IW,C]">
+          <argument category="input" name="input" type="tensor_t" shape="[N,IH,IW,C]" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="attribute" name="kernel" type="int32_t*" shape="[2]">
+          <argument category="attribute" name="kernel" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
             <description>[kernel_y, kernel_x]</description>
             <levellimit value="kernel_y" limit="MAX_KERNEL"/>
             <levellimit value="kernel_x" limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
             <description>[stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
+          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="int32_t">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_top"    limit="MAX_KERNEL"/>
             <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
@@ -75,16 +76,19 @@
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="acc_size" type="acc_size_t" shape="-">
+          <argument category="attribute" name="acc_size" type="tensor_t" shape="-" tensor-element-type="acc_size_t">
             <description>Enumerated type, must be one of INT32, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_out_t" shape="-">
+          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_out_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="output_zp" type="in_out_t" shape="-">
+          <argument category="attribute" name="output_zp" type="tensor_t" shape="-" tensor-element-type="in_out_t">
             <description>Output tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="[N,OH,OW,C]">
+          <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,C]" tensor-element-type="in_out_t">
             <description>Output tensor 4D</description>
             <rank min="4" max="4"/>
           </argument>
@@ -115,21 +119,21 @@
       <operator>
         <name>CONV2D</name>
         <arguments>
-          <argument category="input" name="input" type="in_t*" shape="[N,IH,IW,IC]">
+          <argument category="input" name="input" type="tensor_t" shape="[N,IH,IW,IC]" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="input" name="weight" type="weight_t*" shape="[OC,KH,KW,IC]">
+          <argument category="input" name="weight" type="tensor_t" shape="[OC,KH,KW,IC]" tensor-element-type="weight_t">
             <description>Weight kernel size KH x KW</description>
             <levellimit value="dilation_y * KH" limit="MAX_KERNEL"/>
             <levellimit value="dilation_x * KW" limit="MAX_KERNEL"/>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="input" name="bias" type="out_t*" shape="[OC]">
+          <argument category="input" name="bias" type="tensor_t" shape="[OC]" tensor-element-type="out_t">
             <description>Per output channel bias data.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
+          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="int32_t">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_top"    limit="MAX_KERNEL"/>
             <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
@@ -137,23 +141,25 @@
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
             <description>[stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="dilation" type="int32_t*" shape="[2]">
+          <argument category="attribute" name="dilation" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
             <description>[dilation_y, dilation_x]</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_t" shape="-">
+          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="weight_t" shape="-">
+          <argument category="attribute" name="weight_zp" type="tensor_t" shape="-" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="[N,OH,OW,OC]">
+          <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,OC]" tensor-element-type="out_t">
             <description>Output tensor</description>
             <rank min="4" max="4"/>
           </argument>
@@ -186,22 +192,22 @@
       <operator>
         <name>CONV3D</name>
         <arguments>
-          <argument category="input" name="input" type="in_t*" shape="[N,ID,IH,IW,IC]">
+          <argument category="input" name="input" type="tensor_t" shape="[N,ID,IH,IW,IC]" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="5" max="5"/>
           </argument>
-          <argument category="input" name="weight" type="weight_t*" shape="[OC,KD,KH,KW,IC]">
+          <argument category="input" name="weight" type="tensor_t" shape="[OC,KD,KH,KW,IC]" tensor-element-type="weight_t">
             <description>Weight kernel size KDxKHxKW</description>
             <levellimit value="dilation_d * KD" limit="MAX_KERNEL"/>
             <levellimit value="dilation_y * KH" limit="MAX_KERNEL"/>
             <levellimit value="dilation_x * KW" limit="MAX_KERNEL"/>
             <rank min="5" max="5"/>
           </argument>
-          <argument category="input" name="bias" type="out_t*" shape="[OC]">
+          <argument category="input" name="bias" type="tensor_t" shape="[OC]" tensor-element-type="out_t">
             <description>Per output channel bias data.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad" type="int32_t*" shape="[6]">
+          <argument category="attribute" name="pad" type="tensor_t" shape="[6]" tensor-element-type="int32_t">
             <description>[pad_d0, pad_d1, pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_d0"     limit="MAX_KERNEL"/>
             <levellimit value="pad_d1"     limit="MAX_KERNEL"/>
@@ -211,24 +217,26 @@
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="stride" type="int32_t*" shape="[3]">
+          <argument category="attribute" name="stride" type="tensor_t" shape="[3]" tensor-element-type="int32_t">
             <description>[stride_d, stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <levellimit value="stride_d" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="dilation" type="int32_t*" shape="[3]">
+          <argument category="attribute" name="dilation" type="tensor_t" shape="[3]" tensor-element-type="int32_t">
             <description>[dilation_d, dilation_y, dilation_x]</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_t" shape="-">
+          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="weight_t" shape="-">
+          <argument category="attribute" name="weight_zp" type="tensor_t" shape="-" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="[N,OD,OH,OW,OC]">
+          <argument category="output" name="output" type="tensor_t" shape="[N,OD,OH,OW,OC]" tensor-element-type="out_t">
             <description>Output tensor</description>
             <rank min="5" max="5"/>
           </argument>
@@ -261,21 +269,21 @@
       <operator>
         <name>DEPTHWISE_CONV2D</name>
         <arguments>
-          <argument category="input" name="input" type="in_t*" shape="[N,H,W,C]">
+          <argument category="input" name="input" type="tensor_t" shape="[N,H,W,C]" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="input" name="weight" type="weight_t*" shape="[KH,KW,C,M]">
+          <argument category="input" name="weight" type="tensor_t" shape="[KH,KW,C,M]" tensor-element-type="weight_t">
             <description>Weight kernel size KH x KW</description>
             <levellimit value="dilation_y * KH" limit="MAX_KERNEL"/>
             <levellimit value="dilation_x * KW" limit="MAX_KERNEL"/>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="input" name="bias" type="out_t*" shape="[C*M]">
+          <argument category="input" name="bias" type="tensor_t" shape="[C*M]" tensor-element-type="out_t">
             <description>Per output channel bias data.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
+          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="int32_t">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_top"    limit="MAX_KERNEL"/>
             <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
@@ -283,23 +291,25 @@
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
             <description>[stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="dilation" type="int32_t*" shape="[2]">
+          <argument category="attribute" name="dilation" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
             <description>[dilation_y, dilation_x]</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_t" shape="-">
+          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="weight_t" shape="-">
+          <argument category="attribute" name="weight_zp" type="tensor_t" shape="-" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="[N,OH,OW,C*M]">
+          <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,C*M]" tensor-element-type="out_t">
             <description>Output tensor</description>
             <rank min="4" max="4"/>
           </argument>
@@ -332,24 +342,25 @@
       <operator>
         <name>FFT2D</name>
         <arguments>
-          <argument category="input" name="input_real" type="in_out_t*" shape="[N,H,W]">
+          <argument category="input" name="input_real" type="tensor_t" shape="[N,H,W]" tensor-element-type="in_out_t">
             <description>Real part of the complex input. H,W must be powers of two.</description>
             <levellimit value="H" limit="MAX_KERNEL"/>
             <levellimit value="W" limit="MAX_KERNEL"/>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="input" name="input_imag" type="in_out_t*" shape="[N,H,W]">
+          <argument category="input" name="input_imag" type="tensor_t" shape="[N,H,W]" tensor-element-type="in_out_t">
             <description>Imaginary part of the complex input. H,W must be powers of two.</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="attribute" name="inverse" type="bool_t" shape="-">
+          <argument category="attribute" name="inverse" type="tensor_t" shape="-" tensor-element-type="bool_t">
             <description>false for forward FFT, true for inverse FFT</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output_real" type="in_out_t*" shape="[N,H,W]">
+          <argument category="output" name="output_real" type="tensor_t" shape="[N,H,W]" tensor-element-type="in_out_t">
             <description>Real part of the complex output.</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="output" name="output_imag" type="in_out_t*" shape="[N,H,W]">
+          <argument category="output" name="output_imag" type="tensor_t" shape="[N,H,W]" tensor-element-type="in_out_t">
             <description>Imaginary part of the complex output.</description>
             <rank min="3" max="3"/>
           </argument>
@@ -365,25 +376,27 @@
       <operator>
         <name>FULLY_CONNECTED</name>
         <arguments>
-          <argument category="input" name="input" type="in_t*" shape="[N,IC]">
+          <argument category="input" name="input" type="tensor_t" shape="[N,IC]" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="2" max="2"/>
           </argument>
-          <argument category="attribute" name="weight" type="weight_t*" shape="[OC,IC]">
+          <argument category="attribute" name="weight" type="tensor_t" shape="[OC,IC]" tensor-element-type="weight_t">
             <description>Weights</description>
             <rank min="2" max="2"/>
           </argument>
-          <argument category="attribute" name="bias" type="out_t*" shape="[OC]">
+          <argument category="attribute" name="bias" type="tensor_t" shape="[OC]" tensor-element-type="out_t">
             <description>Per output channel bias data.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_t" shape="-">
+          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="weight_t" shape="-">
+          <argument category="attribute" name="weight_zp" type="tensor_t" shape="-" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="[N,OC]">
+          <argument category="output" name="output" type="tensor_t" shape="[N,OC]" tensor-element-type="out_t">
             <description>Output tensor</description>
             <rank min="2" max="2"/>
           </argument>
@@ -416,21 +429,23 @@
       <operator>
         <name>MATMUL</name>
         <arguments>
-          <argument category="input" name="A" type="in_t*" shape="[N,H,C]">
+          <argument category="input" name="A" type="tensor_t" shape="[N,H,C]" tensor-element-type="in_t">
             <description>Input tensor A, N matrices of size HxC</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="input" name="B" type="in_t*" shape="[N,C,W]">
+          <argument category="input" name="B" type="tensor_t" shape="[N,C,W]" tensor-element-type="in_t">
             <description>Input tensor B, N matrices of size CxW</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="attribute" name="A_zp" type="in_t" shape="-">
+          <argument category="attribute" name="A_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor A zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="B_zp" type="in_t" shape="-">
+          <argument category="attribute" name="B_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor B zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="[N,H,W]">
+          <argument category="output" name="output" type="tensor_t" shape="[N,H,W]" tensor-element-type="out_t">
             <description>Output tensor, N matrices of size HxW</description>
             <rank min="3" max="3"/>
           </argument>
@@ -461,23 +476,23 @@
       <operator>
         <name>MAX_POOL2D</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="[N,IH,IW,C]">
+          <argument category="input" name="input" type="tensor_t" shape="[N,IH,IW,C]" tensor-element-type="in_out_t">
             <description>Input tensor 4D</description>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="attribute" name="kernel" type="int32_t*" shape="[2]">
+          <argument category="attribute" name="kernel" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
             <description>[kernel_y, kernel_x]</description>
             <levellimit value="kernel_y" limit="MAX_KERNEL"/>
             <levellimit value="kernel_x" limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
             <description>[stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad" type="int32_t*" shape="[4]">
+          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="int32_t">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_top"    limit="MAX_KERNEL"/>
             <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
@@ -485,7 +500,7 @@
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="[N,OH,OW,C]">
+          <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,C]" tensor-element-type="in_out_t">
             <description>Output tensor 4D</description>
             <rank min="4" max="4"/>
           </argument>
@@ -511,17 +526,17 @@
       <operator>
         <name>RFFT2D</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="[N,H,W]">
+          <argument category="input" name="input" type="tensor_t" shape="[N,H,W]" tensor-element-type="in_out_t">
             <description>Real input. H,W must be powers of two.</description>
             <levellimit value="H" limit="MAX_KERNEL"/>
             <levellimit value="W" limit="MAX_KERNEL"/>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="output" name="output_real" type="in_out_t*" shape="[N,H,W/2 + 1]">
+          <argument category="output" name="output_real" type="tensor_t" shape="[N,H,W/2 + 1]" tensor-element-type="in_out_t">
             <description>Real part of the complex output</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="output" name="output_imag" type="in_out_t*" shape="[N,H,W/2 + 1]">
+          <argument category="output" name="output_imag" type="tensor_t" shape="[N,H,W/2 + 1]" tensor-element-type="in_out_t">
             <description>Imaginary part of the complex output.</description>
             <rank min="3" max="3"/>
           </argument>
@@ -537,21 +552,21 @@
       <operator>
         <name>TRANSPOSE_CONV2D</name>
         <arguments>
-          <argument category="input" name="input" type="in_t*" shape="[N,IH,IW,IC]">
+          <argument category="input" name="input" type="tensor_t" shape="[N,IH,IW,IC]" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="input" name="weight" type="weight_t*" shape="[OC,KH,KW,IC]">
+          <argument category="input" name="weight" type="tensor_t" shape="[OC,KH,KW,IC]" tensor-element-type="weight_t">
             <description>Weight kernel size KH x KW</description>
             <levellimit value="KH" limit="MAX_KERNEL"/>
             <levellimit value="KW" limit="MAX_KERNEL"/>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="input" name="bias" type="out_t*" shape="[OC]">
+          <argument category="input" name="bias" type="tensor_t" shape="[OC]" tensor-element-type="out_t">
             <description>Per output channel bias data.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="out_pad" type="int32_t*" shape="[4]">
+          <argument category="attribute" name="out_pad" type="tensor_t" shape="[4]" tensor-element-type="int32_t">
             <description>[out_pad_top, out_pad_bottom, out_pad_left, out_pad_right]</description>
             <levellimit value="out_pad_top"    limit="MAX_KERNEL"/>
             <levellimit value="out_pad_bottom" limit="MAX_KERNEL"/>
@@ -559,23 +574,25 @@
             <levellimit value="out_pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="stride" type="int32_t*" shape="[2]">
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
             <description>[stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="out_shape" type="int32_t*" shape="[4]">
+          <argument category="attribute" name="out_shape" type="tensor_t" shape="[4]" tensor-element-type="int32_t">
             <description>[N,OH,OW,OC]</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_t" shape="-">
+          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="weight_t" shape="-">
+          <argument category="attribute" name="weight_zp" type="tensor_t" shape="-" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="[N,OH,OW,OC]">
+          <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,OC]" tensor-element-type="out_t">
             <description>Output tensor</description>
             <rank min="4" max="4"/>
           </argument>
@@ -610,18 +627,20 @@
       <operator>
         <name>CLAMP</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="shape">
+          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="min_val" type="in_out_t" shape="-">
+          <argument category="attribute" name="min_val" type="tensor_t" shape="-" tensor-element-type="in_out_t">
             <description>Minimum clip value</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="max_val" type="in_out_t" shape="-">
+          <argument category="attribute" name="max_val" type="tensor_t" shape="-" tensor-element-type="in_out_t">
             <description>Maximum clip value</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type and shape as input</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -647,12 +666,12 @@
       <operator>
         <name>SIGMOID</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="shape">
+          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type and shape as input</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -676,12 +695,12 @@
       <operator>
         <name>TANH</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="shape">
+          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type and shape as input</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -707,15 +726,15 @@
       <operator>
         <name>ADD</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -741,18 +760,19 @@
       <operator>
         <name>ARITHMETIC_RIGHT_SHIFT</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="round" type="bool_t" shape="-">
+          <argument category="attribute" name="round" type="tensor_t" shape="-" tensor-element-type="bool_t">
             <description>If true then the shift is rounded</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -768,15 +788,15 @@
       <operator>
         <name>BITWISE_AND</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -792,15 +812,15 @@
       <operator>
         <name>BITWISE_OR</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -816,15 +836,15 @@
       <operator>
         <name>BITWISE_XOR</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -840,15 +860,15 @@
       <operator>
         <name>INTDIV</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -862,15 +882,15 @@
       <operator>
         <name>LOGICAL_AND</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -884,15 +904,15 @@
       <operator>
         <name>LOGICAL_LEFT_SHIFT</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -908,15 +928,15 @@
       <operator>
         <name>LOGICAL_RIGHT_SHIFT</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -932,15 +952,15 @@
       <operator>
         <name>LOGICAL_OR</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -954,15 +974,15 @@
       <operator>
         <name>LOGICAL_XOR</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -976,15 +996,15 @@
       <operator>
         <name>MAXIMUM</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -1010,15 +1030,15 @@
       <operator>
         <name>MINIMUM</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -1044,18 +1064,19 @@
       <operator>
         <name>MUL</name>
         <arguments>
-          <argument category="input" name="input1" type="in_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="int8_t" shape="-">
+          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="tensor_t" shape="-" tensor-element-type="int8_t">
             <description>Result right shift (int32_t data type only)</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -1084,15 +1105,15 @@
       <operator>
         <name>POW</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -1117,15 +1138,15 @@
       <operator>
         <name>SUB</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -1151,15 +1172,15 @@
       <operator>
         <name>TABLE</name>
         <arguments>
-          <argument category="input" name="input" type="in_t*" shape="shape">
+          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="table" type="table_t*" shape="[TABLE_SIZE]">
+          <argument category="input(MT)|attribute(BI,MI)" name="table" type="tensor_t" shape="[TABLE_SIZE]" tensor-element-type="table_t">
             <description>Lookup table tensor</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -1179,12 +1200,12 @@
       <operator>
         <name>ABS</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1209,12 +1230,12 @@
       <operator>
         <name>BITWISE_NOT</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1229,12 +1250,12 @@
       <operator>
         <name>CEIL</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1258,12 +1279,12 @@
       <operator>
         <name>CLZ</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1276,12 +1297,12 @@
       <operator>
         <name>EXP</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1305,12 +1326,12 @@
       <operator>
         <name>FLOOR</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1334,12 +1355,12 @@
       <operator>
         <name>LOG</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1363,12 +1384,12 @@
       <operator>
         <name>LOGICAL_NOT</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1381,18 +1402,20 @@
       <operator>
         <name>NEGATE</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="input1_zp" type="in_out_t" shape="-">
+          <argument category="attribute" name="input1_zp" type="tensor_t" shape="-" tensor-element-type="in_out_t">
             <description>Input 1 zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="output_zp" type="in_out_t" shape="-">
+          <argument category="attribute" name="output_zp" type="tensor_t" shape="-" tensor-element-type="in_out_t">
             <description>Output zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1420,12 +1443,12 @@
       <operator>
         <name>RECIPROCAL</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1449,12 +1472,12 @@
       <operator>
         <name>RSQRT</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1480,19 +1503,19 @@
       <operator>
         <name>SELECT</name>
         <arguments>
-          <argument category="input" name="input1" type="bool_t" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="bool_t">
             <description>Input selector tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_out_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_out_t">
             <description>Input value tensor if input1 is True</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input3" type="in_out_t*" shape="shape3">
+          <argument category="input" name="input3" type="tensor_t" shape="shape3" tensor-element-type="in_out_t">
             <description>Input value tensor if input1 is False</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type as input2 and input3, with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -1523,15 +1546,15 @@
       <operator>
         <name>EQUAL</name>
         <arguments>
-          <argument category="input" name="input1" type="in_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -1558,15 +1581,15 @@
       <operator>
         <name>GREATER</name>
         <arguments>
-          <argument category="input" name="input1" type="in_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -1593,15 +1616,15 @@
       <operator>
         <name>GREATER_EQUAL</name>
         <arguments>
-          <argument category="input" name="input1" type="in_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input2" type="in_t*" shape="shape2">
+          <argument category="input" name="input2" type="tensor_t" shape="shape2" tensor-element-type="in_t">
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor with broadcast shape if necessary</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -1630,14 +1653,15 @@
       <operator>
         <name>REDUCE_ALL</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="1" max="4"/>
           </argument>
-          <argument category="attribute" name="axis" type="int32_t" shape="-">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
             <rank min="1" max="4"/>
           </argument>
@@ -1650,14 +1674,15 @@
       <operator>
         <name>REDUCE_ANY</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="1" max="4"/>
           </argument>
-          <argument category="attribute" name="axis" type="int32_t" shape="-">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
             <rank min="1" max="4"/>
           </argument>
@@ -1670,14 +1695,15 @@
       <operator>
         <name>REDUCE_MAX</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="1" max="4"/>
           </argument>
-          <argument category="attribute" name="axis" type="int32_t" shape="-">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
             <rank min="1" max="4"/>
           </argument>
@@ -1704,14 +1730,15 @@
       <operator>
         <name>REDUCE_MIN</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="1" max="4"/>
           </argument>
-          <argument category="attribute" name="axis" type="int32_t" shape="-">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
             <rank min="1" max="4"/>
           </argument>
@@ -1738,14 +1765,15 @@
       <operator>
         <name>REDUCE_PRODUCT</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="1" max="4"/>
           </argument>
-          <argument category="attribute" name="axis" type="int32_t" shape="-">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
             <rank min="1" max="4"/>
           </argument>
@@ -1769,14 +1797,15 @@
       <operator>
         <name>REDUCE_SUM</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor with rank from 1 to 4</description>
             <rank min="1" max="4"/>
           </argument>
-          <argument category="attribute" name="axis" type="int32_t" shape="-">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
             <rank min="1" max="4"/>
           </argument>
@@ -1803,15 +1832,15 @@
       <operator>
         <name>CONCAT</name>
         <arguments>
-          <!-- FIXME express list of tensors better -->
-          <argument category="input" name="input1" type="in_out_t*" shape="shapes1[]">
+          <argument category="input" name="input1" type="tensor_list_t" shape="shapes1" tensor-element-type="in_out_t">
             <description>List of input tensors. All inputs must have the same rank and data type</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="int32_t" shape="-">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis along which concatenation is to occur, in range from 0 to rank(shape)-1</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
@@ -1840,18 +1869,19 @@
       <operator>
         <name>PAD</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="padding" type="int32_t" shape="[rank(shape1),2]">
+          <argument category="attribute" name="padding" type="tensor_t" shape="[rank(shape1),2]" tensor-element-type="int32_t">
             <description>Number of pad elements at the start and end of each dimension</description>
             <rank min="2" max="2"/>
           </argument>
-          <argument category="attribute" name="pad_const" type="in_out_t" shape="-">
+          <argument category="attribute" name="pad_const" type="tensor_t" shape="-" tensor-element-type="in_out_t">
             <description>Constant value to be used as padding</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type as the input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
@@ -1880,16 +1910,16 @@
       <operator>
         <name>RESHAPE</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape1)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="new_shape" type="int32_t" shape="[rank(shape)]">
+          <argument category="attribute" name="new_shape" type="tensor_t" shape="[rank(shape)]" tensor-element-type="int32_t">
             <description>List of values, with each element giving the size of the result tensor for the given dimension. At most one dimension may be given as -1 to automatically calculate the dimension size.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
@@ -1918,15 +1948,16 @@
       <operator>
         <name>REVERSE</name>
         <arguments>
-          <argument category="input" name="input" type="in_out_t*" shape="shape">
+          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="int32_t" shape="-">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reverse, in range from 0 to rank(shape)-1</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same shape as input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
@@ -1954,21 +1985,21 @@
       <operator>
         <name>SLICE</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="start" type="index_t" shape="[rank(shape1)]">
+          <argument category="attribute" name="start" type="tensor_t" shape="[rank(shape1)]" tensor-element-type="index_t">
             <description>List of integer coordinates, of length equal to the rank of input1. Start coordinate for slicing.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="size" type="index_t" shape="[rank(shape1)]">
+          <argument category="attribute" name="size" type="tensor_t" shape="[rank(shape1)]" tensor-element-type="index_t">
             <description>List of integer size values, of length equal to the rank of input1. Size of the input to be
 used.</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type as the input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
@@ -1996,15 +2027,15 @@ used.</description>
       <operator>
         <name>TILE</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="multiples" type="int32_t" shape="[rank(shape1)]">
+          <argument category="attribute" name="multiples" type="tensor_t" shape="[rank(shape1)]" tensor-element-type="int32_t">
             <description>Number of times to replicate input1 in each dimension</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, rank as the input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
@@ -2033,15 +2064,15 @@ used.</description>
       <operator>
         <name>TRANSPOSE</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape1">
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="perms" type="int32_t" shape="[rank(shape1)]">
+          <argument category="attribute" name="perms" type="tensor_t" shape="[rank(shape1)]" tensor-element-type="int32_t">
             <description>List of integers of length equal to the rank of input1. Values must be valid dimensions within shape1, and may not be repeated.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, rank as the input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
@@ -2072,15 +2103,15 @@ used.</description>
       <operator>
         <name>GATHER</name>
         <arguments>
-          <argument category="input" name="values" type="in_out_t*" shape="[N,K,C]">
+          <argument category="input" name="values" type="tensor_t" shape="[N,K,C]" tensor-element-type="in_out_t">
             <description>3D value tensor</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="input" name="indices" type="index_t*" shape="[N,W]">
+          <argument category="input" name="indices" type="tensor_t" shape="[N,W]" tensor-element-type="index_t">
             <description>2D index tensor</description>
             <rank min="2" max="2"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="[N,W,C]">
+          <argument category="output" name="output" type="tensor_t" shape="[N,W,C]" tensor-element-type="in_out_t">
             <description>3D output tensor</description>
             <rank min="3" max="3"/>
           </argument>
@@ -2107,19 +2138,19 @@ used.</description>
       <operator>
         <name>SCATTER</name>
         <arguments>
-          <argument category="input" name="values_in" type="in_out_t*" shape="[N,K,C]">
+          <argument category="input" name="values_in" type="tensor_t" shape="[N,K,C]" tensor-element-type="in_out_t">
             <description>3D values in tensor</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="input" name="indices" type="index_t*" shape="[N,W]">
+          <argument category="input" name="indices" type="tensor_t" shape="[N,W]" tensor-element-type="index_t">
             <description>2D index tensor</description>
             <rank min="2" max="2"/>
           </argument>
-          <argument category="input" name="input" type="in_out_t*" shape="[N,W,C]">
+          <argument category="input" name="input" type="tensor_t" shape="[N,W,C]" tensor-element-type="in_out_t">
             <description>3D input tensor</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="output" name="values_out" type="in_out_t*" shape="[N,K,C]">
+          <argument category="output" name="values_out" type="tensor_t" shape="[N,K,C]" tensor-element-type="in_out_t">
             <description>3D output tensor</description>
             <rank min="3" max="3"/>
           </argument>
@@ -2148,28 +2179,29 @@ used.</description>
       <operator>
         <name>RESIZE</name>
         <arguments>
-          <argument category="input" name="input" type="in_t*" shape="[N,IH,IW,C]">
+          <argument category="input" name="input" type="tensor_t" shape="[N,IH,IW,C]" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="attribute" name="scale" type="int16_t*" shape="[4]">
+          <argument category="attribute" name="scale" type="tensor_t" shape="[4]" tensor-element-type="int16_t">
             <description>[scale_y_n, scale_y_d, scale_x_n, scale_x_d]</description>
             <levellimit value="scale_y_n/scale_y_d" limit="MAX_SCALE"/>
             <levellimit value="scale_x_n/scale_x_d" limit="MAX_SCALE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="offset" type="int16_t*" shape="[2]">
+          <argument category="attribute" name="offset" type="tensor_t" shape="[2]" tensor-element-type="int16_t">
             <description>[offset_y, offset_x]</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="border" type="int16_t*" shape="[2]">
+          <argument category="attribute" name="border" type="tensor_t" shape="[2]" tensor-element-type="int16_t">
             <description>[border_y, border_x]</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="mode" type="resize_mode_t" shape="-">
+          <argument category="attribute" name="mode" type="tensor_t" shape="-" tensor-element-type="resize_mode_t">
             <description>BILINEAR or NEAREST</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="[N,OH,OW,C]">
+          <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,C]" tensor-element-type="out_t">
             <description>Output tensor</description>
             <rank min="4" max="4"/>
           </argument>
@@ -2201,12 +2233,12 @@ used.</description>
       <operator>
         <name>CAST</name>
         <arguments>
-          <argument category="input" name="input" type="in_t" shape="shape">
+          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="out_t" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -2319,37 +2351,42 @@ used.</description>
       <operator>
         <name>RESCALE</name>
         <arguments>
-          <argument category="input" name="input" type="in_t" shape="shape">
+          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="out_t" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor with the same shape as input</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_t" shape="-">
+          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="output_zp" type="out_t" shape="-">
+          <argument category="attribute" name="output_zp" type="tensor_t" shape="-" tensor-element-type="out_t">
             <description>Output tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="multiplier" type="mul_t*" shape="[NC]">
+          <argument category="input(MT)|attribute(BI,MI)" name="multiplier" type="tensor_t" shape="[NC]" tensor-element-type="mul_t">
             <description>Scaling multiplier array</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="int8_t*" shape="[NC]">
+          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="tensor_t" shape="[NC]" tensor-element-type="int8_t">
             <description>Scaling shift array</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="scale32" type="bool_t" shape="-">
+          <argument category="attribute" name="scale32" type="tensor_t" shape="-" tensor-element-type="bool_t">
             <description>if (scale32) mul_t=int32_t else mul_t=int16_t</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="double_round" type="bool_t" shape="-">
+          <argument category="attribute" name="double_round" type="tensor_t" shape="-" tensor-element-type="bool_t">
             <description>Select double round mode</description>
+            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="per_channel" type="bool_t" shape="-">
+          <argument category="attribute" name="per_channel" type="tensor_t" shape="-" tensor-element-type="bool_t">
             <description>if (per_channel) NC=shape[rank(shape)-1] else NC=1</description>
+            <rank min="0" max="0"/>
           </argument>
         </arguments>
         <types>
@@ -2380,11 +2417,11 @@ used.</description>
       <operator>
         <name>CONST</name>
         <arguments>
-          <argument category="attribute" name="values" type="out_t*" shape="shape">
+          <argument category="attribute" name="values" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Constant values</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor of the same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -2413,11 +2450,11 @@ used.</description>
       <operator>
         <name>IDENTITY</name>
         <arguments>
-          <argument category="input" name="input1" type="in_out_t*" shape="shape">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="output" name="output" type="in_out_t*" shape="shape">
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of the same type, size as the input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -2447,20 +2484,20 @@ used.</description>
       <operator>
         <name>COND_IF</name>
         <arguments>
-          <argument category="input" name="condition" type="bool_t*" shape="shape">
+          <argument category="input" name="condition" type="tensor_t" shape="shape" tensor-element-type="bool_t">
             <description>Input condition as a size 1 tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="input_list" type="tensor_list_t" shape="-">
+          <argument category="input" name="input_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of input tensors</description>
           </argument>
-          <argument category="attribute" name="then_graph" type="tosa_graph_t" shape="-">
+          <argument category="attribute" name="then_graph" type="tosa_graph_t" shape="-" tensor-element-type="-">
             <description>TOSA graph to execute if condition is true</description>
           </argument>
-          <argument category="attribute" name="else_graph" type="tosa_graph_t" shape="-">
+          <argument category="attribute" name="else_graph" type="tosa_graph_t" shape="-" tensor-element-type="-">
             <description>TOSA graph to execute if condition is false</description>
           </argument>
-          <argument category="output" name="output_list" type="tensor_list_t" shape="-">
+          <argument category="output" name="output_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of output tensors</description>
           </argument>
         </arguments>
@@ -2468,16 +2505,16 @@ used.</description>
       <operator>
         <name>WHILE_LOOP</name>
         <arguments>
-          <argument category="input" name="input_list" type="tensor_list_t" shape="-">
+          <argument category="input" name="input_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of input tensors</description>
           </argument>
-          <argument category="attribute" name="cond_graph" type="tosa_graph_t" shape="-">
+          <argument category="attribute" name="cond_graph" type="tosa_graph_t" shape="-" tensor-element-type="-">
             <description>TOSA graph to evaluate the condition</description>
           </argument>
-          <argument category="attribute" name="body_graph" type="tosa_graph_t" shape="-">
+          <argument category="attribute" name="body_graph" type="tosa_graph_t" shape="-" tensor-element-type="-">
             <description>TOSA graph to execute the loop body</description>
           </argument>
-          <argument category="output" name="output_list" type="tensor_list_t" shape="-">
+          <argument category="output" name="output_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of output tensors</description>
           </argument>
         </arguments>

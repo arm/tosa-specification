@@ -12,9 +12,9 @@
 Hardware implementing TOSA may choose to add additional custom operators that are not expressed in the existing TOSA operations. These operators are not expected to be portable across TOSA implementations. The input and output signatures must be expressed in the corresponding TOSA node.
 
 ==== CUSTOM
-Input Operands:
+Input arguments:
 
-* Num input operands – Scalar number of input operands
-* Num output operands – Scalar number of output operands
+* Num input arguments – Scalar number of input arguments
+* Num output arguments – Scalar number of output arguments
 * Operator code – untyped data consisting of the operator data
 * Affine transform description for each tensor

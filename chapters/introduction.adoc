@@ -79,7 +79,7 @@ The following principles govern the selection of operators within TOSA.
 |Consistent sub-operation definition reduces the operator implementation cost.
 
 |P4
-|The valid input and output ranges for all operands shall be specified.
+|The valid input and output ranges for all arguments shall be specified.
 |Ranges are required to make consistent (numerically agreeing) implementations possible.
 
 |P5
@@ -108,11 +108,11 @@ The following table summarizes the three profiles:
 
 === Levels
 
-A TOSA level defines operator parameter ranges that an implementation shall support.
+A TOSA level defines operator argument ranges that an implementation shall support.
 This is distinct from a profile that defines the operations and data-types supported.
 This version of the specification defines two TOSA levels:
 
-* No level : allows the full range of parameters specified by the operations according to the operation data types.
+* No level : allows the full range of arguments specified by the operations according to the operation data types.
 * Level 8K : ranges are expected to be sufficient for applications with frame sizes up to 8K.
 
 Later versions of the specification may define additional levels.
@@ -522,7 +522,7 @@ To convert a network containing quantized tensors to TOSA, generate explicit RES
 This reduces quantized operations to purely integer operations.
 
 As an example, an ADD between two quantized tensors requires the integer values represent the same range.
-The scale parameters for RESCALE can be calculated to ensure that the resulting tensors represent the same range.
+The scale arguments for RESCALE can be calculated to ensure that the resulting tensors represent the same range.
 Then the ADD is performed, and a RESCALE can be used to ensure that the result is scaled properly.
 
 RESCALE provides support for per-tensor and per-channel scaling values to ensure compatibility with a range of possible quantization implementations.

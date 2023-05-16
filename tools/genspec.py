@@ -18,10 +18,11 @@ class TOSASpecAsciidocGenerator:
 
     def generate_operator(self, op, file):
         file.write("\n*Arguments:*\n")
-        file.write("[cols='2,1,1,1,2,4']")
+        file.write("[cols='3,3,2,2,4,8']")
         file.write("\n|===\n")
         file.write("|Argument|Type|Name|Shape|Rank|Description\n\n")
         for arg in op.arguments:
+            # Argument
             cats = arg.categories
             if len(cats) > 1:
                 cattext = ""
@@ -33,6 +34,19 @@ class TOSASpecAsciidocGenerator:
                     sep = " "
             else:
                 cattext = cats[0].name.title()
+
+            # Type
+            if arg.type == 'tensor_t':
+                argtype = 'T<{}>'.format(arg.tensor_element_type)
+            elif arg.type == 'tensor_list_t':
+                if arg.tensor_element_type == '-':
+                    argtype = 'tensor_list_t'
+                else:
+                    argtype = 'tensor_list_t<T<{}>>'.format(arg.tensor_element_type)
+            else:
+                argtype = arg.type
+
+            # Rank
             if len(arg.rank) > 0:
                 if (arg.rank[0] == arg.rank[1]):
                     rank = f'{arg.rank[0]}'
@@ -40,9 +54,12 @@ class TOSASpecAsciidocGenerator:
                     rank = f'{arg.rank[0]} to {arg.rank[1]}'
             else:
                 rank = ""
+
+            # Format and write line
             file.write(
-                f"|{cattext}|{arg.type}|{arg.name}|{arg.shape}|{rank}|{arg.description}\n"
+                f"|{cattext}|{argtype}|{arg.name}|{arg.shape}|{rank}|{arg.description}\n"
             )
+
         file.write("|===\n")
         if op.typesupports:
             file.write("\n*Supported Data Types:*\n\n")
