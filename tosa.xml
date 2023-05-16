@@ -1958,11 +1958,11 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="start" type="int32_t" shape="[rank(shape1)]">
+          <argument category="attribute" name="start" type="index_t" shape="[rank(shape1)]">
             <description>List of integer coordinates, of length equal to the rank of input1. Start coordinate for slicing.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="size" type="int32_t" shape="[rank(shape1)]">
+          <argument category="attribute" name="size" type="index_t" shape="[rank(shape1)]">
             <description>List of integer size values, of length equal to the rank of input1. Size of the input to be
 used.</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
