@@ -41,11 +41,16 @@ Similarly the type tensor_list_t will be used for a list of tensors and the foll
 shape_list_t tensor_list_shape(tosa_list_t tensor_list);
 ----
 
-The following function denotes the execution of a TOSA graph, on an input tensor list to produce an output tensor list.
+The following function denotes the execution of a TOSA graph within a TOSA context,
+on an input tensor list to produce an output tensor list. A TOSA context, represented
+by `tosa_context_t` provides the environment in which a TOSA graph is executed.
+Any side-effects that result from the execution of a graph within a context are not
+observable by graphs executing in a different context. Operators are executed in an
+implementation-defined order that must be a topological ordering of the TOSA graph.
 
 [source,c++]
 ----
-tosa_execute_graph(tosa_graph_t graph, tosa_list_t input_list, tosa_list_t output_list, tosa_level_t level) {
+tosa_execute_graph(tosa_context_t context, tosa_graph_t graph, tosa_list_t input_list, tosa_list_t output_list, tosa_level_t level) {
     ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(graph));
     ERROR_IF(tensor_list_shape(output_list) != tosa_output_shape(graph));
     for_each(operator in graph order) {
@@ -54,7 +59,7 @@ tosa_execute_graph(tosa_graph_t graph, tosa_list_t input_list, tosa_list_t outpu
         ERROR_IF(operator output tensors do not meet requirement of operator Arguments outputs)
         ERROR_IF(operator data types do not meet requirement of operator Supported Data Types)
         // Execute the operator as defined by the operation function pseduo-code
-        tosa_execute_operator(operator, level);
+        tosa_execute_operator(context, operator, level);
     }
 }
 ----
