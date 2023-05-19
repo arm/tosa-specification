@@ -111,7 +111,6 @@ ERROR_IF(dilation_y < 1 || dilation_x < 1);
 ERROR_IF(OH != idiv_check(IH - 1 + pad_top + pad_bottom - (KH - 1) * dilation_y, stride_y) + 1);
 ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x, stride_x) + 1);
 
-pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
     out_t acc = 0;
     index_t iy = oy * stride_y - pad_top;
@@ -149,7 +148,6 @@ ERROR_IF(OD != idiv_check(ID - 1 + pad_d0 + pad_d1      - (KD - 1) * dilation_d,
 ERROR_IF(OH != idiv_check(IH - 1 + pad_top + pad_bottom - (KH - 1) * dilation_y, stride_y) + 1);
 ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x, stride_x) + 1);
 
-pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= od < OD, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
     out_t acc = 0;
     index_t id = od * stride_d - pad_d0;
@@ -188,7 +186,6 @@ ERROR_IF(dilation_y < 1 || dilation_x < 1);
 ERROR_IF(OH != idiv_check(IH - 1 + pad_top + pad_bottom - (KH - 1) * dilation_y, stride_y) + 1);
 ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x, stride_x) + 1);
 
-pad = flatten([0,0], pad, [0,0]);
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C, 0 <= m < M) {
     out_t acc = 0;
     index_t iy = oy * stride_y - pad_top;
