@@ -380,11 +380,11 @@
             <description>Input tensor</description>
             <rank min="2" max="2"/>
           </argument>
-          <argument category="attribute" name="weight" type="tensor_t" shape="[OC,IC]" tensor-element-type="weight_t">
+          <argument category="input" name="weight" type="tensor_t" shape="[OC,IC]" tensor-element-type="weight_t">
             <description>Weights</description>
             <rank min="2" max="2"/>
           </argument>
-          <argument category="attribute" name="bias" type="tensor_t" shape="[OC]" tensor-element-type="out_t">
+          <argument category="input" name="bias" type="tensor_t" shape="[OC]" tensor-element-type="out_t">
             <description>Per output channel bias data.</description>
             <rank min="1" max="1"/>
           </argument>
