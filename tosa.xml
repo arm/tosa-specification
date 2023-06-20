@@ -2390,11 +2390,11 @@ used.</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
-            <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <description>Input tensor zero point. int8/uint8 can have zero point within their valid range. uint16 zero point must be either 0 or 32768. All other types must have zero point equal to 0.</description>
             <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="output_zp" type="tensor_t" shape="-" tensor-element-type="out_t">
-            <description>Output tensor zero point. Must be zero for non-int8 types.</description>
+            <description>Output tensor zero point.int8/uint8 can have zero point within their valid range. uint16 zero point must be either 0 or 32768. All other types must have zero point equal to 0.</description>
             <rank min="0" max="0"/>
           </argument>
           <argument category="input(MT)|attribute(BI,MI)" name="multiplier" type="tensor_t" shape="[NC]" tensor-element-type="mul_t">
