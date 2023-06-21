@@ -2459,6 +2459,7 @@ used.</description>
           <type name='out_t' />
         </types>
         <typesupport mode="Boolean" out_t="bool_t" />
+        <typesupport mode="signed 4" out_t="int4_t" />
         <typesupport mode="signed 8" out_t="int8_t" />
         <typesupport mode="signed 16" out_t="int16_t" />
         <typesupport mode="signed 32" out_t="int32_t" />
