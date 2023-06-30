@@ -1684,7 +1684,7 @@
         <arguments>
           <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
-            <rank min="1" max="4"/>
+            <rank min="1" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
@@ -1692,7 +1692,7 @@
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
-            <rank min="1" max="4"/>
+            <rank min="1" max="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1705,7 +1705,7 @@
         <arguments>
           <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
-            <rank min="1" max="4"/>
+            <rank min="1" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
@@ -1713,7 +1713,7 @@
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
-            <rank min="1" max="4"/>
+            <rank min="1" max="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1726,7 +1726,7 @@
         <arguments>
           <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
-            <rank min="1" max="4"/>
+            <rank min="1" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
@@ -1734,7 +1734,7 @@
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
-            <rank min="1" max="4"/>
+            <rank min="1" max="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1761,7 +1761,7 @@
         <arguments>
           <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
-            <rank min="1" max="4"/>
+            <rank min="1" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
@@ -1769,7 +1769,7 @@
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
-            <rank min="1" max="4"/>
+            <rank min="1" max="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1796,7 +1796,7 @@
         <arguments>
           <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor</description>
-            <rank min="1" max="4"/>
+            <rank min="1" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
@@ -1804,7 +1804,7 @@
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
-            <rank min="1" max="4"/>
+            <rank min="1" max="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
@@ -1828,7 +1828,7 @@
         <arguments>
           <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
             <description>Input tensor with rank from 1 to 4</description>
-            <rank min="1" max="4"/>
+            <rank min="1" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
@@ -1836,7 +1836,7 @@
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
-            <rank min="1" max="4"/>
+            <rank min="1" max="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
