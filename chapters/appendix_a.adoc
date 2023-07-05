@@ -276,11 +276,13 @@ For compliant implementation, the test must pass whenever the attributes satisfy
 
 [source,c++]
 ----
-KS = KY*KX;
+KX = kernel_x;
+KY = kernel_y;
+KS = KX*KY;
 for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= c < C) {
-  input [ n, iy, ix, c] = tosa_mi_data(S, KS, 0, ((iy % KH)*KW+(ix % KW))*C+c, ((n*IH+iy)*IW+ix)*C+c);
+  input [ n, iy, ix, c] = tosa_mi_data(S, KS, 0, ((iy % KY)*KX+(ix % KX))*C+c, ((n*IH+iy)*IW+ix)*C+c);
 }
-for (0 <= ky < KH, 0 <= kx < KW, 0 <= c < C, 0 <= m < M) {
+for (0 <= ky < KY, 0 <= kx < KX, 0 <= c < C, 0 <= m < M) {
   weight[ky, kx] = 1/KS;
 }
 ----
