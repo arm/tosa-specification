@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020 ARM Limited
+// (C) COPYRIGHT 2020,2023 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -12,9 +12,15 @@
 Hardware implementing TOSA may choose to add additional custom operators that are not expressed in the existing TOSA operations. These operators are not expected to be portable across TOSA implementations. The input and output signatures must be expressed in the corresponding TOSA node.
 
 ==== CUSTOM
-Input arguments:
 
-* Num input arguments – Scalar number of input arguments
-* Num output arguments – Scalar number of output arguments
-* Operator code – untyped data consisting of the operator data
-* Affine transform description for each tensor
+Runs an implementation defined custom operator.
+CUSTOM operators are not tested in the conformance suite as results will be implementation defined.
+The `domain` attribute should be unique to each implementation.
+To achieve this, using a domain name as the `domain` attribute is recommended.
+
+include::{generated}/operators/CUSTOM.adoc[]
+
+[source,c++]
+----
+// Implementation defined behavior
+----

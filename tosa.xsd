@@ -82,6 +82,7 @@
     <xs:enumeration value="tensor_t"/>
     <xs:enumeration value="tensor_list_t"/>
     <xs:enumeration value="tosa_graph_t"/>
+    <xs:enumeration value="String"/>
   </xs:restriction>
 </xs:simpleType>
 

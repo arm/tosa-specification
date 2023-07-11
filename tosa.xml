@@ -2596,6 +2596,30 @@ used.</description>
         </typesupport>
       </operator>
     </operatorgroup>
+    <operatorgroup name="custom">
+      <operator>
+        <name>CUSTOM</name>
+        <arguments>
+          <argument category="input" name="input_list" type="tensor_list_t" shape="-" tensor-element-type="-">
+            <description>List of input tensors</description>
+          </argument>
+          <argument category="attribute" name="operator" type="String" shape="-" tensor-element-type="-">
+            <description>String which tells the backend which custom operator is being called</description>
+          </argument>
+          <argument category="attribute" name="domain" type="String" shape="-" tensor-element-type="-">
+            <description>String idenifier which can help avoid name collisions on the operator field.
+            Different implementations of a given operator would be in different domains.
+            Implementations can choose which domains they want to support.</description>
+          </argument>
+          <argument category="attribute" name="implementation_attrs" type="String" shape="-" tensor-element-type="-">
+            <description>String value containing implementation specific attributes which apply to the operation</description>
+          </argument>
+          <argument category="output" name="output_list" type="tensor_list_t" shape="-" tensor-element-type="-">
+            <description>List of output tensors</description>
+          </argument>
+        </arguments>
+      </operator>
+    </operatorgroup>
     <operatorgroup name="control-flow">
       <operator>
         <name>COND_IF</name>
