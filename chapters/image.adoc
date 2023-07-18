@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2021 ARM Limited
+// (C) COPYRIGHT 2020-2023 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -91,22 +91,23 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
     int16_t rx = x - ix * scale_x_n;  // (x % scale_x_n)
 
     if (is_floating_point(resize_t)) {
-        dy = (resize_t)ry / (resize_t)scale_y_n;
-        dx = (resize_t)rx / (resize_t)scale_x_n;
+        dy = static_cast<resize_t>(ry) / static_cast<resize_t>(scale_y_n);
+        dx = static_cast<resize_t>(rx) / static_cast<resize_t>(scale_x_n);
     } else {
         dy = ry;
         dx = rx;
     }
     // Note that -1 <= iy < IH and -1 <= ix < IW
-    int16_t iy0 = apply_max(iy, 0);
-    int16_t iy1 = apply_min(iy + 1, IH - 1);
-    int16_t ix0 = apply_max(ix, 0);
-    int16_t ix1 = apply_min(ix + 1, IW - 1);
+    int16_t iy0 = apply_max_s(iy, 0);
+    int16_t iy1 = apply_min_s(iy + 1, IH - 1);
+    int16_t ix0 = apply_max_s(ix, 0);
+    int16_t ix1 = apply_min_s(ix + 1, IW - 1);
     if (mode==BILINEAR) {
-        in_t v00 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix0,c]);
-        in_t v01 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c]);
-        in_t v10 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c]);
-        in_t v11 = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c]);
+        using in_s_t = make_signed(in_t); // Use signed calculations for i8/i16
+        in_s_t v00 = static_cast<in_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix0,c]));
+        in_s_t v01 = static_cast<in_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c]));
+        in_s_t v10 = static_cast<in_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c]));
+        in_s_t v11 = static_cast<in_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c]));
         acc  = v00 * (unit_y - dy) * (unit_x - dx);
         acc += v01 * (unit_y - dy) * dx;
         acc += v10 * dy * (unit_x - dx);

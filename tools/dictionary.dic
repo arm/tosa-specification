@@ -67,6 +67,7 @@ RSQRT
 sigmoid
 Sigmoid
 SIGMOID
+signless
 SIMD
 subtensor
 svg
@@ -79,6 +80,7 @@ tosa
 TOSA
 TOSASETS
 TPUs
+uint
 ulp
 unary
 Unary

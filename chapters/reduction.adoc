@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2021 ARM Limited
+// (C) COPYRIGHT 2020-2023 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -77,7 +77,7 @@ for_each(index in shape1) {
     out_index[axis] = 0;
     in_out_t value = tensor_read<in_out_t>(input, shape1, index);
     in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
-    state      = apply_max<in_out_t>(state, value);
+    state      = apply_max_s<in_out_t>(state, value);
     tensor_write<in_out_t>(output, shape, out_index, state);
 }
 ----
@@ -100,7 +100,7 @@ for_each(index in shape1) {
     out_index[axis] = 0;
     in_out_t value = tensor_read<in_out_t>(input, shape1, index);
     in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
-    state      = apply_min<in_out_t>(state, value);
+    state      = apply_min_s<in_out_t>(state, value);
     tensor_write<in_out_t>(output, shape, out_index, state);
 }
 ----
@@ -123,7 +123,7 @@ for_each(index in shape1) {
     out_index[axis] = 0;
     in_out_t value = tensor_read<in_out_t>(input, shape1, index);
     in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
-    state      = state * value;
+    state      = apply_mul_s<in_out_t>(state, value);
     tensor_write<in_out_t>(output, shape, out_index, state);
 }
 ----
@@ -146,7 +146,7 @@ for_each(index in shape1) {
     out_index[axis] = 0;
     in_out_t value = tensor_read<in_out_t>(input, shape1, index);
     in_out_t state = tensor_read<in_out_t>(output, shape, out_index);
-    state      = apply_add<in_out_t>(state, value);
+    state          = apply_add_s<in_out_t>(state, value);
     tensor_write<in_out_t>(output, shape, out_index, state);
 }
 ----

@@ -21,7 +21,7 @@
             <levellimit value="rank(shape1)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Axis in range from 0 to rank(shape1) - 1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -34,17 +34,17 @@
           <type name='in_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8" in_t="int8_t" out_t="int32_t"/>
-        <typesupport mode="signed 16" in_t="int16_t" out_t="int32_t" />
-        <typesupport mode="fp16" in_t="fp16_t" out_t="int32_t">
+        <typesupport mode="signed 8" in_t="i8_t" out_t="i32_t"/>
+        <typesupport mode="signed 16" in_t="i16_t" out_t="i32_t" />
+        <typesupport mode="fp16" in_t="fp16_t" out_t="i32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="bf16" in_t="bf16_t" out_t="int32_t">
+        <typesupport mode="bf16" in_t="bf16_t" out_t="i32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp32" in_t="fp32_t" out_t="int32_t">
+        <typesupport mode="fp32" in_t="fp32_t" out_t="i32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
@@ -56,19 +56,19 @@
             <description>Input tensor</description>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="attribute" name="kernel" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
+          <argument category="attribute" name="kernel" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
             <description>[kernel_y, kernel_x]</description>
             <levellimit value="kernel_y" limit="MAX_KERNEL"/>
             <levellimit value="kernel_x" limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
             <description>[stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="int32_t">
+          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_top"    limit="MAX_KERNEL"/>
             <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
@@ -97,8 +97,8 @@
           <type name='in_out_t' />
           <type name='acc_t' />
         </types>
-        <typesupport mode="signed 8 with int32 accumulate" in_out_t="int8_t" acc_t="int32_t" />
-        <typesupport mode="signed 16 with int32 accumulate" in_out_t="int16_t" acc_t="int32_t" />
+        <typesupport mode="signed 8 with int32 accumulate" in_out_t="i8_t" acc_t="i32_t" />
+        <typesupport mode="signed 16 with int32 accumulate" in_out_t="i16_t" acc_t="i32_t" />
         <typesupport mode="fp16 with fp16 accumulate" in_out_t="fp16_t" acc_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -133,7 +133,7 @@
             <description>Per output channel bias data.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="int32_t">
+          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_top"    limit="MAX_KERNEL"/>
             <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
@@ -141,13 +141,13 @@
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
             <description>[stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="dilation" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
+          <argument category="attribute" name="dilation" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
             <description>[dilation_y, dilation_x]</description>
             <rank min="1" max="1"/>
           </argument>
@@ -177,9 +177,9 @@
           <type name='weight_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" weight_t="int8_t" out_t="int32_t" />
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="int8_t" weight_t="int4_t" out_t="int32_t" />
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="int16_t" weight_t="int8_t" out_t="int48_t" />
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" />
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" />
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" />
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -215,7 +215,7 @@
             <description>Per output channel bias data.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad" type="tensor_t" shape="[6]" tensor-element-type="int32_t">
+          <argument category="attribute" name="pad" type="tensor_t" shape="[6]" tensor-element-type="i32_t">
             <description>[pad_d0, pad_d1, pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_d0"     limit="MAX_KERNEL"/>
             <levellimit value="pad_d1"     limit="MAX_KERNEL"/>
@@ -225,14 +225,14 @@
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="stride" type="tensor_t" shape="[3]" tensor-element-type="int32_t">
+          <argument category="attribute" name="stride" type="tensor_t" shape="[3]" tensor-element-type="i32_t">
             <description>[stride_d, stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <levellimit value="stride_d" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="dilation" type="tensor_t" shape="[3]" tensor-element-type="int32_t">
+          <argument category="attribute" name="dilation" type="tensor_t" shape="[3]" tensor-element-type="i32_t">
             <description>[dilation_d, dilation_y, dilation_x]</description>
             <rank min="1" max="1"/>
           </argument>
@@ -262,9 +262,9 @@
           <type name='weight_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" weight_t="int8_t" out_t="int32_t" />
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="int8_t" weight_t="int4_t" out_t="int32_t" />
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="int16_t" weight_t="int8_t" out_t="int48_t" />
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" />
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" />
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" />
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -299,7 +299,7 @@
             <description>Per output channel bias data.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="int32_t">
+          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_top"    limit="MAX_KERNEL"/>
             <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
@@ -307,13 +307,13 @@
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
             <description>[stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="dilation" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
+          <argument category="attribute" name="dilation" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
             <description>[dilation_y, dilation_x]</description>
             <rank min="1" max="1"/>
           </argument>
@@ -343,9 +343,9 @@
           <type name='weight_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" weight_t="int8_t" out_t="int32_t" />
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="int8_t" weight_t="int4_t" out_t="int32_t" />
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="int16_t" weight_t="int8_t" out_t="int48_t" />
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" />
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" />
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" />
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -438,9 +438,9 @@
           <type name='weight_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" weight_t="int8_t" out_t="int32_t" />
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="int8_t" weight_t="int4_t" out_t="int32_t" />
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="int16_t" weight_t="int8_t" out_t="int48_t" />
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" />
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" />
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" />
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -486,8 +486,8 @@
           <type name='in_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" out_t="int32_t" />
-        <typesupport mode="signed 16x16 with int48 accumulate" in_t="int16_t" out_t="int48_t" />
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" out_t="i32_t" />
+        <typesupport mode="signed 16x16 with int48 accumulate" in_t="i16_t" out_t="i48_t" />
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -512,19 +512,19 @@
             <description>Input tensor 4D</description>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="attribute" name="kernel" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
+          <argument category="attribute" name="kernel" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
             <description>[kernel_y, kernel_x]</description>
             <levellimit value="kernel_y" limit="MAX_KERNEL"/>
             <levellimit value="kernel_x" limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
             <description>[stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="int32_t">
+          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_top"    limit="MAX_KERNEL"/>
             <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
@@ -540,8 +540,8 @@
         <types>
           <type name='in_out_t' />
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t" />
-        <typesupport mode="16-bit" in_out_t="int16_t" />
+        <typesupport mode="signed 8" in_out_t="i8_t" />
+        <typesupport mode="signed 16" in_out_t="i16_t" />
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
@@ -598,7 +598,7 @@
             <description>Per output channel bias data.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="out_pad" type="tensor_t" shape="[4]" tensor-element-type="int32_t">
+          <argument category="attribute" name="out_pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
             <description>[out_pad_top, out_pad_bottom, out_pad_left, out_pad_right]</description>
             <levellimit value="out_pad_top"    limit="MAX_KERNEL"/>
             <levellimit value="out_pad_bottom" limit="MAX_KERNEL"/>
@@ -606,13 +606,13 @@
             <levellimit value="out_pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="int32_t">
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
             <description>[stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="out_shape" type="tensor_t" shape="[4]" tensor-element-type="int32_t">
+          <argument category="attribute" name="out_shape" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
             <description>[N,OH,OW,OC]</description>
             <rank min="1" max="1"/>
           </argument>
@@ -642,9 +642,9 @@
           <type name='weight_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="int8_t" weight_t="int8_t" out_t="int32_t" />
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="int8_t" weight_t="int4_t" out_t="int32_t" />
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="int16_t" weight_t="int8_t" out_t="int48_t" />
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" />
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" />
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" />
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -688,8 +688,8 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -812,7 +812,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="shape" in_out_t="shape_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
@@ -851,9 +851,9 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
       </operator>
       <operator>
         <name>BITWISE_AND</name>
@@ -875,9 +875,9 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
       </operator>
       <operator>
         <name>BITWISE_OR</name>
@@ -899,9 +899,9 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
       </operator>
       <operator>
         <name>BITWISE_XOR</name>
@@ -923,9 +923,9 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
       </operator>
       <operator>
         <name>INTDIV</name>
@@ -947,7 +947,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="shape" in_out_t="shape_t"/>
       </operator>
       <operator>
@@ -992,9 +992,9 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
       </operator>
       <operator>
         <name>LOGICAL_RIGHT_SHIFT</name>
@@ -1016,9 +1016,9 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
       </operator>
       <operator>
         <name>LOGICAL_OR</name>
@@ -1084,7 +1084,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1118,7 +1118,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1143,8 +1143,8 @@
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="tensor_t" shape="-" tensor-element-type="int8_t">
-            <description>Result right shift (int32_t data type only)</description>
+          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="tensor_t" shape="-" tensor-element-type="i8_t">
+            <description>Result right shift (i32_t data type only)</description>
             <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
@@ -1157,9 +1157,9 @@
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="signed 8" in_t="int8_t" out_t="int32_t"/>
-        <typesupport mode="signed 16" in_t="int16_t" out_t="int32_t"/>
-        <typesupport mode="signed 32" in_t="int32_t" out_t="int32_t"/>
+        <typesupport mode="signed 8" in_t="i8_t" out_t="i32_t"/>
+        <typesupport mode="signed 16" in_t="i16_t" out_t="i32_t"/>
+        <typesupport mode="signed 32" in_t="i32_t" out_t="i32_t"/>
         <typesupport mode="shape" in_t="shape_t" out_t="shape_t"/>
         <typesupport mode="fp16" in_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
@@ -1227,7 +1227,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="shape" in_out_t="shape_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
@@ -1265,8 +1265,8 @@
           <type name='out_t'/>
           <type name='TABLE_SIZE'/>
         </types>
-        <typesupport mode="signed 8" in_t="int8_t" table_t="int8_t" TABLE_SIZE="256" out_t="int8_t"/>
-        <typesupport mode="signed 16" in_t="int16_t" table_t="int16_t" TABLE_SIZE="513" out_t="int32_t"/>
+        <typesupport mode="signed 8" in_t="i8_t" table_t="i8_t" TABLE_SIZE="256" out_t="i8_t"/>
+        <typesupport mode="signed 16" in_t="i16_t" table_t="i16_t" TABLE_SIZE="513" out_t="i32_t"/>
       </operator>
     </operatorgroup>
     <operatorgroup name="elementwise-unary">
@@ -1286,7 +1286,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1316,9 +1316,9 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
       </operator>
       <operator>
         <name>CEIL</name>
@@ -1365,7 +1365,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
       </operator>
       <operator>
         <name>EXP</name>
@@ -1497,9 +1497,9 @@
           <type name='in_out_t'/>
           <type name='acc_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t" acc_t="int32_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t" acc_t="int32_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t" acc_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t" acc_t="i32_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t" acc_t="i32_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t" acc_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t" acc_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1598,9 +1598,9 @@
           <type name='in_out_t'/>
         </types>
         <typesupport mode="Boolean" in_out_t="bool_t"/>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1637,7 +1637,7 @@
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="signed 32" in_t="int32_t" out_t="bool_t"/>
+        <typesupport mode="signed 32" in_t="i32_t" out_t="bool_t"/>
         <typesupport mode="fp16" in_t="fp16_t" out_t="bool_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1672,7 +1672,7 @@
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="signed 32" in_t="int32_t" out_t="bool_t"/>
+        <typesupport mode="signed 32" in_t="i32_t" out_t="bool_t"/>
         <typesupport mode="fp16" in_t="fp16_t" out_t="bool_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1707,7 +1707,7 @@
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="signed 32" in_t="int32_t" out_t="bool_t"/>
+        <typesupport mode="signed 32" in_t="i32_t" out_t="bool_t"/>
         <typesupport mode="fp16" in_t="fp16_t" out_t="bool_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1730,7 +1730,7 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -1751,7 +1751,7 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -1772,7 +1772,7 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -1784,9 +1784,9 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1807,7 +1807,7 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -1819,9 +1819,9 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1842,7 +1842,7 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -1874,7 +1874,7 @@
             <description>Input tensor with rank from 1 to 4</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -1886,7 +1886,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1909,7 +1909,7 @@
             <description>List of input tensors. All inputs must have the same rank and data type</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Axis along which concatenation is to occur, in range from 0 to rank(shape)-1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -1923,9 +1923,9 @@
           <type name='in_out_t'/>
         </types>
         <typesupport mode="boolean" in_out_t="bool_t"/>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="shape" in_out_t="shape_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
@@ -1965,9 +1965,9 @@
           <type name='in_out_t'/>
         </types>
         <typesupport mode="boolean" in_out_t="bool_t"/>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1989,7 +1989,7 @@
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Axis in range from 0 to rank(shape) - 1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -2002,9 +2002,9 @@
           <type name='in_t'/>
         </types>
         <typesupport mode="boolean" in_t="bool_t"/>
-        <typesupport mode="signed 8" in_t="int8_t"/>
-        <typesupport mode="signed 16" in_t="int16_t"/>
-        <typesupport mode="signed 32" in_t="int32_t"/>
+        <typesupport mode="signed 8" in_t="i8_t"/>
+        <typesupport mode="signed 16" in_t="i16_t"/>
+        <typesupport mode="signed 32" in_t="i32_t"/>
         <typesupport mode="fp16" in_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2040,9 +2040,9 @@
           <type name='in_out_t'/>
         </types>
         <typesupport mode="boolean" in_out_t="bool_t"/>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2064,7 +2064,7 @@
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Axis to reverse, in range from 0 to rank(shape)-1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -2077,9 +2077,9 @@
           <type name='in_out_t'/>
         </types>
         <typesupport mode="boolean" in_out_t="bool_t"/>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="shape" in_out_t="shape_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
@@ -2120,9 +2120,9 @@ used.</description>
           <type name='in_out_t'/>
         </types>
         <typesupport mode="boolean" in_out_t="bool_t"/>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2157,9 +2157,9 @@ used.</description>
           <type name='in_out_t'/>
         </types>
         <typesupport mode="boolean" in_out_t="bool_t"/>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2180,7 +2180,7 @@ used.</description>
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="perms" type="tensor_t" shape="[rank(shape1)]" tensor-element-type="int32_t">
+          <argument category="attribute" name="perms" type="tensor_t" shape="[rank(shape1)]" tensor-element-type="i32_t">
             <description>List of integers of length equal to the rank of input1. Values must be valid dimensions within shape1, and may not be repeated.</description>
             <rank min="1" max="1"/>
           </argument>
@@ -2194,9 +2194,9 @@ used.</description>
           <type name='in_out_t'/>
         </types>
         <typesupport mode="boolean" in_out_t="bool_t"/>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2231,9 +2231,9 @@ used.</description>
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2270,9 +2270,9 @@ used.</description>
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="int8_t"/>
-        <typesupport mode="signed 16" in_out_t="int16_t"/>
-        <typesupport mode="signed 32" in_out_t="int32_t"/>
+        <typesupport mode="signed 8" in_out_t="i8_t"/>
+        <typesupport mode="signed 16" in_out_t="i16_t"/>
+        <typesupport mode="signed 32" in_out_t="i32_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2323,10 +2323,10 @@ used.</description>
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="signed 8, bilinear" resize_t="int16_t" in_t="int8_t" out_t="int32_t"/>
-        <typesupport mode="signed 8, nearest" resize_t="int16_t" in_t="int8_t" out_t="int8_t"/>
-        <typesupport mode="signed 16, bilinear" resize_t="int16_t" in_t="int16_t" out_t="int48_t"/>
-        <typesupport mode="signed 16, nearest" resize_t="int16_t" in_t="int16_t" out_t="int16_t"/>
+        <typesupport mode="signed 8, bilinear" resize_t="i16_t" in_t="i8_t" out_t="i32_t"/>
+        <typesupport mode="signed 8, nearest" resize_t="i16_t" in_t="i8_t" out_t="i8_t"/>
+        <typesupport mode="signed 16, bilinear" resize_t="i16_t" in_t="i16_t" out_t="i48_t"/>
+        <typesupport mode="signed 16, nearest" resize_t="i16_t" in_t="i16_t" out_t="i16_t"/>
         <typesupport mode="fp16" resize_t="fp16_t" in_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2359,63 +2359,63 @@ used.</description>
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="bool to signed 8" in_t="bool_t" out_t="int8_t"/>
-        <typesupport mode="bool to signed 16" in_t="bool_t" out_t="int16_t"/>
-        <typesupport mode="bool to signed 32" in_t="bool_t" out_t="int32_t"/>
-        <typesupport mode="signed 8 to bool" in_t="int8_t" out_t="bool_t"/>
-        <typesupport mode="signed 8 to signed 16" in_t="int8_t" out_t="int16_t"/>
-        <typesupport mode="signed 8 to signed 32" in_t="int8_t" out_t="int32_t"/>
-        <typesupport mode="signed 8 to fp16" in_t="int8_t" out_t="fp16_t">
+        <typesupport mode="bool to signed 8" in_t="bool_t" out_t="i8_t"/>
+        <typesupport mode="bool to signed 16" in_t="bool_t" out_t="i16_t"/>
+        <typesupport mode="bool to signed 32" in_t="bool_t" out_t="i32_t"/>
+        <typesupport mode="signed 8 to bool" in_t="i8_t" out_t="bool_t"/>
+        <typesupport mode="signed 8 to signed 16" in_t="i8_t" out_t="i16_t"/>
+        <typesupport mode="signed 8 to signed 32" in_t="i8_t" out_t="i32_t"/>
+        <typesupport mode="signed 8 to fp16" in_t="i8_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="signed 8 to bf16" in_t="int8_t" out_t="bf16_t">
+        <typesupport mode="signed 8 to bf16" in_t="i8_t" out_t="bf16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="signed 8 to fp32" in_t="int8_t" out_t="fp32_t">
+        <typesupport mode="signed 8 to fp32" in_t="i8_t" out_t="fp32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="signed 16 to bool" in_t="int16_t" out_t="bool_t"/>
-        <typesupport mode="signed 16 to signed 8" in_t="int16_t" out_t="int8_t"/>
-        <typesupport mode="signed 16 to signed 32" in_t="int16_t" out_t="int32_t"/>
-        <typesupport mode="signed 16 to fp16" in_t="int16_t" out_t="fp16_t">
+        <typesupport mode="signed 16 to bool" in_t="i16_t" out_t="bool_t"/>
+        <typesupport mode="signed 16 to signed 8" in_t="i16_t" out_t="i8_t"/>
+        <typesupport mode="signed 16 to signed 32" in_t="i16_t" out_t="i32_t"/>
+        <typesupport mode="signed 16 to fp16" in_t="i16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="signed 16 to bf16" in_t="int16_t" out_t="bf16_t">
+        <typesupport mode="signed 16 to bf16" in_t="i16_t" out_t="bf16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="signed 16 to fp32" in_t="int16_t" out_t="fp32_t">
+        <typesupport mode="signed 16 to fp32" in_t="i16_t" out_t="fp32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="signed 32 to bool" in_t="int32_t" out_t="bool_t"/>
-        <typesupport mode="signed 32 to signed 8" in_t="int32_t" out_t="int8_t"/>
-        <typesupport mode="signed 32 to signed 16" in_t="int32_t" out_t="int16_t"/>
-        <typesupport mode="signed 32 to fp16" in_t="int32_t" out_t="fp16_t">
+        <typesupport mode="signed 32 to bool" in_t="i32_t" out_t="bool_t"/>
+        <typesupport mode="signed 32 to signed 8" in_t="i32_t" out_t="i8_t"/>
+        <typesupport mode="signed 32 to signed 16" in_t="i32_t" out_t="i16_t"/>
+        <typesupport mode="signed 32 to fp16" in_t="i32_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="signed 32 to bf16" in_t="int32_t" out_t="bf16_t">
+        <typesupport mode="signed 32 to bf16" in_t="i32_t" out_t="bf16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="signed 32 to fp32" in_t="int32_t" out_t="fp32_t">
+        <typesupport mode="signed 32 to fp32" in_t="i32_t" out_t="fp32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="bf16 to signed 8" in_t="bf16_t" out_t="int8_t">
+        <typesupport mode="bf16 to signed 8" in_t="bf16_t" out_t="i8_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="bf16 to signed 16" in_t="bf16_t" out_t="int16_t">
+        <typesupport mode="bf16 to signed 16" in_t="bf16_t" out_t="i16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="bf16 to signed 32" in_t="bf16_t" out_t="int32_t">
+        <typesupport mode="bf16 to signed 32" in_t="bf16_t" out_t="i32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
@@ -2423,15 +2423,15 @@ used.</description>
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp16 to signed 8" in_t="fp16_t" out_t="int8_t">
+        <typesupport mode="fp16 to signed 8" in_t="fp16_t" out_t="i8_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp16 to signed 16" in_t="fp16_t" out_t="int16_t">
+        <typesupport mode="fp16 to signed 16" in_t="fp16_t" out_t="i16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp16 to signed 32" in_t="fp16_t" out_t="int32_t">
+        <typesupport mode="fp16 to signed 32" in_t="fp16_t" out_t="i32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
@@ -2439,15 +2439,15 @@ used.</description>
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp32 to signed 8" in_t="fp32_t" out_t="int8_t">
+        <typesupport mode="fp32 to signed 8" in_t="fp32_t" out_t="i8_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp32 to signed 16" in_t="fp32_t" out_t="int16_t">
+        <typesupport mode="fp32 to signed 16" in_t="fp32_t" out_t="i16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp32 to signed 32" in_t="fp32_t" out_t="int32_t">
+        <typesupport mode="fp32 to signed 32" in_t="fp32_t" out_t="i32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
@@ -2484,12 +2484,12 @@ used.</description>
             <description>Scaling multiplier array</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="tensor_t" shape="[NC]" tensor-element-type="int8_t">
+          <argument category="input(MT)|attribute(BI,MI)" name="shift" type="tensor_t" shape="[NC]" tensor-element-type="i8_t">
             <description>Scaling shift array</description>
             <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="scale32" type="tensor_t" shape="-" tensor-element-type="bool_t">
-            <description>if (scale32) mul_t=int32_t else mul_t=int16_t</description>
+            <description>if (scale32) mul_t=i32_t else mul_t=i16_t</description>
             <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="double_round" type="tensor_t" shape="-" tensor-element-type="bool_t">
@@ -2500,29 +2500,31 @@ used.</description>
             <description>if (per_channel) NC=shape[rank(shape)-1] else NC=1</description>
             <rank min="0" max="0"/>
           </argument>
+          <argument category="attribute" name="input_unsigned" type="tensor_t" shape="-" tensor-element-type="bool_t">
+            <description>If True, treat the input values as unsigned.</description>
+            <rank min="0" max="0"/>
+          </argument>
+          <argument category="attribute" name="output_unsigned" type="tensor_t" shape="-" tensor-element-type="bool_t">
+            <description>If True, treat the output values as unsigned.</description>
+            <rank min="0" max="0"/>
+          </argument>
         </arguments>
         <types>
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="signed 8 to signed 8" in_t="int8_t" out_t="int8_t"/>
-        <typesupport mode="signed 8 to signed 16" in_t="int8_t" out_t="int16_t"/>
-        <typesupport mode="signed 8 to signed 32" in_t="int8_t" out_t="int32_t"/>
-        <typesupport mode="signed 8 to unsigned 8" in_t="int8_t" out_t="uint8_t"/>
-        <typesupport mode="signed 16 to signed 8" in_t="int16_t" out_t="int8_t"/>
-        <typesupport mode="signed 16 to signed 16" in_t="int16_t" out_t="int16_t"/>
-        <typesupport mode="signed 16 to signed 32" in_t="int16_t" out_t="int32_t"/>
-        <typesupport mode="signed 16 to unsigned 8" in_t="int16_t" out_t="uint8_t"/>
-        <typesupport mode="signed 16 to unsigned 16" in_t="int16_t" out_t="uint16_t"/>
-        <typesupport mode="signed 32 to signed 8" in_t="int32_t" out_t="int8_t"/>
-        <typesupport mode="signed 32 to signed 16" in_t="int32_t" out_t="int16_t"/>
-        <typesupport mode="signed 32 to signed 32" in_t="int32_t" out_t="int32_t"/>
-        <typesupport mode="signed 48 to signed 8" in_t="int48_t" out_t="int8_t"/>
-        <typesupport mode="signed 48 to signed 16" in_t="int48_t" out_t="int16_t"/>
-        <typesupport mode="signed 48 to signed 32" in_t="int48_t" out_t="int32_t"/>
-        <typesupport mode="unsigned 8 to signed 8" in_t="uint8_t" out_t="int8_t"/>
-        <typesupport mode="unsigned 8 to signed 16" in_t="uint8_t" out_t="int16_t"/>
-        <typesupport mode="unsigned 16 to signed 16" in_t="uint16_t" out_t="int16_t"/>
+        <typesupport mode="8-bit to 8-bit" in_t="i8_t" out_t="i8_t"/>
+        <typesupport mode="8-bit to 16-bit" in_t="i8_t" out_t="i16_t"/>
+        <typesupport mode="8-bit to 32-bit" in_t="i8_t" out_t="i32_t"/>
+        <typesupport mode="16-bit to 8-bit" in_t="i16_t" out_t="i8_t"/>
+        <typesupport mode="16-bit to 16-bit" in_t="i16_t" out_t="i16_t"/>
+        <typesupport mode="16-bit to 32-bit" in_t="i16_t" out_t="i32_t"/>
+        <typesupport mode="32-bit to 8-bit" in_t="i32_t" out_t="i8_t"/>
+        <typesupport mode="32-bit to 16-bit" in_t="i32_t" out_t="i16_t"/>
+        <typesupport mode="32-bit to 32-bit" in_t="i32_t" out_t="i32_t"/>
+        <typesupport mode="48-bit to 8-bit" in_t="i48_t" out_t="i8_t"/>
+        <typesupport mode="48-bit to 16-bit" in_t="i48_t" out_t="i16_t"/>
+        <typesupport mode="48-bit to 32-bit" in_t="i48_t" out_t="i32_t"/>
       </operator>
     </operatorgroup>
     <operatorgroup name="data-node">
@@ -2542,11 +2544,11 @@ used.</description>
           <type name='out_t' />
         </types>
         <typesupport mode="Boolean" out_t="bool_t" />
-        <typesupport mode="signed 4" out_t="int4_t" />
-        <typesupport mode="signed 8" out_t="int8_t" />
-        <typesupport mode="signed 16" out_t="int16_t" />
-        <typesupport mode="signed 32" out_t="int32_t" />
-        <typesupport mode="signed 48" out_t="int48_t" />
+        <typesupport mode="4-bit" out_t="i4_t" />
+        <typesupport mode="8-bit" out_t="i8_t" />
+        <typesupport mode="16-bit" out_t="i16_t" />
+        <typesupport mode="32-bit" out_t="i32_t" />
+        <typesupport mode="48-bit" out_t="i48_t" />
         <typesupport mode="shape" out_t="shape_t" />
         <typesupport mode="fp16" out_t="fp16_t" >
           <profile name="MI"/>
@@ -2577,9 +2579,9 @@ used.</description>
           <type name='in_out_t' />
         </types>
         <typesupport mode="Boolean" in_out_t="bool_t" />
-        <typesupport mode="signed 8" in_out_t="int8_t" />
-        <typesupport mode="signed 16" in_out_t="int16_t" />
-        <typesupport mode="signed 32" in_out_t="int32_t" />
+        <typesupport mode="8-bit" in_out_t="i8_t" />
+        <typesupport mode="16-bit" in_out_t="i16_t" />
+        <typesupport mode="32-bit" in_out_t="i32_t" />
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2638,7 +2640,7 @@ used.</description>
       <operator>
         <name>VARIABLE</name>
         <arguments>
-          <argument category="attribute" name="uid" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="uid" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Globally unique identifier for the declared variable tensor.</description>
             <rank min="0" max="0"/>
           </argument>
@@ -2660,7 +2662,7 @@ used.</description>
       <operator>
         <name>VARIABLE_WRITE</name>
         <arguments>
-          <argument category="attribute" name="uid" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="uid" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Globally unique identifier of the variable tensor that is writing to</description>
             <rank min="0" max="0"/>
           </argument>
@@ -2674,7 +2676,7 @@ used.</description>
       <operator>
         <name>VARIABLE_READ</name>
         <arguments>
-          <argument category="attribute" name="uid" type="tensor_t" shape="-" tensor-element-type="int32_t">
+          <argument category="attribute" name="uid" type="tensor_t" shape="-" tensor-element-type="i32_t">
             <description>Globally unique identifier of the variable tensor that is reading from </description>
             <rank min="0" max="0"/>
           </argument>

@@ -22,7 +22,7 @@ if (in_out_t == shape_t) {
     ERROR_IF(rank(shape) != 0 || rank(shape1) != 0 || rank(shape2) != 0);
     shape_t value1 = tensor_read<shape_t>(input1, [], []);
     shape_t value2 = tensor_read<shape_t>(input2, [], []);
-    shape_t result = apply_add<shape_t>(value1, value2);
+    shape_t result = apply_add_s<shape_t>(value1, value2);
     tensor_write<shape_t>(output, [], [], result);
 } else {
     ERROR_IF(shape != broadcast_shape(shape1, shape2));
@@ -31,7 +31,7 @@ if (in_out_t == shape_t) {
         dim_t index2 = apply_broadcast(shape, shape2, index);
         in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
         in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-        in_out_t result = apply_add<in_out_t>(value1, value2);
+        in_out_t result = apply_add_s<in_out_t>(value1, value2);
         tensor_write<in_out_t>(output, shape, index, result);
     }
 }
@@ -54,15 +54,16 @@ for_each(index in shape) {
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
 
     // Ensure that shift amount is appropriate for the data type
-    REQUIRE((in_out_t == int32_t && 0 <= value2 && value2 <= 31) ||
-            (in_out_t == int16_t && 0 <= value2 && value2 <= 15) ||
-            (in_out_t == int8_t && 0 <= value2 && value2 <= 7));
+    REQUIRE((in_out_t == i32_t && 0 <= value2 && value2 <= 31) ||
+            (in_out_t == i16_t && 0 <= value2 && value2 <= 15) ||
+            (in_out_t == i8_t && 0 <= value2 && value2 <= 7));
 
-    in_out_t result = value1 >> value2;
-    if (round == true && value2 > 0 && (value1 >> (value2 - 1)) & 1 != 0) {
+    in_out_t result = apply_arith_rshift<in_out_t>(value1, value2);
+    if (round == true && static_cast<int32_t>(value2) > 0 &&
+        (apply_arith_rshift<in_out_t>(value1, apply_sub_s<in_out_t>(value2, 1)) & 1 != 0) {
         result = result + 1;
     }
-    result = apply_clip<in_out_t>(result, minimum<in_out_t>, maximum<in_out_t>);
+    result = apply_clip_s<in_out_t>(result, minimum_s<in_out_t>, maximum_s<in_out_t>);
     tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
@@ -156,8 +157,8 @@ if (in_out_t == shape_t) {
         REQUIRE(value2 != 0);
         // This catches the case where we divide minimum<in_out_t> by -1
         // which is not representable in two's complement
-        REQUIRE((int64_t)value1 / value2 <= maximum<in_out_t>);
-        in_out_t result = value1 / value2;
+        REQUIRE(static_cast<int64_t>(value1) / static_cast<int64_t>(value2) <= maximum_s<in_out_t>);
+        in_out_t result = apply_intdiv_s<in_out_t>(value1, value2);
         tensor_write<in_out_t>(output, shape, index, result);
     }
 }
@@ -219,8 +220,9 @@ for_each(index in shape) {
     dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    REQUIRE(0 <= value2 && value2 <= 31);
-    in_out_t result = (in_out_t)((unsigned in_out_t)value1 >> value2);
+    REQUIRE(0 <= static_cast<int32_t>(value2) && static_cast<int32_t>(value2) <= 31);
+    // Logical shifts happen as unsigned types internally
+    in_out_t result = apply_logical_rshift<in_out_t>(value1, value2);
     tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
@@ -280,7 +282,7 @@ for_each(index in shape) {
     dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t result = apply_max(value1, value2);
+    in_out_t result = apply_max_s<in_out_t>(value1, value2);
     tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
@@ -300,7 +302,7 @@ for_each(index in shape) {
     dim_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t result = apply_min(value1, value2);
+    in_out_t result = apply_min_s(value1, value2);
     tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
@@ -330,14 +332,14 @@ if (in_out_t == shape_t) {
         in_t value1 = tensor_read<in_t>(input1, shape1, index1);
         in_t value2 = tensor_read<in_t>(input2, shape2, index2);
         out_t result;
-        if (in_t == int32_t && shift > 0) {
-            int64_t product = (int64_t)value1 * (int64_t)value2;
-            int64_t round   = (int64_t)1 << (shift-1);
+        if (in_t == i32_t && shift > 0) {
+            int64_t product = sign_extend<int64_t>(value1) * sign_extend<int64_t>(value2);
+            int64_t round   = static_cast<int64_t>(1) << (shift - 1);
             product = (product + round) >> shift;
-            REQUIRE(product >= minimum<int32_t> && product <= maximum<int32_t>)
+            REQUIRE(product >= minimum_s<i32_t> && product <= maximum_s<i32_t>)
             result = product;
         } else {
-            result = value1 * value2;  // low 32-bits of result for int32_t
+            result = apply_mul_s(value1, value2);  // low 32-bits of result for i32_t
         }
         tensor_write<out_t>(output, shape, index, result);
     }
@@ -386,7 +388,7 @@ if (in_out_t == shape_t) {
         dim_t index2 = apply_broadcast(shape, shape2, index);
         in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
         in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-        in_out_t result = apply_sub<in_out_t>(value1, value2);
+        in_out_t result = apply_sub_s<in_out_t>(value1, value2);
         tensor_write<in_out_t>(output, shape, index, result);
     }
 }
@@ -416,11 +418,11 @@ REQUIRE(length(table) == TABLE_SIZE);
 for_each(index in shape) {
     in_t value = tensor_read<in_t>(input, shape, index);
     out_t result;
-    if (in_t == int8_t) {
+    if (in_t == i8_t) {
         // value is a signed int, convert to a 0 based index
-        result = table[value + 128];
+        result = table[static_cast<int16_t>(value) + 128];
     } else {
-        result = apply_lookup(table, value);
+        result = apply_lookup_s(static_cast<int16_t>(table), static_cast<int16_t>(value));
     }
     tensor_write<out_t>(output, shape, index, result);
 }

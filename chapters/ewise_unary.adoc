@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2022 ARM Limited
+// (C) COPYRIGHT 2020-2023 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -26,11 +26,12 @@ include::{generated}/operators/ABS.adoc[]
 ----
 for_each(index in shape) {
     in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
-    if (in_out_t == float_t && value1 == -0.0) {
+    if (is_floating_point(in_out_t) && value1 == -0.0) {
         value1 = 0.0;
     }
-    if (value1 < 0.0)
-        value1 = apply_sub<in_out_t>(0, value1);
+    if (static_cast<int32_t>(value1) < 0.0) {
+        value1 = apply_sub_s<in_out_t>(0, value1);
+    }
     tensor_write<in_out_t>(output, shape, index, value1);
 }
 ----
@@ -183,13 +184,17 @@ include::{generated}/operators/NEGATE.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(in_out_t != int8_t && input1_zp != 0) // Zero point only for int8_t
-ERROR_IF(in_out_t != int8_t && output_zp != 0) // Zero point only for int8_t
+ERROR_IF(in_out_t != i8_t && input1_zp != 0) // Zero point only for int8_t
+ERROR_IF(in_out_t != i8_t && output_zp != 0) // Zero point only for int8_t
 for_each(index in shape) {
     in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
-    acc_t value = (acc_t)value1 - input1_zp;
-    value = apply_sub<acc_t>(0, value);
-    in_out_t result = (in_out_t)apply_clip<acc_t>(value + output_zp, minimum<in_out_t>, maximum<in_out_t>);
+    acc_t value = apply_sub_s<acc_t>(sign_extend<acc_t>(value1),
+                                     sign_extend<acc_t>(input1_zp));
+    value = apply_sub_s<acc_t>(0, value);
+    value = apply_add_s<acc_t>(value, sign_extend<acc_t>(output_zp));
+    in_out_t result = truncate<in_out_t>(apply_clip_s<acc_t>(value,
+                                                             minimum_s<in_out_t>,
+                                                             maximum_s<in_out_t>));
     tensor_write<in_out_t>(output, shape, index, result);
 }
 ----
