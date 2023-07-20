@@ -105,6 +105,7 @@ class TOSASpec:
             'MAX_STRIDE': level.get("max_stride"),
             'MAX_SCALE': level.get("max_scale"),
             'MAX_LOG2_SIZE' : level.get("max_log2_size"),
+            'MAX_NESTING' : level.get("max_nesting"),
         }
         return TOSALevel(name, desc, maximums)
 

@@ -163,7 +163,8 @@ In terms of psuedo-code, if *graph* is a TOSA graph consisting of Baseline Infer
 bool tosa_test_compliance(tosa_graph_t graph, tosa_list_t input_list, tosa_level_t level) {
     shape_list_t output_list_spec = tosa_allocate_list(tosa_output_shape(graph));
     shape_list_t output_list_test = tosa_allocate_list(tosa_output_shape(graph));
-    tosa_graph_result = tosa_valid    // result starts as valid
+    tosa_graph_result = tosa_valid;    // result starts as valid
+    tosa_nesting_depth = 0;            // if/while nesting level
     tosa_execute_graph(graph, input_list, output_list_spec, level);
     if (tosa_graph_result == tosa_unpredictable) {
         return true;    // No requirement to match an unpredictable result

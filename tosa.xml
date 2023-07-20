@@ -8,8 +8,8 @@
     <profile name="MT">Main Training</profile>
   </profiles>
   <levels>
-    <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63">No level</level>
-    <level name="8K"   max_rank="6"  max_kernel="8192"       max_stride="8192"       max_scale="64"   max_log2_size="31">Level 8K</level>
+    <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256">No level</level>
+    <level name="8K"   max_rank="6"  max_kernel="8192"       max_stride="8192"       max_scale="64"   max_log2_size="31" max_nesting="6">Level 8K</level>
   </levels>
   <operators>
     <operatorgroup name="tensor">

@@ -19,17 +19,20 @@ include::{generated}/operators/COND_IF.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(tosa_nesting_depth >= MAX_NESTING);
 ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(then_graph));
 ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(else_graph));
 ERROR_IF(tensor_list_shape(output_list) != tosa_output_shape(then_graph));
 ERROR_IF(tensor_list_shape(output_list) != tosa_output_shape(else_graph));
 ERROR_IF(tensor_size(shape) != 1);
 
+tosa_nesting_depth++;
 if (condition[0]) {
     tosa_execute_graph(then_graph, input_list, output_list);
 } else {
     tosa_execute_graph(else_graph, input_list, output_list);
 }
+tosa_nesting_depth--;
 ----
 
 ==== WHILE_LOOP
@@ -40,6 +43,7 @@ include::{generated}/operators/WHILE_LOOP.adoc[]
 
 [source,c++]
 ----
+ERROR_IF(tosa_nesting_depth >= MAX_NESTING);
 ERROR_IF(tensor_list_shape(input_list) != tosa_list_shape(output_list));
 ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(cond_graph));
 ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(body_graph));
@@ -54,11 +58,13 @@ int32_t i=0;             // iteration number
 tensor_list_t list[];    // array of tensor lists indexed by iteration
 bool_t *condition[];     // array of condition tensors indexed by iteration
 list[i] = input_list;    // copy input data as list[0]
+tosa_nesting_depth++;
 tosa_execute_graph(cond_graph, list[i], [ condition[i] ]);   // initial condition
 while (condition[i][0]) {
     tosa_execute_graph(body_graph, list[i], list[i+1]);
     i = i+1;
     tosa_execute_graph(cond_graph, list[i], [ condition[i] ]);
 }
+tosa_nesting_depth--;
 output_list = list[i];
 ----
