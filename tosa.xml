@@ -159,6 +159,14 @@
             <description>Weight zero point. Must be zero for non-int8 types.</description>
             <rank min="0" max="0"/>
           </argument>
+          <argument category="attribute" name="local_bound" type="tensor_t" shape="-" tensor-element-type="bool_t" optional="true">
+            <description>
+                This optional attribute affects the floating-point compliance error bound.
+                The default of false allows for direct and transform based, fast convolution algorithms.
+                Only set to true if direct dot-product calculation precision is required.
+            </description>
+            <rank min="0" max="0"/>
+          </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,OC]" tensor-element-type="out_t">
             <description>Output tensor</description>
             <rank min="4" max="4"/>
@@ -236,6 +244,14 @@
             <description>Weight zero point. Must be zero for non-int8 types.</description>
             <rank min="0" max="0"/>
           </argument>
+          <argument category="attribute" name="local_bound" type="tensor_t" shape="-" tensor-element-type="bool_t" optional="true">
+            <description>
+                This optional attribute affects the floating-point compliance error bound.
+                The default of false allows for direct and transform based, fast convolution algorithms.
+                Only set to true if direct dot-product calculation precision is required.
+            </description>
+            <rank min="0" max="0"/>
+          </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OD,OH,OW,OC]" tensor-element-type="out_t">
             <description>Output tensor</description>
             <rank min="5" max="5"/>
@@ -309,6 +325,14 @@
             <description>Weight zero point. Must be zero for non-int8 types.</description>
             <rank min="0" max="0"/>
           </argument>
+          <argument category="attribute" name="local_bound" type="tensor_t" shape="-" tensor-element-type="bool_t" optional="true">
+            <description>
+                This optional attribute affects the floating-point compliance error bound.
+                The default of false allows for direct and transform based, fast convolution algorithms.
+                Only set to true if direct dot-product calculation precision is required.
+            </description>
+            <rank min="0" max="0"/>
+          </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,C*M]" tensor-element-type="out_t">
             <description>Output tensor</description>
             <rank min="4" max="4"/>
@@ -359,6 +383,14 @@
           <argument category="output" name="output_real" type="tensor_t" shape="[N,H,W]" tensor-element-type="in_out_t">
             <description>Real part of the complex output.</description>
             <rank min="3" max="3"/>
+          </argument>
+          <argument category="attribute" name="local_bound" type="tensor_t" shape="-" tensor-element-type="bool_t" optional="true">
+            <description>
+                This optional attribute affects the floating-point compliance error bound.
+                The default of false allows for direct and transform based, fast convolution algorithms.
+                Only set to true if direct dot-product calculation precision is required.
+            </description>
+            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output_imag" type="tensor_t" shape="[N,H,W]" tensor-element-type="in_out_t">
             <description>Imaginary part of the complex output.</description>
@@ -590,6 +622,14 @@
           </argument>
           <argument category="attribute" name="weight_zp" type="tensor_t" shape="-" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
+            <rank min="0" max="0"/>
+          </argument>
+          <argument category="attribute" name="local_bound" type="tensor_t" shape="-" tensor-element-type="bool_t" optional="true">
+            <description>
+                This optional attribute affects the floating-point compliance error bound.
+                The default of false allows for direct and transform based, fast convolution algorithms.
+                Only set to true if direct dot-product calculation precision is required.
+            </description>
             <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,OC]" tensor-element-type="out_t">

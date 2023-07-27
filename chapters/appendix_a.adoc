@@ -37,7 +37,10 @@ This function takes the following arguments:
 
 * S is the test set number which identifies which generator is used
 * KS is the kernel size
-* p is the parameter number of 0 for the first input (usually data) and 1 for the second input (usually weights)
+* p is the parameter number of:
+** 0 for the first input (usually data)
+** 1 for the second input (usually weights)
+** 2 for the third input if present (usually bias)
 * k is the index within the kernel in the range 0 \<= k < KS
 * i is the index within the tensor to write
 
@@ -61,6 +64,7 @@ The aim of this generator is to check that sum of products with zero gives zero 
 | p | tosa_mi_data(S, KS, p, k, i) =
 | 0 | set_data(2*S, i) < 0 ? 0.0 : set_data(2*S+1, i)
 | 1 | set_data(2*S, i) < 0 ? set_data(2*S+1, i) : 0.0
+| 2 | 0.0
 |===
 
 ==== Test set S=1
@@ -70,8 +74,9 @@ The aim of this test set is to check values with large exponents.
 [cols="1,9"]
 |===
 | p | tosa_mi_data(S, KS, p, k, i) =
-| 0 | (B/sqrt(KS))*(0.75 + 0.25*set_data(2*S+0, i))
-| 1 | (B/sqrt(KS))*(0.75 + 0.25*set_data(2*S+1, i))
+| 0 | (B/sqrt(KS+1))*(0.75 + 0.25*set_data(3*S+0, i))
+| 1 | (B/sqrt(KS+1))*(0.75 + 0.25*set_data(3*S+1, i))
+| 2 | (B*B/(KS+1))*(0.75 + 0.25*set_data(3*S+2, i))
 |===
 
 ==== Test set S=2
@@ -85,6 +90,7 @@ If the implementation changes the order of the sum, then the test data must also
 | p | tosa_mi_data(S, KS, p, k, i) =
 | 0 | (k==0) ? 1.0 : set_data(2*S+0, i)/sqrt(KS)
 | 1 | (k==0) ? 1.0 : set_data(2*S+1, i)/sqrt(KS)
+| 2 | 0.0
 |===
 
 ==== Test set S=3
@@ -98,6 +104,7 @@ If the implementation changes the order of the sum, then the test data must also
 | p | tosa_mi_data(S, KS, p, k, i) =
 | 0 | (k==0) ? 16.0 : exp(2*set_data(2*S+0, 2*i+0)) * set_data(2*S+0, 2*i+1)
 | 1 | (k==0) ? 16.0 : exp(2*set_data(2*S+1, 2*i+0)) * set_data(2*S+1, 2*i+1)
+| 2 | 0.0
 |===
 
 ==== Test set S=4
@@ -109,6 +116,7 @@ The aim of this test set is to check a mixture of zero and non-zero products.
 | p | tosa_mi_data(S, KS, p, k, i) =
 | 0 | (k==KS/2) ? +0.5 : (set_data(2*S, i) < 0 ? 0.0 : (B/sqrt(KS))*set_data(2*S+1, i))
 | 1 | (k==KS/2) ? -0.5 : (set_data(2*S, i) < 0 ? (B/sqrt(KS))*set_data(2*S+1, i) : 0.0)
+| 2 | 0.0
 |===
 
 ==== Test set S=5
@@ -118,8 +126,9 @@ The aim of this test set is to check signed inputs of large range.
 [cols="1,9"]
 |===
 | p | tosa_mi_data(S, KS, p, k, i) =
-| 0 | (B/sqrt(KS))*set_data(2*S+0, i)
-| 1 | (B/sqrt(KS))*set_data(2*S+1, i)
+| 0 | (B/sqrt(KS+1))*set_data(3*S+0, i)
+| 1 | (B/sqrt(KS+1))*set_data(3*S+1, i)
+| 2 | (B*B/(KS+1))*set_data(3*S+2, i)
 |===
 
 === Main Inference operator test data
@@ -145,6 +154,9 @@ for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
 for (0 <= oc < OC, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
   weight[oc, ky, kx, ic] = tosa_mi_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
 }
+for (0 <= oc < OC) {
+  bias[oc] = tosa_mi_data(S, KS, 2, oc)
+}
 ----
 
 ==== CONV3D
@@ -161,6 +173,9 @@ for (0 <= n < N, 0 <= id < UD, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
 }
 for (0 <= oc < OC, 0 <= kd < KD, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
   weight[oc, kd, ky, kx, ic] = tosa_mi_data(S, KS, 1, ((kd*KH+ky)*KW+kx)*IC+ic, (((oc*KD+kd)*KH+ky)*KW+kx)*IC+ic);
+}
+for (0 <= oc < OC) {
+  bias[oc] = tosa_mi_data(S, KS, 2, oc)
 }
 ----
 
@@ -179,6 +194,9 @@ for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= c < C) {
 for (0 <= ky < KH, 0 <= kx < KW, 0 <= c < C, 0 <= m < M) {
   weight[ky, kx,  c, m] = tosa_mi_data(S, KS, 1, (ky*KW+kx), ((ky*KW+kx)*C+c)*M+m);
 }
+for (0 <= oc < C*M) {
+  bias[oc] = tosa_mi_data(S, KS, 2, oc)
+}
 ----
 
 ==== FULLY_CONNECTED
@@ -195,6 +213,9 @@ for (0 <= n < N, 0 <= ic < IC) {
 }
 for (0 <= oc < OC, 0 <= ic < IC) {
   weight[oc, ic] = tosa_mi_data(S, KS, 1, ic, oc*IC+ic);
+}
+for (0 <= oc < OC) {
+  bias[oc] = tosa_mi_data(S, KS, 2, oc)
 }
 ----
 
@@ -229,6 +250,9 @@ for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
 }
 for (0 <= oc < OC, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
   weight[oc, ky, kx, ic] = tosa_mi_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
+}
+for (0 <= oc < OC) {
+  bias[oc] = tosa_mi_data(S, KS, 2, oc)
 }
 ----
 
