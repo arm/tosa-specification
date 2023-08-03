@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
+# Copyright (c) 2023, ARM Limited.
+# SPDX-License-Identifier: Apache-2.0
 import os
 
 import tosa
+
 
 class TOSASpecAsciidocGenerator:
     def __init__(self, spec):
@@ -36,28 +39,29 @@ class TOSASpecAsciidocGenerator:
                 cattext = cats[0].name.title()
 
             # Type
-            if arg.type == 'tensor_t':
-                argtype = 'T<{}>'.format(arg.tensor_element_type)
-            elif arg.type == 'tensor_list_t':
-                if arg.tensor_element_type == '-':
-                    argtype = 'tensor_list_t'
+            if arg.type == "tensor_t":
+                argtype = "T<{}>".format(arg.tensor_element_type)
+            elif arg.type == "tensor_list_t":
+                if arg.tensor_element_type == "-":
+                    argtype = "tensor_list_t"
                 else:
-                    argtype = 'tensor_list_t<T<{}>>'.format(arg.tensor_element_type)
+                    argtype = "tensor_list_t<T<{}>>".format(arg.tensor_element_type)
             else:
                 argtype = arg.type
 
             # Rank
             if len(arg.rank) > 0:
-                if (arg.rank[0] == arg.rank[1]):
-                    rank = f'{arg.rank[0]}'
+                if arg.rank[0] == arg.rank[1]:
+                    rank = f"{arg.rank[0]}"
                 else:
-                    rank = f'{arg.rank[0]} to {arg.rank[1]}'
+                    rank = f"{arg.rank[0]} to {arg.rank[1]}"
             else:
                 rank = ""
 
             # Format and write line
             file.write(
-                f"|{cattext}|{argtype}|{arg.name}|{arg.shape}|{rank}|{arg.description}\n"
+                f"|{cattext}|{argtype}|{arg.name}|{arg.shape}"
+                f"|{rank}|{arg.description}\n"
             )
 
         file.write("|===\n")
@@ -80,10 +84,10 @@ class TOSASpecAsciidocGenerator:
         file.write("\n*Operation Function:*\n\n")
         leveltext = ""
         for arg in op.arguments:
-            if (len(arg.levellimits) > 0):
+            if len(arg.levellimits) > 0:
                 for limit in arg.levellimits:
-                   leveltext += "LEVEL_CHECK(" + limit[0] + " <= " + limit[1] + ");\n"
-        if (len(leveltext) > 0):
+                    leveltext += "LEVEL_CHECK(" + limit[0] + " <= " + limit[1] + ");\n"
+        if len(leveltext) > 0:
             file.write(f"[source,c++]\n----\n{leveltext}\n----\n")
 
     def generate(self, outdir):
@@ -93,29 +97,29 @@ class TOSASpecAsciidocGenerator:
         major = self.spec.version_major
         minor = self.spec.version_minor
         patch = self.spec.version_patch
-        with open(os.path.join(outdir, "version.adoc"), 'w') as f:
-            f.write(':tosa-version-string: {}.{}.{}'.format(major, minor, patch))
+        with open(os.path.join(outdir, "version.adoc"), "w") as f:
+            f.write(":tosa-version-string: {}.{}.{}".format(major, minor, patch))
             if self.spec.version_is_draft:
-                f.write(' draft')
-            f.write('\n')
+                f.write(" draft")
+            f.write("\n")
 
         # Generate level maximums table
-        with open(os.path.join(outdir, "levels.adoc"), 'w') as f:
-            f.write('|===\n')
-            f.write('|tosa_level_t')
+        with open(os.path.join(outdir, "levels.adoc"), "w") as f:
+            f.write("|===\n")
+            f.write("|tosa_level_t")
             for level in self.spec.levels:
-                f.write('|tosa_level_{}'.format(level.name))
-            f.write('\n')
-            f.write('|Description')
+                f.write("|tosa_level_{}".format(level.name))
+            f.write("\n")
+            f.write("|Description")
             for level in self.spec.levels:
-                f.write('|{}'.format(level.desc))
-            f.write('\n')
+                f.write("|{}".format(level.desc))
+            f.write("\n")
             for param in self.spec.levels[0].maximums:
-                f.write('|{}'.format(param))
+                f.write("|{}".format(param))
                 for level in self.spec.levels:
-                    f.write('|{}'.format(level.maximums[param]))
-                f.write('\n')
-            f.write('|===\n')
+                    f.write("|{}".format(level.maximums[param]))
+                f.write("\n")
+            f.write("|===\n")
 
         # Generator operators
         opdir = os.path.join(outdir, "operators")
@@ -124,9 +128,10 @@ class TOSASpecAsciidocGenerator:
             for op in group.operators:
                 with open(os.path.join(opdir, op.name + ".adoc"), "w") as f:
                     self.generate_operator(op, f)
-        with open(os.path.join(outdir, "enums.adoc"), 'w') as f:
+        with open(os.path.join(outdir, "enums.adoc"), "w") as f:
             for enum in self.spec.enums:
                 self.generate_enum(enum, f)
+
 
 if __name__ == "__main__":
     import argparse
