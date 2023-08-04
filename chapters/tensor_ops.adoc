@@ -110,6 +110,7 @@ ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(dilation_y < 1 || dilation_x < 1);
 ERROR_IF(OH != idiv_check(IH - 1 + pad_top + pad_bottom - (KH - 1) * dilation_y, stride_y) + 1);
 ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x, stride_x) + 1);
+ERROR_IF(BC != OC && BC != 1);
 
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
     out_t acc = 0;
@@ -126,7 +127,7 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
             acc = apply_add<out_t>(acc, value * weight);
         }
     }
-    acc = apply_add<out_t>(acc, bias[oc]);
+    acc = apply_add<out_t>(acc, bias[(BC == 1) ? 0 : oc]);
     tensor_write<out_t>(output, [N,OH,OW,OC], [n,oy,ox,oc], acc);
 }
 ----
@@ -147,6 +148,7 @@ ERROR_IF(dilation_d < 1 || dilation_y < 1 || dilation_x < 1);
 ERROR_IF(OD != idiv_check(ID - 1 + pad_d0 + pad_d1      - (KD - 1) * dilation_d, stride_d) + 1);
 ERROR_IF(OH != idiv_check(IH - 1 + pad_top + pad_bottom - (KH - 1) * dilation_y, stride_y) + 1);
 ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x, stride_x) + 1);
+ERROR_IF(BC != OC && BC != 1);
 
 for_each(0 <= n < N, 0 <= od < OD, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
     out_t acc = 0;
@@ -165,7 +167,7 @@ for_each(0 <= n < N, 0 <= od < OD, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
             acc = apply_add<out_t>(acc, value * weight);
         }
     }
-    acc = apply_add<out_t>(acc, bias[oc]);
+    acc = apply_add<out_t>(acc, bias[(BC == 1) ? 0 : oc]);
     tensor_write<out_t>(output, [N,OD,OH,OW,OC], [n,od,oy,ox,oc], acc);
 }
 ----
@@ -185,6 +187,7 @@ ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(dilation_y < 1 || dilation_x < 1);
 ERROR_IF(OH != idiv_check(IH - 1 + pad_top + pad_bottom - (KH - 1) * dilation_y, stride_y) + 1);
 ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x, stride_x) + 1);
+ERROR_IF(BC != C*M && BC != 1);
 
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C, 0 <= m < M) {
     out_t acc = 0;
@@ -201,7 +204,7 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C, 0 <= m < M) {
             acc = apply_add<out_t>(acc, value * weight);
         }
     }
-    acc = apply_add<out_t>(acc, bias[(c * M) + m]);
+    acc = apply_add<out_t>(acc, bias[(BC == 1) ? 0 : (c * M) + m]);
     tensor_write<out_t>(output, [N,OH,OW,C * M], [n,oy,ox,c * M + m], acc);
 }
 ----
@@ -261,6 +264,8 @@ include::{generated}/operators/FULLY_CONNECTED.adoc[]
 ----
 ERROR_IF(in_t != int8_t && input_zp != 0); // Zero point only for int8_t
 ERROR_IF(weight_t != int8_t && weight_zp != 0);
+ERROR_IF(BC != OC && BC != 1);
+
 for_each(0 <= n < N, 0 <= oc < OC) {
     out_t acc = 0;
     for_each(0 <= ic < IC) {
@@ -270,7 +275,7 @@ for_each(0 <= n < N, 0 <= oc < OC) {
         weight = weight - weight_zp;
         acc = apply_add<out_t>(acc, value * weight);
     }
-    acc = apply_add<out_t>(acc, bias[oc]);
+    acc = apply_add<out_t>(acc, bias[(BC == 1) ? 0 : oc]);
     tensor_write<out_t>(output, [N,OC], [n,oc], acc);
 }
 ----
@@ -378,9 +383,10 @@ ERROR_IF(out_pad_left <= -KW || out_pad_right <= -KW);
 ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(OH != (IH - 1) * stride_y + out_pad_top + out_pad_bottom + KH);
 ERROR_IF(OW != (IW - 1) * stride_x + out_pad_left + out_pad_right + KW);
+ERROR_IF(BC != OC && BC != 1);
 
 for_each(index in out_shape) {
-    tensor_write<out_t>(output, [N,OH,OW,OC], index, bias[index[3]])
+    tensor_write<out_t>(output, [N,OH,OW,OC], index, bias[(BC == 1) ? 0 : index[3]])
 }
 for_each(0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= oc < OC,
           0 <= ic < IC, 0 <= ky < KH,  0 <= kx < KW) {
