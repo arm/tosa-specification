@@ -62,6 +62,16 @@ implementation-defined order that must be a topological ordering of the TOSA gra
 tosa_execute_graph(tosa_context_t context, tosa_graph_t graph, tosa_list_t input_list, tosa_list_t output_list, tosa_level_t level) {
     ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(graph));
     ERROR_IF(tensor_list_shape(output_list) != tosa_output_shape(graph));
+
+    // Declare the global list for storing persistent variable tensors across multiple graphs
+    if (!variable_tensors) {
+        variable_tensors = list<tensor_t>();
+    } else { // Clear the "seen flag"
+        for (tensor_t var_tensor in variable_tensors) {
+            var_tensor.seen = false;
+        }
+    }
+
     for_each(operator in graph order) {
         ERROR_IF(operator input tensors do not meet requirement of operator Arguments inputs)
         ERROR_IF(operator attributes do not meet requirement of operator Arguments attributes)
@@ -100,3 +110,5 @@ include::data_nodes.adoc[]
 include::custom.adoc[]
 
 include::control_flow.adoc[]
+
+include::variable.adoc[]

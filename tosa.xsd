@@ -65,6 +65,7 @@
     <xs:enumeration value="index_t"/>
     <xs:enumeration value="mul_t"/>
     <xs:enumeration value="TABLE_SIZE"/>
+    <xs:enumeration value="var_t"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -206,6 +207,7 @@
     <xs:attribute name="type" type="argument-type" use="required"/>
     <xs:attribute name="tensor-element-type" type="argument-tensor-element-type" use="required"/>
     <xs:attribute name="shape" type="xs:string" use="required"/>
+    <xs:attribute name="optional" type="xs:boolean"/>
   </xs:complexType>
 </xs:element>
 

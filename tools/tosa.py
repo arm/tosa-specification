@@ -4,6 +4,7 @@
 import re
 import xml.etree.ElementTree as ET
 
+
 # possible shapes: shape1, [2], [N,H,W,C]
 # returns (checkable, rank)
 # checkable is false if shape doesn't contain []
@@ -46,8 +47,18 @@ class TOSALevel:
 
 class TOSAOperatorArgument:
     def __init__(
-        self, name, description, categories, ty, elty, shape, levellimits, rank
+        self,
+        name,
+        description,
+        categories,
+        ty,
+        elty,
+        shape,
+        levellimits,
+        rank,
+        optional=False,
     ):
+        assert isinstance(optional, bool)
         self.name = name
         self.description = description
         self.categories = categories
@@ -56,6 +67,7 @@ class TOSAOperatorArgument:
         self.shape = shape
         self.levellimits = levellimits
         self.rank = rank
+        self.optional = optional
 
 
 class TOSAOperatorDataTypeSupport:
@@ -161,6 +173,7 @@ class TOSASpec:
         shape = arg.get("shape")
         levellimits = []
         rank = []
+        optional = arg.get("optional", "false") == "true"
         r = arg.find("rank")
         if r is not None:
             rank = [r.get("min"), r.get("max")]
@@ -194,7 +207,7 @@ class TOSASpec:
             argcats.append(TOSAOperatorArgumentCategory(cat[0], cat[1].split(",")))
 
         return TOSAOperatorArgument(
-            name, desc, argcats, argtype, argtelty, shape, levellimits, rank
+            name, desc, argcats, argtype, argtelty, shape, levellimits, rank, optional
         )
 
     def __load_enum(self, arg):

@@ -2550,6 +2550,58 @@ used.</description>
         </arguments>
       </operator>
     </operatorgroup>
+    <operatorgroup name="variable">
+      <operator>
+        <name>VARIABLE</name>
+        <arguments>
+          <argument category="attribute" name="uid" type="tensor_t" shape="-" tensor-element-type="int32_t">
+            <description>Globally unique identifier for the declared variable tensor.</description>
+            <rank min="0" max="0"/>
+          </argument>
+          <argument category="attribute" name="var_shape" type="tensor_t" shape="var_shape" tensor-element-type="index_t">
+            <description>The variable tensor shape</description>
+            <rank min="1" max="1"/>
+          </argument>
+          <argument category="attribute" name="type" type="tensor_t" shape="-" tensor-element-type="var_t">
+            <description>Type of the tensor variable elements.</description>
+            <rank min="0" max="0"/>
+          </argument>
+          <argument category="attribute" name="initial_value" type="tensor_t" shape="shape" tensor-element-type="in_t" optional="true">
+            <description>Initial value of the variable tensor. This argument is optional with default value NULL.</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
+            <rank min="0" max="MAX_RANK"/>
+          </argument>
+        </arguments>
+      </operator>
+      <operator>
+        <name>VARIABLE_WRITE</name>
+        <arguments>
+          <argument category="attribute" name="uid" type="tensor_t" shape="-" tensor-element-type="int32_t">
+            <description>Globally unique identifier of the variable tensor that is writing to</description>
+            <rank min="0" max="0"/>
+          </argument>
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_t">
+            <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
+            <rank min="0" max="MAX_RANK"/>
+          </argument>
+        </arguments>
+      </operator>
+      <operator>
+        <name>VARIABLE_READ</name>
+        <arguments>
+          <argument category="attribute" name="uid" type="tensor_t" shape="-" tensor-element-type="int32_t">
+            <description>Globally unique identifier of the variable tensor that is reading from </description>
+            <rank min="0" max="0"/>
+          </argument>
+          <argument category="output" name="output1" type="tensor_t" shape="shape" tensor-element-type="out_t">
+            <description>Output tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
+            <rank min="0" max="MAX_RANK"/>
+          </argument>
+        </arguments>
+      </operator>
+    </operatorgroup>
   </operators>
 
   <enum name="resize_mode_t" description="Valid resize types">
@@ -2561,6 +2613,16 @@ used.</description>
     <enumval value="0" name="INT32" description="32-bit integer"/>
     <enumval value="1" name="FP16" description="16-bit floating-point"/>
     <enumval value="2" name="FP32" description="32-bit floating-point"/>
+  </enum>
+
+  <enum name="var_t" description="Variable tensor data type">
+    <enumval value="0" name="BOOLEAN" description="Boolean"/>
+    <enumval value="1" name="INT8" description="8-bit integer"/>
+    <enumval value="2" name="INT16" description="16-bit integer"/>
+    <enumval value="3" name="INT32" description="32-bit integer"/>
+    <enumval value="4" name="FP16" description="16-bit floating-point"/>
+    <enumval value="5" name="BF16" description="16-bit brain floating-point"/>
+    <enumval value="6" name="FP32" description="32-bit floating-point"/>
   </enum>
 
 </tosa>

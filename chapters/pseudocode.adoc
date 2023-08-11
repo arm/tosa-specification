@@ -125,6 +125,45 @@ void tensor_write<type>(<type> *address, dim_t shape, dim_t index, <type> value)
 }
 ----
 
+==== Variable Tensor Allocate
+
+variable_tensor_allocate allocates the mutable persistent memory block for storing variable tensors.
+The shape argument contains the shape of the allocated memory block for the variable_tensor.
+The uid argument is a globally unique identifier for variable tensors.
+
+[source,c++]
+----
+tensor_t* variable_tensor_allocate<in_t>(dim_t shape, int32_t uid) {
+    size_t size = tensor_size(shape);
+    tensor_t *allocated_tensor = new tensor_t;
+    allocated_tensor->data = new in_t[size];
+    allocated_tensor->uid = uid;
+    allocated_tensor->is_written = false;
+    allocated_tensor->shape = shape;
+    allocated_tensor->type = in_t;
+    return allocated_tensor;
+}
+----
+
+==== Variable Tensor Lookup
+
+variable_tensor_lookup checks whether a variable tensor has been allocated or not.
+The uid argument is a globally unique identifier for variable tensors.
+
+[source,c++]
+----
+tensor_t variable_tensor_lookup(int32_t uid) {
+    // The global all_allocated_variable_tensors was instantiated at the first
+    // time of executing the tosa graph
+    for_each(tensor_t allocated_tensor in all_allocated_variable_tensors) {
+        if (allocated_tensor.uid == uid) {
+            return allocated_tensor;
+        }
+    }
+    return NULL;
+}
+----
+
 ==== Broadcast Helpers
 
 The following function derives the broadcast output shape from the input shapes.
