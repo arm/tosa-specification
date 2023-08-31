@@ -85,8 +85,8 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
 
     int32_t y = oy * scale_y_d + offset_y;
     int32_t x = ox * scale_x_d + offset_x;
-    int16_t iy = floor(y / scale_y_n);
-    int16_t ix = floor(x / scale_x_n);
+    int16_t iy = idiv_floor(y, scale_y_n);
+    int16_t ix = idiv_floor(x, scale_x_n);
     int16_t ry = y - iy * scale_y_n;  // (y % scale_y_n)
     int16_t rx = x - ix * scale_x_n;  // (x % scale_x_n)
 

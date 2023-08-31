@@ -477,6 +477,16 @@ int32_t idiv_check(int32_t input1, int32_t input2) {
     return input1 / input2;         // exact quotient without rounding
 }
 
+// perform an integer division with rounding towards minus infinity
+
+int32_t idiv_floor(int32_t input1, int32_t input2) {
+    int32_t rval = input1 / input2;
+    if (rval * input2 > input1) {
+        rval--;
+    }
+    return rval;
+}
+
 int32_t length(in_t input)
     return number of elements in input list
 
