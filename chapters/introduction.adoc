@@ -358,8 +358,8 @@ for_each(index in output_shape) {
         REQUIRE(out_ref == 0.0 && out_imp == 0.0);
         out_err = 0.0;
     } else {  // 0.0 < out_bnd < infinity
-        out_bnd = max(out_bnd, acc_min_normal);
-        out_err = (static_cast<fp64_t>(out_imp) - out_ref) * acc_prec / out_bnd;
+        fp64_t out_err_bnd = max(out_bnd / acc_prec, acc_min_normal);
+        out_err = (static_cast<fp64_t>(out_imp) - out_ref) / out_err_bnd;
         REQUIRE(abs(out_err) <= ksb);
     }
     out_err_sum   += out_err;
