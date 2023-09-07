@@ -568,6 +568,14 @@
             <description>Real part of the complex output</description>
             <rank min="3" max="3"/>
           </argument>
+          <argument category="attribute" name="local_bound" type="tensor_t" shape="-" tensor-element-type="bool_t" optional="true">
+            <description>
+                This optional attribute affects the floating-point compliance error bound.
+                The default of false allows for direct and transform based, fast convolution algorithms.
+                Only set to true if direct dot-product calculation precision is required.
+            </description>
+            <rank min="0" max="0"/>
+          </argument>
           <argument category="output" name="output_imag" type="tensor_t" shape="[N,H,W/2 + 1]" tensor-element-type="in_out_t">
             <description>Imaginary part of the complex output.</description>
             <rank min="3" max="3"/>

@@ -336,10 +336,10 @@ fp64_t out_err_sum = 0.0;
 fp64_t out_err_sumsq = 0.0;
 fp64_t acc_prec;       // 1<<(M+1) where M is the number of mantissa bits
 fp64_t acc_min_normal; // accumulator minimum normal greater than zero
-fp64_t two_m63 = -1.0/(fp64)((int64_t)-1<<63);         // pow(2,  -63)
+fp64_t two_m42 = 1.0/static_cast<fp64_t>((int64_t)1<<42);         // pow(2,  -42)
 switch (acc_t) {
     case fp32_t: acc_prec       = static_cast<fp64_t>(1<<24);     // pow(2,   24)
-                 acc_min_normal = two_m63 * two_m63;   // pow(2, -126)
+                 acc_min_normal = two_m42 * two_m42 * two_m42;    // pow(2, -126)
                  break;
     case fp16_t: acc_prec       = static_cast<fp64_t>(1<<11);     // pow(2,   11)
                  acc_min_normal = 1.0/static_cast<fp64_t>(1<<14); // pow(2,  -14)
