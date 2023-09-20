@@ -412,6 +412,91 @@ out_t bitcast<out_t>(in_t value)
 }
 ----
 
+==== Numeric Accuracy Helpers
+
+For a floating point number of type in_t a normal value is of the form (1.x * 2^e).
+The fractional part 'x' has a number of fractional or mantissa bits depending on the type.
+The exponent 'e' has a normal range depending on the type.
+The functions below return the ranges according to type.
+
+[source,c++]
+----
+fp64_t exp2(int n) {
+    REQUIRE(-1022 <= n && n <= 1023);
+    fp64_t v = 1.0;
+    while (n > 0) { v = v*2.0; n--; }
+    while (n < 0) { v = v/2.0; n++; }
+    return v;
+}
+
+int ilog2(fp64_t v) {
+    REQURE(0 < v && v < infinity);
+    int n = 0;
+    while (v >= 2.0) { v = v/2.0; n++; }
+    while (v <  1.0) { v = v*2.0; n--; }
+    return n;
+}
+
+fp64_t normal_min<in_t>() {
+  switch (in_t) {
+    case fp32_t: return exp2(-126);
+    case fp16_t: return exp2( -14);
+  }
+}
+
+fp64_t normal_max<in_t>() {
+  switch (in_t) {
+    case fp32_t: return exp2(128) - exp2(127-23);
+    case fp16_t: return exp2( 16) - exp2( 15-10);
+  }
+}
+
+// Number of fractional (mantissa bits)
+int normal_frac<in_t> () {
+  switch (in_t) {
+    case fp32_t: return 23;
+    case fp16_t: return 10;
+  }
+}
+----
+
+The following function checks if a test value in floating-point format in_t is within an error range compared to a reference value.
+The function assumes that denormal values may be flushed to zero.
+The permitted range error is specified as num_ulp which in this spefication is the permitted range defined by the following function.
+
+[source,c++]
+----
+bool tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num_ulp) {
+  if (is_a_NaN(ref_value)) {
+    return is_a_NaN(test_value);
+  }
+  if (ref_value < 0) {
+    ref_value  = -ref_value;
+    test_value = -test_value;
+  }
+  fp64_t ref_min, ref_max;
+  if (ref_value == infinity) {
+    ref_min = infinity;
+    ref_max = infinity;
+  } else if (ref_value == 0) {
+    ref_min = 0;
+    ref_max = 0;
+  } else {
+    int ref_exp = ilog2(ref_value);
+    fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<in_t>);
+    fp64_t val_ulp  = ref_pow2 * exp2(-normal_frac<in_t>);
+    ref_max = ref_value + val_ulp * num_ulp;
+    ref_min = ref_value - val_ulp * num_ulp;
+    if (ref_max > normal_max<in_t>) ref_max = infinity;
+    if (ref_min > normal_max<in_t>) ref_min = infinity;
+    if (ref_max < normal_min<in_t>) ref_max = normal_min<in_t>;
+    if (ref_min < normal_min<in_t>) ref_min = 0;
+  }
+  return (static_cast<fp64_t>(test_value) >= ref_min &&
+          static_cast<fp64_t>(test_value) <= ref_max);
+}
+----
+
 ==== Numeric Conversion Helpers
 
 The following definitions are used in pseudocode to do numeric conversions.

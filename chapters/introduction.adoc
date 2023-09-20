@@ -204,10 +204,18 @@ A compliant implementation must satisfy the following:
 
 ===== Main Inference precision requirements
 
-In a compliant implementation, individual-floating point operations within the graph must meet the following accuracy bounds
-listed in the table below. In the table _ulp_ means unit of the last place.
+In a compliant implementation, individual floating-point operations within the graph must meet the accuracy bounds listed in the table following.
+In the table _ulp_ means unit of the last place.
+The function tosa_reference_check_fp() defines the error range permitted by a given number of units of last place in this specification.
 
 NOTE: The error criteria in this section are at an early draft stage and are likely to change during conformance test development.
+
+Error criteria are specified for a single operator.
+For a sequence of n operators, A[0] to A[n-1], there must be corresponding implementations, I[0] to I[n-1], such that:
+
+* Each I[k] implements A[k] with same or higher precision datatypes
+* Each I[k] meets the accuracy defined in this specification for the A[k] precision
+* The accuracy of the sequence A[0] to A[n-1] is no worse than the accuracy of the sequence I[0] to I[n-1]
 
 The following criteria apply to all operations:
 
@@ -241,15 +249,14 @@ Floating-point result underflows must be set to zero of the correct sign. +
 Addition of infinites of different signs must produce a NaN. +
 Subtraction of infinities of the same sign must produce a NaN. +
 Multiplication of an infinity by a zero must produce a NaN. +
-Otherwise for fp32_t the result must be rounded to the nearest representable value using the round to nearest, ties to even rounding mode. +
-Otherwise for fp16_t and bf16_t the result must be within 0.5 ulp of the mathematical result.
+Otherwise the result must be within 0.5 ulp of the mathematical result.
 
 | <<CAST>>
 | Floating-point result overflows must be set to infinity of the correct sign. +
 Floating-point result underflows must be set to zero of the correct sign. +
 Cast from floating-point to integer result overflows must be saturated. +
-Otherwise for fp32_t the result must be rounded to the nearest representable value using the round to nearest, ties to even rounding mode. +
-Otherwise for fp16_t and bf16_t the result must be within 0.5 ulp of the mathematical result.
+Cast from floating-point to integer must be rounded using round to nearest, ties to even, rounding mode. +
+Otherwise cast to floating-point must be within 0.5 ulp of the mathematical result.
 
 | <<RECIPROCAL>>
 | If the input is a zero or the result overlows the output must be an infinity of the same sign. +
@@ -334,18 +341,6 @@ size_t T = tensor_size(output_shape)  // number dot product results
 size_t ksb = (max_value(bias_abs) > 0) ? (KS + 1) : KS; // kernel size and bias
 fp64_t out_err_sum = 0.0;
 fp64_t out_err_sumsq = 0.0;
-fp64_t acc_prec;       // 1<<(M+1) where M is the number of mantissa bits
-fp64_t acc_min_normal; // accumulator minimum normal greater than zero
-fp64_t two_m42 = 1.0/static_cast<fp64_t>((int64_t)1<<42);         // pow(2,  -42)
-switch (acc_t) {
-    case fp32_t: acc_prec       = static_cast<fp64_t>(1<<24);     // pow(2,   24)
-                 acc_min_normal = two_m42 * two_m42 * two_m42;    // pow(2, -126)
-                 break;
-    case fp16_t: acc_prec       = static_cast<fp64_t>(1<<11);     // pow(2,   11)
-                 acc_min_normal = 1.0/static_cast<fp64_t>(1<<14); // pow(2,  -14)
-                 break;
-    default:     ERROR_IF(true);
-}
 for_each(index in output_shape) {
     fp64_t out_bnd = tensor_read<fp64_t>(output_bnd, output_shape, index);
     fp64_t out_ref = tensor_read<fp64_t>(output_ref, output_shape, index);
@@ -358,7 +353,7 @@ for_each(index in output_shape) {
         REQUIRE(out_ref == 0.0 && out_imp == 0.0);
         out_err = 0.0;
     } else {  // 0.0 < out_bnd < infinity
-        fp64_t out_err_bnd = max(out_bnd / acc_prec, acc_min_normal);
+        fp64_t out_err_bnd = max(out_bnd * exp2(-1-normal_frac<acc_t>()), normal_min<acc_t>());
         out_err = (static_cast<fp64_t>(out_imp) - out_ref) / out_err_bnd;
         REQUIRE(abs(out_err) <= ksb);
     }
