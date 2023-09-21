@@ -620,10 +620,6 @@
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="out_shape" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
-            <description>[N,OH,OW,OC]</description>
-            <rank min="1" max="1"/>
-          </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="0" max="0"/>
