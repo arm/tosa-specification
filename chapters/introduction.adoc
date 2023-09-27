@@ -219,7 +219,7 @@ The following criteria apply to all operations:
 |===
 | Operation | Accuracy bound
 
-| <<ARGMAX>>, <<MAX_POOL2D>>, <<CLAMP>>, <<MAXIMUM>>, <<MINIMUM>>, <<ABS>>, <<NEGATE>>, , <<CONST>>, <<IDENTITY>>
+| <<ARGMAX>>, <<MAX_POOL2D>>, <<CLAMP>>, <<MAXIMUM>>, <<MINIMUM>>, <<ABS>>, <<NEGATE>>, <<SELECT>>, <<REDUCE_MAX>>, <<REDUCE_MIN>>, <<CONST>>, <<IDENTITY>>
 | Non NaN results must be exact.
 
 | <<EQUAL>>, <<GREATER>>, <<GREATER_EQUAL>>
