@@ -11,8 +11,14 @@ int round_to_nearest_int(float_t f)
   Converts the floating-point value to f, with rounding to the nearest integer value.
   For the required precision see the section: Main inference precision requirements.
 
-float_t round_to_nearest_float(in_t f)
+float_t round_to_nearest_float_nonsaturating(in_t f)
   Converts the input value into floating-point, rounding to the nearest representable value.
+  Values that are not NaN outside of the representable range of the destination type must be set to infinity of the correct sign.
+  For the required precision see the section: Main inference precision requirements.
+
+float_t round_to_nearest_float_saturating(in_t f)
+  Converts the input value into floating-point, rounding to the nearest representable normal value.
+  Values that are not NaN outside of the representable range must return the maximum representable normal value of the correct sign.
   For the required precision see the section: Main inference precision requirements.
 
 out_t sign_extend<out_t>(in_t input)

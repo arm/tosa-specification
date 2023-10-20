@@ -36,6 +36,13 @@
         </types>
         <typesupport mode="signed 8" in_t="i8_t" out_t="i32_t"/>
         <typesupport mode="signed 16" in_t="i16_t" out_t="i32_t" />
+        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t" out_t="i32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="i32_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_t="fp16_t" out_t="i32_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -99,6 +106,13 @@
         </types>
         <typesupport mode="signed 8 with int32 accumulate" in_out_t="i8_t" acc_t="i32_t" />
         <typesupport mode="signed 16 with int32 accumulate" in_out_t="i16_t" acc_t="i32_t" />
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_out_t="fp8e4m3_t" acc_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_out_t="fp8e5m2_t" acc_t="fp16_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16 with fp16 accumulate" in_out_t="fp16_t" acc_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -181,6 +195,13 @@
         <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" />
         <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" />
         <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" />
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -267,6 +288,13 @@
         <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" />
         <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" />
         <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" />
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -349,6 +377,13 @@
         <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" />
         <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" />
         <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" />
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -492,6 +527,13 @@
         </types>
         <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" out_t="i32_t" />
         <typesupport mode="signed 16x16 with int48 accumulate" in_t="i16_t" out_t="i48_t" />
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="fp16_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -546,6 +588,13 @@
         </types>
         <typesupport mode="signed 8" in_out_t="i8_t" />
         <typesupport mode="signed 16" in_out_t="i16_t" />
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
@@ -654,6 +703,13 @@
         <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" />
         <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" />
         <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" />
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="fp16_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1932,6 +1988,13 @@
         <typesupport mode="signed 8" in_out_t="i8_t"/>
         <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1974,6 +2037,13 @@
         <typesupport mode="signed 8" in_out_t="i8_t"/>
         <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2010,6 +2080,13 @@
         <typesupport mode="signed 8" in_t="i8_t"/>
         <typesupport mode="signed 16" in_t="i16_t"/>
         <typesupport mode="signed 32" in_t="i32_t"/>
+        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2047,6 +2124,13 @@
         <typesupport mode="signed 8" in_out_t="i8_t"/>
         <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2084,6 +2168,13 @@
         <typesupport mode="signed 8" in_out_t="i8_t"/>
         <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2126,6 +2217,13 @@ used.</description>
         <typesupport mode="signed 8" in_out_t="i8_t"/>
         <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2163,6 +2261,13 @@ used.</description>
         <typesupport mode="signed 8" in_out_t="i8_t"/>
         <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2200,6 +2305,13 @@ used.</description>
         <typesupport mode="signed 8" in_out_t="i8_t"/>
         <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2237,6 +2349,13 @@ used.</description>
         <typesupport mode="signed 8" in_out_t="i8_t"/>
         <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2276,6 +2395,13 @@ used.</description>
         <typesupport mode="signed 8" in_out_t="i8_t"/>
         <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2422,8 +2548,36 @@ used.</description>
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
+        <typesupport mode="bf16 to fp8e4m3" in_t="bf16_t" out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16 to fp8e5m2" in_t="bf16_t" out_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="bf16 to fp32" in_t="bf16_t" out_t="fp32_t">
           <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e4m3 to fp16" in_t="fp8e4m3_t" out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e4m3 to bf16" in_t="fp8e4m3_t" out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e4m3 to fp32" in_t="fp8e4m3_t" out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2 to fp16" in_t="fp8e5m2_t" out_t="fp16_t">
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2 to bf16" in_t="fp8e5m2_t" out_t="bf16_t">
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2 to fp32" in_t="fp8e5m2_t" out_t="fp32_t">
           <profile name="MT"/>
         </typesupport>
         <typesupport mode="fp16 to signed 8" in_t="fp16_t" out_t="i8_t">
@@ -2436,6 +2590,13 @@ used.</description>
         </typesupport>
         <typesupport mode="fp16 to signed 32" in_t="fp16_t" out_t="i32_t">
           <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp16 to fp8e4m3" in_t="fp16_t" out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp16 to fp8e5m2" in_t="fp16_t" out_t="fp8e5m2_t">
           <profile name="MT"/>
         </typesupport>
         <typesupport mode="fp16 to fp32" in_t="fp16_t" out_t="fp32_t">
@@ -2452,6 +2613,13 @@ used.</description>
         </typesupport>
         <typesupport mode="fp32 to signed 32" in_t="fp32_t" out_t="i32_t">
           <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 to fp8e4m3" in_t="fp32_t" out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32 to fp8e5m2" in_t="fp32_t" out_t="fp8e5m2_t">
           <profile name="MT"/>
         </typesupport>
         <typesupport mode="fp32 to bf16" in_t="fp32_t" out_t="bf16_t">
@@ -2552,6 +2720,13 @@ used.</description>
         <typesupport mode="16-bit" out_t="i16_t" />
         <typesupport mode="32-bit" out_t="i32_t" />
         <typesupport mode="48-bit" out_t="i48_t" />
+        <typesupport mode="fp8e4m3" out_t="fp8e4m3_t" >
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" out_t="fp8e5m2_t" >
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2586,6 +2761,13 @@ used.</description>
         <typesupport mode="16-bit" in_out_t="i16_t" />
         <typesupport mode="32-bit" in_out_t="i32_t" />
         <typesupport mode="48-bit" in_out_t="i48_t" />
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+          <profile name="MT"/>
+        </typesupport>
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>

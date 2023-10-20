@@ -38,6 +38,8 @@
     <xs:enumeration value="i16_t"/>
     <xs:enumeration value="i32_t"/>
     <xs:enumeration value="i48_t"/>
+    <xs:enumeration value="fp8e4m3_t"/>
+    <xs:enumeration value="fp8e5m2_t"/>
     <xs:enumeration value="fp16_t"/>
     <xs:enumeration value="bf16_t"/>
     <xs:enumeration value="fp32_t"/>

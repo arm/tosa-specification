@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2021-2023 ARM Limited
+// (C) COPYRIGHT 2021-2024 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -141,6 +141,7 @@ include::{pseudocode}/library/arithmetic_helpers.tosac[lines=10..-1]
 ==== Type Conversion Helpers
 
 The following definitions indicate the type to be used when the given parameters are provided.
+
 
 [source,c++]
 ----

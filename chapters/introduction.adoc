@@ -245,7 +245,8 @@ Multiplication of an infinity by a zero must produce a NaN. +
 Otherwise the result must be within 0.5 ulp of the mathematical result.
 
 | <<CAST>>
-| Floating-point result overflows must be set to infinity of the correct sign. +
+| Result overflows when converting between fp32_t, bf16_t and fp16_t must be set to infinity of the correct sign. +
+fp8e4m3_t and fp8e5m2_t must use the saturation mode rules defined in <<IEEE-754,IEEE-754>> when converting from the wider floating-point types. +
 Floating-point result underflows must be set to zero of the correct sign. +
 Cast from floating-point to integer result overflows must be saturated. +
 Cast from floating-point to integer must be rounded using round to nearest, ties to even, rounding mode. +
@@ -339,7 +340,7 @@ This may be, for example, a convolution.
 This section defines the accuracy required for these operations.
 In this section:
 
-* "fp64 arithmetic" refers to double-precision floating-point arithmetic defined by IEEE 754 (<<Other publications>>[1])
+* "fp64 arithmetic" refers to double-precision floating-point arithmetic defined by <<IEEE-754,IEEE-754>>
 * `operation_fp64()` is an fp64 reference implementation of the operation
 * `operation_imp()` is the implementation under test
 * `local_bound` is defined as follows:
@@ -537,10 +538,29 @@ The number formats supported by a given operator are listed in its table of supp
 | (1<<47)-1
 |Signed 48-bit two's-complement value.
 
+|fp8e4m3_t
+| -448
+| 448
+| 8-bit floating-point defined by <<OCP-OFP8,OCP-OFP8>> with four bits of exponent and three bits of mantissa. +
+Normal values must be supported. +
+Denormal values must be supported. +
+The NaN encoding must be supported. +
+Signed zero must be supported.
+
+|fp8e5m2_t
+| -infinity
+| +infinity
+| 8-bit floating-point defined by <<OCP-OFP8,OCP-OFP8>> with five bits of exponent and two bits of mantissa. +
+Normal values must be supported. +
+Denormal values must be supported. +
+Positive and negative infinity must be supported. +
+NaN encodings must be supported. +
+Signed zero must be supported.
+
 |fp16_t
 | -infinity
 | +infinity
-| 16-bit half-precision floating-point defined by <<Other publications>>[1]. +
+| 16-bit half-precision floating-point defined by <<IEEE-754,IEEE-754>> . +
 Normal values must be supported. +
 Denormal values must either be supported or flushed to zero. +
 Positive and negative infinity must be supported. +
@@ -560,7 +580,7 @@ Signed zero must be supported.
 |fp32_t
 | -infinity
 | +infinity
-| 32-bit single-precision floating-point defined by <<Other publications>>[1]. +
+| 32-bit single-precision floating-point defined by <<IEEE-754,IEEE-754>> . +
 Normal values must be supported. +
 Denormal values must either be supported or flushed to zero. +
 Positive and negative infinity must be supported. +
@@ -570,7 +590,7 @@ Signed zero must be supported.
 |fp64_t
 | -infinity
 | + infinity
-| 64-bit double-precision floating-point defined by <<Other publications>>[1]. +
+| 64-bit double-precision floating-point defined by <<IEEE-754,IEEE-754>>. +
 Normal values must be supported. +
 Denormal values must either be supported or flushed to zero. +
 Positive and negative infinity must be supported. +
@@ -744,4 +764,5 @@ void generate_lookup_table(int16_t *table, int32_t (*reference)(int32_t))
 
 The following publications are referred to in this specification, or provide more information:
 
-. IEEE Std 754-2008, _IEEE Standard for Floating-point Arithmetic_, August 2008.
+. [[IEEE-754]]IEEE Std 754-2008, _IEEE Standard for Floating-point Arithmetic_, August 2008.
+. [[OCP-OFP8]]Open Compute Project OCP 8-bit Floating Point Specification (OFP8) Revision 1.0
