@@ -130,7 +130,8 @@
             <rank min="4" max="4"/>
           </argument>
           <argument category="input" name="bias" type="tensor_t" shape="[BC]" tensor-element-type="out_t">
-            <description>Per output channel bias data.</description>
+            <description>Per output channel bias data. +
+            Bias data will be broadcast if BC == 1.</description>
             <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
@@ -212,7 +213,8 @@
             <rank min="5" max="5"/>
           </argument>
           <argument category="input" name="bias" type="tensor_t" shape="[BC]" tensor-element-type="out_t">
-            <description>Per output channel bias data.</description>
+            <description>Per output channel bias data. +
+            Bias data will be broadcast if BC == 1.</description>
             <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="pad" type="tensor_t" shape="[6]" tensor-element-type="i32_t">
@@ -296,7 +298,8 @@
             <rank min="4" max="4"/>
           </argument>
           <argument category="input" name="bias" type="tensor_t" shape="[BC]" tensor-element-type="out_t">
-            <description>Per output channel bias data.</description>
+            <description>Per output channel bias data. +
+            Bias data will be broadcast if BC == 1.</description>
             <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
@@ -417,7 +420,8 @@
             <rank min="2" max="2"/>
           </argument>
           <argument category="input" name="bias" type="tensor_t" shape="[BC]" tensor-element-type="out_t">
-            <description>Per output channel bias data.</description>
+            <description>Per output channel bias data. +
+            Bias data will be broadcast if BC == 1.</description>
             <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
@@ -603,7 +607,8 @@
             <rank min="4" max="4"/>
           </argument>
           <argument category="input" name="bias" type="tensor_t" shape="[BC]" tensor-element-type="out_t">
-            <description>Per output channel bias data.</description>
+            <description>Per output channel bias data. +
+            Bias data will be broadcast if BC == 1.</description>
             <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="out_pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
@@ -808,7 +813,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -847,7 +852,7 @@
             <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -871,7 +876,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -895,7 +900,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -919,7 +924,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -943,7 +948,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -966,7 +971,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -988,7 +993,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1012,7 +1017,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1036,7 +1041,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1058,7 +1063,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1080,7 +1085,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1114,7 +1119,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1152,7 +1157,7 @@
             <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1190,7 +1195,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1223,7 +1228,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1593,7 +1598,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
-            <description>Output tensor of same type as input2 and input3, with broadcast shape if necessary</description>
+            <description>Output tensor of same type as input2 and input3</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1632,7 +1637,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1667,7 +1672,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -1702,7 +1707,7 @@
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
-            <description>Output tensor with broadcast shape if necessary</description>
+            <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
