@@ -440,6 +440,7 @@ int ilog2(fp64_t v) {
 fp64_t normal_min<in_t>() {
   switch (in_t) {
     case fp32_t: return exp2(-126);
+    case bf16_t: return exp2(-126);
     case fp16_t: return exp2( -14);
   }
 }
@@ -447,6 +448,7 @@ fp64_t normal_min<in_t>() {
 fp64_t normal_max<in_t>() {
   switch (in_t) {
     case fp32_t: return exp2(128) - exp2(127-23);
+    case bf16_t: return exp2(128) - exp2(127- 7);
     case fp16_t: return exp2( 16) - exp2( 15-10);
   }
 }
@@ -456,17 +458,30 @@ int normal_frac<in_t> () {
   switch (in_t) {
     case fp32_t: return 23;
     case fp16_t: return 10;
+    case bf16_t: return  7;
   }
 }
 ----
 
-The following function checks if a test value in floating-point format in_t is within an error range compared to a reference value.
-The function assumes that denormal values may be flushed to zero.
-The permitted range error is specified as num_ulp which in this spefication is the permitted range defined by the following function.
+The following functions check if a test value in floating-point format in_t is within an error range compared to a reference value.
+The functions assume that denormal values may be flushed to zero.
+For the first function, the permitted error range is specified as num_ulp which is converted to an error bound as specified by the code.
+For the second function, the permitted error range is specified as an absolute error bound.
 
 [source,c++]
 ----
 bool tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num_ulp) {
+  fp64_t err_bnd = 0.0;
+  if (is_normal_fp64(ref_value)) {
+    int ref_exp = ilog2(abs(ref_value));
+    fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<in_t>);
+    fp64_t val_ulp  = ref_pow2 * exp2(-normal_frac<in_t>);
+    err_bnd = val_ulp * num_ulp;
+  }
+  return tosa_reference_check_fp_bnd<in_t>(test_value, ref_value, err_bnd);
+}
+
+bool tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64_t err_bnd) {
   if (is_a_NaN(ref_value)) {
     return is_a_NaN(test_value);
   }
@@ -474,27 +489,16 @@ bool tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num
     ref_value  = -ref_value;
     test_value = -test_value;
   }
-  fp64_t ref_min, ref_max;
-  if (ref_value == infinity) {
-    ref_min = infinity;
-    ref_max = infinity;
-  } else if (ref_value == 0) {
-    ref_min = 0;
-    ref_max = 0;
-  } else {
-    int ref_exp = ilog2(ref_value);
-    fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<in_t>);
-    fp64_t val_ulp  = ref_pow2 * exp2(-normal_frac<in_t>);
-    ref_max = ref_value + val_ulp * num_ulp;
-    ref_min = ref_value - val_ulp * num_ulp;
-    if (ref_max > normal_max<in_t>) ref_max = infinity;
-    if (ref_min > normal_max<in_t>) ref_min = infinity;
-    if (ref_max < normal_min<in_t>) ref_max = normal_min<in_t>;
-    if (ref_min < normal_min<in_t>) ref_min = 0;
-  }
+  fp64_t ref_max = ref_value + err_bnd;
+  fp64_t ref_min = ref_value - err_bnd;
+  if (ref_max > normal_max<in_t>) ref_max = infinity;
+  if (ref_min > normal_max<in_t>) ref_min = infinity;
+  if (ref_max < normal_min<in_t>) ref_max = normal_min<in_t>;
+  if (ref_min < normal_min<in_t>) ref_min = 0;
   return (static_cast<fp64_t>(test_value) >= ref_min &&
           static_cast<fp64_t>(test_value) <= ref_max);
 }
+
 ----
 
 ==== Numeric Conversion Helpers

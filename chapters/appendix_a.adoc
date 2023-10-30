@@ -126,9 +126,9 @@ The aim of this test set is to check signed inputs of large range.
 [cols="1,9"]
 |===
 | p | tosa_mi_data(S, KS, p, k, i) =
-| 0 | (B/sqrt(KS+1))*set_data(3*S+0, i)
-| 1 | (B/sqrt(KS+1))*set_data(3*S+1, i)
-| 2 | (B*B/(KS+1))*set_data(3*S+2, i)
+| 0 | (B/sqrt(KS))*set_data(3*S+0, i)
+| 1 | (B/sqrt(KS))*set_data(3*S+1, i)
+| 2 | 0.0
 |===
 
 === Main Inference operator test data
@@ -154,7 +154,7 @@ for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
 for (0 <= oc < OC, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
   weight[oc, ky, kx, ic] = tosa_mi_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
 }
-for (0 <= oc < OC) {
+for (0 <= oc < BC) {
   bias[oc] = tosa_mi_data(S, KS, 2, oc)
 }
 ----
@@ -174,7 +174,7 @@ for (0 <= n < N, 0 <= id < UD, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
 for (0 <= oc < OC, 0 <= kd < KD, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
   weight[oc, kd, ky, kx, ic] = tosa_mi_data(S, KS, 1, ((kd*KH+ky)*KW+kx)*IC+ic, (((oc*KD+kd)*KH+ky)*KW+kx)*IC+ic);
 }
-for (0 <= oc < OC) {
+for (0 <= oc < BC) {
   bias[oc] = tosa_mi_data(S, KS, 2, oc)
 }
 ----
@@ -214,7 +214,7 @@ for (0 <= n < N, 0 <= ic < IC) {
 for (0 <= oc < OC, 0 <= ic < IC) {
   weight[oc, ic] = tosa_mi_data(S, KS, 1, ic, oc*IC+ic);
 }
-for (0 <= oc < OC) {
+for (0 <= oc < BC) {
   bias[oc] = tosa_mi_data(S, KS, 2, oc)
 }
 ----
@@ -251,7 +251,7 @@ for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
 for (0 <= oc < OC, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
   weight[oc, ky, kx, ic] = tosa_mi_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
 }
-for (0 <= oc < OC) {
+for (0 <= oc < BC) {
   bias[oc] = tosa_mi_data(S, KS, 2, oc)
 }
 ----
