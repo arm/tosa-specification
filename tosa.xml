@@ -2545,7 +2545,7 @@ used.</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
-            <description>Output tensor of the same type, size as the input tensor</description>
+            <description>Output tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
         </arguments>
