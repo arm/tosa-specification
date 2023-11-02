@@ -15,8 +15,8 @@ Hardware implementing TOSA may choose to add additional custom operators that ar
 
 Runs an implementation defined custom operator.
 CUSTOM operators are not tested in the conformance suite as results will be implementation defined.
-The `domain` attribute should be unique to each implementation.
-To achieve this, using a domain name as the `domain` attribute is recommended.
+The `domain_name` attribute should be unique to each implementation.
+To achieve this, using a domain name as the `domain_name` attribute is recommended.
 
 include::{generated}/operators/CUSTOM.adoc[]
 
