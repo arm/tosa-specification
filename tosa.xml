@@ -1880,7 +1880,7 @@
         <name>REDUCE_SUM</name>
         <arguments>
           <argument category="input" name="input" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
-            <description>Input tensor with rank from 1 to 4</description>
+            <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
@@ -1894,17 +1894,18 @@
         </arguments>
         <types>
           <type name='in_out_t'/>
+          <type name='acc_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="i32_t"/>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" acc_t="i32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t" acc_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" acc_t="fp32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" acc_t="fp32_t">
           <profile name="MI"/>
           <profile name="MT"/>
         </typesupport>
