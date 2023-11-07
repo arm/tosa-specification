@@ -114,8 +114,8 @@ The aim of this test set is to check a mixture of zero and non-zero products.
 [cols="1,9"]
 |===
 | p | tosa_mi_data(S, KS, p, k, i) =
-| 0 | (k==KS/2) ? +0.5 : (set_data(2*S, i) < 0 ? 0.0 : (B/sqrt(KS))*set_data(2*S+1, i))
-| 1 | (k==KS/2) ? -0.5 : (set_data(2*S, i) < 0 ? (B/sqrt(KS))*set_data(2*S+1, i) : 0.0)
+| 0 | (k==KS/2) ? (set_data(2*S, i) < 0 ? -0.5 : +0.5) : (set_data(2*S, i) < 0 ? 0.0 : (B/sqrt(KS))*set_data(2*S+1, i))
+| 1 | (k==KS/2) ? (set_data(2*S, i) < 0 ? +0.5 : -0.5) : (set_data(2*S, i) < 0 ? (B/sqrt(KS))*set_data(2*S+1, i) : 0.0)
 | 2 | 0.0
 |===
 

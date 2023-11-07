@@ -259,7 +259,7 @@ Otherwise:the result must be within 1 ulp of the mathematical result.
 | <<RSQRT>>
 | If the input is less than zero the result must be a NaN. +
 Otherwise if the input is a zero the output must be an infinity of the same sign. +
-Otherwise the result must be within 1 ulp of the mathematical result.
+Otherwise the result must be within 2 ulp of the mathematical result.
 
 | <<SIGMOID>>, <<TANH>>, <<LOG>>, <<ERF>>
 | If the input to LOG is less than zero then the result must be a NaN. +
@@ -270,14 +270,14 @@ Otherwise the result must be within 5 ulp of the mathematical result.
 | <<EXP>>
 | Let `x` be an input element and `out_imp` the implementation output of `exp(x)`. +
 Let `out_ref` be the result of the fp64_t reference implementation of `exp(x)`. +
-Let `err_bnd = out_ref*exp2(-normal_fraction<in_out_t>)*(1+abs(x))` +
-Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, out_bnd)` must be true
+Let `err_bnd = abs(out_ref) * exp2(-normal_frac<in_out_t>) * (1+abs(x))` +
+Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 | <<POW>>
 | Let `x`, `y` be input elements and `out_imp` the implementation output of `pow(x,y)`. +
 Let `out_ref` be the result of the fp64_t reference implementation of `pow(x,y)`. +
-Let `err_bnd = out_ref*exp2(-normal_fraction<in_out_t>)*(1+abs(log(abs(x))*y))` +
-Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, out_bnd)` must be true
+Let `err_bnd = abs(out_ref) * exp2(-normal_frac<in_out_t>) * (1+abs(log(abs(x))*y))` +
+Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 | <<REDUCE_SUM>>
 | Each output can be expressed as a dot product of an input vector with a vector of ones. +
