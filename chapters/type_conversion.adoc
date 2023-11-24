@@ -56,6 +56,49 @@ Rules when casting between different types:
 include::{pseudocode}/operators/CAST.tosac[lines=10..-1]
 ----
 
+==== CAST_FROM_BLOCK_SCALED
+
+Apply the scales from a scale tensor to the values in a value tensor, casting the result to the output type.
+The block dimension must be the last dimension of the tensor.
+
+include::{generated}/operators/CAST_FROM_BLOCK_SCALED.adoc[]
+
+*Precision Requirements*
+
+* Subnormal values must be supported on the output type.
+* Let `x` be a value from the `input_data` tensor.
+* Let `s` be the corresponding scale value from the `input_scale` tensor.
+* Let `out_ref = x * s` calculated using fp64_t arithmetic.
+* Let `out_imp` be the result of the implementation.
+* Then `tosa_reference_check_from_block<in_t, out_t>(out_imp, out_ref, s)` must be true.
+
+[source,c++]
+----
+include::{pseudocode}/operators/CAST_FROM_BLOCK_SCALED.tosac[lines=10..-1]
+----
+
+==== CAST_TO_BLOCK_SCALED
+
+Calculate a scale value per block of input values and use that to calculate scaled data values from an input tensor.
+The output tensors are cast to the specified scale and value types.
+The block dimension will be the last dimension of the tensor.
+
+include::{generated}/operators/CAST_TO_BLOCK_SCALED.adoc[]
+
+*Precision Requirements*
+
+* Subnormal values must be supported on the output type.
+* Let `x` be a value from the `input_data` tensor
+* Let `out_ref_scale` be the results of calculating the block scale for the block containing `x` using fp64_t arithmetic.
+* Let `out_ref_value = x / out_ref_scale` calculated using fp64_t arithmetic.
+* Let `out_imp_scale, out_imp_value` be the results of the implementation for input `x`.
+* Then `tosa_reference_check_scale<scale_t, out_t>(out_imp_scale, out_imp_value, out_ref_scale, out_ref_value)` must be true.
+
+[source,c++]
+----
+include::{pseudocode}/operators/CAST_TO_BLOCK_SCALED.tosac[lines=10..-1]
+----
+
 ==== RESCALE
 
 RESCALE is defined using an integer multiply, add, and shift.

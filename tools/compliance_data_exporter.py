@@ -17,6 +17,7 @@ validation_term_mapping_profile = {
     "EXT-FFT": "Extension::fft",
     "EXT-SHAPE": "Extension::shape",
     "EXT-VARIABLE": "Extension::variable",
+    "EXT-MXFP": "Extension::mxfp",
 }
 
 validation_term_mapping_type = {
@@ -31,6 +32,11 @@ validation_term_mapping_type = {
     "fp32_t": "fp32T",
     "fp8e4m3_t": "fp8e4m3T",
     "fp8e5m2_t": "fp8e5m2T",
+    "fp8ue8m0_t": "fp8ue8m0T",
+    "fp6e3m2_t": "fp6e3m2T",
+    "fp6e2m3_t": "fp6e2m3T",
+    "fp4e2m1_t": "fp4e2m1T",
+    "mxint8_t": "mxint8T",
 }
 
 

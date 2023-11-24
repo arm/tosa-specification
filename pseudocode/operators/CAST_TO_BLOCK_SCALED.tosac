@@ -1,0 +1,28 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2025 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(rank(shape) == 0 || shape[rank(shape)-1] % block_size != 0);
+
+for_each_data_position(index in shape) {
+
+    in_t in = tensor_read<in_t>(input_data, shape, index);
+
+    in_t max_abs = tensor_block_maxabs(input, shape, index, block_size);
+
+    scale_t scale = calc_block_scale<in_t, scale_t, out_t>(max_abs);
+
+    out_t out = round_to_nearest_float<in_t, out_t>(in / scale);
+
+    // Write the correct scale location.
+    shape_t scale_index = index;
+    scale_index[rank(scale_index)-1] = scale_index[rank(scale_index)-1] / block_size;
+
+    tensor_write<scale_t>(output_scale, out_scale_shape, scale_index, scale);
+    tensor_write<out_t>(output_data, shape, index, out);
+}

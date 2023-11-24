@@ -56,3 +56,20 @@ out_t bitcast<out_t>(in_t value)
     // Treats the bits of value as if they were of type out_t
     // Only supported for integer types of the same bit width
 }
+
+// Find the maximum absolute value for a block of the input tensor
+
+in_t tensor_block_maxabs(in_t *address, shape_t shape, shape_t index, i32_t block_size) {
+    ERROR_IF(rank(shape) == 0);
+    ERROR_IF(shape[rank(shape)-1] % block_size != 0);
+    int r = rank(shape);
+    size_t min_i = floor(index[r - 1] / block_size) * block_size;
+    in_t max_abs = 0;
+    for (size_t i = min_i; i < min_i + block_size; i++) {
+        shape_t index_i = index;
+        index_i[r - 1] = i;
+        in_t v = tensor_read<in_t>(address, shape, index_i);
+        max_abs = apply_max_s(max_abs, abs(v));
+    }
+    return max_abs;
+}

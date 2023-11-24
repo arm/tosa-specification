@@ -271,9 +271,33 @@ Number formats not required for any operators in a profile do not need to be imp
 | (1<<47)-1
 |Signed 48-bit two's-complement value.
 
+|fp4e2m1_t
+| -6.0
+| +6.0
+| 4-bit floating-point defined by <<OCP-MX,OCP-MX>> with two bits of exponent and one bit of mantissa. +
+Normal values must be supported. +
+Subnormal values must be supported. +
+Signed zero must be supported.
+
+|fp6e3m2_t
+| -28.0
+| +28.0
+| 6-bit floating-point defined by <<OCP-MX,OCP-MX>> with three bits of exponent and two bits of mantissa. +
+Normal values must be supported. +
+Subnormal values must be supported. +
+Signed zero must be supported.
+
+|fp6e2m3_t
+| -7.5
+| +7.5
+| 6-bit floating-point defined by <<OCP-MX,OCP-MX>> with two bits of exponent and three bits of mantissa. +
+Normal values must be supported. +
+Subnormal values must be supported. +
+Signed zero must be supported.
+
 |fp8e4m3_t
 | -448
-| 448
+| +448
 | 8-bit floating-point defined by <<OCP-OFP8,OCP-OFP8>> with four bits of exponent and three bits of mantissa. +
 Normal values must be supported. +
 Subnormal values must be supported. +
@@ -291,6 +315,12 @@ Subnormal values must be supported. +
 Positive and negative infinity must be supported. +
 NaN encodings must be supported. +
 Signed zero must be supported.
+
+|fp8ue8m0_t
+| exp2(-127)
+| exp2(+127)
+| 8-bit floating-point value defined by <<OCP-MX,OCP-MX>> with no sign bit, eight bits of exponent, and no mantissa bits. +
+The NaN encoding must be supported. +
 
 |fp16_t
 | -infinity
@@ -331,6 +361,11 @@ Subnormal values must either be supported or flushed to sign-preserved zero. +
 Positive and negative infinity must be supported. +
 At least one NaN encoding must be supported. +
 Signed zero must be supported.
+
+|mxint8_t
+| -2
+| +1 + 63/64
+| 8-bit integer format with an implicit 1/64 scale defined by <<OCP-MX,OCP-MX>>. +
 |===
 
 Note: In this specification, minimum<type> and maximum<type> will denote the minimum and maximum values of the data as stored in memory (ignoring the zero point).
@@ -450,14 +485,20 @@ This section assumes an operation acting on tensors named 'input', 'weight' and 
 Each output tensor element can be expressed as a dot product of elements between the 'input' and 'weight' tensors with optional bias addition.
 The dot product has length KS, the kernel size.
 If the operation does not specify a bias then 'bias' is taken to be zero in this section.
+If the dot product is of a block-scaled tensor, then 'input_scale' and 'weight_scale' are inputs to the dot product.
+
 Note: KS is defined for each relevant operator in the appendix section <<Floating-Point Operator Test Data>>.
 
-In other words, each output element `out` can be expressed as a dot product between input elements `in[k]`, weight elements `w[k]`, bias `b`:
+Each output element `out` can be expressed as a dot product between input elements `in[k]`, weight elements `w[k]`, bias `b`:
 
 `out = in[0] * w[0] + in[1] * w[1] + ... + in[KS-1] * w[KS-1] + b`
 
 The positions of `in[k]`, `w[k]`, `b` in the input, weight and bias tensors depends on the operation being performed.
 This may be, for example, a convolution.
+
+In a block-scaled dot product, each input and weight element `in[k]` and `w[k]` are scaled based on the corresponding scale values:
+`in[k] = in_data[k] * in_scale[k/block_size]`
+`w[k]  = w_data[k] * w_scale[k/block_size]`
 
 This section defines the accuracy required for these operations.
 In this section:
@@ -480,9 +521,9 @@ ABS_BOUND is the maximum allowed absolute error when NaN or overflow is not pres
 |===
 |Condition|ABS_BOUND|Notes
 
-|`(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3_t>()) && is_same<acc_t,fp32_t>`
+|`(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3_t>() \|\| is_same<in_t,fp6e3m2_t>() \|\| is_same<in_t,fp6e2m3_t>() \|\| is_same<in_t,fp4e2m1_t>() \|\| is_same<in_t,mxint8_t>()) && is_same<acc_t,fp32_t>`
 |`2 * max(ksb, min(ksb,64) * (1 << 10))`
-| The FP8 dot product with FP32 accumulator is allowed a relaxed absolute error bound. +
+| The FP8 dot product with FP32 accumulator as well as block scaled dot products are allowed a relaxed absolute error bound. +
 The 2 factor allows for different rounding modes. +
 The second term in the maximum allows accumulating intermediates at lower precision. +
 If the operator does not use an accumulator type acc_t, the final comparison should be is_same<out_t,fp32_t>.
@@ -499,9 +540,9 @@ The squared error for each result is summed, and the result must be less than th
 |===
 |Condition|VARIANCE_ERROR_BOUND|Notes
 
-| `(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3_t>()) && is_same<acc_t,fp32_t>`
+|`(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3_t>() \|\| is_same<in_t,fp6e3m2_t>() \|\| is_same<in_t,fp6e2m3_t>() \|\| is_same<in_t,fp4e2m1_t>() \|\| is_same<in_t,mxint8_t>()) && is_same<acc_t,fp32_t>`
 | `4 * 0.4 * max(ksb, min(ksb,64) * (1 << 20))`
-| The FP8 dot product with FP32 accumulator is allowed a relaxed variance error bound. +
+| The FP8 dot product with FP32 accumulator as well as block scaled dot products are allowed a relaxed variance error bound. +
 The factors are similar to the absolute bound with precision factors squared for the variance bound. +
 The 0.4 factor is derived from the uniform [-1,1] distribution variance of 1/3 by rounding up. +
 The 4 factor is the square of the 2 factor in the absolute bound  to allow for different rounding modes. +
@@ -678,3 +719,4 @@ The following publications are referred to in this specification, or provide mor
 
 . [[IEEE-754]]IEEE Std 754-2008, _IEEE Standard for Floating-point Arithmetic_, August 2008.
 . [[OCP-OFP8]]Open Compute Project OCP 8-bit Floating Point Specification (OFP8) Revision 1.0
+. [[OCP-MX]] Open Compute Project OCP Microscaling Formats (MX) Specification Version 1.0

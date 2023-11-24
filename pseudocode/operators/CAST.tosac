@@ -16,8 +16,9 @@ for_each_data_position(index in shape) {
         // Conversion to float cases
         if (is_same<in_t,bool_t>()) {
             out = (in) ? 1.0 : 0.0;
+        } else {
+            out = round_to_nearest_float<out_t>(in);
         }
-        out = round_to_nearest_float(in);
     } else {
         // Conversion to integer cases
         if (is_same<in_t,bool_t>()) {

@@ -1,14 +1,15 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
 bool_t is_floating_point<type>() {
-    if (is_same<type,fp16_t>() || is_same<type,fp32_t>() || is_same<type,bf16_t>() || is_same<type,fp8e4m3_t>() || is_same<type,fp8e5m2_t>()) {
+    if (is_same<type,fp16_t>() || is_same<type,fp32_t>() || is_same<type,bf16_t>() || is_same<type,fp8e4m3_t>() || is_same<type,fp8e5m2_t>() ||
+        is_same<type,fp4e2m1_t>() || is_same<type,fp6e3m2_t>() || is_same<type,fp6e2m3_t>() || is_same<type,fp8ue8m0_t>()) {
         return true;
     }
     return false;
@@ -69,7 +70,10 @@ in_out_t maximum_u<in_out_t>();
 in_out_t minimum_u<in_out_t>();
 
 // return true if the given value is a NaN. Only valid for floating-point types
-bool_t is_a_NaN(fp64_t value);
+bool_t is_a_NaN(in_t value);
+
+// return true if the given value is an Infinity. Only valid for floating-point types with defined Infinity values.
+bool_t is_an_Inf(in_t value);
 
 // return true if value is a normal fp64 value (Not zero, subnormal, infinite or NaN)
 bool_t is_normal_fp64(fp64_t value);

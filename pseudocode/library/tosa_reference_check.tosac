@@ -7,8 +7,59 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
+bool_t tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num_ulp) {
+  fp64_t err_bnd = 0.0;
+  if (is_normal_fp64(ref_value) && abs(ref_value) != 0) {
+    int ref_exp = ilog2(abs(ref_value));
+    fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<in_t>());
+    fp64_t val_ulp  = ref_pow2 * exp2(-normal_frac<in_t>());
+    err_bnd = val_ulp * num_ulp;
+  }
+  return tosa_reference_check_fp_bnd<in_t>(test_value, ref_value, err_bnd);
+}
+
+// Check the conversion from block scaled
+bool_t tosa_reference_check_from_block<in_t, out_t>(out_t test_value, fp64_t ref_value, fp64_t scale) {
+  fp64_t err_bnd = 0.0;
+  if (is_normal_fp64(ref_value) && abs(ref_value) != 0 && !is_a_NaN(scale)) {
+    int ref_exp = ilog2(abs(ref_value / scale));
+    fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<out_t>());
+    fp64_t val_ulp = ref_pow2 * exp2(-normal_frac<out_t>());
+    fp64_t err_bnd_normal = val_ulp * scale;
+    err_bnd = max(err_bnd_normal, normal_min<out_t>());
+  }
+  return tosa_reference_check_fp_bnd<out_t>(test_value, ref_value, err_bnd);
+}
+
+bool_t tosa_reference_check_scale<scale_t, out_t>(fp64_t test_scale, fp64_t test_value,
+                                                  fp64_t ref_scale, fp64_t ref_value) {
+  fp64_t scale_err_bnd = 0.0;
+
+  // Calculate the error bound on the scale
+
+  if (is_a_NaN(ref_scale)) {
+    return true;
+  }
+
+  if (!tosa_reference_check_fp<scale_t>(test_scale, ref_scale, 1)) {
+    return false;
+  }
+
+  // Calculate the error bound on the value
+  // Recalculate the original value in fp64 and then divide by the implementation scale to get
+  // the reference value to compare against.
+
+  fp64_t reference_value = (ref_scale * ref_value) / test_scale;
+  int num_ulp = is_same<out_t, fp8e4m3_t>() ? 2 : 1;
+  return tosa_reference_check_fp<out_t>(reference_value, test_value, num_ulp);
+}
+
 bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64_t err_bnd) {
   if (is_a_NaN(ref_value)) {
+    if (is_same<in_t, mxint8_t>()) {
+      // mxint8_t does not have a NaN representation. Allow any result.
+      return true;
+    }
     // If the reference value is a NaN, the test value must also be any NaN.
     return is_a_NaN(test_value);
   }
@@ -16,7 +67,7 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
     return true;
   }
   REQUIRE(err_bnd >= 0.0);
-  if (ref_value < 0) {
+  if (ref_value < 0.0) {
     ref_value  = -ref_value;
     test_value = -test_value;
   }
@@ -24,13 +75,21 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
   fp64_t ref_max = ref_value + err_bnd;
   fp64_t ref_min = ref_value - err_bnd;
 
-  if (ref_max > normal_max<in_t>()) ref_max = infinity;
-  if (ref_min > normal_max<in_t>()) ref_min = infinity;
-  if (ref_min < -normal_max<in_t>()) ref_min = -infinity;
+  if (is_same<in_t, mxint8_t>()) {
+    // mxint8_t does not have infinity, clamp to the largest valid value.
+
+    if (ref_max > normal_max<in_t>()) ref_max = normal_max<in_t>();
+    if (ref_min > normal_max<in_t>()) ref_min = normal_max<in_t>();
+    if (ref_min < -normal_max<in_t>()) ref_min = -normal_max<in_t>();
+  } else {
+    if (ref_max > normal_max<in_t>()) ref_max = infinity;
+    if (ref_min > normal_max<in_t>()) ref_min = infinity;
+    if (ref_min < -normal_max<in_t>()) ref_min = -infinity;
+  }
 
   if (is_same<in_t,bf16_t>() || is_same<in_t,fp16_t>() || is_same<in_t,fp32_t>()) {
     // Allow subnormal values to be flushed to zero for non-fp8
-    if (test_value == 0) return (ref_min < normal_min());
+    if (test_value == 0) return (ref_min < normal_min<in_t>());
   }
 
   if (is_same<in_t,fp8e4m3_t>() && is_a_NaN(test_value)) {
@@ -44,18 +103,4 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
   // at this point.
   return (static_cast<fp64_t>(test_value) >= ref_min &&
           static_cast<fp64_t>(test_value) <= ref_max);
-}
-
-fp64_t tosa_reference_ulp<in_t>(fp64_t ref_value) {
-  if (is_normal_fp64(ref_value) && abs(ref_value) != 0) {
-    int ref_exp = ilog2(abs(ref_value));
-    fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<in_t>());
-    return ref_pow2 * exp2(-normal_frac<in_t>());
-  }
-  return 0.0;
-}
-
-bool_t tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num_ulp) {
-  fp64_t err_bnd = tosa_reference_ulp<in_t>(ref_value) * num_ulp;
-  return tosa_reference_check_fp_bnd<in_t>(test_value, ref_value, err_bnd);
 }

@@ -43,6 +43,9 @@
     <profile_extension name="EXT-INEXACTROUND" description="Adds inexact rounding support to the RESCALE operator" status="Experimental">
       <profile_supported>PRO-INT</profile_supported>
     </profile_extension>
+    <profile_extension name="EXT-MXFP" description="Microscaling formats" status="Experimental">
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
   </profile_extensions>
   <levels>
     <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256" max_tensor_list_size="256">No level</level>
@@ -632,6 +635,58 @@
         </typesupport>
         <typesupport mode="fp32xfp32 with fp32 accumulate" A_t="fp32_t" B_t="fp32_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>MATMUL_T_BLOCK_SCALED</name>
+        <arguments>
+          <argument category="input" name="A_data" type="tensor_t" shape="[N,H,C]" tensor-element-type="A_t">
+            <description>Input tensor A, N matrices of size HxC</description>
+            <rank min="3" max="3"/>
+          </argument>
+          <argument category="input" name="A_scale" type="tensor_t" shape="[N,H,C/block_size]" tensor-element-type="scale_t">
+            <description>Input tensor A, N matrices of size Hx(C/block_size)</description>
+            <rank min="3" max="3"/>
+          </argument>
+          <argument category="input" name="B_data" type="tensor_t" shape="[D,W,C]" tensor-element-type="B_t">
+            <description>Input data tensor B, D matrices of size WxC</description>
+            <rank min="3" max="3"/>
+          </argument>
+          <argument category="input" name="B_scale" type="tensor_t" shape="[D,W,C/block_size]" tensor-element-type="scale_t">
+            <description>Input scale tensor B, D matrices of size Wx(C/block_size)</description>
+            <rank min="3" max="3"/>
+          </argument>
+          <argument category="attribute" name="block_size" type="block_size_t" shape="-" tensor-element-type="-">
+            <description>Block size for value tensors</description>
+          </argument>
+          <argument category="output" name="output_data" type="tensor_t" shape="[N,H,W]" tensor-element-type="out_t">
+            <description>Output tensor, N matrices of size HxW</description>
+            <rank min="3" max="3"/>
+          </argument>
+        </arguments>
+        <types>
+          <type name='A_t' />
+          <type name='B_t' />
+          <type name='scale_t' />
+          <type name='out_t' />
+        </types>
+        <typesupport mode="Scaled fp4e2m1 with fp8ue8m0 scale and fp32 accumulate" A_t="fp4e2m1_t" B_t="fp4e2m1_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="Scaled fp6e2m3 with fp8ue8m0 scale and fp32 accumulate" A_t="fp6e2m3_t" B_t="fp6e2m3_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="Scaled fp6e3m2 with fp8ue8m0 scale and fp32 accumulate" A_t="fp6e3m2_t" B_t="fp6e3m2_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="Scaled fp8e4m3 with fp8ue8m0 scale and fp32 accumulate" A_t="fp8e4m3_t" B_t="fp8e4m3_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="Scaled fp8e5m2 with fp8ue8m0 scale and fp32 accumulate" A_t="fp8e5m2_t" B_t="fp8e5m2_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="Scaled mxint8 with fp8ue8m0 scale and fp32 accumulate" A_t="mxint8_t" B_t="mxint8_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
         </typesupport>
       </operator>
       <operator>
@@ -2952,6 +3007,149 @@ used.</description>
         <typesupport mode="fp32 to fp16" in_t="fp32_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
+        <typesupport mode="fp4e2m1 to bf16" in_t="fp4e2m1_t" out_t="bf16_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="fp6e3m2 to bf16" in_t="fp6e3m2_t" out_t="bf16_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="fp6e2m3 to bf16" in_t="fp6e2m3_t" out_t="bf16_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="bf16 to fp4e2m1" in_t="bf16_t" out_t="fp4e2m1_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="bf16 to fp6e3m2" in_t="bf16_t" out_t="fp6e3m2_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="bf16 to fp6e2m3" in_t="bf16_t" out_t="fp6e2m3_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>CAST_FROM_BLOCK_SCALED</name>
+        <arguments>
+          <argument category="input" name="input_data" type="tensor_t" shape="shape" tensor-element-type="in_t">
+            <description>Input data values tensor</description>
+            <levellimit value="rank(input_data)" limit="MAX_RANK"/>
+            <rank min="1" max="MAX_RANK"/>
+          </argument>
+          <argument category="input" name="input_scale" type="tensor_t" shape="in_scale_shape" tensor-element-type="scale_t">
+            <description>Input scale values tensor</description>
+            <levellimit value="rank(input_scale)" limit="MAX_RANK"/>
+            <rank min="1" max="MAX_RANK"/>
+          </argument>
+          <argument category="attribute" name="block_size" type="block_size_t" shape="-" tensor-element-type="-">
+            <description>block_size</description>
+          </argument>
+          <argument category="output" name="output_data" type="tensor_t" shape="shape" tensor-element-type="out_t">
+            <description>Output data values tensor</description>
+            <rank min="1" max="MAX_RANK"/>
+         </argument>
+        </arguments>
+        <types>
+          <type name='in_t'/>
+          <type name='scale_t'/>
+          <type name='out_t'/>
+        </types>
+        <typesupport mode="fp4e2m1 with fp8ue8m0 scale to bf16" in_t="fp4e2m1_t" scale_t="fp8ue8m0_t" out_t="bf16_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="fp6e2m3 with fp8ue8m0 scale to bf16" in_t="fp6e2m3_t" scale_t="fp8ue8m0_t" out_t="bf16_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="fp6e3m2 with fp8ue8m0 scale to bf16" in_t="fp6e3m2_t" scale_t="fp8ue8m0_t" out_t="bf16_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="fp8e4m3 with fp8ue8m0 scale to bf16" in_t="fp8e4m3_t" scale_t="fp8ue8m0_t" out_t="bf16_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2 with fp8ue8m0 scale to bf16" in_t="fp8e5m2_t" scale_t="fp8ue8m0_t" out_t="bf16_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="mxint8 with fp8ue8m0 scale to bf16" in_t="mxint8_t" scale_t="fp8ue8m0_t" out_t="bf16_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="fp4e2m1 with fp8ue8m0 scale to fp32" in_t="fp4e2m1_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" />
+        </typesupport>
+        <typesupport mode="fp6e2m3 with fp8ue8m0 scale to fp32" in_t="fp6e2m3_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="fp6e3m2 with fp8ue8m0 scale to fp32" in_t="fp6e3m2_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="fp8e4m3 with fp8ue8m0 scale to fp32" in_t="fp8e4m3_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2 with fp8ue8m0 scale to fp32" in_t="fp8e5m2_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="mxint8 with fp8ue8m0 scale to fp32" in_t="mxint8_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>CAST_TO_BLOCK_SCALED</name>
+        <arguments>
+          <argument category="input" name="input_data" type="tensor_t" shape="shape" tensor-element-type="in_t">
+            <description>Input data values tensor</description>
+            <levellimit value="rank(input_data)" limit="MAX_RANK"/>
+            <rank min="1" max="MAX_RANK"/>
+          </argument>
+          <argument category="attribute" name="block_size" type="block_size_t" shape="-" tensor-element-type="-">
+            <description>block_size</description>
+          </argument>
+          <argument category="output" name="output_data" type="tensor_t" shape="shape" tensor-element-type="out_t">
+            <description>Output data values tensor</description>
+            <rank min="1" max="MAX_RANK"/>
+          </argument>
+          <argument category="output" name="output_scale" type="tensor_t" shape="out_scale_shape" tensor-element-type="scale_t">
+            <description>Output scale values tensor</description>
+            <rank min="1" max="MAX_RANK"/>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t'/>
+          <type name='scale_t'/>
+          <type name='out_t'/>
+        </types>
+        <typesupport mode="bf16 to fp4e2m1 with fp8ue8m0 scale" in_t="bf16_t" scale_t="fp8ue8m0_t" out_t="fp4e2m1_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="bf16 to fp6e2m3 with fp8ue8m0 scale" in_t="bf16_t" scale_t="fp8ue8m0_t" out_t="fp6e2m3_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="bf16 to fp6e3m2 with fp8ue8m0 scale" in_t="bf16_t" scale_t="fp8ue8m0_t" out_t="fp6e3m2_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="bf16 to fp8e4m3 with fp8ue8m0 scale" in_t="bf16_t" scale_t="fp8ue8m0_t" out_t="fp8e4m3_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="bf16 to fp8e5m2 with fp8ue8m0 scale" in_t="bf16_t" scale_t="fp8ue8m0_t" out_t="fp8e5m2_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="bf16 to mxint8 with fp8ue8m0 scale" in_t="bf16_t" scale_t="fp8ue8m0_t" out_t="mxint8_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="fp32 to fp4e2m1 with fp8ue8m0 scale" in_t="fp32_t" scale_t="fp8ue8m0_t" out_t="fp4e2m1_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="fp32 to fp6e2m3 with fp8ue8m0 scale" in_t="fp32_t" scale_t="fp8ue8m0_t" out_t="fp6e2m3_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="fp32 to fp6e3m2 with fp8ue8m0 scale" in_t="fp32_t" scale_t="fp8ue8m0_t" out_t="fp6e3m2_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="fp32 to fp8e4m3 with fp8ue8m0 scale" in_t="fp32_t" scale_t="fp8ue8m0_t" out_t="fp8e4m3_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="fp32 to fp8e5m2 with fp8ue8m0 scale" in_t="fp32_t" scale_t="fp8ue8m0_t" out_t="fp8e5m2_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="fp32 to mxint8 with fp8ue8m0 scale" in_t="fp32_t" scale_t="fp8ue8m0_t" out_t="mxint8_t" version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
       </operator>
       <operator>
         <name>RESCALE</name>
@@ -3119,6 +3317,21 @@ used.</description>
         </typesupport>
         <typesupport mode="fp32" out_t="fp32_t"  version_added="1.0">
           <op_profile name="PRO-FP"/>
+        </typesupport>
+        <typesupport mode="fp8ue8m0" out_t="fp8ue8m0_t"  version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="fp6e3m2" out_t="fp6e3m2_t"  version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="fp6e2m3" out_t="fp6e2m3_t"  version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="fp4e2m1" out_t="fp4e2m1_t"  version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
+        </typesupport>
+        <typesupport mode="mxint8" out_t="mxint8_t"  version_added="1.1">
+          <op_profile name="EXT-MXFP"/>
         </typesupport>
       </operator>
       <operator>
@@ -3394,5 +3607,9 @@ used.</description>
     <enumval value="2" name="INEXACT_ROUND" description="Allow rounding results to be inexact." extension="EXT-INEXACTROUND"/>
     <enumval value="3" name="DOUBLE_ROUND" description="Perform double rounding." extension="EXT-DOUBLEROUND"/>
  </enum>
+
+<enum name="block_size_t" description="Block size for the block_scaled formats">
+  <enumval value="32" name="BLOCK_SIZE_32" description="Block size of 32" extension="EXT-MXFP"/>
+</enum>
 
 </tosa>

@@ -187,6 +187,25 @@ include::{generated}/operators/MATMUL.adoc[]
 include::{pseudocode}/operators/MATMUL.tosac[lines=10..-1]
 ----
 
+==== MATMUL_T_BLOCK_SCALED
+
+Performs two dimensional matrix multiplications using block scaled tensors.
+The block dimension is always the the last dimension of the tensor, so the result is effectively a matrix multiply of A by the transposed B matrix.
+If the D dimension of input B is of size 1, the B matrix will be broadcast.
+
+*Precision Requirements*
+
+* Each output can be expressed as a dot product of two input vectors multiplied by the scale factors for the A and B tensors.
+* The dot product must meet the <<Dot product accuracy requirements>>.
+* When generating the data sets for the Dot product accuracy requirements, the data should be generated as fp32 and converted to a scale/value tensor pair using the scale calculation defined in CAST_TO_BLOCK_SCALED.
+
+include::{generated}/operators/MATMUL_T_BLOCK_SCALED.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/MATMUL_T_BLOCK_SCALED.tosac[lines=10..-1]
+----
+
 ==== MAX_POOL2D
 
 This performs a max pooling over the given input tensor.

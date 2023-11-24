@@ -1,0 +1,27 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2025 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(rank(shape) == 0 || shape[rank(shape)-1] % block_size != 0);
+
+for_each_data_position(index in shape) {
+
+    fp32_t acc = static_cast<fp32_t>(tensor_read<in_t>(input_data, shape, index));
+
+    // Scaled block to scalar conversion
+
+    // Read the correct scale location. Always scale in the innermost dimension.
+    shape_t scale_index = index;
+    scale_index[rank(scale_index)-1] = scale_index[rank(scale_index)-1] / block_size;
+
+    fp32_t scale = static_cast<fp32_t>(tensor_read<scale_t>(input_scale, in_scale_shape, scale_index));
+    acc = apply_mul_s<fp32_t>(acc, scale);
+    out_t out = round_to_nearest_float<in_t, out_t>(acc);
+    tensor_write<out_t>(output_data, shape, index, out);
+
+}

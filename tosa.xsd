@@ -27,6 +27,7 @@
     <xs:enumeration value="EXT-DYNAMIC"/>
     <xs:enumeration value="EXT-DOUBLEROUND"/>
     <xs:enumeration value="EXT-INEXACTROUND"/>
+    <xs:enumeration value="EXT-MXFP"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -60,9 +61,14 @@
     <xs:enumeration value="i48_t"/>
     <xs:enumeration value="fp8e4m3_t"/>
     <xs:enumeration value="fp8e5m2_t"/>
+    <xs:enumeration value="fp8ue8m0_t"/>
+    <xs:enumeration value="fp6e3m2_t"/>
+    <xs:enumeration value="fp6e2m3_t"/>
+    <xs:enumeration value="fp4e2m1_t"/>
     <xs:enumeration value="fp16_t"/>
     <xs:enumeration value="bf16_t"/>
     <xs:enumeration value="fp32_t"/>
+    <xs:enumeration value="mxint8_t"/>
     <xs:enumeration value="tensor_size_t"/>
   </xs:restriction>
 </xs:simpleType>
@@ -94,6 +100,7 @@
     <xs:enumeration value="tensor_list_t"/>
     <xs:enumeration value="A_t"/>
     <xs:enumeration value="B_t"/>
+    <xs:enumeration value="scale_t"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -111,6 +118,7 @@
     <xs:enumeration value="A_t"/>
     <xs:enumeration value="acc_type_t"/>
     <xs:enumeration value="B_t"/>
+    <xs:enumeration value="block_size_t"/>
     <xs:enumeration value="bool_t"/>
     <xs:enumeration value="i8_t"/>
     <xs:enumeration value="i32_t"/>
@@ -120,6 +128,7 @@
     <xs:enumeration value="out_t"/>
     <xs:enumeration value="resize_mode_t"/>
     <xs:enumeration value="rounding_mode_t"/>
+    <xs:enumeration value="scale_t"/>
     <xs:enumeration value="shape_t"/>
     <xs:enumeration value="shape_list_t"/>
     <xs:enumeration value="String"/>
@@ -239,6 +248,7 @@
       <xs:extension base="xs:string">
         <xs:attribute name="name" type="profile_ext_name" use="required"/>
         <xs:attribute name="and_name" type="profile_ext_name"/>
+        <xs:attribute name="and_name2" type="profile_ext_name"/>
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
@@ -285,6 +295,7 @@
     <xs:attribute name="value" type="xs:integer"/>
     <xs:attribute name="description" type="xs:string"/>
     <xs:attribute name="extension" type="profile_ext_name"/>
+    <xs:attribute name="or_extension" type="profile_ext_name"/>
   </xs:complexType>
 </xs:element>
 
@@ -307,6 +318,7 @@
       <xs:element ref="rank" minOccurs="0" maxOccurs="1"/>
       <xs:element ref="ctc" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element ref="ctc_remove" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="op_profile" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
     <xs:attribute name="category" type="argumentcategory" use="required"/>
     <xs:attribute name="name" type="xs:string" use="required"/>
@@ -359,6 +371,7 @@
     <xs:attribute name="var_t" type="datatype"/>
     <xs:attribute name="A_t" type="datatype"/>
     <xs:attribute name="B_t" type="datatype"/>
+    <xs:attribute name="scale_t" type="datatype"/>
   </xs:complexType>
 </xs:element>
 

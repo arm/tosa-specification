@@ -88,6 +88,9 @@ op_list = [
     "div_shape",
     "mul_shape",
     "sub_shape",
+    "cast_to_block_scaled",
+    "cast_from_block_scaled",
+    "matmul_t_block_scaled",
 ]
 
 profile_list = [
@@ -101,6 +104,7 @@ profile_list = [
     "Extension::fft",
     "Extension::variable",
     "Extension::shape",
+    "Extension::mxfp",
 ]
 
 type_list = [
@@ -115,6 +119,11 @@ type_list = [
     "fp32T",
     "fp8e4m3T",
     "fp8e5m2T",
+    "fp8ue8m0T",
+    "fp6e3m2T",
+    "fp6e2m3T",
+    "fp4e2m1T",
+    "mxint8T",
 ]
 
 cond_list = [

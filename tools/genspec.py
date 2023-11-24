@@ -35,7 +35,10 @@ class TOSASpecAsciidocGenerator:
         file.write("|===\n")
         file.write("|Name|Value|Description|Required Extension\n\n")
         for val in enum.values:
-            file.write(f"|{val[0]}|{val[1]}|{val[2]}|{val[3]}\n")
+            file.write(
+                f"|{val[0]}|{val[1]}|{val[2]}|"
+                f"{' or '.join(val[3]) if val[3][1] != '' else val[3][0]}\n"
+            )
         file.write("|===\n")
 
     def generate_operator(self, op, file):
@@ -242,12 +245,26 @@ class TOSASpecAsciidocGenerator:
                             for profile in tysup.profiles:
                                 if profile.find(pext.name) != -1:
                                     note = ""
-                                    m = re.match(r"(.*) and (.*)", profile)
+                                    m = re.match(
+                                        r"([a-zA-Z0-9-]+) and ([a-zA-Z0-9-]+)"
+                                        "(?: and ([a-zA-Z0-9-]+))?",
+                                        profile,
+                                    )
                                     if m:
-                                        if m[1] == pext.name:
-                                            note = f"If {m[2]} is also supported"
+                                        other_exts = list(
+                                            e
+                                            for e in m.groups()
+                                            if e != pext.name and e is not None
+                                        )
+                                        if len(other_exts) > 1:
+                                            note = (
+                                                f"If {' and '.join(other_exts)}"
+                                                " are also supported"
+                                            )
                                         else:
-                                            note = f"If {m[1]} is also supported"
+                                            note = (
+                                                f"If {other_exts[0]} is also supported"
+                                            )
                                     f.write(
                                         f"|{op.name}|{tysup.mode}|"
                                         f"{tysup.version_added}|{note}\n"
@@ -270,7 +287,7 @@ class TOSASpecAsciidocGenerator:
                             f.write(f"|{enum.name}|{val[0]}|New Enum\n")
                     else:
                         for val in enum.values:
-                            if val[3] == pext.name:
+                            if pext.name in val[3]:
                                 f.write(header_text)
                                 header_text = ""
                                 f.write(f"|{enum.name}|{val[0]}|New Value\n")

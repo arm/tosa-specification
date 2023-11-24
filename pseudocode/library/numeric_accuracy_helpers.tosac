@@ -37,25 +37,44 @@ fp64_t normal_min<in_t>() {
     return exp2(-6);
   } else if (is_same<in_t,fp8e5m2_t>()) {
     return exp2(-14);
-  }
+  } else if (is_same<in_t,fp6e2m3_t>()) {
+    return 1.0;
+  } else if (is_same<in_t,fp6e3m2_t>()) {
+    return 0.25;
+  } else if (is_same<in_t,fp4e2m1_t>()) {
+    return 1.0;
+  } else if (is_same<in_t,mxint8_t>()) {
+    return 1/64.0;
+  } else if (is_same<in_t,fp8ue8m0_t>()) {
+    return exp2(-127);
 }
 
 fp64_t normal_max<in_t>() {
   if (is_same<in_t,fp32_t>()) {
     return exp2(128) - exp2(127-23);
   } else if (is_same<in_t,bf16_t>()) {
-    return exp2(128) - exp2(127- 7);
+    return exp2(128) - exp2(127-7);
   } else if (is_same<in_t,fp16_t>()) {
-    return exp2( 16) - exp2( 15-10);
+    return exp2(16) - exp2(15-10);
   } else if (is_same<in_t,fp8e4m3_t>()) {
-    return exp2( 9) - exp2( 8-2);
+    return exp2(9) - exp2(8-2);
   } else if (is_same<in_t,fp8e5m2_t>()) {
-    return exp2( 16) - exp2( 15-2);
+    return exp2(16) - exp2(15-2);
+  } else if (is_same<in_t,fp6e2m3_t>()) {
+    return 7.5;
+  } else if (is_same<in_t,fp6e3m2_t>()) {
+    return 28.0;
+  } else if (is_same<in_t,fp4e2m1_t>()) {
+    return 6.0;
+  } else if (is_same<in_t,mxint8_t>()) {
+    return 1.0 + 63.0/64.0;
+  } else if (is_same<in_t,fp8ue8m0_t>()) {
+    return exp2(127);
   }
 }
 
 // Number of fractional (mantissa bits)
-int normal_frac<in_t> () {
+int normal_frac<in_t>() {
   if (is_same<in_t,fp32_t>()) {
     return 23;
   } else if (is_same<in_t,bf16_t>()) {
@@ -66,7 +85,67 @@ int normal_frac<in_t> () {
     return 3;
   } else if (is_same<in_t,fp8e5m2_t>()) {
     return 2;
+  } else if (is_same<in_t,fp6e2m3_t>()) {
+    return 3;
+  } else if (is_same<in_t,fp6e3m2_t>()) {
+    return 2;
+  } else if (is_same<in_t,fp4e2m1_t>()) {
+    return 1;
+  } else if (is_same<in_t,mxint8_t>()) {
+    return 0;
   }
+}
+
+// Exponent width
+int exponent_bits<in_t>() {
+  if (is_same<in_t, fp32_t) {
+    return 8;
+  } else if (is_same<in_t, fp16_t) {
+    return 5;
+  } else if (is_same<in_t, bf16_t) {
+    return 8;
+  } else if (is_same<in_t,fp8e4m3_t>()) {
+    return 4;
+  } else if (is_same<in_t, fp8e5m2_t>()) {
+    return 5;
+  } else if (is_same<in_t, fp6e2m3_t>()) {
+    return 2;
+  } else if (is_same<in_t, fp6e3m2_t>()) {
+    return 3;
+  } else if (is_same<in_t, fp4e2m1_t>()) {
+    return 2;
+  } else if (is_same<in_t, mxint8_t>()) {
+    return 0;
+  }
+}
+
+int exponent_bias<in_t>() {
+  if (is_same<in_t, fp32_t) {
+    return 127;
+  } else if (is_same<in_t, fp16_t) {
+    return 15;
+  } else if (is_same<in_t, bf16_t) {
+    return 127;
+  } else if (is_same<in_t,fp8e4m3_t>()) {
+    return 7;
+  } else if (is_same<in_t, fp8e5m2_t>()) {
+    return 15;
+  } else if (is_same<in_t, fp6e2m3_t>()) {
+    return 1;
+  } else if (is_same<in_t, fp6e3m2_t>()) {
+    return 3;
+  } else if (is_same<in_t, fp4e2m1_t>()) {
+    return 1;
+  } else if (is_same<in_t, mxint8_t>()) {
+    return 6;
+  } else if (is_same<in_t, fp8ue8m0_t>()) {
+    return 127;
+  }
+}
+
+// Returns a mask for the low N bits of a value
+uint32_t get_low_bitmask(int32_t bits) {
+  return (1 << bits) - 1;
 }
 
 fp64_t calcAbsErrorBound<in_t>(fp64_t bound_magnitude, fp64_t bounds_value,

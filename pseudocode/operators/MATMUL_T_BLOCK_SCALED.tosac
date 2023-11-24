@@ -1,0 +1,42 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2025 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(C % block_size != 0);
+
+// The B matrix may be broadcast, but only if the D size is one.
+ERROR_IF(D != N && D != 1);
+
+for_each(0 <= n < N, 0 <= h < H, 0 <= w < W) {
+    out_t acc = 0;
+
+    // Index properly if B matrix is broadcast
+    size_t d = (D == 1) ? 0 : n;
+
+    // Iterate over the number of blocks in C
+    for_each(0 <= b <= C/block_size) {
+        out_t block_acc = 0;
+
+        // Read the scales for this block
+        out_t scale_A = static_cast<out_t>(tensor_read<scale_t>(A_scale, [N,H,C/block_size], [n,h,b]));
+        out_t scale_B = static_cast<out_t>(tensor_read<scale_t>(B_scale, [D,W,C/block_size], [d,w,b]));
+
+        // Do the dot product for the values in this block
+        for_each(0 <= i < block_size) {
+            out_t value_A = static_cast<out_t>(tensor_read<A_t>(A_data, [N,H,C], [n,h,(b*block_size)+i]));
+            out_t value_B = static_cast<out_t>(tensor_read<B_t>(B_data, [D,W,C], [d,w,(b*block_size)+i]));
+            block_acc = apply_add_s<out_t>(block_acc, apply_mul_s<out_t>(value_A, value_B));
+        }
+        // Scale the block accumulator by the product of the scales
+        block_acc = apply_mul_s<out_t>(block_acc, apply_mul_s<out_t>(scale_A, scale_B));
+
+        // Add the scaled block accumulator to the accumulator for this output
+        acc = apply_add_s<out_t>(acc, block_acc);
+    }
+    tensor_write<out_t>(output, [N,H,W], [n,h,w], acc);
+}

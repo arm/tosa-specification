@@ -13,7 +13,42 @@ int round_to_nearest_int(float_t f);
 // Converts the input value into floating-point, using round to nearest rounding.
 // Values that are not NaN outside of the representable range of the destination type must be set to infinity of the correct sign.
 // If the destination floating point type does not have an infinity representation, values outside of the representable range must be set to NaN.
-float_t round_to_nearest_float(in_t f);
+// For the required precision see the section: Floating-Point Profile Compliance.
+out_t round_to_nearest_float<in_t, out_t>(in_t f);
+
+// Converts the input value into the floating-point type out_t, rounding towards zero.
+// Values that are NaN must continue to be NaN in the new type.
+// Values outside of the representable range of the output type must be set to Infinity if available, and NaN if not.
+// Sign value is maintained.
+// Exponent is rebiased.
+out_t round_towards_zero<in_t,out_t>(in_t value);
+
+// Converts the input value into the floating-point type out_t, rounding away from zero.
+// Values that are NaN must continue to be NaN in the new type.
+// Values outside of the representable range of the output type must be set to Infinity if available, and NaN if not.
+// Sign value is maintained.
+// Exponent is rebiased.
+out_t round_away_from_zero<in_t, out_t>(in_t value);
+
+enum fpround_mode_t = {
+    nearest_even,
+    towards_zero,
+    away_from_zero
+};
+
+out_t round<in_t, out_t>(in_t value, fpround_mode_t mode) {
+    switch(mode) {
+        case nearest_even:
+            return round_to_nearest_float<in_t, out_t>(value);
+            break;
+        case towards_zero:
+            return round_towards_zero<in_t, out_t>(value);
+            break;
+        case away_from_zero:
+            return round_away_from_zero<in_t, out_t>(value);
+            break;
+    }
+}
 
 // Floating point values are unchanged.
 // For two's complement integer values where out_t has more bits than in_t, replicate the top bit of input for all bits between the top bit of input and the top bit of output.
@@ -26,3 +61,17 @@ out_t zero_extend<out_t>(in_t input);
 // output is the sizeof(out_t) least significant bits in input.
 // Nop for floating-point types
 out_t truncate(in_t input);
+
+scale_t calc_block_scale<in_t, scale_t, out_t>(in_t max_abs) {
+  scale_t scale;
+  if (max_abs == 0) {
+    return normal_min<scale_t>();
+  } else if (is_a_NaN(max_abs) || is_an_Inf(max_abs)) {
+    return NaN;
+  }
+
+  int scale_exp = is_same<out_t, fp8e4m3_t>() ? ceil(log2(max_abs / normal_max<out_t>())) :
+                                     floor(log2(max_abs / normal_max<out_t>())) + 1;
+  scale = apply_clip_s<scale_t>(exp2(scale_exp), normal_min<scale_t>(), normal_max<scale_t>());
+  return scale;
+}

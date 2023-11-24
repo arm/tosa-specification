@@ -187,6 +187,19 @@ class TOSASpec:
             operators.append(self.__load_operator(op))
         return TOSAOperatorGroup(name, operators)
 
+    def __extension_string(self, op_profile):
+        tsp_name = op_profile.get("name")
+        and_name = op_profile.get("and_name")
+        and_name2 = op_profile.get("and_name2")
+        if and_name is not None:
+            if and_name < tsp_name:
+                tsp_name = f"{and_name} and {tsp_name}"
+            else:
+                tsp_name = f"{tsp_name} and {and_name}"
+        if and_name2 is not None:
+            tsp_name = " and ".join(sorted([tsp_name, and_name, and_name2]))
+        return tsp_name
+
     def __load_operator(self, op):
         name = op.find("name").text
         args = []
@@ -208,13 +221,7 @@ class TOSASpec:
             profiles = tysup.findall("op_profile")
             tsprofiles = []
             for p in profiles:
-                tsp_name = p.get("name")
-                and_name = p.get("and_name")
-                if and_name is not None:
-                    if and_name < tsp_name:
-                        tsp_name = f"{and_name} and {tsp_name}"
-                    else:
-                        tsp_name = f"{tsp_name} and {and_name}"
+                tsp_name = self.__extension_string(p)
                 tsprofiles.append(tsp_name)
             for ty in types:
                 tsmap[ty] = tysup.get(ty)
@@ -280,6 +287,12 @@ class TOSASpec:
             for profile in ctc_remove_elements.findall("op_profile"):
                 ctc_remove.append(profile.get("name"))
 
+        op_profile = arg.find("op_profile")
+        if op_profile is not None:
+            print("found")
+            s = self.__extension_string(op_profile)
+            desc = f"{desc}. Requires the following extensions: {s}"
+
         return TOSAOperatorArgument(
             name,
             desc,
@@ -300,7 +313,7 @@ class TOSASpec:
         enumextension = arg.get("extension", "")
         values = []
         for val in arg.findall("enumval"):
-            valextension = val.get("extension", "")
+            valextension = [val.get("extension", ""), val.get("or_extension", "")]
             values.append(
                 (
                     val.get("name"),

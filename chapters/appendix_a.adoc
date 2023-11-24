@@ -223,6 +223,26 @@ for (0 <= n < N, 0 <= c < C, 0 <= x < W) {
 }
 ----
 
+==== MATMUL_T_BLOCK_SCALED
+
+The following generates input test data for test set S.
+For compliant implementation, the test must pass whenever the attributes satisfy:
+`N*H*W >= MIN_DOT_PRODUCTS`
+
+[source,c++]
+----
+KS = C;
+for (0 <= n < N, 0 <= y < H, 0 <= c < C) {
+  A[n, y, c] = tosa_pro_fp_data(S, KS, 0, c, (n*H+y)*C+c);
+}
+  A_scale, A_values = CAST_TO_BLOCK_SCALED(A);
+for (0 <= n < N, 0 <= c < C, 0 <= x < W) {
+  B[n, x, c] = tosa_pro_fp_data(S, KS, 1, c, (n*W+x)*C+c);
+}
+  B_scale, B_values = CAST_TO_BLOCK_SCALED(B);
+
+----
+
 ==== TRANSPOSE_CONV2D
 
 The following generates input test data for test set S.
