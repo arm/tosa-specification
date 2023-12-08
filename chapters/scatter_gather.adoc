@@ -31,6 +31,7 @@ for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
 The values_out tensor is set to the values_in tensor with data modified as follows: data from the input tensor is inserted at the positions specified by the indices tensor.
 N is the number of batches, W the number of indices in each batch, K the range of each index and C the number data channels for each index.
 It is not permitted to repeat the same output index within a single SCATTER operation and so each output index occurs at most once.
+It follows that K >= W.
 In use cases that require multiple updates to the same output position, these must be decomposed into multiple SCATTER operations.
 
 include::{generated}/operators/SCATTER.adoc[]

@@ -281,10 +281,16 @@ Let `out_ref` be the result of the fp64_t reference implementation of `pow(x,y)`
 Let `err_bnd = abs(out_ref) * exp2(-normal_frac<in_out_t>) * (1+abs(log(abs(x))*y))` +
 Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
-| <<SIGMOID>>, <<TANH>>
+| <<SIGMOID>>
 | Let `x` be an input element and `out_imp` the implementation output. +
 Let `out_ref` be the result of the fp64_t reference implementation. +
 Let `err_bnd = abs(out_ref) * exp2(-normal_frac<in_out_t>) * (2 * (1+abs(x)))` +
+Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
+
+| <<TANH>>
+| Let `x` be an input element and `out_imp` the implementation output. +
+Let `out_ref` be the result of the fp64_t reference implementation. +
+Let `err_bnd = exp2(-normal_frac<in_out_t>) * max(0.5, abs(out_ref) * (4 * (1+abs(x))))` +
 Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 | <<REDUCE_SUM>>
