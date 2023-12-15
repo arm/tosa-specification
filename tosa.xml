@@ -2589,9 +2589,11 @@ used.</description>
           <type name='in_out_t' />
         </types>
         <typesupport mode="Boolean" in_out_t="bool_t" />
+        <typesupport mode="4-bit" in_out_t="i4_t" />
         <typesupport mode="8-bit" in_out_t="i8_t" />
         <typesupport mode="16-bit" in_out_t="i16_t" />
         <typesupport mode="32-bit" in_out_t="i32_t" />
+        <typesupport mode="48-bit" in_out_t="i48_t" />
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
