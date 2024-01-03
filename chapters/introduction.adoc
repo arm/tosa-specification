@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2023 ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -274,7 +274,9 @@ Let `err_bnd = abs(out_ref) * exp2(-normal_frac<in_out_t>) * (1+abs(x))` +
 Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 | <<POW>>
-| Let `x`, `y` be input elements and `out_imp` the implementation output of `pow(x,y)`. +
+| Let `x`, `y` be input elements from `input1` and `input2` respectively. +
+Let `out_imp` be the implementation output of `pow(x,y)`. +
+If `x` is less than zero and `y` is non-integral then the result must be a NaN. +
 Let `out_ref` be the result of the fp64_t reference implementation of `pow(x,y)`. +
 Let `err_bnd = abs(out_ref) * exp2(-normal_frac<in_out_t>) * (1+abs(log(abs(x))*y))` +
 Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
