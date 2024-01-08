@@ -1,0 +1,21 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+REQUIRE(length(table) == TABLE_SIZE);
+for_each(index in shape) {
+    in_t value = tensor_read<in_t>(input, shape, index);
+    out_t result;
+    if (in_t == i8_t) {
+        // value is a signed int, convert to a 0 based index
+        result = table[static_cast<int16_t>(value) + 128];
+    } else {
+        result = apply_lookup_s(static_cast<int16_t>(table), static_cast<int16_t>(value));
+    }
+    tensor_write<out_t>(output, shape, index, result);
+}

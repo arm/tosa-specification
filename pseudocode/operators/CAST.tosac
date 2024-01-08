@@ -1,0 +1,27 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+for_each(index in shape) {
+    in_t in = tensor_read<in_t>(input, shape, index);
+    out_t out;
+    if (out_t == bool_t) {
+        out = (in != 0) ? true : false;
+    } else if (in_t == bool_t) {
+        out = (in) ? 1 : 0;
+    } else if (out_t == fp16_t || out_t == bf16_t || out_t == fp32_t) {
+        out = round_to_nearest_float(in);
+    } else if (in_t == fp16_t || in_t == bf16_t || in_t == fp32_t) {
+        out = apply_clip<out_t>(round_to_nearest_int(in), minimum<out_t>, maximum<out_t>);
+    } else if (sizeof(out_t) >= sizeof(in_t)) {
+        out = sign_extend<out_t>(in);
+    } else {
+        out = truncate(in);
+    }
+    tensor_write<out_t>(output, shape, index, out)
+}

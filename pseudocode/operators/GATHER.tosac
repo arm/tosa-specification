@@ -1,0 +1,15 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
+    index_t k = tensor_read<index_t>(indices, [N,W], [n,w]);
+    REQUIRE(0 <= k && k < K);
+    in_out_t value = tensor_read<in_out_t>(values, [N,K,C], [n,k,c]);
+    tensor_write<in_out_t>(output, [N,W,C], [n,w,c], value);
+}

@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2023 ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -18,23 +18,7 @@ include::{generated}/operators/ADD.adoc[]
 
 [source,c++]
 ----
-if (in_out_t == shape_t) {
-    ERROR_IF(rank(shape) != 0 || rank(shape1) != 0 || rank(shape2) != 0);
-    shape_t value1 = tensor_read<shape_t>(input1, [], []);
-    shape_t value2 = tensor_read<shape_t>(input2, [], []);
-    shape_t result = apply_add_s<shape_t>(value1, value2);
-    tensor_write<shape_t>(output, [], [], result);
-} else {
-    ERROR_IF(shape != broadcast_shape(shape1, shape2));
-    for_each(index in shape) {
-        dim_t index1 = apply_broadcast(shape, shape1, index);
-        dim_t index2 = apply_broadcast(shape, shape2, index);
-        in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-        in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-        in_out_t result = apply_add_s<in_out_t>(value1, value2);
-        tensor_write<in_out_t>(output, shape, index, result);
-    }
-}
+include::{pseudocode}/operators/ADD.tosac[lines=10..-1]
 ----
 
 ==== ARITHMETIC_RIGHT_SHIFT
@@ -46,26 +30,7 @@ include::{generated}/operators/ARITHMETIC_RIGHT_SHIFT.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(shape1, shape2));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-
-    // Ensure that shift amount is appropriate for the data type
-    REQUIRE((in_out_t == i32_t && 0 <= value2 && value2 <= 31) ||
-            (in_out_t == i16_t && 0 <= value2 && value2 <= 15) ||
-            (in_out_t == i8_t && 0 <= value2 && value2 <= 7));
-
-    in_out_t result = apply_arith_rshift<in_out_t>(value1, value2);
-    if (round == true && static_cast<int32_t>(value2) > 0 &&
-        (apply_arith_rshift<in_out_t>(value1, apply_sub_s<in_out_t>(value2, 1)) & 1 != 0) {
-        result = result + 1;
-    }
-    result = apply_clip_s<in_out_t>(result, minimum_s<in_out_t>, maximum_s<in_out_t>);
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/ARITHMETIC_RIGHT_SHIFT.tosac[lines=10..-1]
 ----
 
 ==== BITWISE_AND
@@ -77,15 +42,7 @@ include::{generated}/operators/BITWISE_AND.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(shape1, shape2));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t result = value1 & value2;
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/BITWISE_AND.tosac[lines=10..-1]
 ----
 
 ==== BITWISE_OR
@@ -97,15 +54,7 @@ include::{generated}/operators/BITWISE_OR.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(shape1, shape2));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t result = value1 | value2;
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/BITWISE_OR.tosac[lines=10..-1]
 ----
 
 ==== BITWISE_XOR
@@ -117,15 +66,7 @@ include::{generated}/operators/BITWISE_XOR.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(shape1, shape2));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t result = value1 ^ value2;
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/BITWISE_XOR.tosac[lines=10..-1]
 ----
 
 ==== INTDIV
@@ -140,28 +81,7 @@ include::{generated}/operators/INTDIV.adoc[]
 
 [source,c++]
 ----
-if (in_out_t == shape_t) {
-    ERROR_IF(rank(shape) != 0 || rank(shape1) != 0 || rank(shape2) != 0);
-    shape_t value1 = tensor_read<shape_t>(input1, [], []);
-    shape_t value2 = tensor_read<shape_t>(input2, [], []);
-    REQUIRE(value2 != 0);
-    shape_t result = value1 / value2;
-    tensor_write<shape_t>(output, [], [], result);
-} else {
-    ERROR_IF(shape != broadcast_shape(shape1, shape2));
-    for_each(index in shape) {
-        dim_t index1 = apply_broadcast(shape, shape1, index);
-        dim_t index2 = apply_broadcast(shape, shape2, index);
-        in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-        in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-        REQUIRE(value2 != 0);
-        // This catches the case where we divide minimum<in_out_t> by -1
-        // which is not representable in two's complement
-        REQUIRE(static_cast<int64_t>(value1) / static_cast<int64_t>(value2) <= maximum_s<in_out_t>);
-        in_out_t result = apply_intdiv_s<in_out_t>(value1, value2);
-        tensor_write<in_out_t>(output, shape, index, result);
-    }
-}
+include::{pseudocode}/operators/INTDIV.tosac[lines=10..-1]
 ----
 
 ==== LOGICAL_AND
@@ -173,15 +93,7 @@ include::{generated}/operators/LOGICAL_AND.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(shape1, shape2));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t result = value1 && value2;
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/LOGICAL_AND.tosac[lines=10..-1]
 ----
 
 ==== LOGICAL_LEFT_SHIFT
@@ -193,16 +105,7 @@ include::{generated}/operators/LOGICAL_LEFT_SHIFT.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(shape1, shape2));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    REQUIRE(0 <= value2 && value2 <= 31);
-    in_out_t result = value1 << value2;
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/LOGICAL_LEFT_SHIFT.tosac[lines=10..-1]
 ----
 
 ==== LOGICAL_RIGHT_SHIFT
@@ -214,17 +117,7 @@ include::{generated}/operators/LOGICAL_RIGHT_SHIFT.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(shape1, shape2));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    REQUIRE(0 <= static_cast<int32_t>(value2) && static_cast<int32_t>(value2) <= 31);
-    // Logical shifts happen as unsigned types internally
-    in_out_t result = apply_logical_rshift<in_out_t>(value1, value2);
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/LOGICAL_RIGHT_SHIFT.tosac[lines=10..-1]
 ----
 
 ==== LOGICAL_OR
@@ -236,15 +129,7 @@ include::{generated}/operators/LOGICAL_OR.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(shape1, shape2));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t result = value1 || value2;
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/LOGICAL_OR.tosac[lines=10..-1]
 ----
 
 ==== LOGICAL_XOR
@@ -256,15 +141,7 @@ include::{generated}/operators/LOGICAL_XOR.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(shape1, shape2));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t result = value1 != value2;
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/LOGICAL_XOR.tosac[lines=10..-1]
 ----
 
 ==== MAXIMUM
@@ -276,15 +153,7 @@ include::{generated}/operators/MAXIMUM.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(shape1, shape2));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t result = apply_max_s<in_out_t>(value1, value2);
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/MAXIMUM.tosac[lines=10..-1]
 ----
 
 ==== MINIMUM
@@ -296,15 +165,7 @@ include::{generated}/operators/MINIMUM.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(shape1, shape2));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t result = apply_min_s(value1, value2);
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/MINIMUM.tosac[lines=10..-1]
 ----
 
 ==== MUL
@@ -316,34 +177,7 @@ include::{generated}/operators/MUL.adoc[]
 
 [source,c++]
 ----
-if (in_out_t == shape_t) {
-    ERROR_IF(rank(shape) != 0 || rank(shape1) != 0 || rank(shape2) != 0);
-    shape_t value1 = tensor_read<shape_t>(input1, [], []);
-    shape_t value2 = tensor_read<shape_t>(input2, [], []);
-    shape_t result = value1 * value2;
-    tensor_write<shape_t>(output, [], [], result);
-} else {
-    REQUIRE(0 <= shift && shift <= 63);
-    REQUIRE(in_t == int32_t || shift == 0);
-    ERROR_IF(shape != broadcast_shape(shape1, shape2));
-    for_each(index in shape) {
-        dim_t index1 = apply_broadcast(shape, shape1, index);
-        dim_t index2 = apply_broadcast(shape, shape2, index);
-        in_t value1 = tensor_read<in_t>(input1, shape1, index1);
-        in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-        out_t result;
-        if (in_t == i32_t && shift > 0) {
-            int64_t product = sign_extend<int64_t>(value1) * sign_extend<int64_t>(value2);
-            int64_t round   = static_cast<int64_t>(1) << (shift - 1);
-            product = (product + round) >> shift;
-            REQUIRE(product >= minimum_s<i32_t> && product <= maximum_s<i32_t>)
-            result = product;
-        } else {
-            result = apply_mul_s(value1, value2);  // low 32-bits of result for i32_t
-        }
-        tensor_write<out_t>(output, shape, index, result);
-    }
-}
+include::{pseudocode}/operators/MUL.tosac[lines=10..-1]
 ----
 
 ==== POW
@@ -355,15 +189,7 @@ include::{generated}/operators/POW.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(shape1, shape2));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t result = apply_pow<in_out_t>(value1, value2);
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/POW.tosac[lines=10..-1]
 ----
 
 ==== SUB
@@ -375,23 +201,7 @@ include::{generated}/operators/SUB.adoc[]
 
 [source,c++]
 ----
-if (in_out_t == shape_t) {
-    ERROR_IF(rank(shape) != 0 || rank(shape1) != 0 || rank(shape2) != 0);
-    shape_t value1 = tensor_read<shape_t>(input1, [], []);
-    shape_t value2 = tensor_read<shape_t>(input2, [], []);
-    shape_t result = apply_sub<shape_t>(value1, value2);
-    tensor_write<shape_t>(output, [], [], result);
-} else {
-    ERROR_IF(shape != broadcast_shape(shape1, shape2));
-    for_each(index in shape) {
-        dim_t index1 = apply_broadcast(shape, shape1, index);
-        dim_t index2 = apply_broadcast(shape, shape2, index);
-        in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-        in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-        in_out_t result = apply_sub_s<in_out_t>(value1, value2);
-        tensor_write<in_out_t>(output, shape, index, result);
-    }
-}
+include::{pseudocode}/operators/SUB.tosac[lines=10..-1]
 ----
 
 ====   TABLE
@@ -414,16 +224,5 @@ include::{generated}/operators/TABLE.adoc[]
 
 [source,c++]
 ----
-REQUIRE(length(table) == TABLE_SIZE);
-for_each(index in shape) {
-    in_t value = tensor_read<in_t>(input, shape, index);
-    out_t result;
-    if (in_t == i8_t) {
-        // value is a signed int, convert to a 0 based index
-        result = table[static_cast<int16_t>(value) + 128];
-    } else {
-        result = apply_lookup_s(static_cast<int16_t>(table), static_cast<int16_t>(value));
-    }
-    tensor_write<out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/TABLE.tosac[lines=10..-1]
 ----

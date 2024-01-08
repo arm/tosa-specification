@@ -1,0 +1,74 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+// Ensure the image size is supported by GPU APIs and that for integer
+// implementations, position * stride does not overflow int32_t.
+ERROR_IF(max(OH,OW,IH,IW) >= 16384);
+ERROR_IF(scale_y_n <= 0 || scale_y_d <= 0 || scale_x_n <= 0 || scale_x_d <= 0);
+// if in_t=int8_t ensure that an int32_t accumulator can be used
+ERROR_IF(scale_y_n > (1 << 11) || scale_x_n > (1 << 11));
+// set a consistent lower limit of 1/16 downscale to simplify implementations
+ERROR_IF(scale_y_d >= 16 * scale_y_n || scale_x_d >= 16 * scale_x_n);
+ERROR_IF(offset_y < -scale_y_n || offset_y >= 16 * scale_y_n);
+ERROR_IF(offset_x < -scale_x_n || offset_x >= 16 * scale_x_n);
+ERROR_IF(border_y < -16 * scale_y_n || border_y >= scale_y_n);
+ERROR_IF(border_x < -16 * scale_x_n || border_x >= scale_x_n);
+ERROR_IF(OH != idiv_check((IH - 1) * scale_y_n - offset_y + border_y, scale_y_d) + 1);
+ERROR_IF(OW != idiv_check((IW - 1) * scale_x_n - offset_x + border_x, scale_x_d) + 1);
+for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
+    out_t acc;
+    resize_t dx, dy;
+    resize_t unit_x, unit_y;
+
+    unit_x = (is_floating_point(resize_t)) ? 1.0 : scale_x_n;
+    unit_y = (is_floating_point(resize_t)) ? 1.0 : scale_y_n;
+
+    int32_t y = oy * scale_y_d + offset_y;
+    int32_t x = ox * scale_x_d + offset_x;
+    int16_t iy = idiv_floor(y, scale_y_n);
+    int16_t ix = idiv_floor(x, scale_x_n);
+    int16_t ry = y - iy * scale_y_n;  // (y % scale_y_n)
+    int16_t rx = x - ix * scale_x_n;  // (x % scale_x_n)
+
+    if (is_floating_point(resize_t)) {
+        dy = static_cast<resize_t>(ry) / static_cast<resize_t>(scale_y_n);
+        dx = static_cast<resize_t>(rx) / static_cast<resize_t>(scale_x_n);
+    } else {
+        dy = ry;
+        dx = rx;
+    }
+    // Note that -1 <= iy < IH and -1 <= ix < IW
+    int16_t iy0 = apply_max_s(iy, 0);
+    int16_t iy1 = apply_min_s(iy + 1, IH - 1);
+    int16_t ix0 = apply_max_s(ix, 0);
+    int16_t ix1 = apply_min_s(ix + 1, IW - 1);
+    if (mode==BILINEAR) {
+        using in_s_t = make_signed(in_t); // Use signed calculations for i8/i16
+        in_s_t v00 = static_cast<in_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix0,c]));
+        in_s_t v01 = static_cast<in_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c]));
+        in_s_t v10 = static_cast<in_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c]));
+        in_s_t v11 = static_cast<in_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c]));
+        acc  = v00 * (unit_y - dy) * (unit_x - dx);
+        acc += v01 * (unit_y - dy) * dx;
+        acc += v10 * dy * (unit_x - dx);
+        acc += v11 * dy * dx;
+        tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc);
+    } else if (mode==NEAREST) {
+        int32_t iy, ix;
+        if (is_floating_point(resize_t)) {
+            iy = (dy >= 0.5) ? iy1 : iy0;
+            ix = (dx >= 0.5) ? ix1 : ix0;
+        } else {
+            iy = (2 * dy >= scale_y_n) ? iy1 : iy0;
+            ix = (2 * dx >= scale_x_n) ? ix1 : ix0;
+        }
+        in_t v = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy,ix,c]);
+        tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], v);
+    }
+}

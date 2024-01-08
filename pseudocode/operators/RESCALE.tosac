@@ -1,0 +1,58 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+for_each(index in shape) {
+    // uint16 values can have zero_point 0 or 32768
+    // int8/uint8 can have zero point within their valid range
+    // No other types can have zero point != 0
+    ERROR_IF(in_t != i8_t &&
+             (in_t != i16_t || input_unsigned == False) && input_zp != 0);
+    ERROR_IF(out_t != i8_t &&
+             (out_t != i16_t || output_unsigned == False) && output_zp != 0);
+    ERROR_IF(in_t == i16_t && input_unsigned == True && input_zp != 0 && input_zp != 32768);
+    ERROR_IF(out_t == i16_t && output_unsigned == True && output_zp != 0 && output_zp != 32768);
+    ERROR_IF(scale32 && in_t == i48_t);
+    ERROR_IF(!scale32 && double_round);
+    ERROR_IF(in_t == i16_t && out_t == i32_t && input_unsigned);
+    ERROR_IF(in_t == i32_t && out_t == i16_t && output_unsigned);
+
+    in_t in_value = tensor_read<in_t>(input, shape, index);
+
+    int48_t value, extended_in_zp;
+    if (input_unsigned) {
+        value = zero_extend<int48_t>(in_value);
+        extended_in_zp = zero_extend<int48_t>(input_zp);
+    }
+    else {
+        value = sign_extend<int48_t>(value);
+        extended_in_zp = sign_extend<int48_t>(input_zp);
+    }
+
+    value = value - extended_in_zp;
+    int c = (per_channel) ? index[rank(input) - 1] : 0;
+    int32_t result = (scale32) ?
+        apply_scale_32(value, multiplier[c], shift[c], double_round) :
+        apply_scale_16(value, multiplier[c], shift[c]);
+
+    if (output_unsigned) {
+        int32_t extended_out_zp = zero_extend<int32_t>(output_zp);
+        result = apply_add_s<int32_t>(result, extended_out_zp);
+        out_t out = static_cast<out_t>(apply_clip<int32_t>(result,
+                                                           minimum_u<out_t>,
+                                                           maximum_u<out_t>));
+    }
+    else {
+        int32_t extended_out_zp = sign_extend<int32_t>(output_zp);
+        result = apply_add_s<int32_t>(result, extended_out_zp);
+        out_t out = static_cast<out_t>(apply_clip<int32_t>(result,
+                                                           minimum_s<out_t>,
+                                                           maximum_s<out_t>));
+    }
+    tensor_write<out_t>(output, shape, index, out);
+}

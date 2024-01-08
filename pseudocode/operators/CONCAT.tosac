@@ -1,0 +1,32 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(axis < 0 || axis >= max(1,rank(shapes1[0])));
+ERROR_IF(shape[axis] != sum(shape_dim(shapes1[k], axis) for all k))
+ERROR_IF(in_out_t == shape_t && rank(shape) > 1);
+// The following checks ensure all inputs are compatible for concatenation
+for_each(input_shape in shapes1) {
+    ERROR_IF(rank(input_shape) != rank(shapes1[0]));
+    for_each(index in input_shape) {
+        ERROR_IF(index != axis && input_shape[index] != shapes1[0][index]);
+    }
+}
+for_each(index1 in shape) {
+    dim_t index2 = index1;
+    for (tensor t = 0; t < length(input1); t++) {
+        // Continue to concatenate along axis from each tensor
+        // For each output location, we are looking for the
+        // appropriate input tensor
+        if (index2[axis] >= 0 && index2[axis] < shape_dim(shapes1[t], axis)) {
+            in_out_t value = tensor_read<in_out_t>(input1[t], shapes1[t], index2);
+            tensor_write<in_out_t>(output, shape, index1, value);
+        }
+        index2[axis] = index2[axis] - shape_dim(shapes1[t], axis);
+    }
+}

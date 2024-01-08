@@ -1,0 +1,22 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(in_out_t != i8_t && input1_zp != 0) // Zero point only for int8_t
+ERROR_IF(in_out_t != i8_t && output_zp != 0) // Zero point only for int8_t
+for_each(index in shape) {
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
+    acc_t value = apply_sub_s<acc_t>(sign_extend<acc_t>(value1),
+                                     sign_extend<acc_t>(input1_zp));
+    value = apply_sub_s<acc_t>(0, value);
+    value = apply_add_s<acc_t>(value, sign_extend<acc_t>(output_zp));
+    in_out_t result = truncate<in_out_t>(apply_clip_s<acc_t>(value,
+                                                             minimum_s<in_out_t>,
+                                                             maximum_s<in_out_t>));
+    tensor_write<in_out_t>(output, shape, index, result);
+}

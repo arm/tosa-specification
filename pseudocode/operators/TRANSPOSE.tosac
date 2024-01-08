@@ -1,0 +1,35 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(rank(shape1) != rank(shape));
+ERROR_IF(tensor_size(shape1) != tensor_size(shape));
+
+for_each(index in perms) {
+    // Ensure each perms value is a valid value
+    ERROR_IF(index >= rank(shape1));
+    ERROR_IF(index < 0);
+    // Ensure ranks aren't repeated
+    ERROR_IF(indexes_used[index] == true);
+    indexes_used[index] = true;
+}
+
+// Ensure that the output shapes have the properly
+// permuted shapes
+for(i = 0; i < rank(shape); i++) {
+    ERROR_IF(shape1[perms[i]] != shape[i])
+}
+
+for_each(index in shape) {
+    dim_t tmp_index = index;
+    for(i = 0; i < rank(shape); i++) {
+        tmp_index[perms[i]] = index[i]
+    }
+    in_out_t value = tensor_read<in_out_t>(input1, shape1, tmp_index);
+    tensor_write<in_out_t>(output, shape, index, value);
+}

@@ -1,0 +1,40 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(in_t != i8_t && input_zp != 0); // Zero point only for int8_t
+ERROR_IF(weight_t != i8_t && weight_zp != 0);
+ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
+ERROR_IF(stride_y < 1 || stride_x < 1);
+ERROR_IF(dilation_y < 1 || dilation_x < 1);
+ERROR_IF(OH != idiv_check(IH - 1 + pad_top + pad_bottom - (KH - 1) * dilation_y, stride_y) + 1);
+ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x, stride_x) + 1);
+ERROR_IF(BC != C*M && BC != 1);
+
+for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C, 0 <= m < M) {
+    out_t acc = 0;
+    index_t iy = oy * stride_y - pad_top;
+    index_t ix = ox * stride_x - pad_left;
+    for_each(0 <= ky < KH, 0 <= kx < KW) {
+        index_t y = iy + ky * dilation_y;
+        index_t x = ix + kx * dilation_x;
+        if (0 <= y < IH && 0 <= x < IW) {
+            out_t value  = static_cast<out_t>(tensor_read<in_t>(input,
+                                                                [N,IH,IW,C],
+                                                                [n,y,x,c]));
+            out_t weight = static_cast<out_t>(tensor_read<weight_t>(weight,
+                                                                    [KH,KW,C,M],
+                                                                    [ky,kx,c,m]));
+            value  = apply_sub_s<out_t>(value, static_cast<out_t>input_zp);
+            weight = apply_sub_s<out_t>(weight, static_cast<out_t>weight_zp);
+            acc = apply_add_s<out_t>(acc, apply_mul_s<out_t>(value, weight));
+        }
+    }
+    acc = apply_add_s<out_t>(acc, bias[(BC == 1) ? 0 : (c * M) + m]);
+    tensor_write<out_t>(output, [N,OH,OW,C * M], [n,oy,ox,c * M + m], acc);
+}

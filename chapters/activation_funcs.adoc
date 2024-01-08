@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2021 ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -20,12 +20,7 @@ include::{generated}/operators/CLAMP.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(max_val < min_val);
-for_each(index in shape) {
-    in_out_t value = tensor_read<in_out_t>(input, shape, index);
-    value = apply_clip<in_out_t>(value, min_val, max_val);
-    tensor_write<in_out_t>(output, shape, index, value);
-}
+include::{pseudocode}/operators/CLAMP.tosac[lines=10..-1]
 ----
 
 ==== ERF
@@ -43,13 +38,7 @@ The ERF table has 513 entries each of 16-bit precision and covering the input ra
 
 [source,c++]
 ----
-int16_t erf_reference(int16_t x) { // input x range is -256 to + 256 inclusive
-    F64 v = (double)x / (double)64;
-    v = erf(v);
-    return round_to_nearest_int(32768.0 * v);
-}
-
-generate_lookup_table(&erf_table, &erf_reference);
+include::{pseudocode}/operators/tables/ERF.tosac[lines=10..-1]
 ----
 
 include::{generated}/operators/ERF.adoc[]
@@ -72,24 +61,14 @@ This sigmoid table has 513 entries each of 16-bit precision and covering the inp
 .Code for generating 16-bit sigmoid table
 [source,c++]
 ----
-int16_t sigmoid_reference(int16_t x) { // input x range is -256 to + 256 inclusive
-    fp64_t v = (fp64_t)x / (fp64_t)16;
-    v = 1.0/(1.0 + exp(-v));
-    return round_to_nearest_int(32768.0 * v);
-}
-
-generate_lookup_table(&sigmoid_table, &sigmoid_reference);
+include::{pseudocode}/operators/tables/SIGMOID.tosac[lines=10..-1]
 ----
 
 include::{generated}/operators/SIGMOID.adoc[]
 
 [source,c++]
 ----
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input, shape, index);
-    value = sigmoid<in_out_t>(value1);
-    tensor_write<in_out_t>(output, shape, index, value);
-}
+include::{pseudocode}/operators/SIGMOID.tosac[lines=10..-1]
 ----
 
 ==== TANH
@@ -109,23 +88,12 @@ This tanh_table has 513 entries each of 16-bit precision and covering the input 
 .Calculation of an example 16-bit tanh table
 [source,c++]
 ----
-int16_t tanh_reference(int16_t x) {  // input x range is -256 to +256 inclusive
-    fp64_t v = (fp64_t)x/(fp64_t)32;
-    v = exp(-2.0*v);
-    v = (1.0-v)/(1.0+v);
-    return round_to_nearest_int(32768.0 * v);
-}
-
-generate_lookup_table(&tanh_table, &tanh_reference);
+include::{pseudocode}/operators/tables/TANH.tosac[lines=10..-1]
 ----
 
 include::{generated}/operators/TANH.adoc[]
 
 [source,c++]
 ----
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input, shape, index);
-    value = tanh<in_out_t>(value1);
-    tensor_write<in_out_t>(output, shape, index, value);
-}
+include::{pseudocode}/operators/TANH.tosac[lines=10..-1]
 ----

@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2023 ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -24,16 +24,7 @@ include::{generated}/operators/ABS.adoc[]
 
 [source,c++]
 ----
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
-    if (is_floating_point(in_out_t) && value1 == -0.0) {
-        value1 = 0.0;
-    }
-    if (static_cast<int32_t>(value1) < 0.0) {
-        value1 = apply_sub_s<in_out_t>(0, value1);
-    }
-    tensor_write<in_out_t>(output, shape, index, value1);
-}
+include::{pseudocode}/operators/ABS.tosac[lines=10..-1]
 ----
 
 ==== BITWISE_NOT
@@ -44,11 +35,7 @@ include::{generated}/operators/BITWISE_NOT.adoc[]
 
 [source,c++]
 ----
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
-    in_out_t result = ~value1;
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/BITWISE_NOT.tosac[lines=10..-1]
 ----
 
 ==== CEIL
@@ -66,11 +53,7 @@ include::{generated}/operators/CEIL.adoc[]
 
 [source,c++]
 ----
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
-    in_out_t result = apply_ceil<in_out_t>(value1);
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/CEIL.tosac[lines=10..-1]
 ----
 
 ==== CLZ
@@ -81,11 +64,7 @@ include::{generated}/operators/CLZ.adoc[]
 
 [source,c++]
 ----
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
-    in_out_t result = count_leading_zeros(value1);
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/CLZ.tosac[lines=10..-1]
 ----
 
 ==== EXP
@@ -103,11 +82,7 @@ include::{generated}/operators/EXP.adoc[]
 
 [source,c++]
 ----
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
-    in_out_t result = apply_exp<in_out_t>(value1);
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/EXP.tosac[lines=10..-1]
 ----
 
 ==== FLOOR
@@ -125,11 +100,7 @@ include::{generated}/operators/FLOOR.adoc[]
 
 [source,c++]
 ----
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
-    in_out_t result = apply_floor<in_out_t>(value1);
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/FLOOR.tosac[lines=10..-1]
 ----
 
 ==== LOG
@@ -147,11 +118,7 @@ include::{generated}/operators/LOG.adoc[]
 
 [source,c++]
 ----
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
-    in_out_t result = apply_log<in_out_t>(value1);
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/LOG.tosac[lines=10..-1]
 ----
 
 ==== LOGICAL_NOT
@@ -162,11 +129,7 @@ include::{generated}/operators/LOGICAL_NOT.adoc[]
 
 [source,c++]
 ----
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index);
-    in_out_t result = !value1;
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/LOGICAL_NOT.tosac[lines=10..-1]
 ----
 
 ==== NEGATE
@@ -184,19 +147,7 @@ include::{generated}/operators/NEGATE.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(in_out_t != i8_t && input1_zp != 0) // Zero point only for int8_t
-ERROR_IF(in_out_t != i8_t && output_zp != 0) // Zero point only for int8_t
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
-    acc_t value = apply_sub_s<acc_t>(sign_extend<acc_t>(value1),
-                                     sign_extend<acc_t>(input1_zp));
-    value = apply_sub_s<acc_t>(0, value);
-    value = apply_add_s<acc_t>(value, sign_extend<acc_t>(output_zp));
-    in_out_t result = truncate<in_out_t>(apply_clip_s<acc_t>(value,
-                                                             minimum_s<in_out_t>,
-                                                             maximum_s<in_out_t>));
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/NEGATE.tosac[lines=10..-1]
 ----
 
 ==== RECIPROCAL
@@ -214,11 +165,7 @@ include::{generated}/operators/RECIPROCAL.adoc[]
 
 [source,c++]
 ----
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index);
-    in_out_t result = 1.0 / value1;
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/RECIPROCAL.tosac[lines=10..-1]
 ----
 
 ==== RSQRT
@@ -236,15 +183,5 @@ include::{generated}/operators/RSQRT.adoc[]
 
 [source,c++]
 ----
-for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index);
-    in_out_t result;
-    if (value1 < 0) {
-        result = NaN;
-    }
-    else {
-        result = 1.0 / apply_sqrt<in_out_t>(value1);
-    }
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/RSQRT.tosac[lines=10..-1]
 ----

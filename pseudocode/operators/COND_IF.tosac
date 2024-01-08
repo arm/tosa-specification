@@ -1,0 +1,23 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(tosa_nesting_depth >= MAX_NESTING);
+ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(then_graph));
+ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(else_graph));
+ERROR_IF(tensor_list_shape(output_list) != tosa_output_shape(then_graph));
+ERROR_IF(tensor_list_shape(output_list) != tosa_output_shape(else_graph));
+ERROR_IF(tensor_size(shape) != 1);
+
+tosa_nesting_depth++;
+if (condition[0]) {
+    tosa_execute_graph(then_graph, input_list, output_list);
+} else {
+    tosa_execute_graph(else_graph, input_list, output_list);
+}
+tosa_nesting_depth--;

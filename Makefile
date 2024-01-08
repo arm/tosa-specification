@@ -1,7 +1,7 @@
 #
 # This confidential and proprietary software may be used only as
 # authorised by a licensing agreement from ARM Limited
-# (C) COPYRIGHT 2020-2022 ARM Limited
+# (C) COPYRIGHT 2020-2024 ARM Limited
 # ALL RIGHTS RESERVED
 # The entire notice above must be reproduced on all authorised
 # copies and copies may only be made to the extent permitted
@@ -17,11 +17,13 @@ XMLLINT = xmllint
 HTMLDIR=out/html
 PDFDIR=out/pdf
 GENDIR=out/gen
+PSEUDOCODEDIR := pseudocode
 
-COMMON_ARGS= -a generated="$(abspath $(GENDIR))"
+COMMON_ARGS= -a generated="$(abspath $(GENDIR))" -a pseudocode="$(abspath $(PSEUDOCODEDIR))"
 
 SPECSRC := tosa_spec.adoc
 ADOCFILES = $(wildcard chapters/[A-Za-z]*.adoc) $(wildcard $(GENDIR)/*/*.adoc)
+PSEUDOCODEFILES = $(wildcard $(PSEUDOCODEDIR)/operators/*.tosac) $(wildcard $(PSEUDOCODEDIR)/operators/tables/*.tosac)
 SPECFILES = $(ADOCFILES) tosa.css
 FIGURES = $(wildcard figures/*.svg)
 SPECXML := tosa.xml
@@ -76,11 +78,11 @@ $(GEN): $(SPECXML) $(GENSCRIPTS)
 	tools/genspec.py --xml $(SPECXML) --outdir $(GENDIR)
 	@touch $@
 
-$(HTMLDIR)/tosa_spec.html: $(SPECSRC) $(SPECFILES) $(GEN)
+$(HTMLDIR)/tosa_spec.html: $(SPECSRC) $(SPECFILES) $(GEN) $(PSEUDOCODEFILES)
 	$(MKDIR) $(HTMLDIR)
 	$(ASCIIDOC) -b html5 -a stylesheet=tosa.css $(COMMON_ARGS) -o $@ $<
 
-$(PDFDIR)/tosa_spec.pdf: $(SPECSRC) $(SPECFILES) $(GEN)
+$(PDFDIR)/tosa_spec.pdf: $(SPECSRC) $(SPECFILES) $(GEN) $(PSEUDOCODEFILES)
 	$(MKDIR) $(PDFDIR)
 	$(ASCIIDOC) -r asciidoctor-pdf -b pdf $(COMMON_ARGS) -o $@ $(SPECSRC)
 

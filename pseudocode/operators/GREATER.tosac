@@ -1,0 +1,22 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
+for_each(index in shape) {
+    dim_t index1 = apply_broadcast(shape, shape1, index);
+    dim_t index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    out_t result;
+    if (isNaN(value1) || isNaN(value2))
+        result = False;
+    else
+        result = (value1 > value2) ? True : False;
+    tensor_write<out_t>(output, shape, index, result);
+}

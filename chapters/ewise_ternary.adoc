@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2021 ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -17,20 +17,5 @@ include::{generated}/operators/SELECT.adoc[]
 
 [source,c++]
 ----
-ERROR_IF(shape != broadcast_shape(broadcast_shape(shape1, shape2), shape3));
-for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
-    dim_t index3 = apply_broadcast(shape, shape3, index);
-    bool_t value1 = tensor_read<bool_t>(input1, shape1, index1);
-    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t value3 = tensor_read<in_out_t>(input3, shape3, index3);
-    in_out_t result;
-    if (value1) {
-         result = value2;
-    } else {
-         result = value3;
-    }
-    tensor_write<in_out_t>(output, shape, index, result);
-}
+include::{pseudocode}/operators/SELECT.tosac[lines=10..-1]
 ----

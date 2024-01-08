@@ -1,0 +1,25 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(axis < 0  || axis >= rank(shape1));
+ERROR_IF(shape[axis] != 1);
+left_shape  = (axis > 1) ? shape[0:axis-1] : [];
+right_shape = (axis < rank(shape)-1) ? shape[axis+1:rank(shape)-1] : [];
+for_each(left_index in left_shape) {
+    for_each(right_index in right_shape) {
+        in_out_t acc = minimum<in_out_t>;
+        for (i = 0; i < shape1[axis]; i++) {
+            index = flatten(left_index, [i], right_index);
+            in_out_t value = tensor_read<in_out_t>(input, shape1, index);
+            acc = apply_max_s<in_out_t>(acc, value);
+        }
+        out_index = flatten(left_index, [0], right_index);
+        tensor_write<in_out_t>(output, shape, out_index, acc);
+    }
+}

@@ -1,0 +1,27 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+// Check output shape matches the padded input shape
+ERROR_IF(rank(shape) != rank(shape1));
+for (i = 0; i < rank(shape); i++) {
+    ERROR_IF(padding[i,0] < 0 || padding[i,1] < 0);
+    ERROR_IF(shape[i] != padding[i, 0] + shape1[i] + padding[i, 1]);
+}
+for_each(index in shape) {
+    dim_t index1 = index;
+    bool_t is_pad = false;
+    for(i = 0; i < rank(shape); i++) {
+        index1[i] = index1[i] - padding[i,0];
+        if (index1[i] < 0 || index[i] >= length(shape[i])) {
+            is_pad = true;
+        }
+    }
+    in_out_t value = is_pad ? pad_const : tensor_read<in_out_t>(input1, shape1, index1);
+    tensor_write<in_out_t>(output, shape, index, value);
+}

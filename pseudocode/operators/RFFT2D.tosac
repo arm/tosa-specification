@@ -1,0 +1,24 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(!power_of_two(H));
+ERROR_IF(!power_of_two(W));
+
+for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W/2 + 1) {
+    in_out_t sum_real = 0.0;
+    in_out_t sum_imag = 0.0;
+    for_each(0 <= iy < H, 0 <= ix < W) {
+        in_out_t val_real = tensor_read<in_out_t>(input_real, [N,H,W], [n,iy,ix]);
+        float_t a = 2 * pi() * ((iy * oy) / H + (ix * ox) / W);
+        sum_real += val_real * cos(a);
+        sum_imag += -val_real * sin(a);
+    }
+    tensor_write<in_out_t>(output_real, [N,H,W], [n,oy,ox], sum_real);
+    tensor_write<in_out_t>(output_imag, [N,H,W], [n,oy,ox], sum_imag);
+}

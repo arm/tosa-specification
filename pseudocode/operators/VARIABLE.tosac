@@ -1,0 +1,33 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+
+tensor_t var_tensor = variable_tensor_lookup(uid);
+
+// Invocation for the first time
+if (var_tensor == NULL) {
+  // Allocate the persistent mutable memory for the variable tensor
+  tensor_t var_tensor = variable_tensor_allocate<var_t>(var_shape, uid);
+
+  if (initial_value != NULL) {
+    REQUIRE(var_t == in_t);
+    REQUIRE(var_shape == shape);
+    for_each (index in shape) {
+      // Copy data from initial_value to var_tensor
+      in_t value = tensor_read<in_t>(initial_value, shape, index);
+      tensor_write<in_t>(var_tensor.data, var_shape, index, value);
+    }
+    var_tensor.is_written = true;
+  }
+} else { // Variable tensor has already been declared
+  // It's invalid to declare the second variable with the same uid in a single graph execution,
+  REQUIRE(!var_tensor.seen);
+}
+
+var_tensor.seen = true;

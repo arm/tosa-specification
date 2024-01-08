@@ -1,0 +1,29 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+
+tensor_t. variable_tensor = variable_tensor_lookup(uid);
+// Check this variable tensor has been declared
+REQUIRE(variable_tensor);
+// The tensor has to be seen before to be written to
+// The seen variable is cleared before each graph execution and set in declaration
+REQUIRE(variable_tensor.seen);
+//  Input tensor's shape and variable_tensor's shape have to match
+REQUIRE(variable_tensor.shape == shape);
+//  Input tensor's shape and variable_tensor's type have to match
+REQUIRE(variable_tensor.type == in_t);
+
+for_each (index in shape) {
+    // Write data from the input to the pseudo-buffer resource
+    in_t value = tensor_read<in_t>(input1, shape, index);
+    tensor_write<tensor_t>(variable_tensor.data, variable_tensor.shape, index, value);
+}
+
+variable_tensor.is_written = true;
+

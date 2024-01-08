@@ -1,0 +1,31 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+
+// The following array is used to check compliance that an output position
+// is modified at most once.
+bool_t output_modified[N,K,C];
+
+// Copy the values_in tensor to the values_out tensor.
+// Values not written by the scatter operation are unchanged in the output.
+for_each(0 <= n < N, 0 <= k < K, 0 <= c < C) {
+    in_out_t value = tensor_read<in_out_t>(values_in, [N,K,C], [n,k,c]);
+    tensor_write<in_out_t>(values_out, [N,K,C], [n, k, c], value);
+    output_modified[n,k,c]=false;
+}
+
+// Now perform the SCATTER operation, modifying the positions from the indices tensor
+for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
+    index_t k = tensor_read<index_t>(indices, [N,W], [n,w]);
+    REQUIRE(0 <= k && k < K);
+    REQUIRE(output_modified[n,k,c] == false);
+    in_out_t value = tensor_read<in_out_t>(input, [N,W,C], [n,w,c]);
+    tensor_write<in_out_t>(values_out, [N,K,C], [n, k, c], value);
+    output_modified[n,k,c] = true;
+}

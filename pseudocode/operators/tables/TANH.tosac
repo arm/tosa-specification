@@ -1,0 +1,17 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+int16_t tanh_reference(int16_t x) {  // input x range is -256 to +256 inclusive
+    fp64_t v = (fp64_t)x/(fp64_t)32;
+    v = exp(-2.0*v);
+    v = (1.0-v)/(1.0+v);
+    return round_to_nearest_int(32768.0 * v);
+}
+
+generate_lookup_table(&tanh_table, &tanh_reference);

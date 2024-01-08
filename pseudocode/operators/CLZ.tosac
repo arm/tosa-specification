@@ -1,0 +1,14 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+for_each(index in shape) {
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
+    in_out_t result = count_leading_zeros(value1);
+    tensor_write<in_out_t>(output, shape, index, result);
+}

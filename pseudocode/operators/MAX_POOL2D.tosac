@@ -1,0 +1,33 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(kernel_y < 1 || kernel_x < 1); // kernel size must be >= 1
+ERROR_IF(stride_y < 1 || stride_x < 1);
+ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
+// Padding must be less than kernel size, otherwise no
+// input values will be used.
+ERROR_IF(pad_right >= kernel_x || pad_left >= kernel_x);
+ERROR_IF(pad_top >= kernel_y || pad_bottom >= kernel_y);
+ERROR_IF(OH != idiv_check(IH + pad_top + pad_bottom - kernel_y, stride_y) + 1);
+ERROR_IF(OW != idiv_check(IW + pad_left + pad_right - kernel_x, stride_x) + 1);
+
+for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
+    in_out_t acc = minimum_value<in_out_t>;
+    index_t iy = oy * stride_y - pad_top;
+    index_t ix = ox * stride_x - pad_left;
+    for_each( 0 <= ky < kernel_y, 0 <= kx < kernel_x ) {
+        index_t y = iy + ky;
+        index_t x = ix + kx;
+        if (y >= 0 && y < IH && x >= 0 && x < IW) {
+            in_out_t value = tensor_read<in_out_t>(input, [N,IH,IW,C], [n,y,x,c]);
+            acc = apply_max_s<in_out_t>(acc, value);
+        }
+    }
+    tensor_write<in_out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc);
+}

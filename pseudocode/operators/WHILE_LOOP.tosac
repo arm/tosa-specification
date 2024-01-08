@@ -1,0 +1,33 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(tosa_nesting_depth >= MAX_NESTING);
+ERROR_IF(tensor_list_shape(input_list) != tosa_list_shape(output_list));
+ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(cond_graph));
+ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(body_graph));
+ERROR_IF(tensor_list_shape(input_list) != tosa_output_shape(body_graph));
+// Condition graph output must be a single element tensor with a single bool value
+ERROR_IF(tensor_size(tosa_output_shape(cond_graph)) != 1);
+ERROR_IF(tosa_output_type(cond_graph) != bool_t);
+
+// The iteration number 'i' is included to give unique names to variables
+// in each iteration of the loop and is not required by implementations
+int32_t i=0;             // iteration number
+tensor_list_t list[];    // array of tensor lists indexed by iteration
+bool_t *condition[];     // array of condition tensors indexed by iteration
+list[i] = input_list;    // copy input data as list[0]
+tosa_nesting_depth++;
+tosa_execute_graph(cond_graph, list[i], [ condition[i] ]);   // initial condition
+while (condition[i][0]) {
+    tosa_execute_graph(body_graph, list[i], list[i+1]);
+    i = i+1;
+    tosa_execute_graph(cond_graph, list[i], [ condition[i] ]);
+}
+tosa_nesting_depth--;
+output_list = list[i];
