@@ -528,7 +528,7 @@ The number formats supported by a given operator are listed in its table of supp
 |i48_t
 | -
 | -
-|Signless 32-bit integer value. Will be interpreted as int48_t by all operators.
+|Signless 48-bit integer value. Will be interpreted as int48_t by all operators.
 
 |int48_t
 | -(1<<47)
