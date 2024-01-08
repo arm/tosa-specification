@@ -298,8 +298,9 @@ This dot product must meet the <<Dot product accuracy requirements>>
 | <<REDUCE_PRODUCT>>
 | Result overflows must be set to an infinity of the correct sign. +
 Result underflows must be set to a zero of the correct sign. +
-Othewise if the final product and all sub-products are within the normal range then the result `R` must have an absolute error of at most `E*abs\(R)`
-where `E = pow(1 + pow(2, -M-1), N) - 1`. In this expression M is the number of mantissa bit of the floating point format and N is the number of elements in the product.
+Let n be number of elements in the product, out_imp the implementation result, and out_ref the result of the fp64_t reference implementation. +
+Let `err_bnd = abs(out_ref) * (pow(1 + pow(2, -normal_frac<in_out_t> - 1), n) - 1)` +
+Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 |===
 
