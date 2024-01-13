@@ -1,11 +1,18 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2024 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-ERROR_IF(axis >= rank(shape));
-output[0] = shape_dim(shape, axis);
+ERROR_IF(length(output) != sum(length(input1[k]) for all k));
+
+size_t index = 0;
+for (int32_t i=0; i < length(input1); i++) {
+    for (int32_t j=0; j < length(input1[i]); j++) {
+        output[index] = input1[i][j];
+        index++;
+    }
+}

@@ -9,8 +9,8 @@
 
 ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each(index in shape) {
-    dim_t index1 = apply_broadcast(shape, shape1, index);
-    dim_t index2 = apply_broadcast(shape, shape2, index);
+    shape_t index1 = apply_broadcast(shape, shape1, index);
+    shape_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     in_out_t result = value1 && value2;

@@ -35,7 +35,7 @@ include::{pseudocode}/operators/PAD.tosac[lines=10..-1]
 
 ==== DIM
 
-Returns a rank 0 tensor of the size of the input tensor for the given axis.
+Returns a length 1 shape_t of the size of the input tensor for the given axis.
 
 include::{generated}/operators/DIM.adoc[]
 

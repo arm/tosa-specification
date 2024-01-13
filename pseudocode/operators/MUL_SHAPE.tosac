@@ -1,11 +1,14 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2024 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-ERROR_IF(axis >= rank(shape));
-output[0] = shape_dim(shape, axis);
+ERROR_IF(length(input1) != length(input2));
+
+for(int32_t index=0; index < rank(input1); index++) {
+    output[index] = apply_mul_s<size_t>(input1[index], input2[index]);
+}

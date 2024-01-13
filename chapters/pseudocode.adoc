@@ -63,7 +63,7 @@ void LEVEL_CHECK(condition) {
 [source,c++]
 ----
 // Convert tensor index coordinates to an element offset
-size_t tensor_index_to_offset(dim_t shape, dim_t index) {
+size_t tensor_index_to_offset(shape_t shape, shape_t index) {
     size_t size = tensor_size(shape);  // check tensor shape is valid
     size_t offset = 0;
     for (int32_t i = 0; i < rank(shape); i++) {
@@ -74,10 +74,10 @@ size_t tensor_index_to_offset(dim_t shape, dim_t index) {
 }
 
 // Convert an element offset to tensor index coordinates
-dim_t tensor_offset_to_index(dim_t shape, size_t offset) {
+shape_t tensor_offset_to_index(shape_t shape, size_t offset) {
     size_t size = tensor_size(shape);  // check tensor shape is valid
     REQUIRE(offset < size);
-    dim_t index(rank(shape));    // index has rank(shape) indicies
+    shape_t index(rank(shape));    // index has rank(shape) indicies
     for(int32_t i = rank(shape) - 1; i >= 0; i--) {
         index[i] = offset % shape[i];
         offset /= shape[i];
@@ -86,7 +86,7 @@ dim_t tensor_offset_to_index(dim_t shape, size_t offset) {
 }
 
 // Check the tensor shape is valid and return the tensor size in elements
-size_t tensor_size(dim_t shape) {
+size_t tensor_size(shape_t shape) {
     size_t size = 1;
     for (int32_t i = 0; i < rank(shape); i++) {
         REQUIRE(1 <= shape[i] && shape[i] <= maximum<size_t> / size);
@@ -97,7 +97,7 @@ size_t tensor_size(dim_t shape) {
 
 // Return the size of the tensor in the given axis
 // For a rank=0 tensor, returns 1 for all axes
-size_t shape_dim(dim_t shape, int axis) {
+size_t shape_dim(shape_t shape, int axis) {
     return (axis >= rank(shape)) ? 1 : shape[axis];
 }
 ----
@@ -110,7 +110,7 @@ Index is the coordinates within the tensor of the value to be read.
 
 [source,c++]
 ----
-in_t tensor_read<in_t>(in_t *address, dim_t shape, dim_t index) {
+in_t tensor_read<in_t>(in_t *address, shape_t shape, shape_t index) {
     size_t offset = tensor_index_to_offset(shape, index);
     return address[offset];
 }
@@ -125,7 +125,7 @@ value is the value to be written to the given coordinate.
 
 [source,c++]
 ----
-void tensor_write<type>(<type> *address, dim_t shape, dim_t index, <type> value) {
+void tensor_write<type>(<type> *address, shape_t shape, shape_t index, <type> value) {
     size_t offset = tensor_index_to_offset(shape, index);
     address[offset] = value;
 }
@@ -139,7 +139,7 @@ The uid argument is a globally unique identifier for variable tensors.
 
 [source,c++]
 ----
-tensor_t* variable_tensor_allocate<in_t>(dim_t shape, int32_t uid) {
+tensor_t* variable_tensor_allocate<in_t>(shape_t shape, int32_t uid) {
     size_t size = tensor_size(shape);
     tensor_t *allocated_tensor = new tensor_t;
     allocated_tensor->data = new in_t[size];
@@ -176,9 +176,9 @@ The following function derives the broadcast output shape from the input shapes.
 
 [source,c++]
 ----
-dim_t broadcast_shape(dim_t shape1, dim_t shape2) {
+shape_t broadcast_shape(shape_t shape1, shape_t shape2) {
     ERROR_IF(rank(shape1) != rank(shape2));
-    dim_t shape = shape1;
+    shape_t shape = shape1;
     for (int32_t i = 0; i < rank(shape); i++) {
         if (shape[i] == 1) {
             shape[i] = shape2[i];
@@ -198,7 +198,7 @@ The following function maps an index in the output tensor to an index in the inp
 // The function returns the location within in_shape that contributes
 // to the output based on broadcasting rules.
 
-dim_t apply_broadcast(dim_t out_shape, dim_t in_shape, dim_t index) {
+shape_t apply_broadcast(shape_t out_shape, shape_t in_shape, shape_t index) {
     ERROR_IF(rank(out_shape) != rank(in_shape));
     ERROR_IF(rank(out_shape) != rank(index));
     for (int32_t i = 0; i < rank(out_shape); i++) {

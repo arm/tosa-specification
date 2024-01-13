@@ -9,7 +9,6 @@
 
 ERROR_IF(axis < 0 || axis >= max(1,rank(shapes1[0])));
 ERROR_IF(shape[axis] != sum(shape_dim(shapes1[k], axis) for all k))
-ERROR_IF(in_out_t == shape_t && rank(shape) > 1);
 // The following checks ensure all inputs are compatible for concatenation
 for_each(input_shape in shapes1) {
     ERROR_IF(rank(input_shape) != rank(shapes1[0]));
@@ -18,7 +17,7 @@ for_each(input_shape in shapes1) {
     }
 }
 for_each(index1 in shape) {
-    dim_t index2 = index1;
+    shape_t index2 = index1;
     for (tensor t = 0; t < length(input1); t++) {
         // Continue to concatenate along axis from each tensor
         // For each output location, we are looking for the
@@ -30,3 +29,4 @@ for_each(index1 in shape) {
         index2[axis] = index2[axis] - shape_dim(shapes1[t], axis);
     }
 }
+

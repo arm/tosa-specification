@@ -7,20 +7,12 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-if (in_out_t == shape_t) {
-    ERROR_IF(rank(shape) != 0 || rank(shape1) != 0 || rank(shape2) != 0);
-    shape_t value1 = tensor_read<shape_t>(input1, [], []);
-    shape_t value2 = tensor_read<shape_t>(input2, [], []);
-    shape_t result = apply_sub<shape_t>(value1, value2);
-    tensor_write<shape_t>(output, [], [], result);
-} else {
-    ERROR_IF(shape != broadcast_shape(shape1, shape2));
-    for_each(index in shape) {
-        dim_t index1 = apply_broadcast(shape, shape1, index);
-        dim_t index2 = apply_broadcast(shape, shape2, index);
-        in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
-        in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-        in_out_t result = apply_sub_s<in_out_t>(value1, value2);
-        tensor_write<in_out_t>(output, shape, index, result);
-    }
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
+for_each(index in shape) {
+    shape_t index1 = apply_broadcast(shape, shape1, index);
+    shape_t index2 = apply_broadcast(shape, shape2, index);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
+    in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
+    in_out_t result = apply_sub_s<in_out_t>(value1, value2);
+    tensor_write<in_out_t>(output, shape, index, result);
 }

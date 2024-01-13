@@ -1,0 +1,83 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+=== Shape Operators
+
+The shape operators are operators which describe the shapes of parameters and the corresponding transformations.
+When tensor sizes are unknown, the relationship between sizes can be stored as a sequence of TOSA shape operations.
+At a later point when the shapes are provided, the shape operators are used to propagate shapes appropriately.
+After shape inference, the shape operators may be removed from the TOSA graph.
+
+Having separate shape operations allows easier tracking of shape propagation than would be possible by using the existing TOSA operators.
+
+==== ADD_SHAPE
+
+Elementwise addition of input1 and input2. Size of shapes must match.
+
+include::{generated}/operators/ADD_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/ADD_SHAPE.tosac[lines=10..-1]
+----
+
+==== CONCAT_SHAPE
+
+Concatenates a list of shape_t to create a new shape_t with length the sum of lengths of all shape_t in input1.
+
+include::{generated}/operators/CONCAT_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/CONCAT_SHAPE.tosac[lines=10..-1]
+----
+
+==== CONST_SHAPE
+
+A node containing a constant shape.
+
+include::{generated}/operators/CONST_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/CONST_SHAPE.tosac[lines=10..-1]
+----
+
+==== DIV_SHAPE
+
+Elementwise integer divide of input1 by input2. The result of the divide is truncated towards zero.
+
+include::{generated}/operators/DIV_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/DIV_SHAPE.tosac[lines=10..-1]
+----
+
+==== MUL_SHAPE
+
+Elementwise multiplication of input1 and input2.
+
+include::{generated}/operators/MUL_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/MUL_SHAPE.tosac[lines=10..-1]
+----
+
+==== SUB_SHAPE
+
+Elementwise subtraction of input1 and input2.
+
+include::{generated}/operators/SUB_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/SUB_SHAPE.tosac[lines=10..-1]
+----

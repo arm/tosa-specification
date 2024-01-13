@@ -7,31 +7,23 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-if (in_out_t == shape_t) {
-    ERROR_IF(rank(shape) != 0 || rank(shape1) != 0 || rank(shape2) != 0);
-    shape_t value1 = tensor_read<shape_t>(input1, [], []);
-    shape_t value2 = tensor_read<shape_t>(input2, [], []);
-    shape_t result = value1 * value2;
-    tensor_write<shape_t>(output, [], [], result);
-} else {
-    REQUIRE(0 <= shift && shift <= 63);
-    REQUIRE(in_t == int32_t || shift == 0);
-    ERROR_IF(shape != broadcast_shape(shape1, shape2));
-    for_each(index in shape) {
-        dim_t index1 = apply_broadcast(shape, shape1, index);
-        dim_t index2 = apply_broadcast(shape, shape2, index);
-        in_t value1 = tensor_read<in_t>(input1, shape1, index1);
-        in_t value2 = tensor_read<in_t>(input2, shape2, index2);
-        out_t result;
-        if (in_t == i32_t && shift > 0) {
-            int64_t product = sign_extend<int64_t>(value1) * sign_extend<int64_t>(value2);
-            int64_t round   = static_cast<int64_t>(1) << (shift - 1);
-            product = (product + round) >> shift;
-            REQUIRE(product >= minimum_s<i32_t> && product <= maximum_s<i32_t>)
-            result = product;
-        } else {
-            result = apply_mul_s(value1, value2);  // low 32-bits of result for i32_t
-        }
-        tensor_write<out_t>(output, shape, index, result);
+REQUIRE(0 <= shift && shift <= 63);
+REQUIRE(in_t == int32_t || shift == 0);
+ERROR_IF(shape != broadcast_shape(shape1, shape2));
+for_each(index in shape) {
+    shape_t index1 = apply_broadcast(shape, shape1, index);
+    shape_t index2 = apply_broadcast(shape, shape2, index);
+    in_t value1 = tensor_read<in_t>(input1, shape1, index1);
+    in_t value2 = tensor_read<in_t>(input2, shape2, index2);
+    out_t result;
+    if (in_t == i32_t && shift > 0) {
+        int64_t product = sign_extend<int64_t>(value1) * sign_extend<int64_t>(value2);
+        int64_t round   = static_cast<int64_t>(1) << (shift - 1);
+        product = (product + round) >> shift;
+        REQUIRE(product >= minimum_s<i32_t> && product <= maximum_s<i32_t>)
+        result = product;
+    } else {
+        result = apply_mul_s(value1, value2);  // low 32-bits of result for i32_t
     }
+    tensor_write<out_t>(output, shape, index, result);
 }

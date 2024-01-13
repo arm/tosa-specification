@@ -41,7 +41,7 @@
     <xs:enumeration value="fp16_t"/>
     <xs:enumeration value="bf16_t"/>
     <xs:enumeration value="fp32_t"/>
-    <xs:enumeration value="shape_t"/>
+    <xs:enumeration value="size_t"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -61,7 +61,6 @@
     <xs:enumeration value="weight_t"/>
     <xs:enumeration value="resize_t"/>
     <xs:enumeration value="table_t"/>
-    <xs:enumeration value="index_t"/>
     <xs:enumeration value="mul_t"/>
     <xs:enumeration value="TABLE_SIZE"/>
     <xs:enumeration value="var_t"/>
@@ -83,6 +82,8 @@
     <xs:enumeration value="tensor_list_t"/>
     <xs:enumeration value="tosa_graph_t"/>
     <xs:enumeration value="String"/>
+    <xs:enumeration value="shape_t"/>
+    <xs:enumeration value="shape_list_t"/>
   </xs:restriction>
 </xs:simpleType>
 

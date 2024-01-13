@@ -822,7 +822,6 @@
           <type name='in_out_t'/>
         </types>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
-        <typesupport mode="shape" in_out_t="shape_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
@@ -957,7 +956,6 @@
           <type name='in_out_t'/>
         </types>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
-        <typesupport mode="shape" in_out_t="shape_t"/>
       </operator>
       <operator>
         <name>LOGICAL_AND</name>
@@ -1169,7 +1167,6 @@
         <typesupport mode="signed 8" in_t="i8_t" out_t="i32_t"/>
         <typesupport mode="signed 16" in_t="i16_t" out_t="i32_t"/>
         <typesupport mode="signed 32" in_t="i32_t" out_t="i32_t"/>
-        <typesupport mode="shape" in_t="shape_t" out_t="shape_t"/>
         <typesupport mode="fp16" in_t="fp16_t" out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1237,7 +1234,6 @@
           <type name='in_out_t'/>
         </types>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
-        <typesupport mode="shape" in_out_t="shape_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1936,7 +1932,6 @@
         <typesupport mode="signed 8" in_out_t="i8_t"/>
         <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
-        <typesupport mode="shape" in_out_t="shape_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -1957,9 +1952,10 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="padding" type="tensor_t" shape="[rank(shape1),2]" tensor-element-type="shape_t">
-            <description>Number of pad elements at the start and end of each dimension</description>
-            <rank min="2" max="2"/>
+          <argument category="input" name="padding" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Number of pad elements at the start and end of each dimension.
+            The values in padding are interpreted as start, end of each dimension.
+            As an example for rank 2, the values would be interpreted as [start_dim0, end_dim0, start_dim1, end_dim1].</description>
           </argument>
           <argument category="attribute" name="pad_const" type="tensor_t" shape="-" tensor-element-type="in_out_t">
             <description>Constant value to be used as padding</description>
@@ -2003,9 +1999,8 @@
             <description>Axis in range from 0 to rank(shape) - 1</description>
             <rank min="0" max="0"/>
           </argument>
-          <argument category="output" name="output" type="tensor_t" shape="-" tensor-element-type="shape_t" >
-            <description>Output rank 0 tensor giving the size of the shape for the given axis</description>
-            <rank min="0" max="0"/>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-" >
+            <description>Output shape type of size 1 giving the size of the shape for the given axis</description>
           </argument>
         </arguments>
         <types>
@@ -2036,9 +2031,8 @@
             <levellimit value="rank(shape1)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="shape" type="tensor_t" shape="[rank(shape)]" tensor-element-type="shape_t">
-            <description>1D shape tensor giving the new shape.</description>
-            <rank min="1" max="1"/>
+          <argument category="input" name="shape" type="shape_t" shape="-" tensor-element-type="-">
+            <description>shape_t giving the new shape.</description>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -2090,7 +2084,6 @@
         <typesupport mode="signed 8" in_out_t="i8_t"/>
         <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
-        <typesupport mode="shape" in_out_t="shape_t"/>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2111,11 +2104,11 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="start" type="tensor_t" shape="[rank(shape1)]" tensor-element-type="index_t">
+          <argument category="input" name="start" type="shape_t" shape="[rank(shape1)]" tensor-element-type="size_t">
             <description>List of integer coordinates, of length equal to the rank of input1. Start coordinate for slicing.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="size" type="tensor_t" shape="[rank(shape1)]" tensor-element-type="index_t">
+          <argument category="input" name="size" type="shape_t" shape="[rank(shape1)]" tensor-element-type="size_t">
             <description>List of integer size values, of length equal to the rank of input1. Size of the input to be
 used.</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
@@ -2153,7 +2146,7 @@ used.</description>
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="multiples" type="tensor_t" shape="[rank(shape1)]" tensor-element-type="shape_t">
+          <argument category="input" name="multiples" type="shape_t" shape="[rank(shape1)]" tensor-element-type="-">
             <description>Number of times to replicate input1 in each dimension</description>
             <rank min="1" max="1"/>
           </argument>
@@ -2229,7 +2222,7 @@ used.</description>
             <description>3D value tensor</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="input" name="indices" type="tensor_t" shape="[N,W]" tensor-element-type="index_t">
+          <argument category="input" name="indices" type="tensor_t" shape="[N,W]" tensor-element-type="size_t">
             <description>2D index tensor</description>
             <rank min="2" max="2"/>
           </argument>
@@ -2264,7 +2257,7 @@ used.</description>
             <description>3D values in tensor</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="input" name="indices" type="tensor_t" shape="[N,W]" tensor-element-type="index_t">
+          <argument category="input" name="indices" type="tensor_t" shape="[N,W]" tensor-element-type="size_t">
             <description>2D index tensor</description>
             <rank min="2" max="2"/>
           </argument>
@@ -2305,17 +2298,17 @@ used.</description>
             <description>Input tensor</description>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="input" name="scale" type="tensor_t" shape="[4]" tensor-element-type="shape_t">
+          <argument category="input" name="scale" type="shape_t" shape="[4]" tensor-element-type="-">
             <description>[scale_y_n, scale_y_d, scale_x_n, scale_x_d]</description>
             <levellimit value="scale_y_n/scale_y_d" limit="MAX_SCALE"/>
             <levellimit value="scale_x_n/scale_x_d" limit="MAX_SCALE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="input" name="offset" type="tensor_t" shape="[2]" tensor-element-type="shape_t">
+          <argument category="input" name="offset" type="shape_t" shape="[2]" tensor-element-type="-">
             <description>[offset_y, offset_x]</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="input" name="border" type="tensor_t" shape="[2]" tensor-element-type="shape_t">
+          <argument category="input" name="border" type="shape_t" shape="[2]" tensor-element-type="-">
             <description>[border_y, border_x]</description>
             <rank min="1" max="1"/>
           </argument>
@@ -2559,7 +2552,6 @@ used.</description>
         <typesupport mode="16-bit" out_t="i16_t" />
         <typesupport mode="32-bit" out_t="i32_t" />
         <typesupport mode="48-bit" out_t="i48_t" />
-        <typesupport mode="shape" out_t="shape_t" />
         <typesupport mode="fp16" out_t="fp16_t" >
           <profile name="MI"/>
           <profile name="MT"/>
@@ -2680,7 +2672,7 @@ used.</description>
             <description>Globally unique identifier for the declared variable tensor.</description>
             <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="var_shape" type="tensor_t" shape="var_shape" tensor-element-type="index_t">
+          <argument category="attribute" name="var_shape" type="tensor_t" shape="var_shape" tensor-element-type="size_t">
             <description>The variable tensor shape</description>
             <rank min="1" max="1"/>
           </argument>
@@ -2720,6 +2712,86 @@ used.</description>
             <description>Output tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
+          </argument>
+        </arguments>
+      </operator>
+    </operatorgroup>
+    <operatorgroup name="shape">
+      <operator>
+        <name>ADD_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 1</description>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 2</description>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+      </operator>
+      <operator>
+        <name>CONCAT_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_list_t" shape="-" tensor-element-type="-">
+            <description>List of input shape values</description>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+      </operator>
+      <operator>
+        <name>CONST_SHAPE</name>
+        <arguments>
+          <argument category="attribute" name="values" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Constant shape</description>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+      </operator>
+      <operator>
+        <name>DIV_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 1</description>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 2</description>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+      </operator>
+      <operator>
+        <name>MUL_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 1</description>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 2</description>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+      </operator>
+      <operator>
+        <name>SUB_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 1</description>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 2</description>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
           </argument>
         </arguments>
       </operator>

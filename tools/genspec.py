@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2023, ARM Limited.
+# Copyright (c) 2023-2024, ARM Limited.
 # SPDX-License-Identifier: Apache-2.0
 import os
 
@@ -40,12 +40,17 @@ class TOSASpecAsciidocGenerator:
 
             # Type
             if arg.type == "tensor_t":
-                argtype = "T<{}>".format(arg.tensor_element_type)
+                argtype = f"T<{arg.tensor_element_type}>"
             elif arg.type == "tensor_list_t":
                 if arg.tensor_element_type == "-":
                     argtype = "tensor_list_t"
                 else:
-                    argtype = "tensor_list_t<T<{}>>".format(arg.tensor_element_type)
+                    argtype = f"tensor_list_t<T<{arg.tensor_element_type}>>"
+            elif arg.type == "shape_t":
+                if arg.shape != "-":
+                    argtype = f"shape_t<{arg.shape}>"
+                else:
+                    argtype = "shape_t<>"
             else:
                 argtype = arg.type
 

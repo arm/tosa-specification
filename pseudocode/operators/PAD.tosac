@@ -10,14 +10,14 @@
 // Check output shape matches the padded input shape
 ERROR_IF(rank(shape) != rank(shape1));
 for (i = 0; i < rank(shape); i++) {
-    ERROR_IF(padding[i,0] < 0 || padding[i,1] < 0);
-    ERROR_IF(shape[i] != padding[i, 0] + shape1[i] + padding[i, 1]);
+    ERROR_IF(padding[i * 2] < 0 || padding[(i * 2) + 1] < 0);
+    ERROR_IF(shape[i] != padding[i * 2] + shape1[i] + padding[(i * 2) + 1]);
 }
 for_each(index in shape) {
-    dim_t index1 = index;
+    shape_t index1 = index;
     bool_t is_pad = false;
     for(i = 0; i < rank(shape); i++) {
-        index1[i] = index1[i] - padding[i,0];
+        index1[i] = index1[i] - padding[i * 2];
         if (index1[i] < 0 || index[i] >= length(shape[i])) {
             is_pad = true;
         }

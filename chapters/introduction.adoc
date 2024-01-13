@@ -415,27 +415,23 @@ Each element in the tensor shape describes the number of elements in the dimensi
 The tensor shape in each dimension must be greater than or equal to 1.
 For tensor access information, see <<Tensor Access Helpers>>.
 
-The shape of a tensor of non-zero rank is itself a tensor of rank 1 with elements of type shape_t.
-The single dimension has size which is the rank of the original tensor.
-In this specification a shape-tensor means a rank 1 tensor with elements of type shape_t.
-The components of a shape tensor are rank 0 tensors of type shape_t.
+The shape of a tensor of non-zero rank is a special type shape_t.
+shape_t is a one-dimensional list with the size equal to the rank of the original tensor.
+The components of a shape_t are of type size_t.
 
-Some operations can process rank 0 or rank 1 tensors of type shape_t.
-For these operations, shape_t is permitted as an input or output tensor data type.
 In this version of the specification, shape_t values must be resolvable to constants at backend compile time.
 
 ==== Tensor size limit
 
 The tensor overall size is limited by the data type size_t.
-This type must be able to hold integers in the range 0 to (1++<<++(MAX_LOG2_SIZE+1)) - 1 where MAX_LOG2_SIZE is defined in <<Levels>>.
-For each tensor, the number of tensor elements multiplied by the element size in bytes (which is taken to be 1 for elements smaller than a 8-bit) must be less than or equal to (1<<(MAX_LOG2_SIZE+1)) - 1.
+This type must be able to hold integers in the range 0 to (1 << (MAX_LOG2_SIZE + 1)) - 1 where MAX_LOG2_SIZE is defined in <<Levels>>.
+For each tensor, the number of tensor elements multiplied by the element size in bytes (which is taken to be 1 for elements smaller than a 8-bit) must be less than or equal to (1 << (MAX_LOG2_SIZE + 1)) - 1.
 
-The size of tensors along each of their dimensions is limited by the data type index_t.
-This type must be able to hold integers in the range 0 to (1++<<++MAX_LOG2_SIZE) - 1 where MAX_LOG2_SIZE is defined in <<Levels>>.
-This means that the maximum size of a tensor along each dimension is (1<<MAX_LOG2_SIZE) - 1 and therefore the maximum coordinate value is (1<<MAX_LOG2_SIZE) - 2.
+The size of tensors along each of their dimensions is limited by the data type size_t.
+
+This means that the maximum size of a tensor along each dimension is (1 << MAX_LOG2_SIZE) - 1 and therefore the maximum coordinate value is (1 << MAX_LOG2_SIZE) - 2.
 Indices used to access tensors must be non-negative.
 
-The type shape_t, used in shape tensors, must be able to hold integers in the range -(1++<<++MAX_LOG2_SIZE) to (1++<<++MAX_LOG2_SIZE) - 1.
 
 ==== Data Layouts
 

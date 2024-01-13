@@ -26,7 +26,7 @@ for(i = 0; i < rank(shape); i++) {
 }
 
 for_each(index in shape) {
-    dim_t tmp_index = index;
+    shape_t tmp_index = index;
     for(i = 0; i < rank(shape); i++) {
         tmp_index[perms[i]] = index[i];
     }

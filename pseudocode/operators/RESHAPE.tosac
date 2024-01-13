@@ -13,7 +13,7 @@ for_each(index in shape) {
     // Calculate flattened index for the output location (index)
     size_t offset = tensor_index_to_offset(shape, index);
     // Now convert to the location in the input
-    dim_t tmp_index = tensor_offset_to_index(shape1, offset);
+    shape_t tmp_index = tensor_offset_to_index(shape1, offset);
 
     // Now read/write the value
     in_out_t val = tensor_read<in_out_t>(input1, shape1, tmp_index);
