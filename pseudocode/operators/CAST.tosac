@@ -23,5 +23,5 @@ for_each(index in shape) {
     } else {
         out = truncate(in);
     }
-    tensor_write<out_t>(output, shape, index, out)
+    tensor_write<out_t>(output, shape, index, out);
 }

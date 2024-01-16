@@ -22,13 +22,13 @@ for_each(index in perms) {
 // Ensure that the output shapes have the properly
 // permuted shapes
 for(i = 0; i < rank(shape); i++) {
-    ERROR_IF(shape1[perms[i]] != shape[i])
+    ERROR_IF(shape1[perms[i]] != shape[i]);
 }
 
 for_each(index in shape) {
     dim_t tmp_index = index;
     for(i = 0; i < rank(shape); i++) {
-        tmp_index[perms[i]] = index[i]
+        tmp_index[perms[i]] = index[i];
     }
     in_out_t value = tensor_read<in_out_t>(input1, shape1, tmp_index);
     tensor_write<in_out_t>(output, shape, index, value);

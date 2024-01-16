@@ -8,7 +8,7 @@
 // by a licensing agreement from ARM Limited.
 
 
-tensor_t. variable_tensor = variable_tensor_lookup(uid);
+tensor_t variable_tensor = variable_tensor_lookup(uid);
 // Check this variable tensor has been declared
 REQUIRE(variable_tensor);
 // The tensor has to be seen before to be written to

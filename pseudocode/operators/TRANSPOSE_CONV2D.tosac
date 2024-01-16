@@ -17,7 +17,7 @@ ERROR_IF(OW != (IW - 1) * stride_x + out_pad_left + out_pad_right + KW);
 ERROR_IF(BC != OC && BC != 1);
 
 for_each(index in [N, OH, OW, OC]) {
-    tensor_write<out_t>(output, [N,OH,OW,OC], index, bias[(BC == 1) ? 0 : index[3]])
+    tensor_write<out_t>(output, [N,OH,OW,OC], index, bias[(BC == 1) ? 0 : index[3]]);
 }
 for_each(0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= oc < OC,
           0 <= ic < IC, 0 <= ky < KH,  0 <= kx < KW) {
