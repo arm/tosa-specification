@@ -21,7 +21,7 @@ ERROR_IF(border_y < -16 * scale_y_n || border_y >= scale_y_n);
 ERROR_IF(border_x < -16 * scale_x_n || border_x >= scale_x_n);
 ERROR_IF(OH != idiv_check((IH - 1) * scale_y_n - offset_y + border_y, scale_y_d) + 1);
 ERROR_IF(OW != idiv_check((IW - 1) * scale_x_n - offset_x + border_x, scale_x_d) + 1);
-for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= c < C) {
+for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C) {
     out_t acc;
     resize_t dx, dy;
     resize_t unit_x, unit_y;

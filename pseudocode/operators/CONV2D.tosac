@@ -16,7 +16,7 @@ ERROR_IF(OH != idiv_check(IH - 1 + pad_top + pad_bottom - (KH - 1) * dilation_y,
 ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x, stride_x) + 1);
 ERROR_IF(BC != OC && BC != 1);
 
-for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW; 0 <= oc < OC) {
+for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= oc < OC) {
     out_t acc = 0;
     index_t iy = oy * stride_y - pad_top;
     index_t ix = ox * stride_x - pad_left;
