@@ -17,11 +17,11 @@ for_each(index in shape) {
     } else if (out_t == fp16_t || out_t == bf16_t || out_t == fp32_t) {
         out = round_to_nearest_float(in);
     } else if (in_t == fp16_t || in_t == bf16_t || in_t == fp32_t) {
-        out = apply_clip<out_t>(round_to_nearest_int(in), minimum<out_t>, maximum<out_t>);
+        out = truncate<out_t>(apply_clip_s<i32_t>(round_to_nearest_int(in), minimum<out_t>, maximum<out_t>));
     } else if (sizeof(out_t) >= sizeof(in_t)) {
         out = sign_extend<out_t>(in);
     } else {
-        out = truncate(in);
+        out = truncate<out_t>(in);
     }
     tensor_write<out_t>(output, shape, index, out);
 }

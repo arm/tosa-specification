@@ -739,7 +739,7 @@ void generate_lookup_table(int16_t *table, int32_t (*reference)(int32_t))
 {
     for (int i = -256; i <= 256; i++) {
         int32_t value = (*reference)(i);
-        table[i + 256] = static_cast<int16_t>(apply_clip<int32_t>(value, -32768, +32767));
+        table[i + 256] = static_cast<int16_t>(apply_clip_s<int32_t>(value, -32768, +32767));
     }
 }
 ----

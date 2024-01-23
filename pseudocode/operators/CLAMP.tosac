@@ -10,6 +10,6 @@
 ERROR_IF(max_val < min_val);
 for_each(index in shape) {
     in_out_t value = tensor_read<in_out_t>(input, shape, index);
-    value = apply_clip<in_out_t>(value, min_val, max_val);
+    value = apply_clip_s<in_out_t>(value, min_val, max_val);
     tensor_write<in_out_t>(output, shape, index, value);
 }

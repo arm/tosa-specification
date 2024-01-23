@@ -262,6 +262,13 @@ in_t apply_clip_s<in_t>(in_t value, in_t min_val, in_t max_val) {
     return value;
 }
 
+in_t apply_clip_u<in_t>(in_t value, in_t min_val, in_t max_val) {
+    REQUIRE(zero_extend<int64_t>(min_val) <= zero_extend<int64_t>(max_val));
+    value = apply_max_u<in_t>(value, min_val);
+    value = apply_min_u<in_t>(value, max_val);
+    return value;
+}
+
 in_t apply_exp<in_t>(in_t input) {
     return e to the power input
 }
@@ -296,6 +303,10 @@ in_t apply_max_s<in_t>(in_t a, in_t b) {
     if (sign_extend<int64_t>(a) >= sign_extend<int64_t>(b)) return a; else return b;
 }
 
+in_t apply_max_u<in_t>(in_t a, in_t b) {
+    if (zero_extend<uint64_t>(a) >= zero_extend<int64_t>(b)) return a; else return b;
+}
+
 in_t apply_min_s<in_t>(in_t a, in_t b) {
     if (is_floating_point(in_t)) {
         if (isNaN(a) || isNaN(b)) {
@@ -305,6 +316,10 @@ in_t apply_min_s<in_t>(in_t a, in_t b) {
     }
     // Integer version
     if (sign_extend<int64_t>(a) < sign_extend<int64_t>(b)) return a; else return b;
+}
+
+in_t apply_min_u<in_t>(in_t a, in_t b) {
+    if (zero_extend<int64_t>(a) < zero_extend<int64_t>(b)) return a; else return b;
 }
 
 in_t apply_mul_s<in_t>(in_t a, in_t b) {
