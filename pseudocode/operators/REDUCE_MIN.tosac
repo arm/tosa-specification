@@ -20,6 +20,6 @@ for_each(left_index in left_shape) {
             acc = apply_min_s<in_out_t>(acc, value);
         }
         out_index = flatten(left_index, [0], right_index);
-        tensor_write<in_out_t>(output, shape, out_index, out);
+        tensor_write<in_out_t>(output, shape, out_index, acc);
     }
 }
