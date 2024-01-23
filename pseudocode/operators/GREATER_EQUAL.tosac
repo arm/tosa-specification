@@ -15,8 +15,8 @@ for_each(index in shape) {
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
     out_t result;
     if (isNaN(value1) || isNaN(value2))
-        result = False;
+        result = false;
     else
-        result = (value1 >= value2) ? True : False;
+        result = (value1 >= value2) ? true : false;
     tensor_write<out_t>(output, shape, index, result);
 }

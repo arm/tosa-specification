@@ -479,7 +479,7 @@ The number formats supported by a given operator are listed in its table of supp
 |bool_t
 | -
 | -
-|Boolean value. Size implementation defined. The TOSA reference model implements this as int8_t with 0 for false and 1 for true. All non-zero values are accepted on input as true.
+|Boolean value that is either `true` or `false`. Size implementation defined. The TOSA reference model implements this as int8_t with 0 for `false` and 1 for `true`. All non-zero values are accepted on input as `true`.
 
 |i4_t
 | -
