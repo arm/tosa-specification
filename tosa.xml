@@ -287,7 +287,7 @@
       <operator>
         <name>DEPTHWISE_CONV2D</name>
         <arguments>
-          <argument category="input" name="input" type="tensor_t" shape="[N,H,W,C]" tensor-element-type="in_t">
+          <argument category="input" name="input" type="tensor_t" shape="[N,IH,IW,C]" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="4" max="4"/>
           </argument>
@@ -562,7 +562,7 @@
       <operator>
         <name>RFFT2D</name>
         <arguments>
-          <argument category="input" name="input" type="tensor_t" shape="[N,H,W]" tensor-element-type="in_out_t">
+          <argument category="input" name="input_real" type="tensor_t" shape="[N,H,W]" tensor-element-type="in_out_t">
             <description>Real input. H,W must be powers of two.</description>
             <levellimit value="H" limit="MAX_KERNEL"/>
             <levellimit value="W" limit="MAX_KERNEL"/>

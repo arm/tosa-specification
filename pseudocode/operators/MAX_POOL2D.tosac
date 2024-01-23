@@ -17,7 +17,7 @@ ERROR_IF(pad_top >= kernel_y || pad_bottom >= kernel_y);
 ERROR_IF(OH != idiv_check(IH + pad_top + pad_bottom - kernel_y, stride_y) + 1);
 ERROR_IF(OW != idiv_check(IW + pad_left + pad_right - kernel_x, stride_x) + 1);
 
-for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W, 0 <= c < C ) {
+for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C ) {
     in_out_t acc = minimum_value<in_out_t>;
     index_t iy = oy * stride_y - pad_top;
     index_t ix = ox * stride_x - pad_left;

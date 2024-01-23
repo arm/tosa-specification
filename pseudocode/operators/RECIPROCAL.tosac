@@ -8,7 +8,7 @@
 // by a licensing agreement from ARM Limited.
 
 for_each(index in shape) {
-    in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index);
+    in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
     in_out_t result = 1.0 / value1;
     tensor_write<in_out_t>(output, shape, index, result);
 }
