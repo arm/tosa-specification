@@ -8,7 +8,7 @@
 // by a licensing agreement from ARM Limited.
 
 int16_t erf_reference(int16_t x) { // input x range is -256 to + 256 inclusive
-    F64 v = (double)x / (double)64;
+    F64 v = static_cast<double>(x) / static_cast<double>(64);
     v = erf(v);
     return round_to_nearest_int(32768.0 * v);
 }

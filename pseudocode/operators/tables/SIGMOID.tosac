@@ -8,7 +8,7 @@
 // by a licensing agreement from ARM Limited.
 
 int16_t sigmoid_reference(int16_t x) { // input x range is -256 to + 256 inclusive
-    fp64_t v = (fp64_t)x / (fp64_t)16;
+    fp64_t v = static_cast<fp64_t>(x) / static_cast<fp64_t>(16);
     v = 1.0/(1.0 + exp(-v));
     return round_to_nearest_int(32768.0 * v);
 }
