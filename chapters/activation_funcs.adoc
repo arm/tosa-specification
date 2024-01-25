@@ -43,6 +43,11 @@ include::{pseudocode}/operators/tables/ERF.tosac[lines=10..-1]
 
 include::{generated}/operators/ERF.adoc[]
 
+[source,c++]
+----
+include::{pseudocode}/operators/ERF.tosac[lines=10..-1]
+----
+
 ==== SIGMOID
 
 Applies the sigmoid logistic function to each element of the input tensor.

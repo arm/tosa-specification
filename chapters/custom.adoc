@@ -22,5 +22,5 @@ include::{generated}/operators/CUSTOM.adoc[]
 
 [source,c++]
 ----
-// Implementation defined behavior
+include::{pseudocode}/operators/CUSTOM.tosac[lines=10..-1]
 ----

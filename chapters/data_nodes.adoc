@@ -15,9 +15,18 @@ A node containing constant data for use as the input to an operation. May hold d
 
 include::{generated}/operators/CONST.adoc[]
 
+[source,c++]
+----
+include::{pseudocode}/operators/CONST.tosac[lines=10..-1]
+----
+
 ==== IDENTITY
 
 Returns a tensor with the same shape, type, and contents as the input.
 
 include::{generated}/operators/IDENTITY.adoc[]
 
+[source,c++]
+----
+include::{pseudocode}/operators/IDENTITY.tosac[lines=10..-1]
+----
