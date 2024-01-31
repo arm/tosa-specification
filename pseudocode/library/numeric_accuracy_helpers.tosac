@@ -1,0 +1,52 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+fp64_t exp2(int n) {
+    if (n < -1075) {
+        return 0.0; // smaller than smallest denormal
+    }
+    REQUIRE(n <= 1023);
+    fp64_t v = 1.0;
+    while (n > 0) { v = v*2.0; n--; }
+    while (n < 0) { v = v/2.0; n++; }
+    return v;
+}
+
+int ilog2(fp64_t v) {
+    REQURE(0 < v && v < infinity);
+    int n = 0;
+    while (v >= 2.0) { v = v/2.0; n++; }
+    while (v <  1.0) { v = v*2.0; n--; }
+    return n;
+}
+
+fp64_t normal_min<in_t>() {
+  switch (in_t) {
+    case fp32_t: return exp2(-126);
+    case bf16_t: return exp2(-126);
+    case fp16_t: return exp2( -14);
+  }
+}
+
+fp64_t normal_max<in_t>() {
+  switch (in_t) {
+    case fp32_t: return exp2(128) - exp2(127-23);
+    case bf16_t: return exp2(128) - exp2(127- 7);
+    case fp16_t: return exp2( 16) - exp2( 15-10);
+  }
+}
+
+// Number of fractional (mantissa bits)
+int normal_frac<in_t> () {
+  switch (in_t) {
+    case fp32_t: return 23;
+    case fp16_t: return 10;
+    case bf16_t: return  7;
+  }
+}

@@ -1,0 +1,21 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+shape_t broadcast_shape(shape_t shape1, shape_t shape2) {
+    ERROR_IF(rank(shape1) != rank(shape2));
+    shape_t shape = shape1;
+    for (int32_t i = 0; i < rank(shape); i++) {
+        if (shape[i] == 1) {
+            shape[i] = shape2[i];
+        } else {
+            ERROR_IF(shape2[i] != 1 && shape2[i] != shape[i]);
+        }
+    }
+    return shape;
+}

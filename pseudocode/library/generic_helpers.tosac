@@ -1,0 +1,71 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+bool_t is_floating_point(type) {
+    if (type == fp16_t || type == fp32_t || type == bf16_t)
+        return true;
+    return false;
+}
+
+int32_t idiv(int32_t input1, int32_t input2) {
+    return input1 / input2; // Integer divide that truncates towards zero
+}
+
+// Integer division that checks input1 is a multiple of input2
+
+int32_t idiv_check(int32_t input1, int32_t input2) {
+    ERROR_IF(input1 % input2 != 0); // input1 must be a multiple of input2
+    return input1 / input2;         // exact quotient without rounding
+}
+
+// perform an integer division with rounding towards minus infinity
+
+int32_t idiv_floor(int32_t input1, int32_t input2) {
+    int32_t rval = input1 / input2;
+    if (rval * input2 > input1) {
+        rval--;
+    }
+    return rval;
+}
+
+int32_t length(in_t input)
+    return number of elements in input list
+
+int32_t rank(in_t input)
+    return rank of an input tensor
+
+int32_t sum(in_t input[])
+    return the sum of values of an input list
+
+bool isNaN(float input)
+    return True if floating-point input value is NaN
+
+float_t pi()
+    returns value of pi
+
+float_t sin(angle)
+    return sine of angle given in radians
+
+float_t cos(angle)
+    return cosine of angle given in radians
+
+bool power_of_two(int32_t value)
+    return true if value is a power of two, false otherwise
+
+in_out_t maximum_s<Type T>
+    return the maximum value when interpreting type T as a signed value as returned by the make_signed helper.
+
+in_out_t minimum_s<Type T>
+    return the minimum value when interpreting type T as a signed value as returned by the make_signed helper.
+
+in_out_t maximum_u<Type T>
+    return the maximum value when interpreting type T as an unsigned value as returned by the make_unsigned helper.
+
+in_out_t minimum_u<Type T>
+    return the minimum value when interpreting type T as an unsigned value as returned by the make_unsigned helper.

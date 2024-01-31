@@ -1,0 +1,63 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+// Returns a signed version of the given type
+// A no-op for floating-point types
+Type make_signed(Type in_t)
+{
+    switch(in_t) {
+        case bool_t:
+            return bool_t;
+        case i8_t:
+            return int8_t;
+        case i16_t:
+            return int16_t;
+        case i32_t:
+            return int32_t;
+        case i48_t:
+            return int48_t;
+        case fp16_t:
+            return fp16_t;
+        case bf16_t:
+            return bf16_t;
+        case fp32_t:
+            return fp32_t;
+    }
+}
+
+// Returns the usigned type of the given type
+// Error to call this with anything but i8_t or i16_t
+
+Type make_unsigned(Type in_t)
+{
+    ERROR_IF(in_t != i8_t && in_t != i16_t);
+    switch(in_t) {
+        case i8_t:
+            return uint8_t;
+        case i16_t:
+            return uint16_t;
+    }
+}
+
+out_t static_cast<out_t>(in_t value)
+{
+    // Operates similar to the c++ standard static_cast
+    // Limited to simple numeric conversion for TOSA.
+    // Sign extends signed integer input types if needed
+    // Zero extends unsigned integer input types if needed
+    // Truncates when converting to a smaller width data type
+    // Conversion from integer to floating-point is exact if possible
+    // If converting between signless integer types, treated as signed integer
+}
+
+out_t bitcast<out_t>(in_t value)
+{
+    // Treats the bits of value as if they were of type out_t
+    // Only supported for integer types of the same bit width
+}

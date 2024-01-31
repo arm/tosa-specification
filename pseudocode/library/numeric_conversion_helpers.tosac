@@ -1,0 +1,28 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+int round_to_nearest_int(float_t f)
+  Converts the floating-point value to f, with rounding to the nearest integer value.
+  For the required precision see the section: Main inference precision requirements.
+
+float_t round_to_nearest_float(in_t f)
+  Converts the input value into floating-point, rounding to the nearest representable value.
+  For the required precision see the section: Main inference precision requirements.
+
+out_t sign_extend<out_t>(in_t input)
+  Floating point values are unchanged.
+  For two's complement integer values where out_t has more bits than in_t, replicate the top bit of input for all bits between the top bit of input and the top bit of output.
+
+out_t zero_extend<out_t>(in_t input)
+  Floating point values are unchanged.
+  For two's complement integer values where out_t has more bits than in_t, insert zero values for all bits between the top bit of input and the top bit of output.
+
+out_t truncate(in_t input)
+  output is the sizeof(out_t) least significant bits in input.
+  Nop for floating-point types

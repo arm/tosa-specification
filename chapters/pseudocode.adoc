@@ -62,44 +62,7 @@ void LEVEL_CHECK(condition) {
 
 [source,c++]
 ----
-// Convert tensor index coordinates to an element offset
-size_t tensor_index_to_offset(shape_t shape, shape_t index) {
-    size_t size = tensor_size(shape);  // check tensor shape is valid
-    size_t offset = 0;
-    for (int32_t i = 0; i < rank(shape); i++) {
-        REQUIRE(index[i] >= 0 && index[i] < shape[i]);
-        offset = offset * shape[i] + index[i];
-    }
-    return offset;
-}
-
-// Convert an element offset to tensor index coordinates
-shape_t tensor_offset_to_index(shape_t shape, size_t offset) {
-    size_t size = tensor_size(shape);  // check tensor shape is valid
-    REQUIRE(offset < size);
-    shape_t index(rank(shape));    // index has rank(shape) indicies
-    for(int32_t i = rank(shape) - 1; i >= 0; i--) {
-        index[i] = offset % shape[i];
-        offset /= shape[i];
-    }
-    return index;
-}
-
-// Check the tensor shape is valid and return the tensor size in elements
-size_t tensor_size(shape_t shape) {
-    size_t size = 1;
-    for (int32_t i = 0; i < rank(shape); i++) {
-        REQUIRE(1 <= shape[i] && shape[i] <= maximum<size_t> / size);
-        size *= shape[i];
-    }
-    return size;
-}
-
-// Return the size of the tensor in the given axis
-// For a rank=0 tensor, returns 1 for all axes
-size_t shape_dim(shape_t shape, int axis) {
-    return (axis >= rank(shape)) ? 1 : shape[axis];
-}
+include::{pseudocode}/library/tensor_utils.tosac[lines=10..-1]
 ----
 
 ==== Tensor Read
@@ -110,10 +73,7 @@ Index is the coordinates within the tensor of the value to be read.
 
 [source,c++]
 ----
-in_t tensor_read<in_t>(in_t *address, shape_t shape, shape_t index) {
-    size_t offset = tensor_index_to_offset(shape, index);
-    return address[offset];
-}
+include::{pseudocode}/library/tensor_read.tosac[lines=10..-1]
 ----
 
 ==== Tensor Write
@@ -125,10 +85,7 @@ value is the value to be written to the given coordinate.
 
 [source,c++]
 ----
-void tensor_write<type>(<type> *address, shape_t shape, shape_t index, <type> value) {
-    size_t offset = tensor_index_to_offset(shape, index);
-    address[offset] = value;
-}
+include::{pseudocode}/library/tensor_write.tosac[lines=10..-1]
 ----
 
 ==== Variable Tensor Allocate
@@ -139,16 +96,7 @@ The uid argument is a globally unique identifier for variable tensors.
 
 [source,c++]
 ----
-tensor_t* variable_tensor_allocate<in_t>(shape_t shape, int32_t uid) {
-    size_t size = tensor_size(shape);
-    tensor_t *allocated_tensor = new tensor_t;
-    allocated_tensor->data = new in_t[size];
-    allocated_tensor->uid = uid;
-    allocated_tensor->is_written = false;
-    allocated_tensor->shape = shape;
-    allocated_tensor->type = in_t;
-    return allocated_tensor;
-}
+include::{pseudocode}/library/variable_tensor_allocate.tosac[lines=10..-1]
 ----
 
 ==== Variable Tensor Lookup
@@ -158,16 +106,7 @@ The uid argument is a globally unique identifier for variable tensors.
 
 [source,c++]
 ----
-tensor_t variable_tensor_lookup(int32_t uid) {
-    // The global all_allocated_variable_tensors was instantiated at the first
-    // time of executing the tosa graph
-    for_each(tensor_t allocated_tensor in all_allocated_variable_tensors) {
-        if (allocated_tensor.uid == uid) {
-            return allocated_tensor;
-        }
-    }
-    return NULL;
-}
+include::{pseudocode}/library/variable_tensor_lookup.tosac[lines=10..-1]
 ----
 
 ==== Broadcast Helpers
@@ -176,39 +115,14 @@ The following function derives the broadcast output shape from the input shapes.
 
 [source,c++]
 ----
-shape_t broadcast_shape(shape_t shape1, shape_t shape2) {
-    ERROR_IF(rank(shape1) != rank(shape2));
-    shape_t shape = shape1;
-    for (int32_t i = 0; i < rank(shape); i++) {
-        if (shape[i] == 1) {
-            shape[i] = shape2[i];
-        } else {
-            ERROR_IF(shape2[i] != 1 && shape2[i] != shape[i]);
-        }
-    }
-    return shape;
-}
+include::{pseudocode}/library/broadcast_shape.tosac[lines=10..-1]
 ----
 
 The following function maps an index in the output tensor to an index in the input tensor.
 
 [source,c++]
 ----
-// The index argument should be a valid location within out_shape.
-// The function returns the location within in_shape that contributes
-// to the output based on broadcasting rules.
-
-shape_t apply_broadcast(shape_t out_shape, shape_t in_shape, shape_t index) {
-    ERROR_IF(rank(out_shape) != rank(in_shape));
-    ERROR_IF(rank(out_shape) != rank(index));
-    for (int32_t i = 0; i < rank(out_shape); i++) {
-        if (out_shape[i] != in_shape[i]) {
-            ERROR_IF(in_shape[i] != 1);
-            index[i] = 0;
-        }
-    }
-    return index;
-}
+include::{pseudocode}/library/apply_broadcast.tosac[lines=10..-1]
 ----
 
 === General Pseudocode Helpers
@@ -221,147 +135,7 @@ The following functions provide arithmetic while defining requirements such that
 
 [source,c++]
 ----
-in_t apply_add_s<in_t>(in_t a, in_t b) {
-    if (is_floating_point(in_t)) return a + b;
-    int64_t c = sign_extend<int64_t>(a) + sign_extend<int64_t>(b);
-    REQUIRE(c >= minimum_s<in_t> && c <= maximum_s<in_t>);
-    return static_cast<in_t>(c);
-}
-
-in_t apply_add_u<in_t>(in_t a, in_t b) {
-    if (is_floating_point(in_t)) return a + b;
-    uint64_t c = zero_extend<uint64_t>(a) + zero_extend<uint64_t>(b);
-    REQUIRE(c >= minimum_u<in_u_t> && c <= maximum_u<in_u_t>);
-    return truncate<in_t>(c);
-}
-
-in_t apply_arith_rshift<in_t>(in_t a, in_t b) {
-    int32_t c = sign_extend<int32_t>(a) >> sign_extend<int32_t>(b);
-    return static_cast<in_t>(c);
-}
-
-in_t apply_intdiv_s<in_t>(in_t a, in_t b) {
-    int64_t c = sign_extend<int64_t>(a) / sign_extend<int64_t>(b);
-    REQUIRE(c >= minimum_s<in_t> && c <= maximum_s<in_t>);
-    return static_cast<in_t>(c);
-}
-
-in_t apply_ceil<in_t>(in_t input) {
-    return input value rounded up to nearest integer
-}
-
-in_t apply_clip_s<in_t>(in_t value, in_t min_val, in_t max_val) {
-    if (is_floating_point(in_t>) {
-        REQUIRE(min_val <= max_val);
-    }
-    else {
-        REQUIRE(sign_extend<int64_t>(min_val) <= sign_extend<int64_t>(max_val));
-    }
-    value = apply_max_s<in_t>(value, min_val);
-    value = apply_min_s<in_t>(value, max_val);
-    return value;
-}
-
-in_t apply_clip_u<in_t>(in_t value, in_t min_val, in_t max_val) {
-    REQUIRE(zero_extend<int64_t>(min_val) <= zero_extend<int64_t>(max_val));
-    value = apply_max_u<in_t>(value, min_val);
-    value = apply_min_u<in_t>(value, max_val);
-    return value;
-}
-
-in_t apply_exp<in_t>(in_t input) {
-    return e to the power input
-}
-
-in_t apply_floor<in_t>(in_t input) {
-    return input value rounded down to nearest integer
-}
-
-in_t apply_log<in_t>(in_t input) {
-    if (input == 0) {
-        return -INFINITY
-    }
-    else if (input < 0) {
-        return NaN;
-    }
-    return the natural logarithm of input
-}
-
-in_t apply_logical_rshift<in_t>(in_t a, in_t b) {
-    uint64_t c = zero_extend<uint32_t>(a) >> zero_extend<uint32_t>(b);
-    return static_cast<in_t>(c);
-}
-
-in_t apply_max_s<in_t>(in_t a, in_t b) {
-    if (is_floating_point(in_t)) {
-        if (isNaN(a) || isNaN(b)) {
-            return NaN;
-        }
-        if (a >= b) return a; else return b;
-    }
-    // Integer version
-    if (sign_extend<int64_t>(a) >= sign_extend<int64_t>(b)) return a; else return b;
-}
-
-in_t apply_max_u<in_t>(in_t a, in_t b) {
-    if (zero_extend<uint64_t>(a) >= zero_extend<int64_t>(b)) return a; else return b;
-}
-
-in_t apply_min_s<in_t>(in_t a, in_t b) {
-    if (is_floating_point(in_t)) {
-        if (isNaN(a) || isNaN(b)) {
-            return NaN;
-        }
-        if (a < b) return a; else return b;
-    }
-    // Integer version
-    if (sign_extend<int64_t>(a) < sign_extend<int64_t>(b)) return a; else return b;
-}
-
-in_t apply_min_u<in_t>(in_t a, in_t b) {
-    if (zero_extend<int64_t>(a) < zero_extend<int64_t>(b)) return a; else return b;
-}
-
-in_t apply_mul_s<in_t>(in_t a, in_t b) {
-    if (is_floating_point(in_t)) return a * b;
-    int64_t c = sign_extend<int64_t>(a) * sign_extend<int64_t>(b);
-    return static_cast<in_t>(c);
-}
-
-in_t apply_pow<in_t>(in_t a, in_t b) {
-    return a ** b; // a raised to the power b
-}
-
-in_t apply_sqrt<in_t>(in_t input) {
-    return the square root of input
-}
-
-in_t apply_sub_s<in_t>(in_t a, in_t b) {
-    if (is_floating_point(in_t)) return a - b;
-    int64_t c = sign_extend<int64_t>(a) - sign_extend<int64_t>(b);
-    REQUIRE(c >= minimum_s<in_t> && c <= maximum_s<in_t>);
-    return static_cast<in_t>(c);
-}
-
-in_t apply_sub_u<in_t>(in_t a, in_t b) {
-    uint64_t c = zero_extend<uint64_t>(a) - zero_extend<uint64_t>(b);
-    REQUIRE(c >= minimum_u<in_u_t> && c <= maximum_u<in_u_t>);
-    return truncate<in_t>(c);
-}
-
-int32_t count_leading_zeros(int32_t a) {
-    int32_t acc = 32;
-    if (a != 0) {
-        uint32_t mask;
-        mask = 1 << (32 - 1); // width of int32_t - 1
-        acc = 0;
-        while ((mask & a) == 0) {
-            mask = mask >> 1;
-            acc = acc + 1;
-        }
-    }
-    return acc;
-}
+include::{pseudocode}/library/arithmetic_helpers.tosac[lines=10..-1]
 ----
 
 ==== Type Conversion Helpers
@@ -370,61 +144,7 @@ The following definitions indicate the type to be used when the given parameters
 
 [source,c++]
 ----
-
-// Returns a signed version of the given type
-// A no-op for floating-point types
-Type make_signed(Type in_t)
-{
-    switch(in_t) {
-        case bool_t:
-            return bool_t;
-        case i8_t:
-            return int8_t;
-        case i16_t:
-            return int16_t;
-        case i32_t:
-            return int32_t;
-        case i48_t:
-            return int48_t;
-        case fp16_t:
-            return fp16_t;
-        case bf16_t:
-            return bf16_t;
-        case fp32_t:
-            return fp32_t;
-    }
-}
-
-// Returns the usigned type of the given type
-// Error to call this with anything but i8_t or i16_t
-
-Type make_unsigned(Type in_t)
-{
-    ERROR_IF(in_t != i8_t && in_t != i16_t);
-    switch(in_t) {
-        case i8_t:
-            return uint8_t;
-        case i16_t:
-            return uint16_t;
-    }
-}
-
-out_t static_cast<out_t>(in_t value)
-{
-    // Operates similar to the c++ standard static_cast
-    // Limited to simple numeric conversion for TOSA.
-    // Sign extends signed integer input types if needed
-    // Zero extends unsigned integer input types if needed
-    // Truncates when converting to a smaller width data type
-    // Conversion from integer to floating-point is exact if possible
-    // If converting between signless integer types, treated as signed integer
-}
-
-out_t bitcast<out_t>(in_t value)
-{
-    // Treats the bits of value as if they were of type out_t
-    // Only supported for integer types of the same bit width
-}
+include::{pseudocode}/library/type_conversion_helpers.tosac[lines=10..-1]
 ----
 
 ==== Numeric Accuracy Helpers
@@ -436,49 +156,7 @@ The functions below return the ranges according to type.
 
 [source,c++]
 ----
-fp64_t exp2(int n) {
-    if (n < -1075) {
-        return 0.0; // smaller than smallest denormal
-    }
-    REQUIRE(n <= 1023);
-    fp64_t v = 1.0;
-    while (n > 0) { v = v*2.0; n--; }
-    while (n < 0) { v = v/2.0; n++; }
-    return v;
-}
-
-int ilog2(fp64_t v) {
-    REQURE(0 < v && v < infinity);
-    int n = 0;
-    while (v >= 2.0) { v = v/2.0; n++; }
-    while (v <  1.0) { v = v*2.0; n--; }
-    return n;
-}
-
-fp64_t normal_min<in_t>() {
-  switch (in_t) {
-    case fp32_t: return exp2(-126);
-    case bf16_t: return exp2(-126);
-    case fp16_t: return exp2( -14);
-  }
-}
-
-fp64_t normal_max<in_t>() {
-  switch (in_t) {
-    case fp32_t: return exp2(128) - exp2(127-23);
-    case bf16_t: return exp2(128) - exp2(127- 7);
-    case fp16_t: return exp2( 16) - exp2( 15-10);
-  }
-}
-
-// Number of fractional (mantissa bits)
-int normal_frac<in_t> () {
-  switch (in_t) {
-    case fp32_t: return 23;
-    case fp16_t: return 10;
-    case bf16_t: return  7;
-  }
-}
+include::{pseudocode}/library/numeric_accuracy_helpers.tosac[lines=10..-1]
 ----
 
 The following functions check if a test value in floating-point format in_t is within an error range compared to a reference value.
@@ -488,36 +166,7 @@ For the second function, the permitted error range is specified as an absolute e
 
 [source,c++]
 ----
-bool tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num_ulp) {
-  fp64_t err_bnd = 0.0;
-  if (is_normal_fp64(ref_value) && abs(ref_value) != 0) {
-    int ref_exp = ilog2(abs(ref_value));
-    fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<in_t>);
-    fp64_t val_ulp  = ref_pow2 * exp2(-normal_frac<in_t>);
-    err_bnd = val_ulp * num_ulp;
-  }
-  return tosa_reference_check_fp_bnd<in_t>(test_value, ref_value, err_bnd);
-}
-
-bool tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64_t err_bnd) {
-  if (is_a_NaN(ref_value)) {
-    return is_a_NaN(test_value);
-  }
-  REQUIRE(err_bnd >= 0.0);
-  if (ref_value < 0) {
-    ref_value  = -ref_value;
-    test_value = -test_value;
-  }
-  fp64_t ref_max = ref_value + err_bnd;
-  fp64_t ref_min = ref_value - err_bnd;
-  if (ref_max > normal_max<in_t>) ref_max = infinity;
-  if (ref_min > normal_max<in_t>) ref_min = infinity;
-  if (ref_max < normal_min<in_t>) ref_max = normal_min<in_t>;
-  if (ref_min < normal_min<in_t>) ref_min = 0;
-  return (static_cast<fp64_t>(test_value) >= ref_min &&
-          static_cast<fp64_t>(test_value) <= ref_max);
-}
-
+include::{pseudocode}/library/tosa_reference_check.tosac[lines=10..-1]
 ----
 
 ==== Numeric Conversion Helpers
@@ -528,106 +177,19 @@ See <<Number formats>> for details on the floating-point formats.
 
 [source,c++]
 ----
-int round_to_nearest_int(float_t f)
-  Converts the floating-point value to f, with rounding to the nearest integer value.
-  For the required precision see the section: Main inference precision requirements.
-
-float_t round_to_nearest_float(in_t f)
-  Converts the input value into floating-point, rounding to the nearest representable value.
-  For the required precision see the section: Main inference precision requirements.
-
-out_t sign_extend<out_t>(in_t input)
-  Floating point values are unchanged.
-  For two's complement integer values where out_t has more bits than in_t, replicate the top bit of input for all bits between the top bit of input and the top bit of output.
-
-out_t zero_extend<out_t>(in_t input)
-  Floating point values are unchanged.
-  For two's complement integer values where out_t has more bits than in_t, insert zero values for all bits between the top bit of input and the top bit of output.
-
-out_t truncate(in_t input)
-  output is the sizeof(out_t) least significant bits in input.
-  Nop for floating-point types
+include::{pseudocode}/library/numeric_conversion_helpers.tosac[lines=10..-1]
 ----
 
 The following definition is used to flatten a list of lists into a single list.
 
 [source,c++]
 ----
-in_t* flatten(in_t lists[]) {
-    in_t output = [];
-    for_each(list in lists) {
-        for_each(element in list) {
-            output.append(element);
-        }
-    }
-}
+include::{pseudocode}/library/flatten.tosac[lines=10..-1]
 ----
 
 Generic helper functions used to keep the pseudocode concise.
 
 [source,c++]
 ----
-
-bool_t is_floating_point(type) {
-    if (type == fp16_t || type == fp32_t || type == bf16_t)
-        return true;
-    return false;
-}
-
-int32_t idiv(int32_t input1, int32_t input2) {
-    return input1 / input2; // Integer divide that truncates towards zero
-}
-
-// Integer division that checks input1 is a multiple of input2
-
-int32_t idiv_check(int32_t input1, int32_t input2) {
-    ERROR_IF(input1 % input2 != 0); // input1 must be a multiple of input2
-    return input1 / input2;         // exact quotient without rounding
-}
-
-// perform an integer division with rounding towards minus infinity
-
-int32_t idiv_floor(int32_t input1, int32_t input2) {
-    int32_t rval = input1 / input2;
-    if (rval * input2 > input1) {
-        rval--;
-    }
-    return rval;
-}
-
-int32_t length(in_t input)
-    return number of elements in input list
-
-int32_t rank(in_t input)
-    return rank of an input tensor
-
-int32_t sum(in_t input[])
-    return the sum of values of an input list
-
-bool isNaN(float input)
-    return True if floating-point input value is NaN
-
-float_t pi()
-    returns value of pi
-
-float_t sin(angle)
-    return sine of angle given in radians
-
-float_t cos(angle)
-    return cosine of angle given in radians
-
-bool power_of_two(int32_t value)
-    return true if value is a power of two, false otherwise
-
-in_out_t maximum_s<Type T>
-    return the maximum value when interpreting type T as a signed value as returned by the make_signed helper.
-
-in_out_t minimum_s<Type T>
-    return the minimum value when interpreting type T as a signed value as returned by the make_signed helper.
-
-in_out_t maximum_u<Type T>
-    return the maximum value when interpreting type T as an unsigned value as returned by the make_unsigned helper.
-
-in_out_t minimum_u<Type T>
-    return the minimum value when interpreting type T as an unsigned value as returned by the make_unsigned helper.
+include::{pseudocode}/library/generic_helpers.tosac[lines=10..-1]
 ----

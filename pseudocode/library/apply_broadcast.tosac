@@ -1,0 +1,24 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+// The index argument should be a valid location within out_shape.
+// The function returns the location within in_shape that contributes
+// to the output based on broadcasting rules.
+
+shape_t apply_broadcast(shape_t out_shape, shape_t in_shape, shape_t index) {
+    ERROR_IF(rank(out_shape) != rank(in_shape));
+    ERROR_IF(rank(out_shape) != rank(index));
+    for (int32_t i = 0; i < rank(out_shape); i++) {
+        if (out_shape[i] != in_shape[i]) {
+            ERROR_IF(in_shape[i] != 1);
+            index[i] = 0;
+        }
+    }
+    return index;
+}
