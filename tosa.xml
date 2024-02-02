@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tosa SYSTEM "tosa.dtd">
 <tosa>
-  <version major="0" minor="90" patch="0" draft="true"/>
+  <version major="0" minor="100" patch="0" draft="true"/>
   <profiles>
     <profile name="BI">Base Inference</profile>
     <profile name="MI">Main Inference</profile>
