@@ -15,9 +15,13 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W/2 + 1) {
     in_out_t sum_imag = 0.0;
     for_each(0 <= iy < H, 0 <= ix < W) {
         in_out_t val_real = tensor_read<in_out_t>(input_real, [N,H,W], [n,iy,ix]);
-        float_t a = 2 * pi() * ((iy * oy) / H + (ix * ox) / W);
+        int32_t ay = (static_cast<size_t>(iy) * static_cast<size_t>(oy)) % static_cast<int32_t>(H);
+        int32_t ax = (static_cast<size_t>(ix) * static_cast<size_t>(ox)) % static_cast<int32_t>(W);
+        in_out_t a = sign_val * 2 * pi() * (static_cast<in_out_t>(ay) / H + static_cast<in_out_t>(ax) / W);
         sum_real += val_real * cos(a);
-        sum_imag += -val_real * sin(a);
+        if ((ay % (H/2)) + (ax % (W/2)) > 0) {
+            sum_imag += -val_real * sin(a);
+        }
     }
     tensor_write<in_out_t>(output_real, [N,H,W], [n,oy,ox], sum_real);
     tensor_write<in_out_t>(output_imag, [N,H,W], [n,oy,ox], sum_imag);
