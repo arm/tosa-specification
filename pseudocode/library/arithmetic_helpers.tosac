@@ -17,7 +17,7 @@ in_t apply_add_s<in_t>(in_t a, in_t b) {
 in_t apply_add_u<in_t>(in_t a, in_t b) {
     if (is_floating_point<in_t>()) return a + b;
     uint64_t c = zero_extend<uint64_t>(a) + zero_extend<uint64_t>(b);
-    REQUIRE(c >= minimum_u<in_u_t>() && c <= maximum_u<in_u_t>());
+    REQUIRE(c >= minimum_u<in_t>() && c <= maximum_u<in_t>());
     return truncate<in_t>(c);
 }
 
@@ -130,7 +130,7 @@ in_t apply_sub_s<in_t>(in_t a, in_t b) {
 
 in_t apply_sub_u<in_t>(in_t a, in_t b) {
     uint64_t c = zero_extend<uint64_t>(a) - zero_extend<uint64_t>(b);
-    REQUIRE(c >= minimum_u<in_u_t>() && c <= maximum_u<in_u_t>());
+    REQUIRE(c >= minimum_u<in_t>() && c <= maximum_u<in_t>());
     return truncate<in_t>(c);
 }
 

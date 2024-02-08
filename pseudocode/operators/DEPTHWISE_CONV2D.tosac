@@ -30,8 +30,8 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C, 0 <= m < M) {
             out_t weight = static_cast<out_t>(tensor_read<weight_t>(weight,
                                                                     [KH,KW,C,M],
                                                                     [ky,kx,c,m]));
-            value  = apply_sub_s<out_t>(value, static_cast<out_t>input_zp);
-            weight = apply_sub_s<out_t>(weight, static_cast<out_t>weight_zp);
+            value  = apply_sub_s<out_t>(value, static_cast<out_t>(input_zp));
+            weight = apply_sub_s<out_t>(weight, static_cast<out_t>(weight_zp));
             acc = apply_add_s<out_t>(acc, apply_mul_s<out_t>(value, weight));
         }
     }

@@ -28,11 +28,11 @@ for_each(index in shape) {
             out = (in) ? 1 : 0;
         } else if (is_floating_point<in_t>()) {
             out = truncate<out_t>(apply_clip_s<i32_t>(round_to_nearest_int(in), minimum_s<out_t>(), maximum_s<out_t>()));
-        } else if (sizeof(out_t) >= sizeof(in_t)) {
+        } else if (sizeof<out_t>() >= sizeof<in_t>()) {
             out = sign_extend<out_t>(in);
         } else {
             out = truncate<out_t>(in);
         }
     }
-    tensor_write<out_t>(output, shape, index, out)
+    tensor_write<out_t>(output, shape, index, out);
 }
