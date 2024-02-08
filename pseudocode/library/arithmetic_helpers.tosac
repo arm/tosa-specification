@@ -32,9 +32,8 @@ in_t apply_intdiv_s<in_t>(in_t a, in_t b) {
     return static_cast<in_t>(c);
 }
 
-in_t apply_ceil<in_t>(in_t input) {
-    return input value rounded up to nearest integer
-}
+// return input value rounded up to nearest integer
+in_t apply_ceil<in_t>(in_t input);
 
 in_t apply_clip_s<in_t>(in_t value, in_t min_val, in_t max_val) {
     if (is_floating_point<in_t>()) {
@@ -55,22 +54,23 @@ in_t apply_clip_u<in_t>(in_t value, in_t min_val, in_t max_val) {
     return value;
 }
 
-in_t apply_exp<in_t>(in_t input) {
-    return e to the power input
-}
+// return e to the power input
+in_t apply_exp<in_t>(in_t input);
 
-in_t apply_floor<in_t>(in_t input) {
-    return input value rounded down to nearest integer
-}
+// return input value rounded down to nearest integer
+in_t apply_floor<in_t>(in_t input);
+
+// return the natural logarithm of input
+in_t apply_log_positive_input<in_t>(in_t input);
 
 in_t apply_log<in_t>(in_t input) {
     if (input == 0) {
-        return -INFINITY
+        return -INFINITY;
     }
     else if (input < 0) {
         return NaN;
     }
-    return the natural logarithm of input
+    return apply_log_positive_input(input);
 }
 
 in_t apply_logical_rshift<in_t>(in_t a, in_t b) {
@@ -118,9 +118,8 @@ in_t apply_pow<in_t>(in_t a, in_t b) {
     return a ** b; // a raised to the power b
 }
 
-in_t apply_sqrt<in_t>(in_t input) {
-    return the square root of input
-}
+// return the square root of input
+in_t apply_sqrt<in_t>(in_t input);
 
 in_t apply_sub_s<in_t>(in_t a, in_t b) {
     if (is_floating_point<in_t>()) return a - b;

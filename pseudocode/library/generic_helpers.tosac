@@ -7,13 +7,13 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-bool_t is_floating_point(type) {
+bool_t is_floating_point<type>() {
     if (type == fp16_t || type == fp32_t || type == bf16_t || type == fp8e4m3_t || type == fp8e5m2_t)
         return true;
     return false;
 }
 
-bool_t is_saturating_float_type(type) {
+bool_t is_saturating_float_type<type>() {
     // Saturate for the fp8 formats, all other floats do not saturate
     if (type == fp8e4m3_t || type == fp8e5m2_t) {
         return true;
@@ -43,38 +43,38 @@ int32_t idiv_floor(int32_t input1, int32_t input2) {
     return rval;
 }
 
-int32_t length(in_t input)
-    return number of elements in input list
+// return number of elements in input list
+int32_t length(in_t input);
 
-int32_t rank(in_t input)
-    return rank of an input tensor
+// return rank of an input tensor
+int32_t rank(in_t input);
 
-int32_t sum(in_t input[])
-    return the sum of values of an input list
+// return the sum of values of an input list
+int32_t sum(in_t input[]);
 
-bool isNaN(float input)
-    return True if floating-point input value is NaN
+// return True if floating-point input value is NaN
+bool_t isNaN(float input);
 
-float_t pi()
-    returns value of pi
+// returns value of pi
+float_t pi();
 
-float_t sin(angle)
-    return sine of angle given in radians
+// return sine of angle given in radians
+float_t sin(float_t angle);
 
-float_t cos(angle)
-    return cosine of angle given in radians
+// return cosine of angle given in radians
+float_t cos(float_t angle);
 
-bool power_of_two(int32_t value)
-    return true if value is a power of two, false otherwise
+// return true if value is a power of two, false otherwise
+bool_t power_of_two(int32_t value);
 
-in_out_t maximum_s<Type T>
-    return the maximum value when interpreting type T as a signed value as returned by the make_signed helper.
+// return the maximum value when interpreting type in_out_t as a signed value as returned by the make_signed helper.
+in_out_t maximum_s<in_out_t>();
 
-in_out_t minimum_s<Type T>
-    return the minimum value when interpreting type T as a signed value as returned by the make_signed helper.
+// return the minimum value when interpreting type in_out_t as a signed value as returned by the make_signed helper.
+in_out_t minimum_s<in_out_t>();
 
-in_out_t maximum_u<Type T>
-    return the maximum value when interpreting type T as an unsigned value as returned by the make_unsigned helper.
+// return the maximum value when interpreting type in_out_t as an unsigned value as returned by the make_unsigned helper.
+in_out_t maximum_u<in_out_t>();
 
-in_out_t minimum_u<Type T>
-    return the minimum value when interpreting type T as an unsigned value as returned by the make_unsigned helper.
+// return the minimum value when interpreting type in_out_t as an unsigned value as returned by the make_unsigned helper.
+in_out_t minimum_u<in_out_t>();
