@@ -11,8 +11,8 @@ bool tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num
   fp64_t err_bnd = 0.0;
   if (is_normal_fp64(ref_value) && abs(ref_value) != 0) {
     int ref_exp = ilog2(abs(ref_value));
-    fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<in_t>);
-    fp64_t val_ulp  = ref_pow2 * exp2(-normal_frac<in_t>);
+    fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<in_t>());
+    fp64_t val_ulp  = ref_pow2 * exp2(-normal_frac<in_t>());
     err_bnd = val_ulp * num_ulp;
   }
   return tosa_reference_check_fp_bnd<in_t>(test_value, ref_value, err_bnd);
@@ -32,11 +32,11 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
   }
   fp64_t ref_max = ref_value + err_bnd;
   fp64_t ref_min = ref_value - err_bnd;
-  if (ref_max > normal_max<in_t>) ref_max = infinity;
-  if (ref_min > normal_max<in_t>) ref_min = infinity;
-  if (ref_max < normal_min<in_t>) ref_max = normal_min<in_t>;
+  if (ref_max > normal_max<in_t>()) ref_max = infinity;
+  if (ref_min > normal_max<in_t>()) ref_min = infinity;
+  if (ref_max < normal_min<in_t>()) ref_max = normal_min<in_t>();
   // Large error bounds could cause ref_min to be negative.
-  if (ref_min < normal_min<in_t>) ref_min = min(0, ref_min);
+  if (ref_min < normal_min<in_t>()) ref_min = min(0, ref_min);
   return (static_cast<fp64_t>(test_value) >= ref_min &&
           static_cast<fp64_t>(test_value) <= ref_max);
 }
