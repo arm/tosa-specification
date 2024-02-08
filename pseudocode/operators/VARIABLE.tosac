@@ -13,7 +13,7 @@ tensor_t var_tensor = variable_tensor_lookup(uid);
 // Invocation for the first time
 if (var_tensor == NULL) {
   // Allocate the persistent mutable memory for the variable tensor
-  tensor_t var_tensor = variable_tensor_allocate<var_t>(var_shape, uid);
+  var_tensor = variable_tensor_allocate<var_t>(var_shape, uid);
 
   if (initial_value != NULL) {
     REQUIRE(var_t == in_t);

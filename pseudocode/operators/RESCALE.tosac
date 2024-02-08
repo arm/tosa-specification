@@ -42,19 +42,20 @@ for_each(index in shape) {
         apply_scale_32(value, multiplier[c], shift[c], double_round) :
         apply_scale_16(value, multiplier[c], shift[c]);
 
+    out_t out;
     if (output_unsigned) {
         int32_t extended_out_zp = zero_extend<int32_t>(output_zp);
         result = apply_add_s<int32_t>(result, extended_out_zp);
-        out_t out = static_cast<out_t>(apply_clip_u<i32_t>(result,
-                                                           minimum_u<out_t>(),
-                                                           maximum_u<out_t>()));
+        out = static_cast<out_t>(apply_clip_u<i32_t>(result,
+                                                     minimum_u<out_t>(),
+                                                     maximum_u<out_t>()));
     }
     else {
         int32_t extended_out_zp = sign_extend<int32_t>(output_zp);
         result = apply_add_s<int32_t>(result, extended_out_zp);
-        out_t out = static_cast<out_t>(apply_clip_s<i32_t>(result,
-                                                           minimum_s<out_t>(),
-                                                           maximum_s<out_t>()));
+        out = static_cast<out_t>(apply_clip_s<i32_t>(result,
+                                                     minimum_s<out_t>(),
+                                                     maximum_s<out_t>()));
     }
     tensor_write<out_t>(output, shape, index, out);
 }

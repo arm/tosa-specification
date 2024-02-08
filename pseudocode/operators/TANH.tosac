@@ -9,6 +9,6 @@
 
 for_each(index in shape) {
     in_out_t value1 = tensor_read<in_out_t>(input, shape, index);
-    value = tanh<in_out_t>(value1);
+    in_out_t value = tanh<in_out_t>(value1);
     tensor_write<in_out_t>(output, shape, index, value);
 }

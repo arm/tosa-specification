@@ -20,7 +20,7 @@ for_each(index in rank(shape1)) {
 
 for_each(index in shape) {
     shape_t tmp_index = index;
-    for(i = 0; i < rank(shape); i++) {
+    for(int32_t i = 0; i < rank(shape); i++) {
        tmp_index[i] = index[i] + start[i];
     }
     in_out_t value = tensor_read<in_out_t>(input1, shape1, tmp_index);
