@@ -8,9 +8,9 @@
 // by a licensing agreement from ARM Limited.
 
 ERROR_IF(axis < 0 || axis >= max(1,rank(shapes1[0])));
-ERROR_IF(shape[axis] != sum(shape_dim(shapes1[k], axis) for all k))
 // The following checks ensure all inputs are compatible for concatenation
 for_each(input_shape in shapes1) {
+    ERROR_IF(shape[axis] != sum(shape_dim(input_shape, axis)));
     ERROR_IF(rank(input_shape) != rank(shapes1[0]));
     for_each(index in input_shape) {
         ERROR_IF(index != axis && input_shape[index] != shapes1[0][index]);
