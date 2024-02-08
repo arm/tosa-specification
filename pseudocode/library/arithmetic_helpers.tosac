@@ -35,25 +35,6 @@ in_t apply_intdiv_s<in_t>(in_t a, in_t b) {
 // return input value rounded up to nearest integer
 in_t apply_ceil<in_t>(in_t input);
 
-in_t apply_clip_s<in_t>(in_t value, in_t min_val, in_t max_val) {
-    if (is_floating_point<in_t>()) {
-        REQUIRE(min_val <= max_val);
-    }
-    else {
-        REQUIRE(sign_extend<int64_t>(min_val) <= sign_extend<int64_t>(max_val));
-    }
-    value = apply_max_s<in_t>(value, min_val);
-    value = apply_min_s<in_t>(value, max_val);
-    return value;
-}
-
-in_t apply_clip_u<in_t>(in_t value, in_t min_val, in_t max_val) {
-    REQUIRE(zero_extend<int64_t>(min_val) <= zero_extend<int64_t>(max_val));
-    value = apply_max_u<in_t>(value, min_val);
-    value = apply_min_u<in_t>(value, max_val);
-    return value;
-}
-
 // return e to the power input
 in_t apply_exp<in_t>(in_t input);
 
@@ -106,6 +87,25 @@ in_t apply_min_s<in_t>(in_t a, in_t b) {
 
 in_t apply_min_u<in_t>(in_t a, in_t b) {
     if (zero_extend<int64_t>(a) < zero_extend<int64_t>(b)) return a; else return b;
+}
+
+in_t apply_clip_s<in_t>(in_t value, in_t min_val, in_t max_val) {
+    if (is_floating_point<in_t>()) {
+        REQUIRE(min_val <= max_val);
+    }
+    else {
+        REQUIRE(sign_extend<int64_t>(min_val) <= sign_extend<int64_t>(max_val));
+    }
+    value = apply_max_s<in_t>(value, min_val);
+    value = apply_min_s<in_t>(value, max_val);
+    return value;
+}
+
+in_t apply_clip_u<in_t>(in_t value, in_t min_val, in_t max_val) {
+    REQUIRE(zero_extend<int64_t>(min_val) <= zero_extend<int64_t>(max_val));
+    value = apply_max_u<in_t>(value, min_val);
+    value = apply_min_u<in_t>(value, max_val);
+    return value;
 }
 
 in_t apply_mul_s<in_t>(in_t a, in_t b) {
