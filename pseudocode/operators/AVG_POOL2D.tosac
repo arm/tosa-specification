@@ -30,7 +30,7 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C ) {
         index_t x = ix + kx;
         // Only values from the input tensor are used to calculate the
         // average, padding does not count
-        if (0 <= y < IH and 0 <= x < IW) {
+        if (0 <= y < IH && 0 <= x < IW) {
             count++;
             acc_t value = sign_extend<acc_t>(tensor_read<in_out_t>(input, [N,IH,IW,C], [n,y,x,c]));
             value = apply_sub_s<acc_t>(value, sign_extend<acc_t>(input_zp));
