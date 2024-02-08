@@ -43,7 +43,7 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C ) {
         scale_t scale = reciprocal_scale(count);
         acc = apply_scale_32(acc, scale.multiplier, scale.shift, false);
         acc = apply_add_s<acc_t>(acc, sign_extend<acc_t>(output_zp));
-        acc = apply_clip_s<acc_t>(acc, minimum_s<in_out_t>, maximum_s<in_out_t>);
+        acc = apply_clip_s<acc_t>(acc, minimum_s<in_out_t>(), maximum_s<in_out_t>());
         output_val = static_cast<in_out_t>(acc);
     }
     tensor_write<in_out_t>(output, [N,OH,OW,C], [n,oy,ox,c], output_val);

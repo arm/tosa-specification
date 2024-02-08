@@ -13,7 +13,7 @@ left_shape  = (axis > 1) ? shape[0:axis-1] : [];
 right_shape = (axis < rank(shape)-1) ? shape[axis+1:rank(shape)-1] : [];
 for_each(left_index in left_shape) {
     for_each(right_index in right_shape) {
-        in_out_t acc = maximum<in_out_t>;
+        in_out_t acc = maximum<in_out_t>();
         for (i = 0; i < shape1[axis]; i++) {
             index = flatten(left_index, [i], right_index);
             in_out_t value = tensor_read<in_out_t>(input, shape1, index);

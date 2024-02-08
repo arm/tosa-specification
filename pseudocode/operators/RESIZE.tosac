@@ -26,8 +26,8 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C) {
     resize_t dx, dy;
     resize_t unit_x, unit_y;
 
-    unit_x = (is_floating_point(resize_t)) ? 1.0 : scale_x_n;
-    unit_y = (is_floating_point(resize_t)) ? 1.0 : scale_y_n;
+    unit_x = (is_floating_point<resize_t>()) ? 1.0 : scale_x_n;
+    unit_y = (is_floating_point<resize_t>()) ? 1.0 : scale_y_n;
 
     int32_t y = oy * scale_y_d + offset_y;
     int32_t x = ox * scale_x_d + offset_x;
@@ -36,7 +36,7 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C) {
     int16_t ry = y - iy * scale_y_n;  // (y % scale_y_n)
     int16_t rx = x - ix * scale_x_n;  // (x % scale_x_n)
 
-    if (is_floating_point(resize_t)) {
+    if (is_floating_point<resize_t>()) {
         dy = static_cast<resize_t>(ry) / static_cast<resize_t>(scale_y_n);
         dx = static_cast<resize_t>(rx) / static_cast<resize_t>(scale_x_n);
     } else {
@@ -61,7 +61,7 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C) {
         tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc);
     } else if (mode==NEAREST) {
         int32_t iy, ix;
-        if (is_floating_point(resize_t)) {
+        if (is_floating_point<resize_t>()) {
             iy = (dy >= 0.5) ? iy1 : iy0;
             ix = (dx >= 0.5) ? ix1 : ix0;
         } else {

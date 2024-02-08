@@ -16,7 +16,7 @@ for_each(index in shape) {
     value = apply_sub_s<acc_t>(0, value);
     value = apply_add_s<acc_t>(value, sign_extend<acc_t>(output_zp));
     in_out_t result = truncate<in_out_t>(apply_clip_s<acc_t>(value,
-                                                             minimum_s<in_out_t>,
-                                                             maximum_s<in_out_t>));
+                                                             minimum_s<in_out_t>(),
+                                                             maximum_s<in_out_t>()));
     tensor_write<in_out_t>(output, shape, index, result);
 }

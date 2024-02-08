@@ -8,16 +8,16 @@
 // by a licensing agreement from ARM Limited.
 
 in_t apply_add_s<in_t>(in_t a, in_t b) {
-    if (is_floating_point(in_t)) return a + b;
+    if (is_floating_point<in_t>()) return a + b;
     int64_t c = sign_extend<int64_t>(a) + sign_extend<int64_t>(b);
-    REQUIRE(c >= minimum_s<in_t> && c <= maximum_s<in_t>);
+    REQUIRE(c >= minimum_s<in_t>() && c <= maximum_s<in_t>());
     return static_cast<in_t>(c);
 }
 
 in_t apply_add_u<in_t>(in_t a, in_t b) {
-    if (is_floating_point(in_t)) return a + b;
+    if (is_floating_point<in_t>()) return a + b;
     uint64_t c = zero_extend<uint64_t>(a) + zero_extend<uint64_t>(b);
-    REQUIRE(c >= minimum_u<in_u_t> && c <= maximum_u<in_u_t>);
+    REQUIRE(c >= minimum_u<in_u_t>() && c <= maximum_u<in_u_t>());
     return truncate<in_t>(c);
 }
 
@@ -28,7 +28,7 @@ in_t apply_arith_rshift<in_t>(in_t a, in_t b) {
 
 in_t apply_intdiv_s<in_t>(in_t a, in_t b) {
     int64_t c = sign_extend<int64_t>(a) / sign_extend<int64_t>(b);
-    REQUIRE(c >= minimum_s<in_t> && c <= maximum_s<in_t>);
+    REQUIRE(c >= minimum_s<in_t>() && c <= maximum_s<in_t>());
     return static_cast<in_t>(c);
 }
 
@@ -37,7 +37,7 @@ in_t apply_ceil<in_t>(in_t input) {
 }
 
 in_t apply_clip_s<in_t>(in_t value, in_t min_val, in_t max_val) {
-    if (is_floating_point(in_t>) {
+    if (is_floating_point<in_t>()) {
         REQUIRE(min_val <= max_val);
     }
     else {
@@ -79,7 +79,7 @@ in_t apply_logical_rshift<in_t>(in_t a, in_t b) {
 }
 
 in_t apply_max_s<in_t>(in_t a, in_t b) {
-    if (is_floating_point(in_t)) {
+    if (is_floating_point<in_t>()) {
         if (isNaN(a) || isNaN(b)) {
             return NaN;
         }
@@ -94,7 +94,7 @@ in_t apply_max_u<in_t>(in_t a, in_t b) {
 }
 
 in_t apply_min_s<in_t>(in_t a, in_t b) {
-    if (is_floating_point(in_t)) {
+    if (is_floating_point<in_t>()) {
         if (isNaN(a) || isNaN(b)) {
             return NaN;
         }
@@ -109,7 +109,7 @@ in_t apply_min_u<in_t>(in_t a, in_t b) {
 }
 
 in_t apply_mul_s<in_t>(in_t a, in_t b) {
-    if (is_floating_point(in_t)) return a * b;
+    if (is_floating_point<in_t>()) return a * b;
     int64_t c = sign_extend<int64_t>(a) * sign_extend<int64_t>(b);
     return static_cast<in_t>(c);
 }
@@ -123,15 +123,15 @@ in_t apply_sqrt<in_t>(in_t input) {
 }
 
 in_t apply_sub_s<in_t>(in_t a, in_t b) {
-    if (is_floating_point(in_t)) return a - b;
+    if (is_floating_point<in_t>()) return a - b;
     int64_t c = sign_extend<int64_t>(a) - sign_extend<int64_t>(b);
-    REQUIRE(c >= minimum_s<in_t> && c <= maximum_s<in_t>);
+    REQUIRE(c >= minimum_s<in_t>() && c <= maximum_s<in_t>());
     return static_cast<in_t>(c);
 }
 
 in_t apply_sub_u<in_t>(in_t a, in_t b) {
     uint64_t c = zero_extend<uint64_t>(a) - zero_extend<uint64_t>(b);
-    REQUIRE(c >= minimum_u<in_u_t> && c <= maximum_u<in_u_t>);
+    REQUIRE(c >= minimum_u<in_u_t>() && c <= maximum_u<in_u_t>());
     return truncate<in_t>(c);
 }
 

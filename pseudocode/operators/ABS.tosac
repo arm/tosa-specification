@@ -9,7 +9,7 @@
 
 for_each(index in shape) {
     in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
-    if (is_floating_point(in_out_t) && value1 == -0.0) {
+    if (is_floating_point<in_out_t>() && value1 == -0.0) {
         value1 = 0.0;
     }
     if (static_cast<int32_t>(value1) < 0.0) {
