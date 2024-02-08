@@ -12,7 +12,7 @@ for_each(index in shape) {
     out_t out;
     if (out_t == bool_t) {
         out = (in != 0) ? true : false;
-    } else if (is_floating_point_type<out_t>()) {
+    } else if (is_floating_point<out_t>()) {
         // Conversion to float cases
         if (in_t == bool_t) {
             out = (in) ? 1.0 : 0.0;
@@ -26,8 +26,8 @@ for_each(index in shape) {
         // Conversion to integer cases
         if (in_t == bool_t) {
             out = (in) ? 1 : 0;
-        } else if (is_floating_point_type<in_t>()) {
-            out = truncate<out_t>(apply_clip_s<i32_t>(round_to_nearest_int(in), minimum<out_t>, maximum<out_t>));
+        } else if (is_floating_point<in_t>()) {
+            out = truncate<out_t>(apply_clip_s<i32_t>(round_to_nearest_int(in), minimum_s<out_t>(), maximum_s<out_t>()));
         } else if (sizeof(out_t) >= sizeof(in_t)) {
             out = sign_extend<out_t>(in);
         } else {
