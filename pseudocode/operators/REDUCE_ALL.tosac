@@ -9,8 +9,8 @@
 
 ERROR_IF(axis < 0  || axis >= rank(shape1));
 ERROR_IF(shape[axis] != 1);
-left_shape  = (axis > 1) ? shape[0:axis-1] : [];
-right_shape = (axis < rank(shape)-1) ? shape[axis+1:rank(shape)-1] : [];
+shape_t left_shape  = (axis > 1) ? shape[0:axis-1] : [];
+shape_t right_shape = (axis < rank(shape)-1) ? shape[axis+1:rank(shape)-1] : [];
 for_each(left_index in left_shape) {
     for_each(right_index in right_shape) {
         in_out_t acc = true;

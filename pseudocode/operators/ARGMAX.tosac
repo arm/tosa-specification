@@ -8,6 +8,7 @@
 // by a licensing agreement from ARM Limited.
 
 ERROR_IF(axis < 0 || axis >= rank(shape1));
+shape_t left_shape, right_shape;
 if (axis == 0) {
     left_shape = [];
 } else {
