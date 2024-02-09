@@ -19,8 +19,10 @@ for_each(index in shape) {
     ERROR_IF(out_t == i16_t && output_unsigned == true && output_zp != 0 && output_zp != 32768);
     ERROR_IF(scale32 && in_t == i48_t);
     ERROR_IF(!scale32 && double_round);
-    ERROR_IF(in_t == i16_t && out_t == i32_t && input_unsigned);
-    ERROR_IF(in_t == i32_t && out_t == i16_t && output_unsigned);
+    ERROR_IF(input_unsigned && output_unsigned);
+    ERROR_IF(out_t == i32_t && input_unsigned);
+    ERROR_IF(in_t == i32_t && output_unsigned);
+    ERROR_IF(in_t == i48_t && output_unsigned);
 
     in_t in_value = tensor_read<in_t>(input, shape, index);
 
