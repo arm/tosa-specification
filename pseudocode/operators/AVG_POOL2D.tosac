@@ -37,7 +37,7 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C ) {
             acc = apply_add_s<acc_t>(acc, value);
         }
     }
-    if (is_float(in_out_t)) {
+    if (is_floating_point<in_out_t>()) {
         output_val = acc / static_cast<in_out_t>(count);
     } else {
         scale_t scale = reciprocal_scale(count);
