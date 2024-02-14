@@ -1428,6 +1428,35 @@
         </types>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
       </operator>
+            <operator>
+        <name>COS</name>
+        <arguments>
+          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
+            <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
+            <rank min="0" max="MAX_RANK"/>
+          </argument>
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
+            <description>Output tensor of same type and shape as input</description>
+            <rank min="0" max="MAX_RANK"/>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
       <operator>
         <name>EXP</name>
         <arguments>
@@ -1662,6 +1691,35 @@
         <typesupport mode="signed 8" in_out_t="i8_t"/>
         <typesupport mode="signed 16" in_out_t="i16_t"/>
         <typesupport mode="signed 32" in_out_t="i32_t"/>
+        <typesupport mode="fp16" in_out_t="fp16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t">
+          <profile name="MI"/>
+          <profile name="MT"/>
+        </typesupport>
+      </operator>
+            <operator>
+        <name>SIN</name>
+        <arguments>
+          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
+            <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
+            <rank min="0" max="MAX_RANK"/>
+          </argument>
+          <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
+            <description>Output tensor of same type and shape as input</description>
+            <rank min="0" max="MAX_RANK"/>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+        </types>
         <typesupport mode="fp16" in_out_t="fp16_t">
           <profile name="MI"/>
           <profile name="MT"/>

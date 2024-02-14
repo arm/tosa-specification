@@ -67,6 +67,24 @@ include::{generated}/operators/CLZ.adoc[]
 include::{pseudocode}/operators/CLZ.tosac[lines=10..-1]
 ----
 
+==== COS
+
+Elementwise cosine operation for values given in radians.
+
+include::{generated}/operators/COS.adoc[]
+
+[source, c++]
+----
+include::{pseudocode}/operators/COS.tosac[]
+----
+
+*Floating-point behavior:*
+|===
+|Input|-infinity|+infinity|-0|+0|NaN
+
+|Output|NaN|NaN|+1|+1|NaN
+|===
+
 ==== EXP
 
 Elementwise e to the x operation
@@ -185,3 +203,21 @@ include::{generated}/operators/RSQRT.adoc[]
 ----
 include::{pseudocode}/operators/RSQRT.tosac[lines=10..-1]
 ----
+
+==== SIN
+
+Elementwise sine operation for values given in radians.
+
+include::{generated}/operators/COS.adoc[]
+
+[source, c++]
+----
+include::{pseudocode}/operators/COS.tosac[]
+----
+
+*Floating-point behavior:*
+|===
+|Input|-infinity|+infinity|-0|+0|NaN
+
+|Output|NaN|NaN|-0|+0|NaN
+|===
