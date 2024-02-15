@@ -92,8 +92,8 @@
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="acc_size" type="tensor_t" shape="-" tensor-element-type="acc_size_t">
-            <description>Enumerated type, must be one of INT32, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
+          <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
+            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
             <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_out_t">
@@ -174,6 +174,10 @@
             <description>[dilation_y, dilation_x]</description>
             <rank min="1" max="1"/>
           </argument>
+          <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
+            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
+            <rank min="0" max="0"/>
+          </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="0" max="0"/>
@@ -199,32 +203,33 @@
           <type name='in_t' />
           <type name='weight_t' />
           <type name='out_t' />
+          <type name='acc_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" >
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t">
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t">
           <op_profile name="EXT-INT4"/>
         </typesupport>
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t">
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t">
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t">
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t">
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t">
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t"  acc_t="fp32_t">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t">
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -268,6 +273,10 @@
             <description>[dilation_d, dilation_y, dilation_x]</description>
             <rank min="1" max="1"/>
           </argument>
+          <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
+            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
+            <rank min="0" max="0"/>
+          </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="0" max="0"/>
@@ -294,31 +303,31 @@
           <type name='weight_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t">
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t">
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t">
           <op_profile name="EXT-INT4"/>
         </typesupport>
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t">
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t">
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t">
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t">
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t">
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t" acc_t="fp32_t">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t">
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -358,6 +367,10 @@
             <description>[dilation_y, dilation_x]</description>
             <rank min="1" max="1"/>
           </argument>
+          <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
+            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
+            <rank min="0" max="0"/>
+          </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="0" max="0"/>
@@ -384,31 +397,31 @@
           <type name='weight_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" >
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" >
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t">
           <op_profile name="EXT-INT4"/>
         </typesupport>
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t">
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t">
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t">
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t">
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t">
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t" acc_t="fp32_t">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t">
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -684,6 +697,10 @@
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
+          <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
+            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
+            <rank min="0" max="0"/>
+          </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="0" max="0"/>
@@ -704,37 +721,37 @@
             <description>Output tensor</description>
             <rank min="4" max="4"/>
           </argument>
-        </arguments>
+       </arguments>
         <types>
           <type name='in_t' />
           <type name='weight_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t">
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t">
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t">
           <op_profile name="EXT-INT4"/>
         </typesupport>
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t">
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t">
           <op_profile name="EXT-INT16"/>
         </typesupport>
         <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" out_t="fp16_t">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="fp16_t">
+        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t">
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t">
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t" acc_t="fp32_t">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t">
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -3299,10 +3316,11 @@ used.</description>
     <enumval value="1" name="BILINEAR" description="Bilinear resize"/>
   </enum>
 
-  <enum name="acc_size_t" description="Allowed accumulator sizes">
+  <enum name="acc_type_t" description="Allowed accumulator types">
     <enumval value="0" name="INT32" description="32-bit integer"/>
     <enumval value="1" name="FP16" description="16-bit floating-point"/>
     <enumval value="2" name="FP32" description="32-bit floating-point"/>
+    <enumval value="3" name="INT48" description="48-bit integer"/>
   </enum>
 
   <enum name="var_t" description="Variable tensor data type">

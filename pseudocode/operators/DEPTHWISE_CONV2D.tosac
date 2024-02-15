@@ -35,6 +35,7 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C, 0 <= m < M) {
             acc = apply_add_s<out_t>(acc, apply_mul_s<out_t>(value, weight));
         }
     }
-    acc = apply_add_s<out_t>(acc, bias[(BC == 1) ? 0 : (c * M) + m]);
-    tensor_write<out_t>(output, [N,OH,OW,C * M], [n,oy,ox,c * M + m], acc);
+    out_t out = static_cast<out_t>(acc);
+    out = apply_add_s<out_t>(out, bias[(BC == 1) ? 0 : (c * M) + m]);
+    tensor_write<out_t>(output, [N,OH,OW,C * M], [n,oy,ox,c * M + m], out);
 }

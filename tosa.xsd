@@ -57,7 +57,7 @@
 <xs:simpleType name="enumtypename">
   <xs:restriction base="xs:string">
     <xs:enumeration value="resize_mode_t"/>
-    <xs:enumeration value="acc_size_t"/>
+    <xs:enumeration value="acc_type_t"/>
   </xs:restriction>
 </xs:simpleType>
 

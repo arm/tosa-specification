@@ -17,24 +17,25 @@ ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x,
 ERROR_IF(BC != OC && BC != 1);
 
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= oc < OC) {
-    out_t acc = 0;
+    acc_t acc = 0;
     index_t iy = oy * stride_y - pad_top;
     index_t ix = ox * stride_x - pad_left;
     for_each(0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
         index_t y = iy + ky * dilation_y;
         index_t x = ix + kx * dilation_x;
         if (0 <= y < IH && 0 <= x < IW) {
-            out_t value  = static_cast<out_t>(tensor_read<in_t>(input,
+            acc_t value  = static_cast<out_t>(tensor_read<in_t>(input,
                                                                 [N,IH,IW,IC],
                                                                 [n,y,x,ic]));
-            out_t weight = static_cast<out_t>(tensor_read<weight_t>(weight,
+            acc_t weight = static_cast<out_t>(tensor_read<weight_t>(weight,
                                                                    [OC,KH,KW,IC],
                                                                    [oc,ky,kx,ic]));
-            value  = apply_sub_s<out_t>(value, static_cast<out_t>(input_zp));
-            weight = apply_sub_s<out_t>(weight, static_cast<out_t>(weight_zp));
-            acc = apply_add_s<out_t>(acc, apply_mul_s<out_t>(value, weight));
+            value  = apply_sub_s<acc_t>(value, static_cast<out_t>(input_zp));
+            weight = apply_sub_s<acc_t>(weight, static_cast<out_t>(weight_zp));
+            acc = apply_add_s<acc_t>(acc, apply_mul_s<acc_t>(value, weight));
         }
     }
-    acc = apply_add_s<out_t>(acc, bias[(BC == 1) ? 0 : oc]);
-    tensor_write<out_t>(output, [N,OH,OW,OC], [n,oy,ox,oc], acc);
+    out_t out = static_cast<out_t>(acc);
+    out = apply_add_s<out_t>(out, bias[(BC == 1) ? 0 : oc]);
+    tensor_write<out_t>(output, [N,OH,OW,OC], [n,oy,ox,oc], out);
 }
