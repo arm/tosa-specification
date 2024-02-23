@@ -24,6 +24,7 @@ CPUs
 denormalizing
 DEPTHWISE
 Elementwise
+elementwise
 ERF
 erf
 FFT
@@ -31,6 +32,7 @@ fft
 fp
 foreach
 Fulbourn
+GELU
 GPUs
 Hadamard
 Hermitian

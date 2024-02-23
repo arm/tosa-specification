@@ -1,0 +1,29 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+== Appendix C - Rationale
+
+This appendix documents the rationale behind decisions made while creating the TOSA specification.
+Explanations and definitions contained in this appendix are non-normative.
+
+=== FP8
+
+The operators that perform calculations on FP8 data types are limited.
+Fewer mantissa bits in FP8 make it inappropriate for use in most elementwise operations such as <<ADD>>.
+Support was also added to the data layout and movement operations on the understanding that no calculations are performed.
+Two extensions for the FP8 types were created in order to cover both formats defined by <<OCP-OFP8,OCP-OFP8>>.
+
+=== Transcendental Functions
+
+In the TOSA specification, a limited number of transcendental operations are supported.
+The operators supported are sufficient for common networks while minimizing the number of operations an implementation must support.
+Originally, SIGMOID and TANH were added as the common functions used for activations.
+ERF was added to support GELU style activation functions.
+SIN and COS were added to provide a base level of trigonometric functionality as well as support for Rotary Position Embedding.
+
