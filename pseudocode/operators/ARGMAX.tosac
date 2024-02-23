@@ -24,7 +24,7 @@ for_each(left_index in left_shape) {
     for_each(right_index in right_shape) {
         in_t max_value = minimum_s<in_t>();
         out_t max_index = 0;
-        for (i = 0; i < shape1[axis]; i++) {
+        for (size_t i = 0; i < shape1[axis]; i++) {
             shape_t index = flatten(left_index, [i], right_index);
             in_t value = tensor_read<in_t>(input, shape1, index);
             if (apply_max_s<in_t>(value, max_value) != max_value) {
