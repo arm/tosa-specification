@@ -89,27 +89,36 @@ The following principles govern the selection of operators within TOSA.
 
 === Profiles
 
-TOSA supports three profiles that enable efficient implementation on different classes of device.
-The Base Inference profile is intended for embedded integer/fixed-point designs performing inference only.
-The Main Inference profile is intended for general inference functionality including integer and floating-point data types.
-The Main Training profile adds training operators in addition to inference operators.
-This version of the specification covers the Base Inference and Main Inference profiles.
-Main Training profile is expected in a later version of the specification.
-The following table summarizes the three profiles:
+TOSA profiles enable efficient implementation on different classes of device.
+Each profile is an independent set of operations and data type combinations.
+
+TOSA profile extensions define optional operation and data type combinations.
+
+Each operator's Supported Data Types table will define which profile or extension an operator and data type is in.
+An operator / data type combination may be part of multiple profiles or extensions.
+If so, each profile and extension will be listed in the Supported Data Types table.
+In addition, a table listing all operations for each profile can be found in Appendix B.
+
+The following are required for compliant TOSA implementations:
+
+* A TOSA implementation must implement at least one profile.
+* A TOSA implementation may choose to implement any extensions.
+* If a TOSA implementation chooses to implement an extension, it must implement the complete extension.
+* If a operator / data type combination requires multiple extensions, the combination is only required to be implemented if all extensions are implemented
+** For example, a CAST from bf16 to fp8 is only required if both extensions are implemented.
 
 .Profiles
-|===
-|Profile|Name|Integer Inference|Floating-point Inference|Training
+include::{generated}/profiles.adoc[]
 
-|Base Inference|TOSA-BI|Yes|No|No
-|Main Inference|TOSA-MI|Yes|Yes|No
-|Main Training|TOSA-MT|Yes|Yes|Yes
-|===
+.Profile Extensions
+include::{generated}/profile_extensions.adoc[]
 
 === Levels
 
 A TOSA level defines operator argument ranges that an implementation shall support.
 This is distinct from a profile that defines the operations and data-types supported.
+One level must apply to all profiles and extensions supported by an implementation.
+
 This version of the specification defines two TOSA levels:
 
 * No level : allows the full range of arguments specified by the operations according to the operation data types.
@@ -487,6 +496,8 @@ To map indexes in an output tensor to that of an input tensor, see <<Broadcast H
 
 The following number formats are defined in TOSA.
 The number formats supported by a given operator are listed in its table of supported types.
+A TOSA implementation must support the number formats listed in the supported data types for operators contained in that profile.
+Number formats not required for any operators in a profile do not need to be implemented.
 
 .Number formats
 [cols="1,1,1,5"]

@@ -16,14 +16,14 @@ Their behavior can be configured using attribute arguments.
 Arguments may have one of the following types:
 
 * `tensor_t<element_type>`, abbreviated `T<element_type>`, represents a tensor whose elements are of type `element_type` where `element_type` can be any of the data types supported in TOSA.
-* `tensor_list_t` represents a list of tensors. When lists are homogeneous, i.e. contain tensors of the same type, their type is further qualified as follows: `tensor_list_t<T<element_type>>`.
+* `tensor_list_t` represents a list of tensors. When lists are homogeneous, containing tensors of the same type, their type is further qualified as follows: `tensor_list_t<T<element_type>>`.
 * `tosa_graph_t` represents a TOSA graph (see <<operator-graphs>>).
 
 Arguments belong to one of three categories: Input, Output, or Attribute. The category to which an argument belongs further constrains its type:
 
 * An Input argument must be a tensor or a list of tensors used to provide the data read by the operation.
 * An Output argument must be a tensor or a list of tensors into which the data produced by the operation is written.
-* An Attribute argument is constant, i.e. its value is known at compilation time. It may have any data type supported by TOSA.
+* An Attribute argument is constant, its value is known at compilation time. It may have any data type supported by TOSA.
 
 [[operator-graphs]]
 === Operator Graphs

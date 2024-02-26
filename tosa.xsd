@@ -3,11 +3,18 @@
 
 <!-- Type definitions -->
 
-<xs:simpleType name="profile">
+<xs:simpleType name="profile_ext_name">
   <xs:restriction base="xs:string">
     <xs:enumeration value="BI"/>
     <xs:enumeration value="MI"/>
     <xs:enumeration value="MT"/>
+    <xs:enumeration value="EXT-INT16"/>
+    <xs:enumeration value="EXT-INT4"/>
+    <xs:enumeration value="EXT-BF16"/>
+    <xs:enumeration value="EXT-FP8E4M3"/>
+    <xs:enumeration value="EXT-FP8E5M2"/>
+    <xs:enumeration value="EXT-FFT"/>
+    <xs:enumeration value="EXT-VARIABLE"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -66,6 +73,9 @@
     <xs:enumeration value="mul_t"/>
     <xs:enumeration value="TABLE_SIZE"/>
     <xs:enumeration value="var_t"/>
+    <xs:enumeration value="cond_t"/>
+    <xs:enumeration value="shape_t"/>
+    <xs:enumeration value="tensor_list_t"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -104,16 +114,6 @@
   </xs:complexType>
 </xs:element>
 
-<xs:element name="profile">
-  <xs:complexType>
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute name="name" type="profile" use="required"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-</xs:element>
-
 <xs:element name="level">
   <xs:complexType>
     <xs:simpleContent>
@@ -137,11 +137,56 @@
   </xs:complexType>
 </xs:element>
 
+<xs:element name="profile">
+  <xs:complexType>
+    <xs:attribute name="profile" type="xs:string" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="status" type="xs:string" use="required"/>
+    <xs:attribute name="description" type="xs:string" use="required"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="profile_extension">
+  <xs:complexType>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="status" type="xs:string" use="required"/>
+    <xs:attribute name="description" type="xs:string" use="required"/>
+  </xs:complexType>
+</xs:element>
+
 <xs:element name="profiles">
   <xs:complexType>
     <xs:sequence>
       <xs:element ref="profile" maxOccurs="unbounded"/>
     </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="profile_extensions">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="profile_extension" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="profile_ext_name">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="profile_ext_name" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<!-- Profile or extension that an op and data type implements -->
+<xs:element name="op_profile">
+  <xs:complexType>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name" type="profile_ext_name" use="required"/>
+        <xs:attribute name="and_name" type="profile_ext_name"/>
+      </xs:extension>
+    </xs:simpleContent>
   </xs:complexType>
 </xs:element>
 
@@ -238,8 +283,8 @@
 
 <xs:element name="typesupport">
   <xs:complexType>
-    <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element ref="profile"/>
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element ref="op_profile"/>
     </xs:choice>
     <xs:attribute name="mode" type="xs:string" use="required"/>
     <xs:attribute name="in_t" type="datatype"/>
@@ -249,7 +294,11 @@
     <xs:attribute name="acc_t" type="datatype"/>
     <xs:attribute name="resize_t" type="datatype"/>
     <xs:attribute name="table_t" type="datatype"/>
+    <xs:attribute name="cond_t" type="datatype"/>
     <xs:attribute name="TABLE_SIZE" type="xs:int"/>
+    <xs:attribute name="var_t" type="datatype"/>
+    <xs:attribute name="shape_t" type="datatype"/>
+    <xs:attribute name="tensor_list_t" type="datatype"/>
   </xs:complexType>
 </xs:element>
 
@@ -286,6 +335,7 @@
     <xs:sequence>
       <xs:element ref="version" minOccurs="1" maxOccurs="1"/>
       <xs:element ref="profiles"/>
+      <xs:element ref="profile_extensions"/>
       <xs:element ref="levels"/>
       <xs:element ref="operators"/>
       <xs:element ref="enum" maxOccurs="unbounded"/>

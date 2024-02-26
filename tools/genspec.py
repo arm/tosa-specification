@@ -2,8 +2,23 @@
 # Copyright (c) 2023-2024, ARM Limited.
 # SPDX-License-Identifier: Apache-2.0
 import os
+import re
+from functools import cmp_to_key
 
 import tosa
+
+
+def compare_profiles(a, b):
+    if a.profiles[0] == b.profiles[0]:
+        return 1 if a.mode > b.mode else -1
+    if "EXT-" in a.profiles[0]:
+        if "EXT-" in b.profiles[0]:
+            return 1 if a.profiles[0] > b.profiles[0] else -1
+        else:
+            return 1
+    if "EXT-" in b.profiles[0]:
+        return -1
+    return 1 if a.profiles[0] > b.profiles[0] else -1
 
 
 class TOSASpecAsciidocGenerator:
@@ -73,12 +88,12 @@ class TOSASpecAsciidocGenerator:
         if op.typesupports:
             file.write("\n*Supported Data Types:*\n\n")
             file.write("|===\n")
-            header = "|Profile|Mode"
+            header = "|Profile/Extension|Mode"
             for ty in op.types:
                 header += f"|{ty}"
             file.write(header)
             file.write("\n\n")
-            for tysup in op.typesupports:
+            for tysup in sorted(op.typesupports, key=cmp_to_key(compare_profiles)):
                 profile = ", ".join(tysup.profiles) if tysup.profiles else "Any"
                 entry = f"|{profile}|{tysup.mode}"
                 for ty in op.types:
@@ -108,6 +123,28 @@ class TOSASpecAsciidocGenerator:
                 f.write(" draft")
             f.write("\n")
 
+        # Generate profile table
+        with open(os.path.join(outdir, "profiles.adoc"), "w") as f:
+            f.write("|===\n")
+            f.write("|Profile|Name|Description|Specification Status\n\n")
+            for profile in self.spec.profiles:
+                f.write(
+                    f"|{profile.profile}|{profile.name}|"
+                    f"{profile.description}|{profile.status}\n"
+                )
+            f.write("|===\n")
+
+        # Generate profile table
+        with open(os.path.join(outdir, "profile_extensions.adoc"), "w") as f:
+            f.write("|===\n")
+            f.write("|Name|Description|Specification Status\n\n")
+            for profile_extension in self.spec.profile_extensions:
+                f.write(
+                    f"|{profile_extension.name}|{profile_extension.description}"
+                    f"|{profile_extension.status}\n"
+                )
+            f.write("|===\n")
+
         # Generate level maximums table
         with open(os.path.join(outdir, "levels.adoc"), "w") as f:
             f.write("|===\n")
@@ -136,6 +173,49 @@ class TOSASpecAsciidocGenerator:
         with open(os.path.join(outdir, "enums.adoc"), "w") as f:
             for enum in self.spec.enums:
                 self.generate_enum(enum, f)
+
+        all_operators = []
+        for group in self.spec.operatorgroups:
+            for op in group.operators:
+                all_operators.append(op)
+
+        # Generate profile operator appendix
+        with open(os.path.join(outdir, "profile_ops.adoc"), "w") as f:
+            f.write("=== Profiles\n")
+            for profile in self.spec.profiles:
+                f.write(f"==== {profile.profile}\n")
+                f.write(f"{profile.description}\n\n")
+                f.write(f"Status: {profile.status}\n")
+                f.write("|===\n")
+                f.write("|Operator|mode\n\n")
+                for op in sorted(all_operators, key=lambda o: o.name):
+                    if op.typesupports:
+                        for tysup in op.typesupports:
+                            if profile.name in tysup.profiles:
+                                f.write(f"|{op.name}|{tysup.mode}\n")
+                f.write("|===\n")
+
+            f.write("=== Profile Extensions\n")
+            for pext in self.spec.profile_extensions:
+                f.write(f"==== {pext.name} extension\n")
+                f.write(f"{pext.description}\n\n")
+                f.write(f"Status: {pext.status}\n")
+                f.write("|===\n")
+                f.write("|Operator|mode|note\n\n")
+                for op in sorted(all_operators, key=lambda o: o.name):
+                    if op.typesupports:
+                        for tysup in op.typesupports:
+                            for profile in tysup.profiles:
+                                if profile.find(pext.name) != -1:
+                                    note = ""
+                                    m = re.match(r"(.*) and (.*)", profile)
+                                    if m:
+                                        if m[1] == pext.name:
+                                            note = f"If {m[2]} is also supported"
+                                        else:
+                                            note = f"If {m[1]} is also supported"
+                                    f.write(f"|{op.name}|{tysup.mode}|{note}\n")
+                f.write("|===\n")
 
 
 if __name__ == "__main__":

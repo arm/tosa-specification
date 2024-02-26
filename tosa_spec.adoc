@@ -27,3 +27,5 @@ include::chapters/enumerations.adoc[]
 include::chapters/pseudocode.adoc[]
 
 include::chapters/appendix_a.adoc[]
+
+include::chapters/appendix_b.adoc[]

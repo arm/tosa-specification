@@ -31,6 +31,23 @@ class TOSAOperatorArgumentCategory:
         self.profiles = profiles
 
 
+class TOSAProfile:
+    def __init__(self, profile, name, description, status):
+        self.profile = profile
+        self.name = name
+        self.description = description
+        self.status = status
+        self.ops = []
+
+
+class TOSAProfileExtension:
+    def __init__(self, name, description, status):
+        self.name = name
+        self.description = description
+        self.status = status
+        self.ops = []
+
+
 class TOSAEnum:
     def __init__(self, name, description, values):
         self.name = name
@@ -95,6 +112,8 @@ class TOSASpec:
     def __init__(self, xmlpath):
         tree = ET.parse(xmlpath)
         self.xmlroot = tree.getroot()
+        self.profiles = []
+        self.profile_extensions = []
         self.levels = []
         self.operatorgroups = []
         self.enums = []
@@ -102,6 +121,12 @@ class TOSASpec:
 
     def __load_spec(self):
         self.__load_version()
+        for profile in self.xmlroot.findall("./profiles/profile"):
+            self.profiles.append(self.__load_profile(profile))
+        for profile_ext in self.xmlroot.findall(
+            "./profile_extensions/profile_extension"
+        ):
+            self.profile_extensions.append(self.__load_profile_extension(profile_ext))
         for level in self.xmlroot.findall("./levels/level"):
             self.levels.append(self.__load_level(level))
         for group in self.xmlroot.findall("./operators/operatorgroup"):
@@ -118,6 +143,19 @@ class TOSASpec:
             self.version_is_draft = True
         else:
             self.version_is_draft = False
+
+    def __load_profile(self, xml_profile):
+        profile = xml_profile.get("profile")
+        name = xml_profile.get("name")
+        description = xml_profile.get("description")
+        status = xml_profile.get("status")
+        return TOSAProfile(profile, name, description, status)
+
+    def __load_profile_extension(self, ext):
+        name = ext.get("name")
+        description = ext.get("description")
+        status = ext.get("status")
+        return TOSAProfileExtension(name, description, status)
 
     def __load_level(self, level):
         name = level.get("name")
@@ -155,10 +193,17 @@ class TOSASpec:
         for tysup in op.findall("typesupport"):
             tsmode = tysup.get("mode")
             tsmap = {}
-            profiles = tysup.findall("profile")
+            profiles = tysup.findall("op_profile")
             tsprofiles = []
             for p in profiles:
-                tsprofiles.append(p.get("name"))
+                tsp_name = p.get("name")
+                and_name = p.get("and_name")
+                if and_name is not None:
+                    if and_name < tsp_name:
+                        tsp_name = f"{and_name} and {tsp_name}"
+                    else:
+                        tsp_name = f"{tsp_name} and {and_name}"
+                tsprofiles.append(tsp_name)
             for ty in types:
                 tsmap[ty] = tysup.get(ty)
             typesupports.append(TOSAOperatorDataTypeSupport(tsmode, tsmap, tsprofiles))
