@@ -73,17 +73,17 @@ Elementwise cosine operation for values given in radians.
 
 include::{generated}/operators/COS.adoc[]
 
-[source, c++]
-----
-include::{pseudocode}/operators/COS.tosac[]
-----
-
 *Floating-point behavior:*
 |===
 |Input|-infinity|+infinity|-0|+0|NaN
 
 |Output|NaN|NaN|+1|+1|NaN
 |===
+
+[source, c++]
+----
+include::{pseudocode}/operators/COS.tosac[lines=10..-1]
+----
 
 ==== EXP
 
@@ -208,12 +208,7 @@ include::{pseudocode}/operators/RSQRT.tosac[lines=10..-1]
 
 Elementwise sine operation for values given in radians.
 
-include::{generated}/operators/COS.adoc[]
-
-[source, c++]
-----
-include::{pseudocode}/operators/COS.tosac[]
-----
+include::{generated}/operators/SIN.adoc[]
 
 *Floating-point behavior:*
 |===
@@ -221,3 +216,8 @@ include::{pseudocode}/operators/COS.tosac[]
 
 |Output|NaN|NaN|-0|+0|NaN
 |===
+
+[source, c++]
+----
+include::{pseudocode}/operators/SIN.tosac[lines=10..-1]
+----
