@@ -12,6 +12,9 @@
 ==== ARGMAX
 
 This returns the index with the largest value across the given axis of the input tensor.
+If multiple locations have equal values, returns the first match along the search axis.
+NaN values always compare as greater than non-NaN values.
+If an entire axis consists of NaN, the last location must be returned.
 
 include::{generated}/operators/ARGMAX.adoc[]
 
