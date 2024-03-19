@@ -49,6 +49,17 @@ include::{generated}/operators/CONST_SHAPE.adoc[]
 include::{pseudocode}/operators/CONST_SHAPE.tosac[lines=10..-1]
 ----
 
+==== DIM
+
+Returns a length 1 shape_t of the size of the input tensor for the given axis.
+
+include::{generated}/operators/DIM.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/DIM.tosac[lines=10..-1]
+----
+
 ==== DIV_SHAPE
 
 Elementwise integer divide of input1 by input2. The result of the divide is truncated towards zero.

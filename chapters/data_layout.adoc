@@ -33,17 +33,6 @@ include::{generated}/operators/PAD.adoc[]
 include::{pseudocode}/operators/PAD.tosac[lines=10..-1]
 ----
 
-==== DIM
-
-Returns a length 1 shape_t of the size of the input tensor for the given axis.
-
-include::{generated}/operators/DIM.adoc[]
-
-[source,c++]
-----
-include::{pseudocode}/operators/DIM.tosac[lines=10..-1]
-----
-
 ==== RESHAPE
 
 Returns a tensor with the same type/values as the input, with a new shape specified by the shape argument. Reshape may operate on tensors of any rank. No data conversion happens during a reshape operation.

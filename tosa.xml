@@ -2203,54 +2203,6 @@
         </typesupport>
       </operator>
       <operator>
-        <name>DIM</name>
-        <arguments>
-          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_t">
-            <description>Input tensor</description>
-            <levellimit value="rank(shape)" limit="MAX_RANK"/>
-            <rank min="1" max="MAX_RANK"/>
-          </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
-            <description>Axis in range from 0 to rank(shape) - 1</description>
-            <rank min="0" max="0"/>
-          </argument>
-          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-" >
-            <description>Output shape type of size 1 giving the size of the shape for the given axis</description>
-          </argument>
-        </arguments>
-        <types>
-          <type name='in_t'/>
-        </types>
-        <typesupport mode="boolean" in_t="bool_t">
-          <op_profile name="BI"/>
-          <op_profile name="MI"/>
-        </typesupport>
-        <typesupport mode="signed 8" in_t="i8_t">
-          <op_profile name="BI"/>
-        </typesupport>
-        <typesupport mode="signed 16" in_t="i16_t">
-          <op_profile name="BI"/>
-        </typesupport>
-        <typesupport mode="signed 32" in_t="i32_t">
-          <op_profile name="BI"/>
-        </typesupport>
-        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t">
-          <op_profile name="EXT-FP8E4M3"/>
-        </typesupport>
-        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t">
-          <op_profile name="EXT-FP8E5M2"/>
-        </typesupport>
-        <typesupport mode="fp16" in_t="fp16_t">
-          <op_profile name="MI"/>
-        </typesupport>
-        <typesupport mode="bf16" in_t="bf16_t">
-          <op_profile name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="fp32" in_t="fp32_t">
-          <op_profile name="MI"/>
-        </typesupport>
-      </operator>
-      <operator>
         <name>RESHAPE</name>
         <arguments>
           <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="in_out_t">
@@ -3234,6 +3186,54 @@ used.</description>
           <op_profile name="BI"/>
           <op_profile name="MI"/>
           <op_profile name="MT"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>DIM</name>
+        <arguments>
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_t">
+            <description>Input tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
+            <rank min="1" max="MAX_RANK"/>
+          </argument>
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
+            <description>Axis in range from 0 to rank(shape) - 1</description>
+            <rank min="0" max="0"/>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-" >
+            <description>Output shape type of size 1 giving the size of the shape for the given axis</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t'/>
+        </types>
+        <typesupport mode="boolean" in_t="bool_t">
+          <op_profile name="BI"/>
+          <op_profile name="MI"/>
+        </typesupport>
+        <typesupport mode="signed 8" in_t="i8_t">
+          <op_profile name="BI"/>
+        </typesupport>
+        <typesupport mode="signed 16" in_t="i16_t">
+          <op_profile name="BI"/>
+        </typesupport>
+        <typesupport mode="signed 32" in_t="i32_t">
+          <op_profile name="BI"/>
+        </typesupport>
+        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t">
+          <op_profile name="EXT-FP8E4M3"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t">
+          <op_profile name="EXT-FP8E5M2"/>
+        </typesupport>
+        <typesupport mode="fp16" in_t="fp16_t">
+          <op_profile name="MI"/>
+        </typesupport>
+        <typesupport mode="bf16" in_t="bf16_t">
+          <op_profile name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="fp32" in_t="fp32_t">
+          <op_profile name="MI"/>
         </typesupport>
       </operator>
       <operator>
