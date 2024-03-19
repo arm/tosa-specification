@@ -3139,16 +3139,13 @@ used.</description>
           <type name='var_t' />
         </types>
         <typesupport mode="signed 8" var_t="i8_t" >
-          <op_profile name="BI"/>
-          <op_profile name="EXT-VARIABLE"/>
+          <op_profile name="BI" and_name="EXT-VARIABLE"/>
         </typesupport>
         <typesupport mode="fp16" var_t="fp16_t" >
-          <op_profile name="MI"/>
-          <op_profile name="EXT-VARIABLE"/>
+          <op_profile name="MI" and_name="EXT-VARIABLE"/>
         </typesupport>
         <typesupport mode="fp32" var_t="fp32_t" >
-          <op_profile name="MI"/>
-          <op_profile name="EXT-VARIABLE"/>
+          <op_profile name="MI" and_name="EXT-VARIABLE"/>
         </typesupport>
       </operator>
       <operator>
@@ -3168,16 +3165,13 @@ used.</description>
           <type name='var_t' />
         </types>
         <typesupport mode="signed 8" var_t="i8_t" >
-          <op_profile name="BI"/>
-          <op_profile name="EXT-VARIABLE"/>
+          <op_profile name="BI" and_name="EXT-VARIABLE"/>
         </typesupport>
         <typesupport mode="fp16" var_t="fp16_t" >
-          <op_profile name="MI"/>
-          <op_profile name="EXT-VARIABLE"/>
+          <op_profile name="MI" and_name="EXT-VARIABLE"/>
         </typesupport>
         <typesupport mode="fp32" var_t="fp32_t" >
-          <op_profile name="MI"/>
-          <op_profile name="EXT-VARIABLE"/>
+          <op_profile name="MI" and_name="EXT-VARIABLE"/>
         </typesupport>
       </operator>
     </operatorgroup>

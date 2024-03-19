@@ -94,7 +94,7 @@ class TOSASpecAsciidocGenerator:
             file.write(header)
             file.write("\n\n")
             for tysup in sorted(op.typesupports, key=cmp_to_key(compare_profiles)):
-                profile = ", ".join(tysup.profiles) if tysup.profiles else "Any"
+                profile = " or ".join(tysup.profiles) if tysup.profiles else "Any"
                 entry = f"|{profile}|{tysup.mode}"
                 for ty in op.types:
                     entry += f"|{tysup.tymap[ty]}"
