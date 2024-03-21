@@ -139,7 +139,6 @@ The TOSA specification is a work in progress.
 * The Main Inference profile has most of the expected operators in place, but is still subject to change.
 * The reference model and conformance tests do not yet support all of the floating point types that have been defined.
 * There is not currently a conformance test suite available for Main Inference.
-* Main Training profile is pre-alpha, significant work still needs to be done for the profile, and no conformance tests are available.
 
 === Compliance
 

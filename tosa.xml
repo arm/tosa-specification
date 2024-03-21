@@ -5,7 +5,6 @@
   <profiles>
     <profile profile="Base Inference" name="BI" status="Complete" description="Integer operations, primarily 8 and 32-bit values"/>
     <profile profile="Main Inference" name="MI" status="Complete" description="FP16 and FP32 operations"/>
-    <profile profile="Main Training" name="MT" status="In development" description="Training operations"/>
   </profiles>
   <profile_extensions>
     <profile_extension name="EXT-INT16" description="16-bit integer operations" status="Complete"/>
@@ -3147,7 +3146,6 @@ used.</description>
         <typesupport mode="shape" shape_t="size_t" >
           <op_profile name="BI"/>
           <op_profile name="MI"/>
-          <op_profile name="MT"/>
         </typesupport>
       </operator>
       <operator>
@@ -3166,7 +3164,6 @@ used.</description>
         <typesupport mode="shape" shape_t="size_t" >
           <op_profile name="BI"/>
           <op_profile name="MI"/>
-          <op_profile name="MT"/>
         </typesupport>
       </operator>
       <operator>
@@ -3185,7 +3182,6 @@ used.</description>
         <typesupport mode="shape" shape_t="size_t" >
           <op_profile name="BI"/>
           <op_profile name="MI"/>
-          <op_profile name="MT"/>
         </typesupport>
       </operator>
       <operator>
@@ -3255,7 +3251,6 @@ used.</description>
         <typesupport mode="shape" shape_t="size_t" >
           <op_profile name="BI"/>
           <op_profile name="MI"/>
-          <op_profile name="MT"/>
         </typesupport>
       </operator>
       <operator>
@@ -3277,7 +3272,6 @@ used.</description>
         <typesupport mode="shape" shape_t="size_t" >
           <op_profile name="BI"/>
           <op_profile name="MI"/>
-          <op_profile name="MT"/>
         </typesupport>
       </operator>
       <operator>
@@ -3299,7 +3293,6 @@ used.</description>
         <typesupport mode="shape" shape_t="size_t" >
           <op_profile name="BI"/>
           <op_profile name="MI"/>
-          <op_profile name="MT"/>
         </typesupport>
       </operator>
     </operatorgroup>

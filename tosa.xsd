@@ -7,7 +7,6 @@
   <xs:restriction base="xs:string">
     <xs:enumeration value="BI"/>
     <xs:enumeration value="MI"/>
-    <xs:enumeration value="MT"/>
     <xs:enumeration value="EXT-INT16"/>
     <xs:enumeration value="EXT-INT4"/>
     <xs:enumeration value="EXT-BF16"/>
