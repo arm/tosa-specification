@@ -125,7 +125,7 @@ This version of the specification defines two TOSA levels:
 * Level 8K : ranges are expected to be sufficient for applications with frame sizes up to 8K.
 
 Later versions of the specification may define additional levels.
-The following table defines the value ranges for Level 1.0.
+The following table defines the value ranges for each level.
 These ranges are checked using the LEVEL_CHECK() function with the operator descriptions.
 
 .Level maximums
