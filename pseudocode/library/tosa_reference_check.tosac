@@ -32,7 +32,8 @@ bool tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64_t
   if (ref_max > normal_max<in_t>) ref_max = infinity;
   if (ref_min > normal_max<in_t>) ref_min = infinity;
   if (ref_max < normal_min<in_t>) ref_max = normal_min<in_t>;
-  if (ref_min < normal_min<in_t>) ref_min = 0;
+  // Large error bounds could cause ref_min to be negative.
+  if (ref_min < normal_min<in_t>) ref_min = min(0, ref_min);
   return (static_cast<fp64_t>(test_value) >= ref_min &&
           static_cast<fp64_t>(test_value) <= ref_max);
 }
