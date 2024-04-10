@@ -280,7 +280,7 @@ Otherwise the result must be within 5 ulp of the mathematical result.
 | <<EXP>>
 | Let `x` be an input element and `out_imp` the implementation output of `exp(x)`. +
 Let `out_ref` be the result of the fp64_t reference implementation of `exp(x)`. +
-Let `err_bnd = abs(out_ref) * exp2(-normal_frac<in_out_t>) * (1+abs(x))` +
+Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, (1+abs(x)), 0, 1)` +
 Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 | <<POW>>
@@ -288,19 +288,19 @@ Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be 
 Let `out_imp` be the implementation output of `pow(x,y)`. +
 If `x` is less than zero and `y` is non-integral then the result must be a NaN. +
 Let `out_ref` be the result of the fp64_t reference implementation of `pow(x,y)`. +
-Let `err_bnd = abs(out_ref) * exp2(-normal_frac<in_out_t>) * (2 * (1+abs(log(abs(x))*y)))` +
+Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, 2 * (1+abs(log(abs(x))*y)), 0, 1)` +
 Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 | <<SIGMOID>>
 | Let `x` be an input element and `out_imp` the implementation output. +
 Let `out_ref` be the result of the fp64_t reference implementation. +
-Let `err_bnd = abs(out_ref) * exp2(-normal_frac<in_out_t>) * (2 * (1+abs(x)))` +
+Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, 2 * (1+abs(x)), 0, 1)` +
 Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 | <<TANH>>
 | Let `x` be an input element and `out_imp` the implementation output. +
 Let `out_ref` be the result of the fp64_t reference implementation. +
-Let `err_bnd = exp2(-normal_frac<in_out_t>) * max(0.5, abs(out_ref) * (4 * (1+abs(x))))` +
+Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, 4 * (1+abs(x)), 0.5, 1)` +
 Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 | <<REDUCE_SUM>>
@@ -321,13 +321,13 @@ Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be 
 | <<COS>>
 | Let `x` be an input element and `out_imp` the implementation output of `cos(x)`. +
 Let `out_ref` be the result of the fp64_t reference implementation of `cos(x)`. +
-Let `err_bnd = abs(x) * exp2(-normal_frac<in_out_t>/2)` +
+Let `err_bnd = calcAbsErrorBound<in_out_t>(x, 1+abs(x), 0, 2)` +
 Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 | <<SIN>>
 | Let `x` be an input element and `out_imp` the implementation output of `sin(x)`. +
 Let `out_ref` be the result of the fp64_t reference implementation of `sin(x)`. +
-Let `err_bnd = abs(x) * exp2(-normal_frac<in_out_t>/2)` +
+Let `err_bnd = calcAbsErrorBound<in_out_t>(x, abs(x), 0, 2)` +
 Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 | <<RESIZE>>
