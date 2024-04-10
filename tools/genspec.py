@@ -137,10 +137,11 @@ class TOSASpecAsciidocGenerator:
         # Generate profile table
         with open(os.path.join(outdir, "profile_extensions.adoc"), "w") as f:
             f.write("|===\n")
-            f.write("|Name|Description|Specification Status\n\n")
+            f.write("|Name|Description|Allowed profiles|Specification Status\n\n")
             for profile_extension in self.spec.profile_extensions:
                 f.write(
                     f"|{profile_extension.name}|{profile_extension.description}"
+                    f"|{','.join(profile_extension.profiles)}"
                     f"|{profile_extension.status}\n"
                 )
             f.write("|===\n")
@@ -199,7 +200,8 @@ class TOSASpecAsciidocGenerator:
             for pext in self.spec.profile_extensions:
                 f.write(f"==== {pext.name} extension\n")
                 f.write(f"{pext.description}\n\n")
-                f.write(f"Status: {pext.status}\n")
+                f.write(f"Status: {pext.status}\n\n")
+                f.write(f"Compatible profiles: {', '.join(pext.profiles)}\n\n")
                 f.write("|===\n")
                 f.write("|Operator|mode|note\n\n")
                 for op in sorted(all_operators, key=lambda o: o.name):

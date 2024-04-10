@@ -7,13 +7,28 @@
     <profile profile="Main Inference" name="MI" status="Complete" description="FP16 and FP32 operations"/>
   </profiles>
   <profile_extensions>
-    <profile_extension name="EXT-INT16" description="16-bit integer operations" status="Complete"/>
-    <profile_extension name="EXT-INT4" description="4-bit integer weights" status="Complete"/>
-    <profile_extension name="EXT-BF16" description="BFloat16 operations" status="Complete"/>
-    <profile_extension name="EXT-FP8E4M3" description="8-bit floating-point operations E4M3" status="Complete"/>
-    <profile_extension name="EXT-FP8E5M2" description="8-bit floating-point operations E5M2" status="Complete"/>
-    <profile_extension name="EXT-FFT" description="Fast Fourier Transform operations" status="Complete"/>
-    <profile_extension name="EXT-VARIABLE" description="Stateful variable operations" status="Complete"/>
+    <profile_extension name="EXT-INT16" description="16-bit integer operations" status="Complete">
+      <profile_supported>BI</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-INT4" description="4-bit integer weights" status="Complete">
+      <profile_supported>BI</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-BF16" description="BFloat16 operations" status="Complete">
+      <profile_supported>MI</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-FP8E4M3" description="8-bit floating-point operations E4M3" status="Complete">
+      <profile_supported>MI</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-FP8E5M2" description="8-bit floating-point operations E5M2" status="Complete">
+      <profile_supported>MI</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-FFT" description="Fast Fourier Transform operations" status="Complete">
+      <profile_supported>MI</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-VARIABLE" description="Stateful variable operations" status="Complete">
+      <profile_supported>BI</profile_supported>
+      <profile_supported>MI</profile_supported>
+    </profile_extension>
   </profile_extensions>
   <levels>
     <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256">No level</level>

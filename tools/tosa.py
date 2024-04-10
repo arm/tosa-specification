@@ -41,10 +41,11 @@ class TOSAProfile:
 
 
 class TOSAProfileExtension:
-    def __init__(self, name, description, status):
+    def __init__(self, name, description, status, profiles):
         self.name = name
         self.description = description
         self.status = status
+        self.profiles = profiles
         self.ops = []
 
 
@@ -155,7 +156,8 @@ class TOSASpec:
         name = ext.get("name")
         description = ext.get("description")
         status = ext.get("status")
-        return TOSAProfileExtension(name, description, status)
+        profiles = [x.text for x in ext]
+        return TOSAProfileExtension(name, description, status, profiles)
 
     def __load_level(self, level):
         name = level.get("name")
