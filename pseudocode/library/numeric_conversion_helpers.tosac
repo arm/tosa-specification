@@ -13,13 +13,9 @@ int round_to_nearest_int(float_t f);
 
 // Converts the input value into floating-point, rounding to the nearest representable value.
 // Values that are not NaN outside of the representable range of the destination type must be set to infinity of the correct sign.
+// If the destination floating point type does not have an infinity representation, values outside of the representable range must be set to NaN.
 // For the required precision see the section: Main inference precision requirements.
-float_t round_to_nearest_float_nonsaturating(in_t f);
-
-// Converts the input value into floating-point, rounding to the nearest representable normal value.
-// Values that are not NaN outside of the representable range must return the maximum representable normal value of the correct sign.
-// For the required precision see the section: Main inference precision requirements.
-float_t round_to_nearest_float_saturating(in_t f);
+float_t round_to_nearest_float(in_t f);
 
 // Floating point values are unchanged.
 // For two's complement integer values where out_t has more bits than in_t, replicate the top bit of input for all bits between the top bit of input and the top bit of output.

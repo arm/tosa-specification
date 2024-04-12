@@ -13,15 +13,6 @@ bool_t is_floating_point<type>() {
     return false;
 }
 
-bool_t is_saturating_float_type<type>() {
-    // Saturate for the fp8 formats, all other floats do not saturate
-    if (type == fp8e4m3_t || type == fp8e5m2_t) {
-        return true;
-    }
-    return false;
-}
-
-
 int32_t idiv(int32_t input1, int32_t input2) {
     return input1 / input2; // Integer divide that truncates towards zero
 }

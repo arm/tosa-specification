@@ -254,7 +254,8 @@ Otherwise the result must be within 0.5 ulp of the mathematical result.
 
 | <<CAST>>
 | Result overflows when converting between fp32_t, bf16_t and fp16_t must be set to infinity of the correct sign. +
-fp8e4m3_t and fp8e5m2_t must use the saturation mode rules defined in <<IEEE-754,IEEE-754>> when converting from the wider floating-point types. +
+fp8e4m3_t and fp8e5m2_t must use the non-saturating mode defined in <<OCP-OFP8,OCP-OFP8>> when converting from the wider floating-point types. +
+If saturation of the fp8 types is desired, a <<CLAMP>> operation with the appropriate parameters should be used before the cast. +
 Floating-point result underflows must be set to zero of the correct sign. +
 Cast from floating-point to integer result overflows must be saturated. +
 Cast from floating-point to integer must be rounded using round to nearest, ties to even, rounding mode. +
