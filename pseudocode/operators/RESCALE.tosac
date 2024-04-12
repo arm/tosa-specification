@@ -23,6 +23,7 @@ for_each(index in shape) {
     ERROR_IF(out_t == i32_t && input_unsigned);
     ERROR_IF(in_t == i32_t && output_unsigned);
     ERROR_IF(in_t == i48_t && output_unsigned);
+    ERROR_IF(per_channel && rank(input) < 1);
 
     in_t in_value = tensor_read<in_t>(input, shape, index);
 
