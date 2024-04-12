@@ -35,7 +35,7 @@ framework operators can be reduced.
 the treatment of their numerical behavior in the case of precision, saturation,
 scaling, and range as required by quantized datatypes.
 
-* Agnostic to any single high-level framework, compiler backend stack or
+* Independent of any single high-level framework, compiler backend stack or
 particular target.
 
 * The detailed functional and numerical description enables precise code
@@ -67,16 +67,16 @@ The following principles govern the selection of operators within TOSA.
 |If the operator can be broken down, then we should look at the component operators.
 
 |P1
-|An operator shall be a usable as a component out of which more complex operations can be constructed.
+|An operator shall be usable as a component out of which more complex operations can be constructed.
 |Single use operators have a high architectural cost and a more reusable version should be considered instead.
 
 |P2
 |Precision should be appropriate for the input and output data types.
-|Precision higher than that needed to calculate the result leads to extra implementation cost.
+|Precision higher than that needed to calculate the result leads to extra implementation complexity.
 
 |P3
 |Numerical definition of common sub-operations should be consistent between operators (for example: value scaling).
-|Consistent sub-operation definition reduces the operator implementation cost.
+|Consistent sub-operation definition reduces the operator implementation complexity.
 
 |P4
 |The valid input and output ranges for all arguments shall be specified.
@@ -168,17 +168,19 @@ Later versions of the specification may define additional levels.
 The following table defines the value ranges for each level.
 These ranges are checked using the LEVEL_CHECK() function with the operator descriptions.
 
-.Level maximums
+.Level maxima
 include::{generated}/levels.adoc[]
 
 === Status
 
-The TOSA specification is a work in progress.
+This specification is the release candidate for TOSA 1.0.
 
-* The Base Inference profile should be considered to be near release quality, with conformance tests available.
-* The Main Inference profile has most of the expected operators in place, but is still subject to change.
-* The reference model and conformance tests do not yet support all of the floating point types that have been defined.
-* There is not currently a conformance test suite available for Main Inference.
+The specific status of each profile and extension is contained in the tables in <<Profiles>>.
+Possible values for status are:
+
+* Complete : All operators are specified, conformance tests are provided, no changes are expected.
+* Unstable : Operators are specified, conformance tests provided, but less content has been tested.
+* Incomplete : Operators or conformnace tests may be missing. Changes are likely in future versions of the specification.
 
 === Compliance
 
@@ -233,15 +235,12 @@ bool tosa_test_compliance(tosa_graph_t graph, tensor_list_t input_list, tosa_lev
 
 A Main Inference compliant implementation must satisfy the following:
 
-* The implementation must meet <<Base Inference Profile Compliance>> for all Base inference complaint graphs
+* The implementation must meet <<Base Inference Profile Compliance>> for all Base inference compliant graphs
 * The implementation must support all Main Inference operations using the datatype fp32_t
 ** The operations must meet the precision requirements of <<Main Inference precision requirements>>
 * The implementation must support all Main Inference operations using the datatype fp16_t
 ** The operations must meet the precision requirements of <<Main Inference precision requirements>>
 ** Note: These requirements allow fp16_t operations to be implemented using the fp32_t datatype
-* The implementation must support all Main Inference operations using the datatype bf16_t
-** The operations must meet the precision requirements of <<Main Inference precision requirements>>
-** Note: These requirements allow bf16_t operations to be implemented using the fp32_t datatype
 
 As with <<Base Inference Profile Compliance>> the pseudo-code function tosa_execute_graph() can return one of three possible results.
 A compliant implementation must satisfy the following:
@@ -255,8 +254,6 @@ A compliant implementation must satisfy the following:
 In a compliant implementation, individual floating-point operations within the graph must meet the accuracy bounds listed in the table following.
 In the table _ulp_ means unit of the last place.
 The function tosa_reference_check_fp() defines the error range permitted by a given number of units of last place in this specification.
-
-NOTE: The error criteria in this section are at an early draft stage and are likely to change during conformance test development.
 
 The following criteria apply to all operations:
 

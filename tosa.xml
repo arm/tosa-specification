@@ -16,16 +16,16 @@
     <profile_extension name="EXT-BF16" description="BFloat16 operations" status="Complete">
       <profile_supported>MI</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-FP8E4M3" description="8-bit floating-point operations E4M3" status="Complete">
+    <profile_extension name="EXT-FP8E4M3" description="8-bit floating-point operations E4M3" status="Unstable">
       <profile_supported>MI</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-FP8E5M2" description="8-bit floating-point operations E5M2" status="Complete">
+    <profile_extension name="EXT-FP8E5M2" description="8-bit floating-point operations E5M2" status="Unstable">
       <profile_supported>MI</profile_supported>
     </profile_extension>
     <profile_extension name="EXT-FFT" description="Fast Fourier Transform operations" status="Complete">
       <profile_supported>MI</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-VARIABLE" description="Stateful variable operations" status="Complete">
+    <profile_extension name="EXT-VARIABLE" description="Stateful variable operations" status="Unstable">
       <profile_supported>BI</profile_supported>
       <profile_supported>MI</profile_supported>
     </profile_extension>
