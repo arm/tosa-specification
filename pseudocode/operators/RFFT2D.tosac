@@ -19,7 +19,7 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W/2 + 1) {
         int32_t ax = (static_cast<size_t>(ix) * static_cast<size_t>(ox)) % static_cast<int32_t>(W);
         in_out_t a = sign_val * 2 * pi() * (static_cast<in_out_t>(ay) / H + static_cast<in_out_t>(ax) / W);
         sum_real += val_real * cos(a);
-        if ((ay % (H/2)) + (ax % (W/2)) > 0) {
+        if ((H > 1 && (ay % (H/2)) > 0) || (W > 1 && (ax % (W/2)) > 0)) {
             sum_imag += -val_real * sin(a);
         }
     }
