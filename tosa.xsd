@@ -32,6 +32,7 @@
     <xs:enumeration value="MAX_RANK"/>
     <xs:enumeration value="MAX_LOG2_SIZE"/>
     <xs:enumeration value="MAX_NESTING"/>
+    <xs:enumeration value="MAX_TENSOR_LIST_SIZE"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -124,6 +125,7 @@
         <xs:attribute name="max_scale"  type="xs:int" use="required"/>
         <xs:attribute name="max_log2_size" type="xs:int" use="required"/>
         <xs:attribute name="max_nesting" type="xs:int" use="required"/>
+        <xs:attribute name="max_tensor_list_size" type="xs:int" use="required"/>
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>

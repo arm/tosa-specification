@@ -31,8 +31,8 @@
     </profile_extension>
   </profile_extensions>
   <levels>
-    <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256">No level</level>
-    <level name="8K"   max_rank="6"  max_kernel="8192"       max_stride="8192"       max_scale="256"   max_log2_size="31" max_nesting="6">Level 8K</level>
+    <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256" max_tensor_list_size="256">No level</level>
+    <level name="8K"   max_rank="6"  max_kernel="8192"       max_stride="8192"       max_scale="256"   max_log2_size="31" max_nesting="6" max_tensor_list_size="64">Level 8K</level>
   </levels>
   <operators>
     <operatorgroup name="tensor">
@@ -2118,6 +2118,7 @@
         <arguments>
           <argument category="input" name="input1" type="tensor_list_t" shape="shapes1" tensor-element-type="in_out_t">
             <description>List of input tensors. All inputs must have the same rank and data type</description>
+            <levellimit value="tensor_list_shape(input1)" limit="MAX_TENSOR_LIST_SIZE"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
@@ -2974,6 +2975,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of input tensors</description>
+            <levellimit value="tensor_list_shape(input_list)" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
           <argument category="attribute" name="operator_name" type="String" shape="-" tensor-element-type="-">
             <description>String which tells the backend which custom operator is being called</description>
@@ -2988,6 +2990,7 @@ used.</description>
           </argument>
           <argument category="output" name="output_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of output tensors</description>
+            <levellimit value="tensor_list_shape(output_list)" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
         </arguments>
         <types>
@@ -3009,6 +3012,7 @@ used.</description>
           </argument>
           <argument category="input" name="input_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of input tensors</description>
+            <levellimit value="tensor_list_shape(input_list)" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
           <argument category="attribute" name="then_graph" type="tosa_graph_t" shape="-" tensor-element-type="-">
             <description>TOSA graph to execute if condition is true</description>
@@ -3018,6 +3022,7 @@ used.</description>
           </argument>
           <argument category="output" name="output_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of output tensors</description>
+            <levellimit value="tensor_list_shape(output_list)" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
         </arguments>
         <types>
@@ -3033,6 +3038,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of input tensors</description>
+            <levellimit value="tensor_list_shape(input_list)" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
           <argument category="attribute" name="cond_graph" type="tosa_graph_t" shape="-" tensor-element-type="-">
             <description>TOSA graph to evaluate the condition</description>
@@ -3042,6 +3048,7 @@ used.</description>
           </argument>
           <argument category="output" name="output_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of output tensors</description>
+            <levellimit value="tensor_list_shape(output_list)" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
         </arguments>
         <types>

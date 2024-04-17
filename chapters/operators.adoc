@@ -16,7 +16,8 @@ Their behavior can be configured using attribute arguments.
 Arguments may have one of the following types:
 
 * `tensor_t<element_type>`, abbreviated `T<element_type>`, represents a tensor whose elements are of type `element_type` where `element_type` can be any of the data types supported in TOSA.
-* `tensor_list_t` represents a list of tensors. When lists are homogeneous, containing tensors of the same type, their type is further qualified as follows: `tensor_list_t<T<element_type>>`.
+* `tensor_list_t` represents a list of tensors. When lists are homogeneous, containing tensors of the same type, their type is further qualified as follows: `tensor_list_t<T<element_type>>`. +
+The maximum number of elements in a tensor list is set by the MAX_TENSOR_LIST_SIZE level parameter.
 * `tosa_graph_t` represents a TOSA graph (see <<operator-graphs>>).
 
 Arguments belong to one of three categories: Input, Output, or Attribute. The category to which an argument belongs further constrains its type:
@@ -47,7 +48,7 @@ shape_list_t tosa_output_shape(tosa_graph_t graph);
 Similarly the type tensor_list_t will be used for a list of tensors and the following function returns the shape of a tensor list:
 [source,c++]
 ----
-shape_list_t tensor_list_shape(tosa_list_t tensor_list);
+shape_list_t tensor_list_shape(tensor_list_t tensor_list);
 ----
 
 The following function denotes the execution of a TOSA graph within a TOSA context,
@@ -59,7 +60,7 @@ implementation-defined order that must be a topological ordering of the TOSA gra
 
 [source,c++]
 ----
-tosa_execute_graph(tosa_context_t context, tosa_graph_t graph, tosa_list_t input_list, tosa_list_t output_list, tosa_level_t level) {
+tosa_execute_graph(tosa_context_t context, tosa_graph_t graph, tensor_list_t input_list, tensor_list_t output_list, tosa_level_t level) {
     ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(graph));
     ERROR_IF(tensor_list_shape(output_list) != tosa_output_shape(graph));
 

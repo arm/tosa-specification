@@ -170,6 +170,7 @@ class TOSASpec:
             "MAX_SCALE": level.get("max_scale"),
             "MAX_LOG2_SIZE": level.get("max_log2_size"),
             "MAX_NESTING": level.get("max_nesting"),
+            "MAX_TENSOR_LIST_SIZE": level.get("max_tensor_list_size"),
         }
         return TOSALevel(name, desc, maximums)
 
