@@ -87,6 +87,46 @@ The following principles govern the selection of operators within TOSA.
 |Reduces implementation cost and gives consistent inference results.
 |===
 
+=== Versioning
+
+TOSA follows a semantic versioning policy with a major.minor.patch.draft scheme.
+See below for the TOSA definition of backward compatibility.
+
+* Major version changes may break backwards compatibility.
+* Minor numbers may add functionality in a backwards compatible way.
+* Patch versions are for bug fixes, clarifications, or trivial changes.
+* The draft flag notes whether the version referenced is finalized.
+
+Major, minor, and patch numbers are limited to eight bits.
+Draft is a single bit flag.
+If stored in a 32-bit value, the remaining bits are reserved for future use.
+
+==== Backwards Compatibility
+
+TOSA graphs created with previous minor versions within a major version must continue to work.
+The following portions of the specification and implementation will not change within a major version:
+
+* Operator Names
+* Arguments including ordering, input/attribute/output, name, rank
+* ERROR_IF statements
+* Functionality of the pseudocode for each operator
+* Level definitions and checks
+* Supported Data Type tables
+* Conformance test definitions
+* Enumerated types and values
+
+Changes to the following do not break compatibility:
+
+* Order of operations within the XML
+* Operator section names
+* Descriptive text that does not affect functionality
+* Non-functional changes to pseudocode (for example: cleanup, local variable name changes)
+
+Minor versions are allowed to add new operators or other functionality as long as the above guarantees hold.
+
+In addition, new extensions may be added to the specification between TOSA releases.
+They may not change anything that would break backward compatibility according to the above definitions.
+
 === Profiles
 
 TOSA profiles enable efficient implementation on different classes of device.
