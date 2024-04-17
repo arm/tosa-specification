@@ -289,6 +289,7 @@
       <xs:element ref="op_profile"/>
     </xs:choice>
     <xs:attribute name="mode" type="xs:string" use="required"/>
+    <xs:attribute name="version_added" type="xs:string" use="required"/>
     <xs:attribute name="in_t" type="datatype"/>
     <xs:attribute name="out_t" type="datatype"/>
     <xs:attribute name="in_out_t" type="datatype"/>

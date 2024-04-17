@@ -57,25 +57,25 @@
           <type name='in_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8" in_t="i8_t" out_t="i32_t">
+        <typesupport mode="signed 8" in_t="i8_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_t="i16_t" out_t="i32_t">
+        <typesupport mode="signed 16" in_t="i16_t" out_t="i32_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t" out_t="i32_t">
+        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t" out_t="i32_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="i32_t">
+        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="i32_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_t="fp16_t" out_t="i32_t">
+        <typesupport mode="fp16" in_t="fp16_t" out_t="i32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_t="bf16_t" out_t="i32_t">
+        <typesupport mode="bf16" in_t="bf16_t" out_t="i32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_t="fp32_t" out_t="i32_t">
+        <typesupport mode="fp32" in_t="fp32_t" out_t="i32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -127,28 +127,28 @@
           <type name='in_out_t' />
           <type name='acc_t' />
         </types>
-        <typesupport mode="signed 8 with int32 accumulate" in_out_t="i8_t" acc_t="i32_t" >
+        <typesupport mode="signed 8 with int32 accumulate" in_out_t="i8_t" acc_t="i32_t"  version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16 with int32 accumulate" in_out_t="i16_t" acc_t="i32_t">
+        <typesupport mode="signed 16 with int32 accumulate" in_out_t="i16_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_out_t="fp8e4m3_t" acc_t="fp16_t">
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_out_t="fp8e4m3_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2 with fp16 accumulate" in_out_t="fp8e5m2_t" acc_t="fp16_t">
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_out_t="fp8e5m2_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp16 with fp16 accumulate" in_out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_out_t="fp16_t" acc_t="fp32_t">
+        <typesupport mode="fp16 with fp32 accumulate" in_out_t="fp16_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_out_t="bf16_t" acc_t="fp32_t">
+        <typesupport mode="bf16 with fp32 accumulate" in_out_t="bf16_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_out_t="fp32_t" acc_t="fp32_t">
+        <typesupport mode="fp32 with fp32 accumulate" in_out_t="fp32_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -219,31 +219,31 @@
           <type name='out_t' />
           <type name='acc_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t">
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t">
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="EXT-INT4"/>
         </typesupport>
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t">
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t">
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t"  acc_t="fp32_t">
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t"  acc_t="fp32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t">
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -317,31 +317,31 @@
           <type name='weight_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t">
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t">
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="EXT-INT4"/>
         </typesupport>
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t">
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t">
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t" acc_t="fp32_t">
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t">
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -411,31 +411,31 @@
           <type name='weight_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t">
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t">
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="EXT-INT4"/>
         </typesupport>
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t">
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t">
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t" acc_t="fp32_t">
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t">
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -476,7 +476,7 @@
         <types>
           <type name='in_out_t' />
         </types>
-        <typesupport mode="fp32" in_out_t="fp32_t" >
+        <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.0">
           <op_profile name="EXT-FFT"/>
         </typesupport>
       </operator>
@@ -514,25 +514,25 @@
           <type name='weight_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t">
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t">
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" version_added="1.0">
           <op_profile name="EXT-INT4"/>
         </typesupport>
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t">
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t">
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t">
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t">
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t">
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -564,28 +564,28 @@
           <type name='in_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" out_t="i32_t">
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16x16 with int48 accumulate" in_t="i16_t" out_t="i48_t">
+        <typesupport mode="signed 16x16 with int48 accumulate" in_t="i16_t" out_t="i48_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" out_t="fp16_t">
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="fp16_t">
+        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" out_t="fp16_t">
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" out_t="fp32_t">
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" out_t="fp32_t">
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" out_t="fp32_t">
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -624,25 +624,25 @@
         <types>
           <type name='in_out_t' />
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" >
+        <typesupport mode="fp16" in_out_t="fp16_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" >
+        <typesupport mode="bf16" in_out_t="bf16_t"  version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" >
+        <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -675,7 +675,7 @@
         <types>
           <type name='in_out_t' />
         </types>
-        <typesupport mode="fp32" in_out_t="fp32_t" >
+        <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.0">
           <op_profile name="EXT-FFT"/>
         </typesupport>
       </operator>
@@ -741,31 +741,31 @@
           <type name='weight_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t">
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t">
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="EXT-INT4"/>
         </typesupport>
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t">
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" out_t="fp16_t">
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t">
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t" acc_t="fp32_t">
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t">
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -795,19 +795,19 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -827,13 +827,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -853,13 +853,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -879,13 +879,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -911,17 +911,17 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" >
+        <typesupport mode="fp16" in_out_t="fp16_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" >
+        <typesupport mode="bf16" in_out_t="bf16_t"  version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" >
+        <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -949,13 +949,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
       </operator>
@@ -979,13 +979,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
       </operator>
@@ -1009,13 +1009,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
       </operator>
@@ -1039,13 +1039,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
       </operator>
@@ -1069,7 +1069,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1094,7 +1094,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t">
+        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1119,15 +1119,15 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1152,15 +1152,15 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1185,7 +1185,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t">
+        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1210,7 +1210,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t">
+        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1235,16 +1235,16 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" >
+        <typesupport mode="fp16" in_out_t="fp16_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" >
+        <typesupport mode="bf16" in_out_t="bf16_t"  version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" >
+        <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1268,16 +1268,16 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" >
+        <typesupport mode="fp16" in_out_t="fp16_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" >
+        <typesupport mode="bf16" in_out_t="bf16_t"  version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" >
+        <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1306,23 +1306,23 @@
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="signed 8" in_t="i8_t" out_t="i32_t">
+        <typesupport mode="signed 8" in_t="i8_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_t="i16_t" out_t="i32_t">
+        <typesupport mode="signed 16" in_t="i16_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_t="i32_t" out_t="i32_t">
+        <typesupport mode="signed 32" in_t="i32_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16" in_t="fp16_t" out_t="fp16_t">
+        <typesupport mode="fp16" in_t="fp16_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_t="bf16_t" out_t="bf16_t">
+        <typesupport mode="bf16" in_t="bf16_t" out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_t="fp32_t" out_t="fp32_t">
+        <typesupport mode="fp32" in_t="fp32_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1346,13 +1346,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t" >
+        <typesupport mode="fp16" in_out_t="fp16_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" >
+        <typesupport mode="bf16" in_out_t="bf16_t"  version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" >
+        <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1376,17 +1376,17 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" >
+        <typesupport mode="fp16" in_out_t="fp16_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" >
+        <typesupport mode="bf16" in_out_t="bf16_t"  version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" >
+        <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1413,10 +1413,10 @@
           <type name='out_t'/>
           <type name='TABLE_SIZE'/>
         </types>
-        <typesupport mode="signed 8" in_t="i8_t" table_t="i8_t" TABLE_SIZE="256" out_t="i8_t">
+        <typesupport mode="signed 8" in_t="i8_t" table_t="i8_t" TABLE_SIZE="256" out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_t="i16_t" table_t="i16_t" TABLE_SIZE="513" out_t="i32_t">
+        <typesupport mode="signed 16" in_t="i16_t" table_t="i16_t" TABLE_SIZE="513" out_t="i32_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
       </operator>
@@ -1438,16 +1438,16 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" >
+        <typesupport mode="fp16" in_out_t="fp16_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" >
+        <typesupport mode="bf16" in_out_t="bf16_t"  version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" >
+        <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1467,13 +1467,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
       </operator>
@@ -1493,13 +1493,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t" >
+        <typesupport mode="fp16" in_out_t="fp16_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" >
+        <typesupport mode="bf16" in_out_t="bf16_t"  version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" >
+        <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1519,7 +1519,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
       </operator>
@@ -1539,13 +1539,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1565,13 +1565,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1591,13 +1591,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1617,13 +1617,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1643,7 +1643,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="Boolean" in_out_t="bool_t">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1673,22 +1673,22 @@
           <type name='in_out_t'/>
           <type name='acc_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t" acc_t="i32_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t" acc_t="i32_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t" acc_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" acc_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" acc_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" acc_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1708,13 +1708,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1734,13 +1734,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1770,26 +1770,26 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="Boolean" in_out_t="bool_t">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1809,13 +1809,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1842,16 +1842,16 @@
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="signed 32" in_t="i32_t" out_t="bool_t">
+        <typesupport mode="signed 32" in_t="i32_t" out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp16" in_t="fp16_t" out_t="bool_t">
+        <typesupport mode="fp16" in_t="fp16_t" out_t="bool_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_t="bf16_t" out_t="bool_t">
+        <typesupport mode="bf16" in_t="bf16_t" out_t="bool_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_t="fp32_t" out_t="bool_t">
+        <typesupport mode="fp32" in_t="fp32_t" out_t="bool_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1876,16 +1876,16 @@
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="signed 32" in_t="i32_t" out_t="bool_t">
+        <typesupport mode="signed 32" in_t="i32_t" out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp16" in_t="fp16_t" out_t="bool_t">
+        <typesupport mode="fp16" in_t="fp16_t" out_t="bool_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_t="bf16_t" out_t="bool_t">
+        <typesupport mode="bf16" in_t="bf16_t" out_t="bool_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_t="fp32_t" out_t="bool_t">
+        <typesupport mode="fp32" in_t="fp32_t" out_t="bool_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1910,16 +1910,16 @@
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="signed 32" in_t="i32_t" out_t="bool_t">
+        <typesupport mode="signed 32" in_t="i32_t" out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp16" in_t="fp16_t" out_t="bool_t">
+        <typesupport mode="fp16" in_t="fp16_t" out_t="bool_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_t="bf16_t" out_t="bool_t">
+        <typesupport mode="bf16" in_t="bf16_t" out_t="bool_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_t="fp32_t" out_t="bool_t">
+        <typesupport mode="fp32" in_t="fp32_t" out_t="bool_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -1944,7 +1944,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t">
+        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1968,7 +1968,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t">
+        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1992,22 +1992,22 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2030,22 +2030,22 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2068,13 +2068,13 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2098,16 +2098,16 @@
           <type name='in_out_t'/>
           <type name='acc_t'/>
         </types>
-        <typesupport mode="signed 32" in_out_t="i32_t" acc_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" acc_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" acc_t="fp32_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" acc_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2133,32 +2133,32 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t">
+        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2187,32 +2187,32 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t">
+        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2236,32 +2236,32 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t">
+        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2285,32 +2285,32 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t">
+        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2339,32 +2339,32 @@ used.</description>
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t">
+        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2388,32 +2388,32 @@ used.</description>
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t">
+        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2437,32 +2437,32 @@ used.</description>
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t">
+        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2487,28 +2487,28 @@ used.</description>
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2535,28 +2535,28 @@ used.</description>
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t">
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t">
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t">
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t">
+        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t">
+        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t">
+        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2597,25 +2597,25 @@ used.</description>
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="signed 8, bilinear" resize_t="i16_t" in_t="i8_t" out_t="i32_t">
+        <typesupport mode="signed 8, bilinear" resize_t="i16_t" in_t="i8_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8, nearest" resize_t="i16_t" in_t="i8_t" out_t="i8_t">
+        <typesupport mode="signed 8, nearest" resize_t="i16_t" in_t="i8_t" out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16, bilinear" resize_t="i16_t" in_t="i16_t" out_t="i48_t">
+        <typesupport mode="signed 16, bilinear" resize_t="i16_t" in_t="i16_t" out_t="i48_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="signed 16, nearest" resize_t="i16_t" in_t="i16_t" out_t="i16_t">
+        <typesupport mode="signed 16, nearest" resize_t="i16_t" in_t="i16_t" out_t="i16_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp16" resize_t="fp16_t" in_t="fp16_t" out_t="fp16_t">
+        <typesupport mode="fp16" resize_t="fp16_t" in_t="fp16_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" resize_t="bf16_t" in_t="bf16_t" out_t="bf16_t">
+        <typesupport mode="bf16" resize_t="bf16_t" in_t="bf16_t" out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" resize_t="fp32_t" in_t="fp32_t" out_t="fp32_t">
+        <typesupport mode="fp32" resize_t="fp32_t" in_t="fp32_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2638,142 +2638,142 @@ used.</description>
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="bool to signed 8" in_t="bool_t" out_t="i8_t">
+        <typesupport mode="bool to signed 8" in_t="bool_t" out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="bool to signed 16" in_t="bool_t" out_t="i16_t">
+        <typesupport mode="bool to signed 16" in_t="bool_t" out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="bool to signed 32" in_t="bool_t" out_t="i32_t">
+        <typesupport mode="bool to signed 32" in_t="bool_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8 to bool" in_t="i8_t" out_t="bool_t">
+        <typesupport mode="signed 8 to bool" in_t="i8_t" out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8 to signed 16" in_t="i8_t" out_t="i16_t">
+        <typesupport mode="signed 8 to signed 16" in_t="i8_t" out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8 to signed 32" in_t="i8_t" out_t="i32_t">
+        <typesupport mode="signed 8 to signed 32" in_t="i8_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 8 to fp16" in_t="i8_t" out_t="fp16_t">
+        <typesupport mode="signed 8 to fp16" in_t="i8_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 8 to bf16" in_t="i8_t" out_t="bf16_t">
+        <typesupport mode="signed 8 to bf16" in_t="i8_t" out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="signed 8 to fp32" in_t="i8_t" out_t="fp32_t">
+        <typesupport mode="signed 8 to fp32" in_t="i8_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 16 to bool" in_t="i16_t" out_t="bool_t">
+        <typesupport mode="signed 16 to bool" in_t="i16_t" out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16 to signed 8" in_t="i16_t" out_t="i8_t">
+        <typesupport mode="signed 16 to signed 8" in_t="i16_t" out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16 to signed 32" in_t="i16_t" out_t="i32_t">
+        <typesupport mode="signed 16 to signed 32" in_t="i16_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16 to fp16" in_t="i16_t" out_t="fp16_t">
+        <typesupport mode="signed 16 to fp16" in_t="i16_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 16 to bf16" in_t="i16_t" out_t="bf16_t">
+        <typesupport mode="signed 16 to bf16" in_t="i16_t" out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="signed 16 to fp32" in_t="i16_t" out_t="fp32_t">
+        <typesupport mode="signed 16 to fp32" in_t="i16_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 32 to bool" in_t="i32_t" out_t="bool_t">
+        <typesupport mode="signed 32 to bool" in_t="i32_t" out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32 to signed 8" in_t="i32_t" out_t="i8_t">
+        <typesupport mode="signed 32 to signed 8" in_t="i32_t" out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32 to signed 16" in_t="i32_t" out_t="i16_t">
+        <typesupport mode="signed 32 to signed 16" in_t="i32_t" out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32 to fp16" in_t="i32_t" out_t="fp16_t">
+        <typesupport mode="signed 32 to fp16" in_t="i32_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 32 to bf16" in_t="i32_t" out_t="bf16_t">
+        <typesupport mode="signed 32 to bf16" in_t="i32_t" out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="signed 32 to fp32" in_t="i32_t" out_t="fp32_t">
+        <typesupport mode="signed 32 to fp32" in_t="i32_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16 to signed 8" in_t="bf16_t" out_t="i8_t">
+        <typesupport mode="bf16 to signed 8" in_t="bf16_t" out_t="i8_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="bf16 to signed 16" in_t="bf16_t" out_t="i16_t">
+        <typesupport mode="bf16 to signed 16" in_t="bf16_t" out_t="i16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="bf16 to signed 32" in_t="bf16_t" out_t="i32_t">
+        <typesupport mode="bf16 to signed 32" in_t="bf16_t" out_t="i32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="bf16 to fp8e4m3" in_t="bf16_t" out_t="fp8e4m3_t">
+        <typesupport mode="bf16 to fp8e4m3" in_t="bf16_t" out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-BF16" and_name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="bf16 to fp8e5m2" in_t="bf16_t" out_t="fp8e5m2_t">
+        <typesupport mode="bf16 to fp8e5m2" in_t="bf16_t" out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-BF16" and_name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="bf16 to fp32" in_t="bf16_t" out_t="fp32_t">
+        <typesupport mode="bf16 to fp32" in_t="bf16_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 to fp16" in_t="fp8e4m3_t" out_t="fp16_t">
+        <typesupport mode="fp8e4m3 to fp16" in_t="fp8e4m3_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 to bf16" in_t="fp8e4m3_t" out_t="bf16_t">
+        <typesupport mode="fp8e4m3 to bf16" in_t="fp8e4m3_t" out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3" and_name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 to fp32" in_t="fp8e4m3_t" out_t="fp32_t">
+        <typesupport mode="fp8e4m3 to fp32" in_t="fp8e4m3_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2 to fp16" in_t="fp8e5m2_t" out_t="fp16_t">
+        <typesupport mode="fp8e5m2 to fp16" in_t="fp8e5m2_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp8e5m2 to bf16" in_t="fp8e5m2_t" out_t="bf16_t">
+        <typesupport mode="fp8e5m2 to bf16" in_t="fp8e5m2_t" out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2" and_name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp8e5m2 to fp32" in_t="fp8e5m2_t" out_t="fp32_t">
+        <typesupport mode="fp8e5m2 to fp32" in_t="fp8e5m2_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 to signed 8" in_t="fp16_t" out_t="i8_t">
+        <typesupport mode="fp16 to signed 8" in_t="fp16_t" out_t="i8_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 to signed 16" in_t="fp16_t" out_t="i16_t">
+        <typesupport mode="fp16 to signed 16" in_t="fp16_t" out_t="i16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 to signed 32" in_t="fp16_t" out_t="i32_t">
+        <typesupport mode="fp16 to signed 32" in_t="fp16_t" out_t="i32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp16 to fp8e4m3" in_t="fp16_t" out_t="fp8e4m3_t">
+        <typesupport mode="fp16 to fp8e4m3" in_t="fp16_t" out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp16 to fp8e5m2" in_t="fp16_t" out_t="fp8e5m2_t">
+        <typesupport mode="fp16 to fp8e5m2" in_t="fp16_t" out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 to fp32" in_t="fp16_t" out_t="fp32_t">
+        <typesupport mode="fp16 to fp32" in_t="fp16_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp32 to signed 8" in_t="fp32_t" out_t="i8_t">
+        <typesupport mode="fp32 to signed 8" in_t="fp32_t" out_t="i8_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp32 to signed 16" in_t="fp32_t" out_t="i16_t">
+        <typesupport mode="fp32 to signed 16" in_t="fp32_t" out_t="i16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp32 to signed 32" in_t="fp32_t" out_t="i32_t">
+        <typesupport mode="fp32 to signed 32" in_t="fp32_t" out_t="i32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="fp32 to fp8e4m3" in_t="fp32_t" out_t="fp8e4m3_t">
+        <typesupport mode="fp32 to fp8e4m3" in_t="fp32_t" out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp32 to fp8e5m2" in_t="fp32_t" out_t="fp8e5m2_t">
+        <typesupport mode="fp32 to fp8e5m2" in_t="fp32_t" out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp32 to bf16" in_t="fp32_t" out_t="bf16_t">
+        <typesupport mode="fp32 to bf16" in_t="fp32_t" out_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 to fp16" in_t="fp32_t" out_t="fp16_t">
+        <typesupport mode="fp32 to fp16" in_t="fp32_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2830,40 +2830,40 @@ used.</description>
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="8-bit to 8-bit" in_t="i8_t" out_t="i8_t">
+        <typesupport mode="8-bit to 8-bit" in_t="i8_t" out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="8-bit to 16-bit" in_t="i8_t" out_t="i16_t">
+        <typesupport mode="8-bit to 16-bit" in_t="i8_t" out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="8-bit to 32-bit" in_t="i8_t" out_t="i32_t">
+        <typesupport mode="8-bit to 32-bit" in_t="i8_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="16-bit to 8-bit" in_t="i16_t" out_t="i8_t">
+        <typesupport mode="16-bit to 8-bit" in_t="i16_t" out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="16-bit to 16-bit" in_t="i16_t" out_t="i16_t">
+        <typesupport mode="16-bit to 16-bit" in_t="i16_t" out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="16-bit to 32-bit" in_t="i16_t" out_t="i32_t">
+        <typesupport mode="16-bit to 32-bit" in_t="i16_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="32-bit to 8-bit" in_t="i32_t" out_t="i8_t">
+        <typesupport mode="32-bit to 8-bit" in_t="i32_t" out_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="32-bit to 16-bit" in_t="i32_t" out_t="i16_t">
+        <typesupport mode="32-bit to 16-bit" in_t="i32_t" out_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="32-bit to 32-bit" in_t="i32_t" out_t="i32_t">
+        <typesupport mode="32-bit to 32-bit" in_t="i32_t" out_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="48-bit to 8-bit" in_t="i48_t" out_t="i8_t">
+        <typesupport mode="48-bit to 8-bit" in_t="i48_t" out_t="i8_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="48-bit to 16-bit" in_t="i48_t" out_t="i16_t">
+        <typesupport mode="48-bit to 16-bit" in_t="i48_t" out_t="i16_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="48-bit to 32-bit" in_t="i48_t" out_t="i32_t">
+        <typesupport mode="48-bit to 32-bit" in_t="i48_t" out_t="i32_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
       </operator>
@@ -2884,37 +2884,37 @@ used.</description>
         <types>
           <type name='out_t' />
         </types>
-        <typesupport mode="Boolean" out_t="bool_t" >
+        <typesupport mode="Boolean" out_t="bool_t"  version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="4-bit" out_t="i4_t" >
+        <typesupport mode="4-bit" out_t="i4_t"  version_added="1.0">
           <op_profile name="EXT-INT4"/>
         </typesupport>
-        <typesupport mode="8-bit" out_t="i8_t" >
+        <typesupport mode="8-bit" out_t="i8_t"  version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="16-bit" out_t="i16_t" >
+        <typesupport mode="16-bit" out_t="i16_t"  version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="32-bit" out_t="i32_t" >
+        <typesupport mode="32-bit" out_t="i32_t"  version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="48-bit" out_t="i48_t" >
+        <typesupport mode="48-bit" out_t="i48_t"  version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" out_t="fp8e4m3_t" >
+        <typesupport mode="fp8e4m3" out_t="fp8e4m3_t"  version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" out_t="fp8e5m2_t" >
+        <typesupport mode="fp8e5m2" out_t="fp8e5m2_t"  version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" out_t="fp16_t" >
+        <typesupport mode="fp16" out_t="fp16_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" out_t="bf16_t" >
+        <typesupport mode="bf16" out_t="bf16_t"  version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" out_t="fp32_t" >
+        <typesupport mode="fp32" out_t="fp32_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2933,37 +2933,37 @@ used.</description>
         <types>
           <type name='in_out_t' />
         </types>
-        <typesupport mode="Boolean" in_out_t="bool_t" >
+        <typesupport mode="Boolean" in_out_t="bool_t"  version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="4-bit" in_out_t="i4_t" >
+        <typesupport mode="4-bit" in_out_t="i4_t"  version_added="1.0">
           <op_profile name="EXT-INT4"/>
         </typesupport>
-        <typesupport mode="8-bit" in_out_t="i8_t" >
+        <typesupport mode="8-bit" in_out_t="i8_t"  version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="16-bit" in_out_t="i16_t" >
+        <typesupport mode="16-bit" in_out_t="i16_t"  version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="32-bit" in_out_t="i32_t" >
+        <typesupport mode="32-bit" in_out_t="i32_t"  version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="48-bit" in_out_t="i48_t" >
+        <typesupport mode="48-bit" in_out_t="i48_t"  version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" >
+        <typesupport mode="fp16" in_out_t="fp16_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" >
+        <typesupport mode="bf16" in_out_t="bf16_t"  version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" >
+        <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -2993,7 +2993,7 @@ used.</description>
         <types>
           <type name='tensor_list_t' />
         </types>
-        <typesupport mode="All" tensor_list_t="-" >
+        <typesupport mode="All" tensor_list_t="-"  version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -3023,7 +3023,7 @@ used.</description>
         <types>
           <type name='cond_t' />
         </types>
-        <typesupport mode="Boolean" cond_t="bool_t" >
+        <typesupport mode="Boolean" cond_t="bool_t"  version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -3047,7 +3047,7 @@ used.</description>
         <types>
           <type name='cond_t' />
         </types>
-        <typesupport mode="Boolean" cond_t="bool_t" >
+        <typesupport mode="Boolean" cond_t="bool_t"  version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -3078,13 +3078,13 @@ used.</description>
         <types>
           <type name='var_t' />
         </types>
-        <typesupport mode="signed 8" var_t="i8_t" >
+        <typesupport mode="signed 8" var_t="i8_t"  version_added="1.0">
           <op_profile name="BI" and_name="EXT-VARIABLE"/>
         </typesupport>
-        <typesupport mode="fp16" var_t="fp16_t" >
+        <typesupport mode="fp16" var_t="fp16_t"  version_added="1.0">
           <op_profile name="MI" and_name="EXT-VARIABLE"/>
         </typesupport>
-        <typesupport mode="fp32" var_t="fp32_t" >
+        <typesupport mode="fp32" var_t="fp32_t"  version_added="1.0">
           <op_profile name="MI" and_name="EXT-VARIABLE"/>
         </typesupport>
       </operator>
@@ -3104,13 +3104,13 @@ used.</description>
         <types>
           <type name='var_t' />
         </types>
-        <typesupport mode="signed 8" var_t="i8_t" >
+        <typesupport mode="signed 8" var_t="i8_t"  version_added="1.0">
           <op_profile name="BI" and_name="EXT-VARIABLE"/>
         </typesupport>
-        <typesupport mode="fp16" var_t="fp16_t" >
+        <typesupport mode="fp16" var_t="fp16_t"  version_added="1.0">
           <op_profile name="MI" and_name="EXT-VARIABLE"/>
         </typesupport>
-        <typesupport mode="fp32" var_t="fp32_t" >
+        <typesupport mode="fp32" var_t="fp32_t"  version_added="1.0">
           <op_profile name="MI" and_name="EXT-VARIABLE"/>
         </typesupport>
       </operator>
@@ -3130,13 +3130,13 @@ used.</description>
         <types>
           <type name='var_t' />
         </types>
-        <typesupport mode="signed 8" var_t="i8_t" >
+        <typesupport mode="signed 8" var_t="i8_t"  version_added="1.0">
           <op_profile name="BI" and_name="EXT-VARIABLE"/>
         </typesupport>
-        <typesupport mode="fp16" var_t="fp16_t" >
+        <typesupport mode="fp16" var_t="fp16_t"  version_added="1.0">
           <op_profile name="MI" and_name="EXT-VARIABLE"/>
         </typesupport>
-        <typesupport mode="fp32" var_t="fp32_t" >
+        <typesupport mode="fp32" var_t="fp32_t"  version_added="1.0">
           <op_profile name="MI" and_name="EXT-VARIABLE"/>
         </typesupport>
       </operator>
@@ -3158,7 +3158,7 @@ used.</description>
         <types>
           <type name='shape_t' />
         </types>
-        <typesupport mode="shape" shape_t="size_t" >
+        <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -3176,7 +3176,7 @@ used.</description>
         <types>
           <type name='shape_t' />
         </types>
-        <typesupport mode="shape" shape_t="size_t" >
+        <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -3194,7 +3194,7 @@ used.</description>
         <types>
           <type name='shape_t' />
         </types>
-        <typesupport mode="shape" shape_t="size_t" >
+        <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -3218,32 +3218,32 @@ used.</description>
         <types>
           <type name='in_t'/>
         </types>
-        <typesupport mode="boolean" in_t="bool_t">
+        <typesupport mode="boolean" in_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="signed 8" in_t="i8_t">
+        <typesupport mode="signed 8" in_t="i8_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 16" in_t="i16_t">
+        <typesupport mode="signed 16" in_t="i16_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="signed 32" in_t="i32_t">
+        <typesupport mode="signed 32" in_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t">
+        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t">
+        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_t="fp16_t">
+        <typesupport mode="fp16" in_t="fp16_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
-        <typesupport mode="bf16" in_t="bf16_t">
+        <typesupport mode="bf16" in_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_t="fp32_t">
+        <typesupport mode="fp32" in_t="fp32_t" version_added="1.0">
           <op_profile name="MI"/>
         </typesupport>
       </operator>
@@ -3263,7 +3263,7 @@ used.</description>
         <types>
           <type name='shape_t' />
         </types>
-        <typesupport mode="shape" shape_t="size_t" >
+        <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -3284,7 +3284,7 @@ used.</description>
         <types>
           <type name='shape_t' />
         </types>
-        <typesupport mode="shape" shape_t="size_t" >
+        <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -3305,7 +3305,7 @@ used.</description>
         <types>
           <type name='shape_t' />
         </types>
-        <typesupport mode="shape" shape_t="size_t" >
+        <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>

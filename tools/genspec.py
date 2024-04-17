@@ -188,12 +188,14 @@ class TOSASpecAsciidocGenerator:
                 f.write(f"{profile.description}\n\n")
                 f.write(f"Status: {profile.status}\n")
                 f.write("|===\n")
-                f.write("|Operator|mode\n\n")
+                f.write("|Operator|Mode|Version Added\n\n")
                 for op in sorted(all_operators, key=lambda o: o.name):
                     if op.typesupports:
                         for tysup in op.typesupports:
                             if profile.name in tysup.profiles:
-                                f.write(f"|{op.name}|{tysup.mode}\n")
+                                f.write(
+                                    f"|{op.name}|{tysup.mode}|{tysup.version_added}\n"
+                                )
                 f.write("|===\n")
 
             f.write("=== Profile Extensions\n")
@@ -203,7 +205,7 @@ class TOSASpecAsciidocGenerator:
                 f.write(f"Status: {pext.status}\n\n")
                 f.write(f"Compatible profiles: {', '.join(pext.profiles)}\n\n")
                 f.write("|===\n")
-                f.write("|Operator|mode|note\n\n")
+                f.write("|Operator|Mode|Version Added|Note\n\n")
                 for op in sorted(all_operators, key=lambda o: o.name):
                     if op.typesupports:
                         for tysup in op.typesupports:
@@ -216,7 +218,10 @@ class TOSASpecAsciidocGenerator:
                                             note = f"If {m[2]} is also supported"
                                         else:
                                             note = f"If {m[1]} is also supported"
-                                    f.write(f"|{op.name}|{tysup.mode}|{note}\n")
+                                    f.write(
+                                        f"|{op.name}|{tysup.mode}|"
+                                        f"{tysup.version_added}|{note}\n"
+                                    )
                 f.write("|===\n")
 
 
