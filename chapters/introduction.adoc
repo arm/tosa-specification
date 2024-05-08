@@ -527,7 +527,7 @@ An implementation of TOSA can choose a different tensor memory layout provided t
 In operations where broadcasting is supported, an input shape dimension can be broadcast to an output shape dimension if the input shape dimension is 1.
 TOSA broadcast requires the rank of both tensors to be the same.
 A RESHAPE can be done to create a compatible tensor with appropriate dimensions of size 1.
-To map indexes in an output tensor to that of an input tensor, see <<Broadcast Helper>>.
+To map indexes in an output tensor to that of an input tensor, see <<Broadcast Helpers>>.
 
 ==== Supported Number Formats
 
