@@ -24,7 +24,7 @@ include::{pseudocode}/operators/COND_IF.tosac[lines=10..-1]
 
 ==== WHILE_LOOP
 
-Generates and evaluates a Bool condition and either executes a loop body or exits the loop. This action is performed repeatedly after updating and re-evaluating the Boolean condition every iteration. This implements the semantic foreach or while iterative loop structure.
+Generates and evaluates a Boolean condition and either executes a loop body or exits the loop. This action is performed repeatedly after updating and re-evaluating the Boolean condition every iteration. This implements the semantic foreach or while iterative loop structure.
 
 include::{generated}/operators/WHILE_LOOP.adoc[]
 

@@ -3,7 +3,7 @@
 <tosa>
   <version major="1" minor="1" patch="0" draft="true"/>
   <profiles>
-    <profile profile="Base Inference" name="BI" status="Complete" description="Integer operations, primarily 8 and 32-bit values"/>
+    <profile profile="Base Inference" name="BI" status="Complete" description="Integer operations, primarily 8- and 32-bit values"/>
     <profile profile="Main Inference" name="MI" status="Complete" description="FP16 and FP32 operations"/>
   </profiles>
   <profile_extensions>
@@ -1094,7 +1094,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1185,7 +1185,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1210,7 +1210,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1944,7 +1944,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -1968,7 +1968,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -2134,7 +2134,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -2188,7 +2188,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -2237,7 +2237,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -2286,7 +2286,7 @@
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -2340,7 +2340,7 @@ used.</description>
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -2389,7 +2389,7 @@ used.</description>
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -2438,7 +2438,7 @@ used.</description>
         <types>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="boolean" in_out_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_out_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
@@ -3225,7 +3225,7 @@ used.</description>
         <types>
           <type name='in_t'/>
         </types>
-        <typesupport mode="boolean" in_t="bool_t" version_added="1.0">
+        <typesupport mode="Boolean" in_t="bool_t" version_added="1.0">
           <op_profile name="BI"/>
           <op_profile name="MI"/>
         </typesupport>
