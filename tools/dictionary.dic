@@ -84,6 +84,7 @@ tensorinfo
 TFLite
 tosa
 TOSA
+tosac
 TOSASETS
 TPUs
 uint

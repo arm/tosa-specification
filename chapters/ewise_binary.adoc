@@ -98,7 +98,7 @@ include::{pseudocode}/operators/LOGICAL_AND.tosac[lines=10..-1]
 
 ==== LOGICAL_LEFT_SHIFT
 
-Elementwise logical left shift of input1 by the amount specified in input2.
+Elementwise logical left-shift of input1 by the amount specified in input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
 include::{generated}/operators/LOGICAL_LEFT_SHIFT.adoc[]

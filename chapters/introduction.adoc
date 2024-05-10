@@ -31,12 +31,10 @@ framework operators can be reduced.
 
 * Full support for both quantized integer and floating-point content.
 
-* Precise functional description of the behavior of every operator, including
-the treatment of their numerical behavior in the case of precision, saturation,
-scaling, and range as required by quantized datatypes.
+* Precise functional description of the behavior of every operator, including their numerical behavior in the case of precision, saturation, scaling, and range as required by quantized datatypes.
 
 * Independent of any single high-level framework, compiler backend stack or
-particular target.
+particular implementation.
 
 * The detailed functional and numerical description enables precise code
 construction for a diverse range of targets – SIMD CPUs, GPUs and custom
@@ -44,11 +42,12 @@ hardware such as NPUs/TPUs.
 
 === Specification
 
-The TOSA Specification is written as AsciiDoc mark-up and developed in its raw
-mark-up form, managed through a git repository here:
-https://git.mlplatform.org/tosa/specification.git/.
+The TOSA Specification is written as a combination of XML, AsciiDoc mark-up, and pseudocode files.
+The content is managed through a git repository here: https://git.mlplatform.org/tosa/specification.git/.
 The specification is developed and versioned much like software.
-While the mark-up is legible and can be read fairly easily in its raw form, it is recommended to build or “render” the mark-up into PDF or HTML.
+The pseudocode (.tosac files) is written in a style similar to C++, however it is not guaranteed to be valid or compile as it exists.
+While the AsciiDoc content is legible and can be read fairly easily in its raw form, it is recommended to build or “render” the mark-up into PDF or HTML.
+The build process will also create the tables in the specification from the XML.
 To do this, please follow the instructions in the README.md in the root of the specification repository.
 
 === Operator Selection Principles
@@ -67,7 +66,7 @@ The following principles govern the selection of operators within TOSA.
 |If the operator can be broken down, then we should look at the component operators.
 
 |P1
-|An operator shall be usable as a component out of which more complex operations can be constructed.
+|An operator shall be usable as a component out of which more than one type of complex operation can be constructed.
 |Single use operators have a high architectural cost and a more reusable version should be considered instead.
 
 |P2
@@ -117,10 +116,10 @@ The following portions of the specification and implementation will not change w
 
 Changes to the following do not break compatibility:
 
-* Order of operations within the XML
+* Order of operation definitions within the XML specification
 * Operator section names
 * Descriptive text that does not affect functionality
-* Non-functional changes to pseudocode (for example: cleanup, local variable name changes)
+* Non-functional changes to pseudocode (for example: cleanup, variable name changes)
 
 Minor versions are allowed to add new operators or other functionality as long as the above guarantees hold.
 
@@ -134,7 +133,7 @@ Each profile is an independent set of operations and data type combinations.
 
 TOSA profile extensions define optional operation and data type combinations.
 
-Each operator's Supported Data Types table will define which profile or extension an operator and data type is in.
+Each operator's Supported Data Types table defines which profile or extension includes that operator with different data types.
 An operator / data type combination may be part of multiple profiles or extensions.
 If so, each profile and extension will be listed in the Supported Data Types table.
 In addition, a table listing all operations for each profile can be found in Appendix B.
@@ -144,7 +143,7 @@ The following are required for compliant TOSA implementations:
 * A TOSA implementation must implement at least one profile.
 * A TOSA implementation may choose to implement any extensions.
 * If a TOSA implementation chooses to implement an extension, it must implement the complete extension.
-* If a operator / data type combination requires multiple extensions, the combination is only required to be implemented if all extensions are implemented
+* If an operator / data type combination requires multiple extensions, the combination is only required to be implemented if all extensions are implemented
 ** For example, a CAST from bf16 to fp8 is only required if both extensions are implemented.
 
 .Profiles
@@ -182,6 +181,152 @@ Possible values for status are:
 * Unstable : Operators are specified, conformance tests provided, but less content has been tested.
 * Incomplete : Operators or conformnace tests may be missing. Changes are likely in future versions of the specification.
 
+=== Supported Number Formats
+
+The following number formats are defined in TOSA.
+The number formats supported by a given operator are listed in its table of supported types.
+A TOSA implementation must support the number formats listed in the supported data types for operators contained in that profile.
+Number formats not required for any operators in a profile do not need to be implemented.
+
+.Number formats
+[cols="1,1,1,5"]
+|===
+|Format|Minimum|Maximum|Description
+
+|bool_t
+| -
+| -
+|Boolean value that is either `true` or `false`. Size is implementation defined. The TOSA reference model implements this as int8_t with 0 for `false` and 1 for `true`. All non-zero values are accepted on input as `true`.
+
+|i4_t
+| -
+| -
+|Signless 4-bit integer type. Will be interpreted as int4_t by all operators
+
+|int4_t
+| -7
+| +7
+|Signed 4-bit two's-complement value. Excludes -8 to maintain a symmetric about zero range for weights.
+
+|i8_t
+| -
+| -
+|Signless 8-bit integer value. Will be interpreted as int8_t unless otherwise specified by an operator.
+
+|int8_t
+| -128
+| +127
+|Signed 8-bit two's-complement value.
+
+|uint8_t
+| 0
+| 255
+|Unsigned 8-bit integer value.
+
+|i16_t
+| -
+| -
+|Signless 16-bit integer type. Will be interpreted as int16_t unless otherwise specified by an operator.
+
+|int16_t
+| -32768
+| +32767
+|Signed 16-bit two's-complement value.
+
+|uint16_t
+| 0
+| 65535
+|Unsigned 16-bit value.
+
+|i32_t
+| -
+| -
+|Signless 32-bit integer value. Will be interpreted as int32_t by all operators.
+
+|int32_t
+| -(1<<31)
+| (1<<31)-1
+|Signed 32-bit two's-complement value.
+
+|i48_t
+| -
+| -
+|Signless 48-bit integer value. Will be interpreted as int48_t by all operators.
+
+|int48_t
+| -(1<<47)
+| (1<<47)-1
+|Signed 48-bit two's-complement value.
+
+|fp8e4m3_t
+| -448
+| 448
+| 8-bit floating-point defined by <<OCP-OFP8,OCP-OFP8>> with four bits of exponent and three bits of mantissa. +
+Normal values must be supported. +
+Denormal values must be supported. +
+NaN encodings must be supported. +
+Signed zero must be supported. +
+This format has no encoding for infinities. +
+The range is extended by using a mantissa-exponent bit pattern to encode NaN instead of sacrificing an exponent value.
+
+|fp8e5m2_t
+| -infinity
+| +infinity
+| 8-bit floating-point defined by <<OCP-OFP8,OCP-OFP8>> with five bits of exponent and two bits of mantissa. +
+Normal values must be supported. +
+Denormal values must be supported. +
+Positive and negative infinity must be supported. +
+NaN encodings must be supported. +
+Signed zero must be supported.
+
+|fp16_t
+| -infinity
+| +infinity
+| 16-bit half-precision floating-point defined by <<IEEE-754,IEEE-754>> . +
+Normal values must be supported. +
+Denormal values must either be supported or flushed to zero. +
+Positive and negative infinity must be supported. +
+At least one NaN encoding must be supported. +
+Signed zero must be supported.
+
+|bf16_t
+| -infinity
+| +infinity
+| 16-bit brain floating-point defined as bits [31:16] of the fp32_t format. +
+Normal values must be supported. +
+Denormal values must either be supported or flushed to zero. +
+Positive and negative infinity must be supported. +
+At least one NaN encoding must be supported. +
+Signed zero must be supported.
+
+|fp32_t
+| -infinity
+| +infinity
+| 32-bit single-precision floating-point defined by <<IEEE-754,IEEE-754>> . +
+Normal values must be supported. +
+Denormal values must either be supported or flushed to zero. +
+Positive and negative infinity must be supported. +
+At least one NaN encoding must be supported. +
+Signed zero must be supported.
+
+|fp64_t
+| -infinity
+| + infinity
+| 64-bit double-precision floating-point defined by <<IEEE-754,IEEE-754>>. +
+Normal values must be supported. +
+Denormal values must either be supported or flushed to zero. +
+Positive and negative infinity must be supported. +
+At least one NaN encoding must be supported. +
+Signed zero must be supported.
+|===
+
+Note: In this specification, minimum<type> and maximum<type> will denote the minimum and maximum values of the data as stored in memory (ignoring the zero point).
+The minimum and maximum values for each type are given in the preceding table.
+
+Note: Integer number formats smaller than 8 bits may be used provided that the numerical result is the same as using a sequence of 8-bit TOSA operations.
+For example, the result of a convolution with low precision data must equal that of running the convolution at 8 bits and then clipping the result to the permitted output range.
+This ensures that a Base Inference profile TOSA implementation can calculate the same result.
+
 === Compliance
 
 This section defines when a TOSA implementation is compliant to a given TOSA specification profile and level.
@@ -190,26 +335,32 @@ TOSA also defines a set of conformance tests.
 A compliant implementation must pass the conformance tests.
 The conformance tests are not exhaustive, so an implementation that passes the conformance tests may not be compliant if there is a non-compliance that is undetected by the tests.
 
-==== Base Inference Profile Compliance
+==== TOSA Graph Compliance
 
 The <<Operator Graphs>> section of this specification defines a TOSA graph and the behavior defined for a TOSA graph.
-This behavior is captured in the pseudo-code function tosa_execute_graph().
+This behavior is captured in the pseudocode function tosa_execute_graph().
 For a given input graph (with attributes) and input tensors there are three possible tosa_graph_result values after executing the graph:
 
 * tosa_unpredictable: The result of the graph on the given inputs cannot be relied upon.
 * tosa_error: The graph does not meet the specification and is recognised as an illegal graph.
 * tosa_valid: The result is defined and predictable and the list of output tensors defines the result.
 
-An implementation is compliant to the TOSA Baseline Inference Profile if it matches the above results as follows:
+An implementation must behave as follows given the above tosa_graph result values:
 
 * For tosa_unpredictable, the implementation can return whatever result it chooses (including error)
 * For tosa_error, the implementation must return an error result (and there is no requirement on how much of the graph is executed, if any)
 * For tosa_valid, the implementation must execute the entire graph without error and return the result defined by this specification.
 
-In terms of psuedo-code, if *graph* is a TOSA graph consisting of Baseline Inference Profile operators and *input_list* is a list of input tensors then the following test must pass.
+In terms of pseudocode, if *graph* is a TOSA graph consisting of TOSA operators and *input_list* is a list of input tensors then the following test must pass.
 
 [source,c++]
 ----
+// Global result status value
+// Will be updated by REQUIRE and ERROR_IF statements when evaluating the TOSA graph
+tosa_result_t tosa_graph_result;
+// Tracks the nesting depth of TOSA operators to allow a limit on nesting depth to be checked.
+int32_t tosa_nesting_depth;
+
 bool tosa_test_compliance(tosa_graph_t graph, tensor_list_t input_list, tosa_level_t level) {
     shape_list_t output_list_spec = tosa_allocate_list(tosa_output_shape(graph));
     shape_list_t output_list_test = tosa_allocate_list(tosa_output_shape(graph));
@@ -231,42 +382,46 @@ bool tosa_test_compliance(tosa_graph_t graph, tensor_list_t input_list, tosa_lev
 }
 ----
 
+==== Base Inference Profile Compliance
+
+A Base Inference compliant implementation must satisfy the following:
+
+* The implementation must support all operator and data type combinations listed in <<Base Inference>>
+** The operations must meet the <<Base Inference Precision Requirements>>
+* The implementation must follow the <<TOSA Graph Compliance>> behavior
+
+===== Base Inference Precision Requirements
+
+In a compliant implementation, individual integer operations within the graph must match exactly.
+
 ==== Main Inference Profile Compliance
 
 A Main Inference compliant implementation must satisfy the following:
 
-* The implementation must meet <<Base Inference Profile Compliance>> for all Base inference compliant graphs
-* The implementation must support all Main Inference operations using the datatype fp32_t
-** The operations must meet the precision requirements of <<Main Inference precision requirements>>
-* The implementation must support all Main Inference operations using the datatype fp16_t
-** The operations must meet the precision requirements of <<Main Inference precision requirements>>
+* The implementation must support all operator and data type combinations listed in <<Main Inference>>
+** The operations must meet the <<Main Inference Precision Requirements>>
 ** Note: These requirements allow fp16_t operations to be implemented using the fp32_t datatype
+* The implementation must follow the <<TOSA Graph Compliance>> behavior
 
-As with <<Base Inference Profile Compliance>> the pseudo-code function tosa_execute_graph() can return one of three possible results.
-A compliant implementation must satisfy the following:
+===== Main Inference Precision Requirements
 
-* For a graph returning tosa_error the implementation must also return an error
-* For a graph returning tosa_valid the implementation must execute the entire graph without error
-* For a graph returning tosa_valid and consisting only of integer operators the results must match exactly
-
-===== Main Inference precision requirements
-
-In a compliant implementation, individual floating-point operations within the graph must meet the accuracy bounds listed in the table following.
-In the table _ulp_ means unit of the last place.
+In a compliant implementation, individual integer operations must match exactly.
+In a compliant implementation, individual floating-point operations within the graph must meet the accuracy bounds listed in the table following, for all operations where no input is a NaN.
+In the table, _ulp_ means unit of the last place.
 The function tosa_reference_check_fp() defines the error range permitted by a given number of units of last place in this specification.
 
 The following criteria apply to all operations:
 
 * If any input is a NaN and the result is floating-point then the result must be a NaN
 * If any input is a NaN and the operation is a comparison (greater, greater-equal, equal) then the result must be false
-* if any input is a NaN and the operation is conversion to an integer or boolean then the result is unpredictable
+* if any input is a NaN and the operation is conversion to an integer or Boolean then the result is unpredictable
 
 [cols="1,3"]
 |===
 | Operation | Accuracy bound
 
 | <<ARGMAX>>, <<ABS>>, <<NEGATE>>, <<SELECT>> <<CONST>>, <<IDENTITY>>
-| Non NaN results must be exact.
+| Results must be exact.
 
 | <<MAX_POOL2D>>, <<CLAMP>>, <<MAXIMUM>>, <<MINIMUM>>, <<REDUCE_MAX>>, <<REDUCE_MIN>>
 | If a result is zero, then the result must be either +0.0 or -0.0 but either sign is permitted. +
@@ -288,7 +443,7 @@ The dot product must meet the <<Dot product accuracy requirements>>
 | <<ADD>>, <<MUL>>, <<SUB>>, <<CEIL>>, <<FLOOR>>
 | Floating-point result overflows must be set to infinity of the correct sign. +
 Floating-point result underflows must be set to zero of the correct sign. +
-Addition of infinites of different signs must produce a NaN. +
+Addition of infinities of different signs must produce a NaN. +
 Subtraction of infinities of the same sign must produce a NaN. +
 Multiplication of an infinity by a zero must produce a NaN. +
 Otherwise the result must be within 0.5 ulp of the mathematical result.
@@ -298,25 +453,25 @@ Otherwise the result must be within 0.5 ulp of the mathematical result.
 fp8e4m3_t and fp8e5m2_t must use the non-saturating mode defined in <<OCP-OFP8,OCP-OFP8>> when converting from the wider floating-point types. +
 If saturation of the fp8 types is desired, a <<CLAMP>> operation with the appropriate parameters should be used before the cast. +
 Floating-point result underflows must be set to zero of the correct sign. +
-Cast from floating-point to integer result overflows must be saturated. +
-Cast from floating-point to integer must be rounded using round to nearest, ties to even, rounding mode. +
-Otherwise cast to floating-point must be within 0.5 ulp of the mathematical result.
+Result overflows when converting floating-point to integer must be saturated. +
+Cast from floating-point to integer must round to nearest, ties to even. +
+Otherwise, cast to floating-point must be within 0.5 ulp of the mathematical result.
 
 | <<RECIPROCAL>>
-| If the input is a zero or the result overlows the output must be an infinity of the same sign. +
-If the input is an infinty or the result underflows the output must be a zero of the same sign. +
-Otherwise:the result must be within 1 ulp of the mathematical result.
+| If the input is a zero or the result overflows, the output must be an infinity of the same sign. +
+If the input is an infinity or the result underflows, the output must be a zero of the same sign. +
+Otherwise, the result must be within 1 ulp of the mathematical result.
 
 | <<RSQRT>>
-| If the input is less than zero the result must be a NaN. +
-Otherwise if the input is a zero the output must be an infinity of the same sign. +
-Otherwise the result must be within 2 ulp of the mathematical result.
+| If the input is less than zero, the result must be a NaN. +
+If the input is a zero, the output must be an infinity of the same sign. +
+Otherwise, the result must be within 2 ulp of the mathematical result.
 
 | <<LOG>>, <<ERF>>
-| If the input to LOG is less than zero then the result must be a NaN. +
-If the result overflows the output must be an infinity of the correct sign. +
-If the result underflows the output must be a zero of the correct sign. +
-Otherwise the result must be within 5 ulp of the mathematical result.
+| If the input to LOG is less than zero, then the result must be a NaN. +
+If the result overflows, the output must be an infinity of the correct sign. +
+If the result underflows, the output must be a zero of the correct sign. +
+Otherwise, the result must be within 5 ulp of the mathematical result.
 
 | <<EXP>>
 | Let `x` be an input element and `out_imp` the implementation output of `exp(x)`. +
@@ -398,7 +553,7 @@ This section assumes an operation acting on tensors named 'input', 'weight' and 
 Each output tensor element can be expressed as a dot product of elements between the 'input' and 'weight' tensors with optional bias addition.
 The dot product has length KS, the kernel size.
 If the operation does not specify a bias then 'bias' is taken to be zero in this section.
-Note: KS is defined for each relevant operator in the appendix section <<Main Inference operator test data>>.
+Note: KS is defined for each relevant operator in the appendix section <<Main Inference Operator Test Data>>.
 
 In other words, each output element `out` can be expressed as a dot product between input elements `in[k]`, weight elements `w[k]`, bias `b`:
 
@@ -419,7 +574,7 @@ In this section:
 
 The checks described in the following code must pass for the following data sets:
 
-* Data sets defined for the operation in Appendix A <<Main Inference operator test data>>.
+* Data sets defined for the operation in Appendix A <<Main Inference Operator Test Data>>.
 * Data sets that have at least MIN_DOT_PRODUCT different output values. For these data sets we take S=-1.
 
 [source,c++]
@@ -492,7 +647,7 @@ The components of a shape_t are of type size_t.
 
 In this version of the specification, shape_t values must be resolvable to constants at backend compile time.
 
-==== Tensor size limit
+==== Tensor Size Limit
 
 The tensor overall size is limited by the data type size_t.
 This type must be able to hold integers in the range 0 to (1 << (MAX_LOG2_SIZE + 1)) - 1 where MAX_LOG2_SIZE is defined in <<Levels>>.
@@ -533,158 +688,15 @@ TOSA broadcast requires the rank of both tensors to be the same.
 A RESHAPE can be done to create a compatible tensor with appropriate dimensions of size 1.
 To map indexes in an output tensor to that of an input tensor, see <<Broadcast Helpers>>.
 
-==== Supported Number Formats
-
-The following number formats are defined in TOSA.
-The number formats supported by a given operator are listed in its table of supported types.
-A TOSA implementation must support the number formats listed in the supported data types for operators contained in that profile.
-Number formats not required for any operators in a profile do not need to be implemented.
-
-.Number formats
-[cols="1,1,1,5"]
-|===
-|Format|Minimum|Maximum|Description
-
-|bool_t
-| -
-| -
-|Boolean value that is either `true` or `false`. Size implementation defined. The TOSA reference model implements this as int8_t with 0 for `false` and 1 for `true`. All non-zero values are accepted on input as `true`.
-
-|i4_t
-| -
-| -
-|Signless 4-bit integer type. Will be interpreted as int4_t by all operators
-
-|int4_t
-| -7
-| +7
-|Signed 4-bit two's-complement value. Excludes -8 to maintain a symmetric about zero range for weights.
-
-|i8_t
-| -
-| -
-|Signless 8-bit integer value. Will be interpreted as int8_t unless otherwise specified by an operator.
-
-|int8_t
-| -128
-| +127
-|Signed 8-bit two's-complement value.
-
-|uint8_t
-| 0
-| 255
-|Unsigned 8-bit integer value.
-
-|i16_t
-| -
-| -
-|Signless 16-bit integer type. Will be interpreted as int16_t unless otherwise specified by an operator.
-
-|int16_t
-| -32768
-| +32767
-|Signed 16-bit two's-complement value.
-
-|uint16_t
-| 0
-| 65535
-|Unsigned 16-bit value.
-
-|i32_t
-| -
-| -
-|Signless 32-bit integer value. Will be interpreted as int32_t by all operators.
-
-|int32_t
-| -(1<<31)
-| (1<<31)-1
-|Signed 32-bit two's-complement value.
-
-|i48_t
-| -
-| -
-|Signless 48-bit integer value. Will be interpreted as int48_t by all operators.
-
-|int48_t
-| -(1<<47)
-| (1<<47)-1
-|Signed 48-bit two's-complement value.
-
-|fp8e4m3_t
-| -448
-| 448
-| 8-bit floating-point defined by <<OCP-OFP8,OCP-OFP8>> with four bits of exponent and three bits of mantissa. +
-Normal values must be supported. +
-Denormal values must be supported. +
-The NaN encoding must be supported. +
-Signed zero must be supported.
-
-|fp8e5m2_t
-| -infinity
-| +infinity
-| 8-bit floating-point defined by <<OCP-OFP8,OCP-OFP8>> with five bits of exponent and two bits of mantissa. +
-Normal values must be supported. +
-Denormal values must be supported. +
-Positive and negative infinity must be supported. +
-NaN encodings must be supported. +
-Signed zero must be supported.
-
-|fp16_t
-| -infinity
-| +infinity
-| 16-bit half-precision floating-point defined by <<IEEE-754,IEEE-754>> . +
-Normal values must be supported. +
-Denormal values must either be supported or flushed to zero. +
-Positive and negative infinity must be supported. +
-At least one NaN encoding must be supported. +
-Signed zero must be supported.
-
-|bf16_t
-| -infinity
-| +infinity
-| 16-bit brain floating-point defined as bits [31:16] of the fp32_t format. +
-Normal values must be supported. +
-Denormal values must either be supported or flushed to zero. +
-Positive and negative infinity must be supported. +
-At least one NaN encoding must be supported. +
-Signed zero must be supported.
-
-|fp32_t
-| -infinity
-| +infinity
-| 32-bit single-precision floating-point defined by <<IEEE-754,IEEE-754>> . +
-Normal values must be supported. +
-Denormal values must either be supported or flushed to zero. +
-Positive and negative infinity must be supported. +
-At least one NaN encoding must be supported. +
-Signed zero must be supported.
-
-|fp64_t
-| -infinity
-| + infinity
-| 64-bit double-precision floating-point defined by <<IEEE-754,IEEE-754>>. +
-Normal values must be supported. +
-Denormal values must either be supported or flushed to zero. +
-Positive and negative infinity must be supported. +
-At least one NaN encoding must be supported. +
-Signed zero must be supported.
-|===
-
-Note: In this specification minimum<type> and maximum<type> will denote the minimum and maximum values of the data as stored in memory (ignoring the zero point).
-The minimum and maximum values for each type is given in the preceeding table.
-
-Note: Integer number formats smaller than 8 bits may be used provided that the numerical result is the same as using a sequence of 8-bit TOSA operations.
-For example, a convolution with low precision data must equal that of running the convolution at 8 bits and then clipping the result to the peritted output range.
-This ensures that a Base Inference profile TOSA implementation can calculate the same result.
 
 === Integer Behavior
 
 TOSA integer inputs and outputs are specified by signless values with the given number of bits.
-Unless otherwise specified, these values will be interpreted as signed twos-complement.
+Unless otherwise specified, these values will be interpreted as signed two's-complement.
 The pseudocode will use int*_t to indicate use as a signed value and uint*_t to indicate use as an unsigned value.
 If overflow occurs doing integer calculation, the result is unpredictable, as indicated by the REQUIRE checks in the pseudocode for the operators.
 
-Unsigned 8 and 16-bit values are only allowed in the RESCALE operation, to allow for compatibility with networks which expect unsigned 8-bit or 16-bit tensors for input and output.
+Unsigned 8- and 16-bit values are only allowed in the RESCALE operation, to allow for compatibility with networks which expect unsigned 8-bit or 16-bit tensors for input and output.
 
 ==== Quantization
 
@@ -695,15 +707,15 @@ Required zero point values are passed to the operator as necessary, and will be 
 To convert a network containing quantized tensors to TOSA, generate explicit RESCALE operators for any change of quantization scaling.
 This reduces quantized operations to purely integer operations.
 
-As an example, an ADD between two quantized tensors requires the integer values represent the same range.
-The scale arguments for RESCALE can be calculated to ensure that the resulting tensors represent the same range.
+As an example, an ADD between two quantized tensors requires the integer values to belong to the same domain.
+The scale arguments for RESCALE can be calculated to ensure that the resulting tensors belong to the same domain.
 Then the ADD is performed, and a RESCALE can be used to ensure that the result is scaled properly.
 
 RESCALE provides support for per-tensor and per-channel scaling values to ensure compatibility with a range of possible quantization implementations.
 
 
 
-==== Precision scaling
+==== Precision Scaling
 
 TOSA uses the RESCALE operation to scale between values with differing precision.
 The RESCALE operator is defined using an integer multiply, add, and shift.
@@ -711,20 +723,19 @@ This guarantees that all TOSA implementations will return the same result for a 
 
 This TOSA specification supports two precisions of multiplier: 16-bit and 32-bit.
 The 32-bit multiplier version supports two rounding modes to enable simpler lowering of existing frameworks that use two stage rounding.
-All arithmetic is designed so that it does not overflow a 64-bit accumulator and that the final result fits in 32 bits.
-In particular a 48-bit value can only be scaled with the 16-bit multiplier.
+All arithmetic is designed so that it does not overflow a 64-bit accumulator and that the result fits in 32 bits.
+In particular, a 48-bit value cannot be scaled with the 32-bit multiplier because the accumulator would need to have 80 bits.
 
-The apply_scale functions provide a scaling of approximately (multiplier * 2^-shift^).
-The shift and value range is limited to allow a variety of implementations.
+The apply_scale_* functions provide a scaling of approximately (multiplier / 2^shift^).
+The shift and value range are limited to allow a variety of implementations.
 The limit of 62 on shift allows the shift to be decomposed as two right shifts of 31.
-The limit on value allows implementations that left shift the value before the multiply in the case of shifts of 32 or less.
+For apply_scale_32, the value must be between (-1 << (shift - 1)) <= value < (1 << (shift - 1)).
+This allows for implementations that left-shift the value before the multiply in the case of shifts of 32 or less.
 For example, in the case shift=30 an implementation of the form ((value\<<2) * multiplier + round)>>32 can be used.
 A scaling range of 2^+12^ down to 2^-32^ is supported for both functions with a normalized multiplier.
-
-For example, in typical usage a scaling of m*2^-n^ where m is a fraction in the
-range 1.0 \<= m < 2.0 can be represented using multiplier=(1<<30)*m, shift=(30+n) for
-apply_scale_32() and multiplier=(1<<14)*m, shift=(14+n) for apply_scale_16().
+In typical usage, a scaling of m*2^-n^ (where m is a fraction in the range 1.0 \<= m < 2.0) can be represented using multiplier=(1<<30)*m, shift=(30+n) for apply_scale_32() and multiplier=(1<<14)*m, shift=(14+n) for apply_scale_16().
 The values to achieve a scaling of 1.0 are shift=30, multiplier=1<<30 for apply_scale_32 and shift=14, multiplier=1<<14 for apply_scale_16.
+The right shift of result is an arithmetic shift.
 
 [source,c++]
 ----
@@ -737,18 +748,18 @@ int32_t apply_scale_32(int32_t value, int32_t multiplier, int8_t shift, bool_t d
         if (shift > 31 && value >= 0) round += 1<<30;
         if (shift > 31 && value < 0)  round -= 1<<30;
     }
-    int64_t result = static_cast<int64_t>(value) * multiplier + round;
-    result = result >> shift;
+    int64_t result = (static_cast<int64_t>(value) * multiplier) + round;
+    result >>= shift;
     // result will fit a 32-bit range due to the REQUIRE on value
     return static_cast<int32_t>(result);
 }
 
-int32_t apply_scale_16(int48_t value, int16_t multipler, int8_t shift) {
+int32_t apply_scale_16(int48_t value, int16_t multiplier, int8_t shift) {
     REQUIRE(multiplier >= 0);
     REQUIRE(2 <= shift && shift <= 62);
-    int64_t round = (1 << (shift - 1));
-    int64_t result = static_cast<int64_t>(value) * multiplier + round;
-    result = result >> shift;
+    int64_t round = 1 << (shift - 1);
+    int64_t result = (static_cast<int64_t>(value) * multiplier) + round;
+    result >>= shift;
     REQUIRE(result >= minimum<int32_t> && result <= maximum<int32_t>);
     return static_cast<int32_t>(result);
 }
@@ -832,7 +843,7 @@ void generate_lookup_table(int16_t *table, int32_t (*reference)(int32_t))
 }
 ----
 
-=== Other publications
+=== Other Publications
 
 The following publications are referred to in this specification, or provide more information:
 

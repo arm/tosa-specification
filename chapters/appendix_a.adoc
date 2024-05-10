@@ -9,7 +9,7 @@
 
 == Appendix A
 
-=== Random data generation
+=== Random Data Generation
 
 The following function generates a pseudo-random floating-point value in the range -1.0 to +1.0 for use as test data.
 It uses a modulo (1<<32) recurrent sequence with multiplier derived from "TOSASETS" and the set number.
@@ -28,7 +28,7 @@ float set_data(uint32_t set, uint32_t index)
 }
 ----
 
-=== Main Inference test data generator
+=== Main Inference Test Data Generator
 
 This section describes the function tosa_mi_data(S, KS, p, k, i) that generates test data for main inference compliance.
 This function takes the following arguments:
@@ -55,7 +55,7 @@ B is set to be the largest value that is both representable by the input type an
 | fp32        | fp32             | (1<<64) - (1<<40)
 |===
 
-==== Test set S=0 generator
+==== Test Set S=0 Generator
 
 The aim of this generator is to check that sum of products with zero gives zero result.
 
@@ -67,7 +67,7 @@ The aim of this generator is to check that sum of products with zero gives zero 
 | 2 | 0.0
 |===
 
-==== Test set S=1
+==== Test Set S=1
 
 The aim of this test set is to check values with large exponents.
 
@@ -79,7 +79,7 @@ The aim of this test set is to check values with large exponents.
 | 2 | (B*B/(KS+1))*(0.75 + 0.25*set_data(3*S+2, i))
 |===
 
-==== Test set S=2
+==== Test Set S=2
 
 The aim of this test set is to check rounding error when accumulating small values onto a large value.
 In this case the small values are of similar magnitude.
@@ -93,7 +93,7 @@ If the implementation changes the order of the sum, then the test data must also
 | 2 | 0.0
 |===
 
-==== Test set S=3
+==== Test Set S=3
 
 The aim of this test set is to check rounding error when accumulating small values onto a large value.
 In this case the small values are of varying magnitude.
@@ -107,7 +107,7 @@ If the implementation changes the order of the sum, then the test data must also
 | 2 | 0.0
 |===
 
-==== Test set S=4
+==== Test Set S=4
 
 The aim of this test set is to check a mixture of zero and non-zero products.
 
@@ -119,7 +119,7 @@ The aim of this test set is to check a mixture of zero and non-zero products.
 | 2 | 0.0
 |===
 
-==== Test set S=5
+==== Test Set S=5
 
 The aim of this test set is to check signed inputs of large range.
 
@@ -131,7 +131,7 @@ The aim of this test set is to check signed inputs of large range.
 | 2 | 0.0
 |===
 
-=== Main Inference operator test data
+=== Main Inference Operator Test Data
 
 For each operator, this section defines how to generate test data for test set S.
 For the results to be statistically significant the operation must calculate at least MIN_DOT_PRODUCTS dot products.
