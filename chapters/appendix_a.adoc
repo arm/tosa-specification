@@ -47,6 +47,8 @@ B is set to be the largest value that is both representable by the input type an
 
 |===
 | inputs type | accumulator type | B value
+| fp8e4m3     | fp16             | (1<<8) - (1<<4)  = 240
+| fp8e5m2     | fp16             | (1<<8) - (1<<5)  = 224
 | fp16        | fp16             | (1<<8)  - (1/8)  = 255.875
 | fp16        | fp32             | (1<<16) - (1<<5) = 65504
 | bf16        | fp32             | (1<<64) - (1<<56)
