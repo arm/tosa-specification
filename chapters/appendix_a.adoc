@@ -28,9 +28,9 @@ float set_data(uint32_t set, uint32_t index)
 }
 ----
 
-=== Floating-Point Inference Test Data Generator
+=== Floating-Point Test Data Generator
 
-This section describes the function tosa_pro_fp_data(S, KS, p, k, i) that generates test data for floating-point inference compliance.
+This section describes the function tosa_pro_fp_data(S, KS, p, k, i) that generates test data for floating-point profile compliance.
 This function takes the following arguments:
 
 * S is the test set number which identifies which generator is used
@@ -131,7 +131,7 @@ The aim of this test set is to check signed inputs of large range.
 | 2 | 0.0
 |===
 
-=== Floating-Point Inference Operator Test Data
+=== Floating-Point Operator Test Data
 
 For each operator, this section defines how to generate test data for test set S.
 For the results to be statistically significant the operation must calculate at least MIN_DOT_PRODUCTS dot products.

@@ -179,9 +179,16 @@ This specification is the release candidate for TOSA 1.0.
 The specific status of each profile and extension is contained in the tables in <<Profiles>>.
 Possible values for status are:
 
-* Complete : All operators are specified, conformance tests are provided, no changes are expected.
-* Unstable : Operators are specified, conformance tests provided, but less content has been tested.
-* Incomplete : Operators or conformnace tests may be missing. Changes are likely in future versions of the specification.
+[cols="1,4"]
+|===
+| Status | Description
+
+
+| Complete | All operators are specified, conformance tests are provided, no changes are expected. Backward compatibility is guaranteed.
+| Experimental | Operators are subject to change, backwards compatibility is not guaranteed for experimental extensions. +
+If an implementation implements an experimental extension, it must pass the conformance tests for that extension.
+| Deprecated | Operators retained for compatibility, but may be removed in a future major release of TOSA.
+|===
 
 === Supported Number Formats
 
@@ -327,7 +334,7 @@ The minimum and maximum values for each type are given in the preceding table.
 
 Note: Integer number formats smaller than 8 bits may be used provided that the numerical result is the same as using a sequence of 8-bit TOSA operations.
 For example, the result of a convolution with low precision data must equal that of running the convolution at 8 bits and then clipping the result to the permitted output range.
-This ensures that an Integer Inference profile TOSA implementation can calculate the same result.
+This ensures that an Integer profile TOSA implementation can calculate the same result.
 
 === Compliance
 
@@ -384,28 +391,28 @@ bool_t tosa_test_compliance(tosa_graph_t graph, tensor_list_t input_list, tosa_l
 }
 ----
 
-==== Integer Inference Profile Compliance
+==== Integer Profile Compliance
 
-An Integer Inference compliant implementation must satisfy the following:
+An Integer profile compliant implementation must satisfy the following:
 
-* The implementation must support all operator and data type combinations listed in <<Integer Inference>>
-** The operations must meet the <<Integer Inference Precision Requirements>>
+* The implementation must support all operator and data type combinations listed in <<Integer>>
+** The operations must meet the <<Integer Precision Requirements>>
 * The implementation must follow the <<TOSA Graph Compliance>> behavior
 
-===== Integer Inference Precision Requirements
+===== Integer Precision Requirements
 
 In a compliant implementation, individual integer operations within the graph must match exactly.
 
-==== Floating-Point Inference Profile Compliance
+==== Floating-Point Profile Compliance
 
-A Floating-Point Inference compliant implementation must satisfy the following:
+A Floating-Point profile compliant implementation must satisfy the following:
 
-* The implementation must support all operator and data type combinations listed in <<Floating-Point Inference>>
-** The operations must meet the <<Floating-Point Inference Precision Requirements>>
+* The implementation must support all operator and data type combinations listed in <<Floating-Point>>
+** The operations must meet the <<Floating-Point Precision Requirements>>
 ** Note: These requirements allow fp16_t operations to be implemented using the fp32_t datatype
 * The implementation must follow the <<TOSA Graph Compliance>> behavior
 
-===== Floating-Point Inference Precision Requirements
+===== Floating-Point Precision Requirements
 
 In a compliant implementation, individual integer operations must match exactly.
 In a compliant implementation, individual floating-point operations within the graph must meet the accuracy bounds listed in the table following, for all operations where no input is a NaN.
@@ -558,7 +565,7 @@ This section assumes an operation acting on tensors named 'input', 'weight' and 
 Each output tensor element can be expressed as a dot product of elements between the 'input' and 'weight' tensors with optional bias addition.
 The dot product has length KS, the kernel size.
 If the operation does not specify a bias then 'bias' is taken to be zero in this section.
-Note: KS is defined for each relevant operator in the appendix section <<Floating-Point Inference Operator Test Data>>.
+Note: KS is defined for each relevant operator in the appendix section <<Floating-Point Operator Test Data>>.
 
 In other words, each output element `out` can be expressed as a dot product between input elements `in[k]`, weight elements `w[k]`, bias `b`:
 
@@ -579,7 +586,7 @@ In this section:
 
 For the checks described in the following code:
 
-* Data sets defined for the operation in Appendix A <<Floating-Point Inference Operator Test Data>> must pass.
+* Data sets defined for the operation in Appendix A <<Floating-Point Operator Test Data>> must pass.
 * Data sets that have at least MIN_DOT_PRODUCT different output values should pass with S=-1 in the following code to disable the bias test.
 
 [source,c++]
