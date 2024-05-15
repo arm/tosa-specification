@@ -3,8 +3,8 @@
 <tosa>
   <version major="1" minor="1" patch="0" draft="true"/>
   <profiles>
-    <profile profile="Integer Inference" name="PRO-INT" status="Complete" description="Integer operations, primarily 8- and 32-bit values"/>
-    <profile profile="Floating-Point Inference" name="PRO-FP" status="Complete" description="FP16 and FP32 operations"/>
+    <profile profile="Integer" name="PRO-INT" status="Complete" description="Integer operations, primarily 8- and 32-bit values"/>
+    <profile profile="Floating-Point" name="PRO-FP" status="Complete" description="FP16 and FP32 operations"/>
   </profiles>
   <profile_extensions>
     <profile_extension name="EXT-INT16" description="16-bit integer operations" status="Complete">
@@ -13,23 +13,19 @@
     <profile_extension name="EXT-INT4" description="4-bit integer weights" status="Complete">
       <profile_supported>PRO-INT</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-BF16" description="BFloat16 operations" status="Complete">
+    <profile_extension name="EXT-BF16" description="BFloat16 operations" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-FP8E4M3" description="8-bit floating-point operations E4M3" status="Unstable">
+    <profile_extension name="EXT-FP8E4M3" description="8-bit floating-point operations E4M3" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-FP8E5M2" description="8-bit floating-point operations E5M2" status="Unstable">
+    <profile_extension name="EXT-FP8E5M2" description="8-bit floating-point operations E5M2" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
     <profile_extension name="EXT-FFT" description="Fast Fourier Transform operations" status="Complete">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-SHAPE" description="Shape inference operations" status="Unstable">
-      <profile_supported>PRO-INT</profile_supported>
-      <profile_supported>PRO-FP</profile_supported>
-    </profile_extension>
-    <profile_extension name="EXT-VARIABLE" description="Stateful variable operations" status="Unstable">
+    <profile_extension name="EXT-VARIABLE" description="Stateful variable operations" status="Experimental">
       <profile_supported>PRO-INT</profile_supported>
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>

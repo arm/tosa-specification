@@ -3,6 +3,14 @@
 
 <!-- Type definitions -->
 
+<xs:simpleType name="extension_status">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="Complete"/>
+    <xs:enumeration value="Deprecated"/>
+    <xs:enumeration value="Experimental"/>
+  </xs:restriction>
+</xs:simpleType>
+
 <xs:simpleType name="profile_ext_name">
   <xs:restriction base="xs:string">
     <xs:enumeration value="PRO-INT"/>
@@ -156,7 +164,7 @@
       <xs:element name="profile_supported" type="profile_ext_name" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="name" type="xs:string" use="required"/>
-    <xs:attribute name="status" type="xs:string" use="required"/>
+    <xs:attribute name="status" type="extension_status" use="required"/>
     <xs:attribute name="description" type="xs:string" use="required"/>
   </xs:complexType>
 </xs:element>
