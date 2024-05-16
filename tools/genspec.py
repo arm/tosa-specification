@@ -5,6 +5,7 @@ import os
 import re
 from functools import cmp_to_key
 
+import compliance_data_exporter
 import tosa
 
 
@@ -231,10 +232,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--xml", required=True, help="Path to specification XML")
     parser.add_argument("--outdir", required=True, help="Output directory")
+    parser.add_argument(
+        "--profile",
+        required=False,
+        action="store_true",
+        help="Export the profile compliance data to the location indicated by --outdir",
+    )
     args = parser.parse_args()
 
     try:
         spec = tosa.TOSASpec(args.xml)
+        if args.profile:
+            compliance_data_exporter.print_profiles_extensions(spec, args.outdir)
     except RuntimeError as e:
         print(f"Failure reading/validating XML spec: {str(e)}")
         exit(1)
