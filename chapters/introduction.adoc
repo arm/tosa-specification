@@ -265,8 +265,12 @@ The following criteria apply to all operations:
 |===
 | Operation | Accuracy bound
 
-| <<ARGMAX>>, <<MAX_POOL2D>>, <<CLAMP>>, <<MAXIMUM>>, <<MINIMUM>>, <<ABS>>, <<NEGATE>>, <<SELECT>>, <<REDUCE_MAX>>, <<REDUCE_MIN>>, <<CONST>>, <<IDENTITY>>
+| <<ARGMAX>>, <<ABS>>, <<NEGATE>>, <<SELECT>> <<CONST>>, <<IDENTITY>>
 | Non NaN results must be exact.
+
+| <<MAX_POOL2D>>, <<CLAMP>>, <<MAXIMUM>>, <<MINIMUM>>, <<REDUCE_MAX>>, <<REDUCE_MIN>>
+| If a result is zero, then the result must be either +0.0 or -0.0 but either sign is permitted. +
+Other non NaN results must be exact.
 
 | <<EQUAL>>, <<GREATER>>, <<GREATER_EQUAL>>
 | The result must be exact with: +
