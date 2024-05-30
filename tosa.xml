@@ -316,6 +316,7 @@
           <type name='in_t' />
           <type name='weight_t' />
           <type name='out_t' />
+          <type name='acc_t' />
         </types>
         <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
@@ -410,6 +411,7 @@
           <type name='in_t' />
           <type name='weight_t' />
           <type name='out_t' />
+          <type name='acc_t' />
         </types>
         <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
@@ -740,6 +742,7 @@
           <type name='in_t' />
           <type name='weight_t' />
           <type name='out_t' />
+          <type name='acc_t' />
         </types>
         <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="BI"/>
@@ -750,10 +753,10 @@
         <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" out_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
