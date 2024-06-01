@@ -100,6 +100,7 @@ profile_list = [
     "Extension::fp8e5m2",
     "Extension::fft",
     "Extension::variable",
+    "Extension::shape",
 ]
 
 type_list = [

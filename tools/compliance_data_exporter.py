@@ -15,6 +15,7 @@ validation_term_mapping_profile = {
     "EXT-FP8E4M3": "Extension::fp8e4m3",
     "EXT-FP8E5M2": "Extension::fp8e5m2",
     "EXT-FFT": "Extension::fft",
+    "EXT-SHAPE": "Extension::shape",
     "EXT-VARIABLE": "Extension::variable",
 }
 
