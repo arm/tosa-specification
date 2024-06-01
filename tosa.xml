@@ -25,6 +25,10 @@
     <profile_extension name="EXT-FFT" description="Fast Fourier Transform operations" status="Complete">
       <profile_supported>MI</profile_supported>
     </profile_extension>
+    <profile_extension name="EXT-SHAPE" description="Shape inference operations" status="Unstable">
+      <profile_supported>BI</profile_supported>
+      <profile_supported>MI</profile_supported>
+    </profile_extension>
     <profile_extension name="EXT-VARIABLE" description="Stateful variable operations" status="Unstable">
       <profile_supported>BI</profile_supported>
       <profile_supported>MI</profile_supported>
@@ -3169,8 +3173,7 @@ used.</description>
           <type name='shape_t' />
         </types>
         <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
-          <op_profile name="BI"/>
-          <op_profile name="MI"/>
+          <op_profile name="EXT-SHAPE"/>
         </typesupport>
       </operator>
       <operator>
@@ -3187,8 +3190,7 @@ used.</description>
           <type name='shape_t' />
         </types>
         <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
-          <op_profile name="BI"/>
-          <op_profile name="MI"/>
+          <op_profile name="EXT-SHAPE"/>
         </typesupport>
       </operator>
       <operator>
@@ -3229,32 +3231,32 @@ used.</description>
           <type name='in_t'/>
         </types>
         <typesupport mode="Boolean" in_t="bool_t" version_added="1.0">
-          <op_profile name="BI"/>
-          <op_profile name="MI"/>
+          <op_profile name="BI" and_name="EXT-SHAPE"/>
+          <op_profile name="MI" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="signed 8" in_t="i8_t" version_added="1.0">
-          <op_profile name="BI"/>
+          <op_profile name="BI" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="signed 16" in_t="i16_t" version_added="1.0">
-          <op_profile name="BI"/>
+          <op_profile name="BI" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="signed 32" in_t="i32_t" version_added="1.0">
-          <op_profile name="BI"/>
+          <op_profile name="BI" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="fp8e4m3" in_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+          <op_profile name="EXT-FP8E4M3" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" version_added="1.0">
-          <op_profile name="EXT-FP8E5M2"/>
+          <op_profile name="EXT-FP8E5M2" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="fp16" in_t="fp16_t" version_added="1.0">
-          <op_profile name="MI"/>
+          <op_profile name="MI" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="bf16" in_t="bf16_t" version_added="1.0">
-          <op_profile name="EXT-BF16"/>
+          <op_profile name="EXT-BF16" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="fp32" in_t="fp32_t" version_added="1.0">
-          <op_profile name="MI"/>
+          <op_profile name="MI" and_name="EXT-SHAPE"/>
         </typesupport>
       </operator>
       <operator>
@@ -3274,8 +3276,7 @@ used.</description>
           <type name='shape_t' />
         </types>
         <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
-          <op_profile name="BI"/>
-          <op_profile name="MI"/>
+          <op_profile name="EXT-SHAPE"/>
         </typesupport>
       </operator>
       <operator>
@@ -3295,8 +3296,7 @@ used.</description>
           <type name='shape_t' />
         </types>
         <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
-          <op_profile name="BI"/>
-          <op_profile name="MI"/>
+          <op_profile name="EXT-SHAPE"/>
         </typesupport>
       </operator>
       <operator>
@@ -3316,8 +3316,7 @@ used.</description>
           <type name='shape_t' />
         </types>
         <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
-          <op_profile name="BI"/>
-          <op_profile name="MI"/>
+          <op_profile name="EXT-SHAPE"/>
         </typesupport>
       </operator>
     </operatorgroup>

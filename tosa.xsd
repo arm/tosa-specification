@@ -13,6 +13,7 @@
     <xs:enumeration value="EXT-FP8E4M3"/>
     <xs:enumeration value="EXT-FP8E5M2"/>
     <xs:enumeration value="EXT-FFT"/>
+    <xs:enumeration value="EXT-SHAPE"/>
     <xs:enumeration value="EXT-VARIABLE"/>
   </xs:restriction>
 </xs:simpleType>
