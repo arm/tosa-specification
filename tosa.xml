@@ -111,7 +111,7 @@
             <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
-            <description>Enumerated type, must be one of INT32, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
+            <description>Enumerated type, must be one of INT32, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
             <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_out_t">
@@ -193,7 +193,7 @@
             <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
-            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
+            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
             <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
@@ -292,7 +292,7 @@
             <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
-            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
+            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
             <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
@@ -387,7 +387,7 @@
             <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
-            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
+            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
             <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
@@ -662,7 +662,7 @@
             <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
-            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32, as defined in the Supported Data Types table for this operation</description>
+            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
             <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
