@@ -49,6 +49,9 @@ the scale as described in the pseudocode. The [border_y, border_x] values
 adjust the output size to allow fractional sampling beyond integer
 input position (IH - 1,IW - 1).
 
+The limit MAX_SCALE is applied to each scale ratio after reduction of the ratio.
+Individual scale numerator and denominaor values are allowed to be larger than MAX_SCALE.
+
 include::{generated}/operators/RESIZE.adoc[]
 
 *Resize Modes:*
