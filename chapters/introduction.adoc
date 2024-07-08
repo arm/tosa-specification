@@ -325,7 +325,7 @@ The minimum and maximum values for each type are given in the preceding table.
 
 Note: Integer number formats smaller than 8 bits may be used provided that the numerical result is the same as using a sequence of 8-bit TOSA operations.
 For example, the result of a convolution with low precision data must equal that of running the convolution at 8 bits and then clipping the result to the permitted output range.
-This ensures that a Base Inference profile TOSA implementation can calculate the same result.
+This ensures that an Integer Inference profile TOSA implementation can calculate the same result.
 
 === Compliance
 
@@ -382,28 +382,28 @@ bool tosa_test_compliance(tosa_graph_t graph, tensor_list_t input_list, tosa_lev
 }
 ----
 
-==== Base Inference Profile Compliance
+==== Integer Inference Profile Compliance
 
-A Base Inference compliant implementation must satisfy the following:
+An Integer Inference compliant implementation must satisfy the following:
 
-* The implementation must support all operator and data type combinations listed in <<Base Inference>>
-** The operations must meet the <<Base Inference Precision Requirements>>
+* The implementation must support all operator and data type combinations listed in <<Integer Inference>>
+** The operations must meet the <<Integer Inference Precision Requirements>>
 * The implementation must follow the <<TOSA Graph Compliance>> behavior
 
-===== Base Inference Precision Requirements
+===== Integer Inference Precision Requirements
 
 In a compliant implementation, individual integer operations within the graph must match exactly.
 
-==== Main Inference Profile Compliance
+==== Floating-Point Inference Profile Compliance
 
-A Main Inference compliant implementation must satisfy the following:
+A Floating-Point Inference compliant implementation must satisfy the following:
 
-* The implementation must support all operator and data type combinations listed in <<Main Inference>>
-** The operations must meet the <<Main Inference Precision Requirements>>
+* The implementation must support all operator and data type combinations listed in <<Floating-Point Inference>>
+** The operations must meet the <<Floating-Point Inference Precision Requirements>>
 ** Note: These requirements allow fp16_t operations to be implemented using the fp32_t datatype
 * The implementation must follow the <<TOSA Graph Compliance>> behavior
 
-===== Main Inference Precision Requirements
+===== Floating-Point Inference Precision Requirements
 
 In a compliant implementation, individual integer operations must match exactly.
 In a compliant implementation, individual floating-point operations within the graph must meet the accuracy bounds listed in the table following, for all operations where no input is a NaN.
@@ -553,7 +553,7 @@ This section assumes an operation acting on tensors named 'input', 'weight' and 
 Each output tensor element can be expressed as a dot product of elements between the 'input' and 'weight' tensors with optional bias addition.
 The dot product has length KS, the kernel size.
 If the operation does not specify a bias then 'bias' is taken to be zero in this section.
-Note: KS is defined for each relevant operator in the appendix section <<Main Inference Operator Test Data>>.
+Note: KS is defined for each relevant operator in the appendix section <<Floating-Point Inference Operator Test Data>>.
 
 In other words, each output element `out` can be expressed as a dot product between input elements `in[k]`, weight elements `w[k]`, bias `b`:
 
@@ -574,7 +574,7 @@ In this section:
 
 The checks described in the following code must pass for the following data sets:
 
-* Data sets defined for the operation in Appendix A <<Main Inference Operator Test Data>>.
+* Data sets defined for the operation in Appendix A <<Floating-Point Inference Operator Test Data>>.
 * Data sets that have at least MIN_DOT_PRODUCT different output values. For these data sets we take S=-1.
 
 [source,c++]

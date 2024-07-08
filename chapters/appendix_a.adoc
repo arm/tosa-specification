@@ -28,9 +28,9 @@ float set_data(uint32_t set, uint32_t index)
 }
 ----
 
-=== Main Inference Test Data Generator
+=== Floating-Point Inference Test Data Generator
 
-This section describes the function tosa_mi_data(S, KS, p, k, i) that generates test data for main inference compliance.
+This section describes the function tosa_pro_fp_data(S, KS, p, k, i) that generates test data for floating-point inference compliance.
 This function takes the following arguments:
 
 * S is the test set number which identifies which generator is used
@@ -61,7 +61,7 @@ The aim of this generator is to check that sum of products with zero gives zero 
 
 [cols="1,9"]
 |===
-| p | tosa_mi_data(S, KS, p, k, i) =
+| p | tosa_pro_fp_data(S, KS, p, k, i) =
 | 0 | set_data(3*S, i) < 0 ? 0.0 : set_data(3*S+1, i)
 | 1 | set_data(3*S, i) < 0 ? set_data(3*S+1, i) : 0.0
 | 2 | 0.0
@@ -73,7 +73,7 @@ The aim of this test set is to check values with large exponents.
 
 [cols="1,9"]
 |===
-| p | tosa_mi_data(S, KS, p, k, i) =
+| p | tosa_pro_fp_data(S, KS, p, k, i) =
 | 0 | (B/sqrt(KS+1))*(0.75 + 0.25*set_data(3*S+0, i))
 | 1 | (B/sqrt(KS+1))*(0.75 + 0.25*set_data(3*S+1, i))
 | 2 | (B*B/(KS+1))*(0.75 + 0.25*set_data(3*S+2, i))
@@ -87,7 +87,7 @@ If the implementation changes the order of the sum, then the test data must also
 
 [cols="1,9"]
 |===
-| p | tosa_mi_data(S, KS, p, k, i) =
+| p | tosa_pro_fp_data(S, KS, p, k, i) =
 | 0 | (k==0) ? 1.0 : set_data(3*S+0, i)/sqrt(KS)
 | 1 | (k==0) ? 1.0 : set_data(3*S+1, i)/sqrt(KS)
 | 2 | 0.0
@@ -101,7 +101,7 @@ If the implementation changes the order of the sum, then the test data must also
 
 [cols="1,9"]
 |===
-| p | tosa_mi_data(S, KS, p, k, i) =
+| p | tosa_pro_fp_data(S, KS, p, k, i) =
 | 0 | (k==0) ? ((set_data(3*S+0, 2*i+0) < 0) ? -16.0 : 16.0) : exp(2*set_data(3*S+0, 2*i+0)) * set_data(3*S+0, 2*i+1)
 | 1 | (k==0) ? ((set_data(3*S+1, 2*i+0) < 0) ? -16.0 : 16.0) : exp(2*set_data(3*S+1, 2*i+0)) * set_data(3*S+1, 2*i+1)
 | 2 | 0.0
@@ -113,7 +113,7 @@ The aim of this test set is to check a mixture of zero and non-zero products.
 
 [cols="1,9"]
 |===
-| p | tosa_mi_data(S, KS, p, k, i) =
+| p | tosa_pro_fp_data(S, KS, p, k, i) =
 | 0 | (k==KS/2) ? (set_data(3*S, i) < 0 ? -0.5 : +0.5) : (set_data(3*S, i) < 0 ? 0.0 : (B/sqrt(KS))*set_data(3*S+1, i))
 | 1 | (k==KS/2) ? (set_data(3*S, i) < 0 ? +0.5 : -0.5) : (set_data(3*S, i) < 0 ? (B/sqrt(KS))*set_data(3*S+1, i) : 0.0)
 | 2 | 0.0
@@ -125,13 +125,13 @@ The aim of this test set is to check signed inputs of large range.
 
 [cols="1,9"]
 |===
-| p | tosa_mi_data(S, KS, p, k, i) =
+| p | tosa_pro_fp_data(S, KS, p, k, i) =
 | 0 | (B/sqrt(KS))*set_data(3*S+0, i)
 | 1 | (B/sqrt(KS))*set_data(3*S+1, i)
 | 2 | 0.0
 |===
 
-=== Main Inference Operator Test Data
+=== Floating-Point Inference Operator Test Data
 
 For each operator, this section defines how to generate test data for test set S.
 For the results to be statistically significant the operation must calculate at least MIN_DOT_PRODUCTS dot products.
@@ -149,13 +149,13 @@ For compliant implementation, the test must pass whenever the attributes satisfy
 ----
 KS = KW*KH*IC;
 for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
-  input [ n, iy, ix, ic] = tosa_mi_data(S, KS, 0, ((iy % KH)*KW+(ix % KW))*IC+ic, ((n*IH+iy)*IW+ix)*IC+ic);
+  input [ n, iy, ix, ic] = tosa_pro_fp_data(S, KS, 0, ((iy % KH)*KW+(ix % KW))*IC+ic, ((n*IH+iy)*IW+ix)*IC+ic);
 }
 for (0 <= oc < OC, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
-  weight[oc, ky, kx, ic] = tosa_mi_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
+  weight[oc, ky, kx, ic] = tosa_pro_fp_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
 }
 for (0 <= oc < BC) {
-  bias[oc] = tosa_mi_data(S, KS, 2, oc)
+  bias[oc] = tosa_pro_fp_data(S, KS, 2, oc)
 }
 ----
 
@@ -169,13 +169,13 @@ For compliant implementation, the test must pass whenever the attributes satisfy
 ----
 KS = KD*KW*KH*IC;
 for (0 <= n < N, 0 <= id < UD, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
-  input [ n, id, iy, ix, ic] = tosa_mi_data(S, KS, 0, (((id % KD)*KH+(iy % KH))*KW+(ix % KW))*IC+ic, (((n*ID+id)*IH+iy)*IW+ix)*IC+ic);
+  input [ n, id, iy, ix, ic] = tosa_pro_fp_data(S, KS, 0, (((id % KD)*KH+(iy % KH))*KW+(ix % KW))*IC+ic, (((n*ID+id)*IH+iy)*IW+ix)*IC+ic);
 }
 for (0 <= oc < OC, 0 <= kd < KD, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
-  weight[oc, kd, ky, kx, ic] = tosa_mi_data(S, KS, 1, ((kd*KH+ky)*KW+kx)*IC+ic, (((oc*KD+kd)*KH+ky)*KW+kx)*IC+ic);
+  weight[oc, kd, ky, kx, ic] = tosa_pro_fp_data(S, KS, 1, ((kd*KH+ky)*KW+kx)*IC+ic, (((oc*KD+kd)*KH+ky)*KW+kx)*IC+ic);
 }
 for (0 <= oc < BC) {
-  bias[oc] = tosa_mi_data(S, KS, 2, oc)
+  bias[oc] = tosa_pro_fp_data(S, KS, 2, oc)
 }
 ----
 
@@ -189,13 +189,13 @@ For compliant implementation, the test must pass whenever the attributes satisfy
 ----
 KS = KW*KH;
 for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= c < C) {
-  input [ n, iy, ix, c] = tosa_mi_data(S, KS, 0, (iy % KH)*KW+(ix % KW), ((n*IH+iy)*IW+ix)*C+c);
+  input [ n, iy, ix, c] = tosa_pro_fp_data(S, KS, 0, (iy % KH)*KW+(ix % KW), ((n*IH+iy)*IW+ix)*C+c);
 }
 for (0 <= ky < KH, 0 <= kx < KW, 0 <= c < C, 0 <= m < M) {
-  weight[ky, kx,  c, m] = tosa_mi_data(S, KS, 1, (ky*KW+kx), ((ky*KW+kx)*C+c)*M+m);
+  weight[ky, kx,  c, m] = tosa_pro_fp_data(S, KS, 1, (ky*KW+kx), ((ky*KW+kx)*C+c)*M+m);
 }
 for (0 <= oc < C*M) {
-  bias[oc] = tosa_mi_data(S, KS, 2, oc)
+  bias[oc] = tosa_pro_fp_data(S, KS, 2, oc)
 }
 ----
 
@@ -209,13 +209,13 @@ For compliant implementation, the test must pass whenever the attributes satisfy
 ----
 KS = IC;
 for (0 <= n < N, 0 <= ic < IC) {
-  input [ n, ic] = tosa_mi_data(S, KS, 0, ic,  n*IC+ic);
+  input [ n, ic] = tosa_pro_fp_data(S, KS, 0, ic,  n*IC+ic);
 }
 for (0 <= oc < OC, 0 <= ic < IC) {
-  weight[oc, ic] = tosa_mi_data(S, KS, 1, ic, oc*IC+ic);
+  weight[oc, ic] = tosa_pro_fp_data(S, KS, 1, ic, oc*IC+ic);
 }
 for (0 <= oc < BC) {
-  bias[oc] = tosa_mi_data(S, KS, 2, oc)
+  bias[oc] = tosa_pro_fp_data(S, KS, 2, oc)
 }
 ----
 
@@ -229,10 +229,10 @@ For compliant implementation, the test must pass whenever the attributes satisfy
 ----
 KS = C;
 for (0 <= n < N, 0 <= y < H, 0 <= c < C) {
-  A[n, y, c] = tosa_mi_data(S, KS, 0, c, (n*H+y)*C+c);
+  A[n, y, c] = tosa_pro_fp_data(S, KS, 0, c, (n*H+y)*C+c);
 }
 for (0 <= n < N, 0 <= c < C, 0 <= x < W) {
-  B[n, c, x] = tosa_mi_data(S, KS, 1, c, (n*C+c)*W+x);
+  B[n, c, x] = tosa_pro_fp_data(S, KS, 1, c, (n*C+c)*W+x);
 }
 ----
 
@@ -246,13 +246,13 @@ For compliant implementation, the test must pass whenever the attributes satisfy
 ----
 KS = KW*KH*IC;
 for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
-  input [ n, iy, ix, ic] = tosa_mi_data(S, KS, 0, ((iy % KH)*KW+(ix % KW))*IC+ic, ((n*IH+iy)*IW+ix)*IC+ic);
+  input [ n, iy, ix, ic] = tosa_pro_fp_data(S, KS, 0, ((iy % KH)*KW+(ix % KW))*IC+ic, ((n*IH+iy)*IW+ix)*IC+ic);
 }
 for (0 <= oc < OC, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
-  weight[oc, ky, kx, ic] = tosa_mi_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
+  weight[oc, ky, kx, ic] = tosa_pro_fp_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
 }
 for (0 <= oc < BC) {
-  bias[oc] = tosa_mi_data(S, KS, 2, oc)
+  bias[oc] = tosa_pro_fp_data(S, KS, 2, oc)
 }
 ----
 
@@ -266,8 +266,8 @@ For compliant implementation, the test must pass whenever the attributes satisfy
 ----
 KS = 2*H*W;
 for (0 <= n < N, 0 <= y < H, 0 <= x < W) {
-  input_real[n, y, x] = tosa_mi_data(S, KS, 0, y*W+x, ((0*N+n)*H+y)*IW+x);
-  input_imag[n, y, x] = tosa_mi_data(S, KS, 0, y*W+x, ((1*N+n)*H+y)*IW+x);
+  input_real[n, y, x] = tosa_pro_fp_data(S, KS, 0, y*W+x, ((0*N+n)*H+y)*IW+x);
+  input_imag[n, y, x] = tosa_pro_fp_data(S, KS, 0, y*W+x, ((1*N+n)*H+y)*IW+x);
 }
 for (0 <= y < H, 0 <= x < W, 0 <= m < H, 0 <= n < W) {
   weight_real[y, x, m, n] = real(exp(2*pi*i*((m*h/H) + (n*w/W))));
@@ -285,7 +285,7 @@ For compliant implementation, the test must pass whenever the attributes satisfy
 ----
 KS = H*W;
 for (0 <= n < N, 0 <= y < H, 0 <= x < W) {
-  input_real[n, y, x] = tosa_mi_data(S, KS, 0, y*W+x, ((0*N+n)*H+y)*IW+x);
+  input_real[n, y, x] = tosa_pro_fp_data(S, KS, 0, y*W+x, ((0*N+n)*H+y)*IW+x);
 }
 for (0 <= y < H, 0 <= x < W, 0 <= m < H, 0 <= n < W) {
   weight_real[y, x, m, n] = real(exp(2*pi*i*((m*h/H) + (n*w/W))));
@@ -303,7 +303,7 @@ For compliant implementation, the test must pass whenever the attributes satisfy
 ----
 KS = shape1[axis];
 for (index in shape1) {
-  input[index] = tosa_mi_data(S, KS, 0, index[axis], tensor_index_to_offset(index));
+  input[index] = tosa_pro_fp_data(S, KS, 0, index[axis], tensor_index_to_offset(index));
 }
 for (0 <= c < KS) {
   weight[c] = 1;
@@ -322,7 +322,7 @@ KX = kernel_x;
 KY = kernel_y;
 KS = KX*KY;
 for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= c < C) {
-  input [ n, iy, ix, c] = tosa_mi_data(S, KS, 0, ((iy % KY)*KX+(ix % KX))*C+c, ((n*IH+iy)*IW+ix)*C+c);
+  input [ n, iy, ix, c] = tosa_pro_fp_data(S, KS, 0, ((iy % KY)*KX+(ix % KX))*C+c, ((n*IH+iy)*IW+ix)*C+c);
 }
 for (0 <= ky < KY, 0 <= kx < KX, 0 <= c < C, 0 <= m < M) {
   weight[ky, kx] = 1/KS;
