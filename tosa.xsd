@@ -5,8 +5,8 @@
 
 <xs:simpleType name="profile_ext_name">
   <xs:restriction base="xs:string">
-    <xs:enumeration value="BI"/>
-    <xs:enumeration value="MI"/>
+    <xs:enumeration value="PRO-INT"/>
+    <xs:enumeration value="PRO-FP"/>
     <xs:enumeration value="EXT-INT16"/>
     <xs:enumeration value="EXT-INT4"/>
     <xs:enumeration value="EXT-BF16"/>
@@ -85,7 +85,7 @@
     <xs:enumeration value="input"/>
     <xs:enumeration value="output"/>
     <xs:enumeration value="attribute"/>
-    <xs:enumeration value="input(MT)|attribute(BI,MI)"/>
+    <xs:enumeration value="attribute(PRO-INT,PRO-FP)"/>
   </xs:restriction>
 </xs:simpleType>
 

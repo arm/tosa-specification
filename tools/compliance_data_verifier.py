@@ -91,8 +91,8 @@ op_list = [
 ]
 
 profile_list = [
-    "Profile::bi",
-    "Profile::mi",
+    "Profile::pro_int",
+    "Profile::pro_fp",
     "Extension::int16",
     "Extension::int4",
     "Extension::bf16",
@@ -142,8 +142,8 @@ def verify_condition_if_present(x: str) -> None:
 
 """
 The format of operation look like:
-    "tosa.add",{{{Profile::bi,Profile::mi},{{i32T,i32T,i32T}}},\
-    {{Profile::mi},{{fp16T,fp16T,fp16T},{fp32T,fp32T,fp32T}}}}
+    "tosa.add",{{{Profile::pro_int,Profile::pro_fp},{{i32T,i32T,i32T}}},\
+    {{Profile::pro_fp},{{fp16T,fp16T,fp16T},{fp32T,fp32T,fp32T}}}}
 """
 
 
@@ -156,15 +156,15 @@ def verify_operation_compliance_syntax(op) -> None:
 
     """
     Capture all compliance tuples associated with the current operation.
-        e.g. ['{{Profile::bi,Profile::mi},{{i32T,i32T,i32T}}},
-               {{Profile::mi},{{fp16T,fp16T,fp16T},{fp32T,fp32T,fp32T}}']
+        e.g. ['{{Profile::pro_int,Profile::pro_fp},{{i32T,i32T,i32T}}},
+               {{Profile::pro_fp},{{fp16T,fp16T,fp16T},{fp32T,fp32T,fp32T}}']
     """
     comps = capture_data_between_curly_brackets(str(op))
 
     """
     Capture again to make every compliance separate from each other.
-        e.g. ['{Profile::bi,Profile::mi},{{i32T,i32T,i32T}}',
-              '{Profile::mi},{{fp16T,fp16T,fp16T},{fp32T,fp32T,fp32T}}']
+        e.g. ['{Profile::pro_int,Profile::pro_fp},{{i32T,i32T,i32T}}',
+              '{Profile::pro_fp},{{fp16T,fp16T,fp16T},{fp32T,fp32T,fp32T}}']
     """
     comps = capture_data_between_curly_brackets(str(comps))
 
@@ -192,7 +192,7 @@ def verify_operation_compliance_syntax(op) -> None:
 
 
 def test_unknown_op():
-    unknown_op = '"tosa.dummy",{{{Profile::bi},{{i8T,i32T}}}}'
+    unknown_op = '"tosa.dummy",{{{Profile::pro_int},{{i8T,i32T}}}}'
     try:
         verify_operation_compliance_syntax(unknown_op)
     except Exception as e:
@@ -216,7 +216,7 @@ def test_unknown_extension():
 
 
 def test_unknown_type():
-    unknown_type = '"tosa.add",{{{Profile::bi},{{i128T,i32T}}}}'
+    unknown_type = '"tosa.add",{{{Profile::pro_fp},{{i128T,i32T}}}}'
     try:
         verify_operation_compliance_syntax(unknown_type)
     except Exception as e:
@@ -232,13 +232,13 @@ def test_unknown_condition():
 
 
 def test_unknown_syntax():
-    invalid_syntax = '"tosa.sub",{{{Profile::mi},{{i8T,i32T}}}}}'
+    invalid_syntax = '"tosa.sub",{{{Profile::pro_fp},{{i8T,i32T}}}}}'
     try:
         verify_operation_compliance_syntax(invalid_syntax)
     except Exception as e:
         assert "curly bracket pair mismatch" in str(e)
 
-    invalid_syntax2 = '"tosa.mul",{{{{Profile::mi},{{i8T,i32T}}}}'
+    invalid_syntax2 = '"tosa.mul",{{{{Profile::pro_fp},{{i8T,i32T}}}}'
     try:
         verify_operation_compliance_syntax(invalid_syntax2)
     except Exception as e:

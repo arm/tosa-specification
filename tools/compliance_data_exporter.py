@@ -7,8 +7,8 @@ from tosa import TOSAOperatorArgument
 
 
 validation_term_mapping_profile = {
-    "BI": "Profile::bi",
-    "MI": "Profile::mi",
+    "PRO-INT": "Profile::pro_int",
+    "PRO-FP": "Profile::pro_fp",
     "EXT-INT16": "Extension::int16",
     "EXT-INT4": "Extension::int4",
     "EXT-BF16": "Extension::bf16",
@@ -135,7 +135,7 @@ def print_profile(profiles: list) -> str:
         if not prof == profiles[-1]:
             output_string += ", "
 
-    # End of the profile/extension set, e.g. ...mi}, {
+    # End of the profile/extension set, e.g. ...pro_fp}, {
     output_string += "}, "
 
     return output_string
@@ -182,8 +182,8 @@ def print_argument_compliances(args: TOSAOperatorArgument, compliances: list) ->
 Desired output format looks like:
     {"tosa.depthwise_conv2d",
       {
-        {{Profile::bi}, {{i8T, i8T, i32T, i32T}}},
-        {{Profile::mi},
+        {{Profile::pro_int}, {{i8T, i8T, i32T, i32T}}},
+        {{Profile::pro_fp},
          {{fp16T, fp16T, fp16T, fp16T},
           {fp16T, fp16T, fp16T, fp32T},
           {fp32T, fp32T, fp32T, fp32T}}}
@@ -202,8 +202,8 @@ def print_operator(
 
     cnt = 0
     # `profiles` can be a single profile or extension, or a set of combination
-    # of profile and extension, e.g. {BI, MI}, {EXT-BF16 and EXT-FP8E4M3},
-    # and {BI and EXT-VARIABLE}.
+    # of profile and extension, e.g. {PRO-INT, PRO-FP}, {EXT-BF16 and EXT-FP8E4M3},
+    # and {PRO-INT and EXT-VARIABLE}.
     for profiles, argument_compliances in depot.items():
         delimiter = " "
         # Filter out the delimiter word.
