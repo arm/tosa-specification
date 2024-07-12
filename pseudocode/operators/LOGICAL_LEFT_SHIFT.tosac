@@ -13,7 +13,10 @@ for_each(index in shape) {
     shape_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    REQUIRE(0 <= value2 && value2 <= 31);
+    // Ensure that shift amount is appropriate for the data type
+    REQUIRE((in_out_t == i32_t && 0 <= value2 && value2 <= 31) ||
+            (in_out_t == i16_t && 0 <= value2 && value2 <= 15) ||
+            (in_out_t == i8_t && 0 <= value2 && value2 <= 7));
     in_out_t result = value1 << value2;
     tensor_write<in_out_t>(output, shape, index, result);
 }
