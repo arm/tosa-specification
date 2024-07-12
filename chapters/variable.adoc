@@ -17,6 +17,10 @@ Defines a new TOSA variable.
 This is a persistent mutable value across multiple TOSA graph invocations.
 Modifications are expressed using read/write semantics.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/VARIABLE.adoc[]
 
 [source,c++]
@@ -28,6 +32,10 @@ include::{pseudocode}/operators/VARIABLE.tosac[lines=10..-1]
 
 Assigns a value to the pseudo-buffer resource holding a persistent mutable tensor.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/VARIABLE_WRITE.adoc[]
 
 [source,c++]
@@ -36,6 +44,10 @@ include::{pseudocode}/operators/VARIABLE_WRITE.tosac[lines=10..-1]
 ----
 
 ==== VARIABLE_READ
+
+*Precision Requirements*
+
+Results must be exact.
 
 Reads the value from a pseudo-buffer resource holding a persistent mutable tensor.
 

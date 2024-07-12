@@ -13,6 +13,15 @@
 
 Elementwise select of the output based on a condition.
 
+*Precision Requirements*
+
+Integer results must be exact.
+
+For floating-point values in input2 and input3, the following rules apply:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* If an output is a NaN, the result must be a NaN and any NaN is permitted.
+
 include::{generated}/operators/SELECT.adoc[]
 
 [source,c++]

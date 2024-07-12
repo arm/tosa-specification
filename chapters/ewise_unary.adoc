@@ -11,7 +11,14 @@
 
 ==== ABS
 
-Elementwise absolute value operation
+Elementwise absolute value operation.
+
+*Precision Requirements*
+
+For floating-point values, in addition to the Floating-point behavior table, the following rules apply:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Otherwise floating-point results must be exact.
 
 include::{generated}/operators/ABS.adoc[]
 
@@ -31,6 +38,10 @@ include::{pseudocode}/operators/ABS.tosac[lines=10..-1]
 
 Elementwise bitwise NOT of input tensor.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/BITWISE_NOT.adoc[]
 
 [source,c++]
@@ -42,13 +53,22 @@ include::{pseudocode}/operators/BITWISE_NOT.tosac[lines=10..-1]
 
 Elementwise ceiling operation
 
+*Precision Requirements*
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Infinity, NaN, and Zero behavior as defined in the following table.
+* The following may be used to validate the result:
+** Let `x` be an input element and `out_imp` the implementation output.
+** Let `out_ref` be the result of the fp64_t reference implementation.
+** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 0.5)` must be true.
+
 include::{generated}/operators/CEIL.adoc[]
 
 *Floating-point behavior:*
 |===
 |Input|-infinity|+infinity|-0|+0|NaN
 
-|Output|-infinity|+infinity|-0|+0|NaN
+|Output|-infinity|+infinity|-0|+0|any NaN
 |===
 
 [source,c++]
@@ -59,6 +79,10 @@ include::{pseudocode}/operators/CEIL.tosac[lines=10..-1]
 ==== CLZ
 
 Elementwise count leading zeros operation
+
+*Precision Requirements*
+
+Results must be exact.
 
 include::{generated}/operators/CLZ.adoc[]
 
@@ -71,13 +95,23 @@ include::{pseudocode}/operators/CLZ.tosac[lines=10..-1]
 
 Elementwise cosine operation for values given in radians.
 
+*Precision Requirements*
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Infinity, NaN, and Zero behavior as defined in the following table.
+* The following may be used to validate the result:
+** Let `x` be an input element and `out_imp` the implementation output of `cos(x)`.
+** Let `out_ref` be the result of the fp64_t reference implementation of `cos(x)`.
+** Let `err_bnd = calcAbsErrorBound<in_out_t>(1+abs(x), 1, 0, 2)`.
+** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
+
 include::{generated}/operators/COS.adoc[]
 
 *Floating-point behavior:*
 |===
 |Input|-infinity|+infinity|-0|+0|NaN
 
-|Output|NaN|NaN|+1|+1|NaN
+|Output|any NaN|any NaN|+1|+1|any NaN
 |===
 
 [source, c++]
@@ -89,13 +123,23 @@ include::{pseudocode}/operators/COS.tosac[lines=10..-1]
 
 Elementwise e to the x operation
 
+*Precision Requirements*
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Infinity, NaN, and Zero behavior as defined in the following table.
+* The following may be used to validate the result:
+** Let `x` be an input element and `out_imp` the implementation output of `exp(x)`.
+** Let `out_ref` be the result of the fp64_t reference implementation of `exp(x)`.
+** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, (1+abs(x)), 0, 1)`.
+** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
+
 include::{generated}/operators/EXP.adoc[]
 
 *Floating-point behavior:*
 |===
 |Input|-infinity|+infinity|-0|+0|NaN
 
-|Output|+0|+infinity|1|1|NaN
+|Output|+0|+infinity|1|1|any NaN
 |===
 
 [source,c++]
@@ -105,7 +149,16 @@ include::{pseudocode}/operators/EXP.tosac[lines=10..-1]
 
 ==== FLOOR
 
-Elementwise floor operation
+Elementwise floor operation.
+
+*Precision Requirements*
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Infinity, NaN, and Zero behavior as defined in the following table.
+* The following may be used to validate the result:
+** Let `x` be an input element and `out_imp` the implementation output.
+** Let `out_ref` be the result of the fp64_t reference implementation.
+** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 0.5)` must be true.
 
 include::{generated}/operators/FLOOR.adoc[]
 
@@ -113,7 +166,7 @@ include::{generated}/operators/FLOOR.adoc[]
 |===
 |Input|-infinity|+infinity|-0|+0|NaN
 
-|Output|-infinity|+infinity|-0|+0|NaN
+|Output|-infinity|+infinity|-0|+0|any NaN
 |===
 
 [source,c++]
@@ -125,13 +178,23 @@ include::{pseudocode}/operators/FLOOR.tosac[lines=10..-1]
 
 Elementwise natural logarithm operation
 
+*Precision Requirements*
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Infinity, NaN, and Zero behavior as defined in the following table.
+* If the input to LOG is less than zero, then the result must be a NaN.
+* The following may be used to validate the result:
+** Let `x` be an input element and `out_imp` the implementation output.
+** Let `out_ref` be the result of the fp64_t reference implementation.
+** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 5)` must be true.
+
 include::{generated}/operators/LOG.adoc[]
 
 *Floating-point behavior:*
 |===
 |Input|-infinity|+infinity|-0|+0|NaN
 
-|Output|NaN|+infinity|-infinity|-infinity|NaN
+|Output|any NaN|+infinity|-infinity|-infinity|any NaN
 |===
 
 [source,c++]
@@ -143,6 +206,10 @@ include::{pseudocode}/operators/LOG.tosac[lines=10..-1]
 
 Elementwise logical NOT of input.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/LOGICAL_NOT.adoc[]
 
 [source,c++]
@@ -152,7 +219,17 @@ include::{pseudocode}/operators/LOGICAL_NOT.tosac[lines=10..-1]
 
 ==== NEGATE
 
-Elementwise negation operation
+Elementwise negation operation.
+
+*Precision Requirements*
+
+Integer Results must be exact.
+
+For floating-point values, the following rules apply:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Infinity, NaN, and Zero behavior as defined in the following table.
+* Otherwise floating-point results must be exact.
 
 include::{generated}/operators/NEGATE.adoc[]
 
@@ -160,7 +237,7 @@ include::{generated}/operators/NEGATE.adoc[]
 |===
 |Input|-infinity|+infinity|-0|+0|NaN
 
-|Output|+infinity|-infinity|+0|-0|NaN
+|Output|+infinity|-infinity|+0|-0|any NaN
 |===
 
 [source,c++]
@@ -172,13 +249,22 @@ include::{pseudocode}/operators/NEGATE.tosac[lines=10..-1]
 
 Elementwise reciprocal operation. For integer operation, a TABLE should be used with the appropriate ranges.
 
+*Precision Requirements*
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Infinity, NaN, and Zero behave as defined in the following table.
+* Otherwise, the following may be used to validate the result:
+** Let `x` be an input element and `out_imp` the implementation output.
+** Let `out_ref` be the result of the fp64_t reference implementation.
+** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 1)` must be true.
+
 include::{generated}/operators/RECIPROCAL.adoc[]
 
 *Floating-point behavior:*
 |===
 |Input|-infinity|+infinity|-0|+0|NaN
 
-|Output|-0|+0|-infinity|+infinity|NaN
+|Output|-0|+0|-infinity|+infinity|any NaN
 |===
 
 [source,c++]
@@ -190,13 +276,22 @@ include::{pseudocode}/operators/RECIPROCAL.tosac[lines=10..-1]
 
 Elementwise reciprocal square root operation. For integer operation, a TABLE should be used with the appropriate ranges.
 
+*Precision Requirements*
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Infinity, NaN, and Zero behave as defined in the following table.
+* Otherwise, the following may be used to validate the result:
+** Let `x` be an input element and `out_imp` the implementation output.
+** Let `out_ref` be the result of the fp64_t reference implementation.
+** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 2)` must be true.
+
 include::{generated}/operators/RSQRT.adoc[]
 
 *Floating-point behavior:*
 |===
-|Input|-infinity|+infinity|-0|+0|NaN
+|Input|-infinity|+infinity|-0|+0|any NaN
 
-|Output|NaN|+0|-infinity|+infinity|NaN
+|Output|NaN|+0|-infinity|+infinity|any NaN
 |===
 
 [source,c++]
@@ -208,13 +303,23 @@ include::{pseudocode}/operators/RSQRT.tosac[lines=10..-1]
 
 Elementwise sine operation for values given in radians.
 
+*Precision Requirements*
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Infinity, NaN, and Zero behavior as defined in the Floating-point behavior table.
+* Otherwise, the following may be used to validate the result:
+** Let `x` be an input element and `out_imp` the implementation output of `sin(x)`.
+** Let `out_ref` be the result of the fp64_t reference implementation of `sin(x)`.
+** Let `err_bnd = max(calcAbsErrorBound<in_out_t>(x, 1, 0, 2), pi*normal_min<in_out_t>())`.
+** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
+
 include::{generated}/operators/SIN.adoc[]
 
 *Floating-point behavior:*
 |===
 |Input|-infinity|+infinity|-0|+0|NaN
 
-|Output|NaN|NaN|-0|+0|NaN
+|Output|any NaN|any NaN|-0|+0|any NaN
 |===
 
 [source, c++]

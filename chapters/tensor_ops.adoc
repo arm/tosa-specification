@@ -13,8 +13,17 @@
 
 This returns the index with the largest value across the given axis of the input tensor.
 If multiple locations have equal values, returns the first match along the search axis.
-NaN values always compare as greater than non-NaN values.
-If an entire axis consists of NaN, the last location must be returned.
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+For floating-point input, the following rules apply:
+
+* NaN values always compare as greater than non-NaN values.
+* The sign of zero is ignored when comparing values.
+* Infinities of the same sign compare as equal.
+* All NaN values compare as equal to other NaN values.
 
 include::{generated}/operators/ARGMAX.adoc[]
 
@@ -29,6 +38,16 @@ This performs an average pooling over the given input tensor.
 A sliding window of size given by <kernel size> is passed over the input tensor, with the mean value being placed in the output tensor.
 When calculating the average, only the number of valid input tensor values, but not padding, are used to calculate the divisor.
 
+*Precision Requirements*
+
+Integer results must be exact.
+
+For floating-point values, the following rules apply:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Outputs can be expressed as a dot product of an input vector with a vector with elements 1/KS where KS is the kernel size.
+* This dot product must meet the <<Dot product accuracy requirements>>.
+
 include::{generated}/operators/AVG_POOL2D.adoc[]
 
 [source,c++]
@@ -39,6 +58,16 @@ include::{pseudocode}/operators/AVG_POOL2D.tosac[lines=10..-1]
 ==== CONV2D
 
 Performs a 2D convolution over the given tensor input, using the weight tensor.
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+For floating-point values, the following rules apply:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Each output can be expressed as a dot product of two input vectors.
+* The dot product must meet the <<Dot product accuracy requirements>>.
 
 include::{generated}/operators/CONV2D.adoc[]
 
@@ -51,6 +80,16 @@ include::{pseudocode}/operators/CONV2D.tosac[lines=10..-1]
 
 Performs a 3D convolution over the given input tensor.
 
+*Precision Requirements*
+
+Integer results must be exact.
+
+For floating-point values, the following rules apply:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Each output can be expressed as a dot product of two input vectors.
+* The dot product must meet the <<Dot product accuracy requirements>>.
+
 include::{generated}/operators/CONV3D.adoc[]
 
 [source,c++]
@@ -61,6 +100,16 @@ include::{pseudocode}/operators/CONV3D.tosac[lines=10..-1]
 ==== DEPTHWISE_CONV2D
 
 Performs 2D convolutions separately over each channel of the given tensor input, using the weight tensor.
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+For floating-point values, the following rules apply:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Each output can be expressed as a dot product of two input vectors.
+* The dot product must meet the <<Dot product accuracy requirements>>.
 
 include::{generated}/operators/DEPTHWISE_CONV2D.adoc[]
 
@@ -86,6 +135,12 @@ image::forward_fft2d.svg["forward FFT definition", align="center"]
 .Calculation for the inverse FFT2D calculation (inverse=true)
 image::inverse_fft2d.svg["inverse FFT definition", align="center"]
 
+*Precision Requirements*
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Each output can be expressed as a dot product of an input vector with a constant coefficient vector.
+* The dot product must meet the <<Dot product accuracy requirements>>
+
 include::{generated}/operators/FFT2D.adoc[]
 
 [source,c++]
@@ -97,6 +152,16 @@ include::{pseudocode}/operators/FFT2D.tosac[lines=10..-1]
 
 Performs two dimensional matrix multiplications.
 
+*Precision Requirements*
+
+Integer results must be exact.
+
+For floating-point values, the following rules apply:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Each output can be expressed as a dot product of two input vectors.
+* The dot product must meet the <<Dot product accuracy requirements>>.
+
 include::{generated}/operators/MATMUL.adoc[]
 
 [source,c++]
@@ -106,7 +171,22 @@ include::{pseudocode}/operators/MATMUL.tosac[lines=10..-1]
 
 ==== MAX_POOL2D
 
-This performs a max pooling over the given input tensor. A sliding window of size given by <kernel size> is passed over the input tensor, with the maximum value being placed in the output tensor.
+This performs a max pooling over the given input tensor.
+A sliding window of size given by <kernel size> is passed over the input tensor, with the maximum value being placed in the output tensor.
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+The following rules apply to floating-point inputs:
+
+* Comparison rules:
+** The sign of a zero is ignored.
+** Infinities of the same sign compare as equal.
+* If any input is a NaN then the result must be NaN.
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* If a floating-point result is zero, then the result must be either +0.0 or -0.0 but either sign is permitted.
+* If the result is a subnormal value for bf16_t, fp16_t, or fp32_t, the result may be a zero of either sign.
 
 include::{generated}/operators/MAX_POOL2D.adoc[]
 
@@ -126,6 +206,13 @@ Imaginary values with locations (0,0), (0,W/2), (H/2,0) and (H/2,W/2) are zero.
 
 image::forward_fft2d.svg["forward RFFT definition", align="center"]
 
+*Precision Requirements*
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Each output can be expressed as a dot product of an input vector with a constant coefficient vector.
+* The dot product must meet the <<Dot product accuracy requirements>>.
+
+
 include::{generated}/operators/RFFT2D.adoc[]
 
 [source,c++]
@@ -136,6 +223,16 @@ include::{pseudocode}/operators/RFFT2D.tosac[lines=10..-1]
 ==== TRANSPOSE_CONV2D
 
 Performs a 2D transposed convolution over the given tensor input, using the weights tensor.
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+The following rules apply to floating-point inputs:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Each output can be expressed as a dot product of two input vectors.
+* The dot product must meet the <<Dot product accuracy requirements>>.
 
 include::{generated}/operators/TRANSPOSE_CONV2D.adoc[]
 
