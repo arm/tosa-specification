@@ -13,6 +13,18 @@
 
 Elementwise comparison operation
 
+*Precision Requirements*
+
+Integer results must be exact.
+
+The following rules apply to floating-point inputs:
+
+* Comparison rules:
+** The sign of a zero is ignored.
+** Infinities of the same sign compare as equal.
+** If either or both input values are a NaN, the result is false.
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+
 include::{generated}/operators/EQUAL.adoc[]
 
 [source,c++]
@@ -24,6 +36,18 @@ include::{pseudocode}/operators/EQUAL.tosac[lines=10..-1]
 
 Elementwise greater than comparison operation
 
+*Precision Requirements*
+
+Integer results must be exact.
+
+The following rules apply to floating-point inputs:
+
+* Comparison rules:
+** The sign of a zero is ignored.
+** Infinities of the same sign compare as equal.
+** If either or both input values are a NaN, the result is false.
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+
 include::{generated}/operators/GREATER.adoc[]
 
 [source,c++]
@@ -34,6 +58,18 @@ include::{pseudocode}/operators/GREATER.tosac[lines=10..-1]
 ==== GREATER_EQUAL
 
 Elementwise comparison operation
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+The following rules apply to floating-point inputs:
+
+* Comparison rules:
+** The sign of a zero is ignored.
+** Infinities of the same sign compare as equal.
+** If either or both input values are a NaN, the result is false.
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 
 include::{generated}/operators/GREATER_EQUAL.adoc[]
 

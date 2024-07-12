@@ -13,6 +13,14 @@
 
 A node containing constant data for use as the input to an operation. May hold data in any of the supported data formats.
 
+*Precision Requirements*
+
+Integer results must be exact.
+
+For floating-point values, the following rules apply:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero.
+
 include::{generated}/operators/CONST.adoc[]
 
 [source,c++]
@@ -23,6 +31,14 @@ include::{pseudocode}/operators/CONST.tosac[lines=10..-1]
 ==== IDENTITY
 
 Returns a tensor with the same shape, type, and contents as the input.
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+For floating-point values, the following rules apply:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero.
 
 include::{generated}/operators/IDENTITY.adoc[]
 

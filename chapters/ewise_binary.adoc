@@ -14,6 +14,17 @@
 Elementwise addition of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
+*Precision Requirements*
+
+* If any input is a NaN, the result must be a NaN.
+* Addition of infinities of different signs must produce a NaN.
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Subnormal bf16_t, fp16_t, and fp32_t result values may be flushed to zero of the appropriate sign after the calculation.
+* The following may be used to validate the result:
+** Let `x` be an input element and `out_imp` the implementation output.
+** Let `out_ref` be the result of the fp64_t reference implementation.
+** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 0.5)` must be true.
+
 include::{generated}/operators/ADD.adoc[]
 
 [source,c++]
@@ -25,6 +36,10 @@ include::{pseudocode}/operators/ADD.tosac[lines=10..-1]
 
 Elementwise arithmetic right shift of input1 by the amount specified in input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Precision Requirements*
+
+Results must be exact.
 
 include::{generated}/operators/ARITHMETIC_RIGHT_SHIFT.adoc[]
 
@@ -38,6 +53,10 @@ include::{pseudocode}/operators/ARITHMETIC_RIGHT_SHIFT.tosac[lines=10..-1]
 Elementwise bitwise AND of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/BITWISE_AND.adoc[]
 
 [source,c++]
@@ -50,6 +69,10 @@ include::{pseudocode}/operators/BITWISE_AND.tosac[lines=10..-1]
 Elementwise bitwise OR of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/BITWISE_OR.adoc[]
 
 [source,c++]
@@ -61,6 +84,10 @@ include::{pseudocode}/operators/BITWISE_OR.tosac[lines=10..-1]
 
 Elementwise bitwise XOR of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+
+*Precision Requirements*
+
+Results must be exact.
 
 include::{generated}/operators/BITWISE_XOR.adoc[]
 
@@ -77,6 +104,10 @@ Expected use is for operations on non-scaled integers.
 Floating point divide should use RECIPROCAL and MUL.
 Quantized integer divide should use TABLE (for 1/x) and MUL.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/INTDIV.adoc[]
 
 [source,c++]
@@ -88,6 +119,10 @@ include::{pseudocode}/operators/INTDIV.tosac[lines=10..-1]
 
 Elementwise logical AND of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Precision Requirements*
+
+Results must be exact.
 
 include::{generated}/operators/LOGICAL_AND.adoc[]
 
@@ -101,6 +136,10 @@ include::{pseudocode}/operators/LOGICAL_AND.tosac[lines=10..-1]
 Elementwise logical left-shift of input1 by the amount specified in input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/LOGICAL_LEFT_SHIFT.adoc[]
 
 [source,c++]
@@ -112,6 +151,10 @@ include::{pseudocode}/operators/LOGICAL_LEFT_SHIFT.tosac[lines=10..-1]
 
 Elementwise logical right shift of input1 by the amount specified in input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Precision Requirements*
+
+Results must be exact.
 
 include::{generated}/operators/LOGICAL_RIGHT_SHIFT.adoc[]
 
@@ -125,6 +168,10 @@ include::{pseudocode}/operators/LOGICAL_RIGHT_SHIFT.tosac[lines=10..-1]
 Elementwise logical OR of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/LOGICAL_OR.adoc[]
 
 [source,c++]
@@ -136,6 +183,10 @@ include::{pseudocode}/operators/LOGICAL_OR.tosac[lines=10..-1]
 
 Elementwise logical XOR of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+
+*Precision Requirements*
+
+Results must be exact.
 
 include::{generated}/operators/LOGICAL_XOR.adoc[]
 
@@ -149,6 +200,21 @@ include::{pseudocode}/operators/LOGICAL_XOR.tosac[lines=10..-1]
 Elementwise max of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
+*Precision Requirements*
+
+Integer results must be exact.
+
+The following rules apply to floating-point inputs:
+
+* Comparison rules:
+** The sign of a zero is ignored.
+** Infinities of the same sign compare as equal.
+** If either input value is a NaN, the result is NaN.
+* bf16_t, fp16_t, and fp32_t subnormal values may be flushed to zero before computation.
+* If a floating-point result is zero, then the result must be either +0.0 or -0.0 but either sign is permitted.
+* If the result is a subnormal value for bf16_t, fp16_t, or fp32_t, the result may be a zero of either sign.
+* If none of the above conditions apply, the floating-point result must be exact.
+
 include::{generated}/operators/MAXIMUM.adoc[]
 
 [source,c++]
@@ -160,6 +226,21 @@ include::{pseudocode}/operators/MAXIMUM.tosac[lines=10..-1]
 
 Elementwise minimum of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+The following rules apply to floating-point inputs:
+
+* Comparison rules:
+** The sign of a zero is ignored.
+** Infinities of the same sign compare as equal.
+** If either input value is a NaN, the result is NaN.
+* bf16_t, fp16_t, and fp32_t subnormal values may be flushed to zero before computation.
+* If a floating-point result is zero, then the result must be either +0.0 or -0.0 but either sign is permitted.
+* If the result is a subnormal value for bf16_t, fp16_t, or fp32_t, the result may be a zero of either sign.
+* If none of the above conditions apply, the floating-point result must be exact.
 
 include::{generated}/operators/MINIMUM.adoc[]
 
@@ -173,6 +254,20 @@ include::{pseudocode}/operators/MINIMUM.tosac[lines=10..-1]
 Elementwise multiplication (Hadamard product) of input1 and input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
+*Precision Requirements*
+
+Integer results must be exact.
+
+* If any input is a NaN, the result must be a NaN.
+* Multiplication of an infinity by a zero must produce a NaN.
+* Multiplication of two infinities must produce an infinity of the correct sign.
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Subnormal bf16_t, fp16_t, and fp32_t result values may be flushed to zero of the appropriate sign after the calculation.
+* The following may be used to validate the result:
+** Let `x` be an input element and `out_imp` the implementation output.
+** Let `out_ref` be the result of the fp64_t reference implementation.
+** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 0.5)` must be true.
+
 include::{generated}/operators/MUL.adoc[]
 
 [source,c++]
@@ -185,6 +280,29 @@ include::{pseudocode}/operators/MUL.tosac[lines=10..-1]
 Elementwise input1 value raised to the power of input2.
 Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match.
 
+*Precision Requirements*
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+
+* Otherwise the following may be used to validate the result.
+** Let `x`, `y` be input elements from `input1` and `input2` respectively.
+** Let `out_imp` be the implementation output of `pow(x,y)`.
+** If x!=1 and y is a NaN then the output must be a NaN.
+** If y!=0 and x is a NaN then the output must be a NaN.
+** If x==1 and y is a NaN then the output may be 1.0 or a NaN.
+** If y==0 and x is a NaN then the output may be 1.0 or a NaN.
+** If y is an inf then:
+*** If abs(x)>1 the result must be +inf.
+*** If abs(x)==1 the result must be +1.
+*** If abs(x)<1 then result must be +0.
+** If x is an inf then:
+*** If y>0 the result must be an inf.
+*** If y==0 the result must be +1.
+*** If y<0 then result must be a zero.
+** Let `out_ref` be the result of the fp64_t reference implementation of `pow(x,y)`.
+** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, 2 * (1+abs(log(abs(x))*y)), 0, 1)`.
+** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
+
 include::{generated}/operators/POW.adoc[]
 
 [source,c++]
@@ -196,6 +314,18 @@ include::{pseudocode}/operators/POW.tosac[lines=10..-1]
 
 Elementwise subtraction of input1 and input2.
 Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+* If any input is a NaN, the result must be a NaN.
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Subnormal bf16_t, fp16_t, and fp32_t result values may be flushed to zero of the appropriate sign after the calculation.
+* The following may be used to validate the result:
+** Let `x` be an input element and `out_imp` the implementation output.
+** Let `out_ref` be the result of the fp64_t reference implementation.
+** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 0.5)` must be true.
 
 include::{generated}/operators/SUB.adoc[]
 
@@ -219,6 +349,10 @@ An int16_t to int16_t table lookup can be constructed in TOSA as follows:
 
 * Use the TABLE operator to produce a fixed point 16.7 interpolated result
 * Use RESCALE (in_t=int32_t, out_t=int16_t, scale=1<<14, shift=21) to scale the output to int16_t range (or alternate scale as required)
+
+*Precision Requirements*
+
+Results must be exact.
 
 include::{generated}/operators/TABLE.adoc[]
 

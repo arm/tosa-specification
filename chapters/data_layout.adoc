@@ -13,6 +13,10 @@
 Concatenate a list of tensors along a given axis.
 No data conversion happens during a concat operation.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/CONCAT.adoc[]
 
 [source,c]
@@ -26,6 +30,10 @@ Pads a tensor along the borders of each dimension with a supplied value.
 Returns a new tensor with the padding included.
 The pad_const value includes the zero point if the tensor uses a zero point.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/PAD.adoc[]
 
 [source,c++]
@@ -37,6 +45,10 @@ include::{pseudocode}/operators/PAD.tosac[lines=10..-1]
 
 Returns a tensor with the same type/values as the input, with a new shape specified by the shape argument. Reshape may operate on tensors of any rank. No data conversion happens during a reshape operation.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/RESHAPE.adoc[]
 
 [source,c++]
@@ -47,6 +59,10 @@ include::{pseudocode}/operators/RESHAPE.tosac[lines=10..-1]
 ==== REVERSE
 
 Returns a tensor with the same type/values as the input, with the data reversed along the given axis. No data conversion happens during a reverse operation.
+
+*Precision Requirements*
+
+Results must be exact.
 
 include::{generated}/operators/REVERSE.adoc[]
 
@@ -60,6 +76,10 @@ include::{pseudocode}/operators/REVERSE.tosac[lines=10..-1]
 Extracts a slice of input1, beginning at the start coordinates, and extending for size elements in each direction.
 No data conversion happens during a slice operation.
 
+*Precision Requirements*
+
+Results must be exact.
+
 include::{generated}/operators/SLICE.adoc[]
 
 [source,c++]
@@ -70,6 +90,10 @@ include::{pseudocode}/operators/SLICE.tosac[lines=10..-1]
 ==== TILE
 
 Replicates input1 multiples times along each dimension.
+
+*Precision Requirements*
+
+Results must be exact.
 
 include::{generated}/operators/TILE.adoc[]
 
@@ -82,6 +106,10 @@ include::{pseudocode}/operators/TILE.tosac[lines=10..-1]
 
 Permutes the dimensions of the input tensor input1 based on the perms argument.
 Each value in the perms list must be a valid dimension of the input tensor and may not be repeated.
+
+*Precision Requirements*
+
+Results must be exact.
 
 include::{generated}/operators/TRANSPOSE.adoc[]
 

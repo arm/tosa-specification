@@ -161,7 +161,7 @@ include::{pseudocode}/library/numeric_accuracy_helpers.tosac[lines=10..-1]
 ----
 
 The following functions check if a test value in floating-point format in_t is within an error range compared to a reference value.
-The functions assume that denormal values may be flushed to zero.
+The functions assume that subnormal values for bf16, fp16, and fp32 may be flushed to zero.
 For the first function, the permitted error range is specified as num_ulp which is converted to an error bound as specified by the code.
 For the second function, the permitted error range is specified as an absolute error bound.
 

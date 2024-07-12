@@ -15,6 +15,35 @@ Casts a tensor from one data type to another.
 
 include::{generated}/operators/CAST.adoc[]
 
+*Precision Requirements*
+
+When casting between integer types, the results must be exact.
+
+Rules when casting between floating-point types:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* If the input value is a NaN, a NaN of the output type must be returned.
+* The following sequence describes conversion between floating-point types:
+** The mantissa of the input value is converted to the mantissa size of the output format, with rounding if needed.
+** If the resulting value is below the minimum subnormal number magnitude for the target format, a zero of the appropriate sign must be returned.
+** For bf16_t, fp16_t, and fp32_t, if the resulting value is below the minimum normal number magnitude for the target format, either the corresponding subnormal value may be returned, or a zero of the appropriate sign may be returned.
+** If the output type is fp8e4m3_t or fp8e5m2_t the result must use the non-saturating conversion mode defined in <<OCP-OFP8,OCP-OFP8>>.
+** Otherwise if the resulting value is outside of the output representable range, an infinity of the appropriate sign must be returned.
+
+Rules when casting between different types:
+
+* Casting from floating-point to integer:
+** Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+** If any input is a NaN, the result is unpredictable.
+** Result overflows must be saturated.
+** Conversion must use the round to nearest, ties to even rounding mode.
+* Casting from integer to floating-point:
+** Let `x` be an input element and `out_imp` the implementation output.
+** Let `out_ref` be the result of the fp64_t reference implementation.
+** Then `tosa_reference_check_fp<out_t>(out_imp, out_ref, 0.5)` must be true.
+* Casting to boolean type:
+** The result must be exact.
+
 [source,c++]
 ----
 include::{pseudocode}/operators/CAST.tosac[lines=10..-1]
@@ -23,6 +52,10 @@ include::{pseudocode}/operators/CAST.tosac[lines=10..-1]
 ==== RESCALE
 
 Rescale quantized values into a new domain. This function scales by factor: multiplier * 2^-shift^.
+
+*Precision Requirements*
+
+Results must be exact.
 
 include::{generated}/operators/RESCALE.adoc[]
 
