@@ -2894,18 +2894,22 @@ used.</description>
         </types>
         <typesupport mode="Boolean" out_t="bool_t"  version_added="1.0">
           <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="4-bit" out_t="i4_t"  version_added="1.0">
           <op_profile name="EXT-INT4"/>
         </typesupport>
         <typesupport mode="8-bit" out_t="i8_t"  version_added="1.0">
           <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="16-bit" out_t="i16_t"  version_added="1.0">
           <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="32-bit" out_t="i32_t"  version_added="1.0">
           <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="48-bit" out_t="i48_t"  version_added="1.0">
           <op_profile name="EXT-INT16"/>
@@ -2943,18 +2947,22 @@ used.</description>
         </types>
         <typesupport mode="Boolean" in_out_t="bool_t"  version_added="1.0">
           <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="4-bit" in_out_t="i4_t"  version_added="1.0">
           <op_profile name="EXT-INT4"/>
         </typesupport>
         <typesupport mode="8-bit" in_out_t="i8_t"  version_added="1.0">
           <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="16-bit" in_out_t="i16_t"  version_added="1.0">
           <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="32-bit" in_out_t="i32_t"  version_added="1.0">
           <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="48-bit" in_out_t="i48_t"  version_added="1.0">
           <op_profile name="EXT-INT16"/>
