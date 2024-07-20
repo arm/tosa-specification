@@ -77,6 +77,8 @@
     <xs:enumeration value="cond_t"/>
     <xs:enumeration value="shape_t"/>
     <xs:enumeration value="tensor_list_t"/>
+    <xs:enumeration value="A_t"/>
+    <xs:enumeration value="B_t"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -305,6 +307,8 @@
     <xs:attribute name="var_t" type="datatype"/>
     <xs:attribute name="shape_t" type="datatype"/>
     <xs:attribute name="tensor_list_t" type="datatype"/>
+    <xs:attribute name="A_t" type="datatype"/>
+    <xs:attribute name="B_t" type="datatype"/>
   </xs:complexType>
 </xs:element>
 

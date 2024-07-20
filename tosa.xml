@@ -489,19 +489,19 @@
       <operator>
         <name>MATMUL</name>
         <arguments>
-          <argument category="input" name="A" type="tensor_t" shape="[N,H,C]" tensor-element-type="in_t">
+          <argument category="input" name="A" type="tensor_t" shape="[N,H,C]" tensor-element-type="A_t">
             <description>Input tensor A, N matrices of size HxC</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="input" name="B" type="tensor_t" shape="[N,C,W]" tensor-element-type="in_t">
+          <argument category="input" name="B" type="tensor_t" shape="[N,C,W]" tensor-element-type="B_t">
             <description>Input tensor B, N matrices of size CxW</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="attribute" name="A_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
+          <argument category="attribute" name="A_zp" type="tensor_t" shape="-" tensor-element-type="A_t">
             <description>Input tensor A zero point. Must be zero for non-int8 types.</description>
             <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="B_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
+          <argument category="attribute" name="B_zp" type="tensor_t" shape="-" tensor-element-type="B_t">
             <description>Input tensor B zero point. Must be zero for non-int8 types.</description>
             <rank min="0" max="0"/>
           </argument>
@@ -511,31 +511,50 @@
           </argument>
         </arguments>
         <types>
-          <type name='in_t' />
+          <type name='A_t' />
+          <type name='B_t' />
           <type name='out_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" out_t="i32_t" version_added="1.0">
+        <typesupport mode="signed 8x8 with int32 accumulate" A_t="i8_t" B_t="i8_t" out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
-        <typesupport mode="signed 16x16 with int48 accumulate" in_t="i16_t" out_t="i48_t" version_added="1.0">
+        <typesupport mode="signed 16x16 with int48 accumulate" A_t="i16_t" B_t="i16_t" out_t="i48_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" out_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp8e4m3xfp8e4m3 with fp16 accumulate" A_t="fp8e4m3_t" B_t="fp8e4m3_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp8e4m3xfp8e4m3 with fp32 accumulate" A_t="fp8e4m3_t" B_t="fp8e4m3_t" out_t="fp32_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2xfp8e5m2 with fp16 accumulate" A_t="fp8e5m2_t" B_t="fp8e5m2_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" out_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp8e5m2xfp8e5m2 with fp32 accumulate" A_t="fp8e5m2_t" B_t="fp8e5m2_t" out_t="fp32_t" version_added="1.0">
+          <op_profile name="EXT-FP8E5M2"/>
+        </typesupport>
+        <typesupport mode="fp8e4m3xfp8e5m2 with fp16 accumulate" A_t="fp8e4m3_t" B_t="fp8e5m2_t" out_t="fp16_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3" and_name="EXT-FP8E5M2"/>
+        </typesupport>
+        <typesupport mode="fp8e4m3xfp8e5m2 with fp32 accumulate" A_t="fp8e4m3_t" B_t="fp8e5m2_t" out_t="fp32_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3" and_name="EXT-FP8E5M2"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2xfp8e4m3 with fp16 accumulate" A_t="fp8e5m2_t" B_t="fp8e4m3_t" out_t="fp16_t" version_added="1.0">
+          <op_profile name="EXT-FP8E5M2" and_name="EXT-FP8E4M3"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2xfp8e4m3 with fp32 accumulate" A_t="fp8e5m2_t" B_t="fp8e4m3_t" out_t="fp32_t" version_added="1.0">
+          <op_profile name="EXT-FP8E5M2" and_name="EXT-FP8E4M3"/>
+        </typesupport>
+        <typesupport mode="fp16xfp16 with fp16 accumulate" A_t="fp16_t" B_t="fp16_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" out_t="fp32_t" version_added="1.0">
+        <typesupport mode="fp16xfp16 with fp32 accumulate" A_t="fp16_t" B_t="fp16_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" out_t="fp32_t" version_added="1.0">
+        <typesupport mode="bf16xbf16 with fp32 accumulate" A_t="bf16_t" B_t="bf16_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" out_t="fp32_t" version_added="1.0">
+        <typesupport mode="fp32xfp32 with fp32 accumulate" A_t="fp32_t" B_t="fp32_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
       </operator>
