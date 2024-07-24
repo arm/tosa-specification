@@ -2149,7 +2149,7 @@
           <op_profile name="PRO-INT"/>
         </typesupport>
         <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
-          <op_profile name="PRO-INT"/>
+          <op_profile name="EXT-INT16"/>
         </typesupport>
         <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
