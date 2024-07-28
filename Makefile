@@ -77,8 +77,8 @@ out/lint.txt: $(SPECXML) $(SPECSCHEMA)
 $(GEN): $(SPECXML) $(GENSCRIPTS)
 	mkdir -p $(GENDIR)
 	tools/genspec.py --xml $(SPECXML) --outdir $(GENDIR) --profile
-	python tools/compliance_data_verifier.py --input $(GENDIR)/compliance.profile.meta
-	python tools/compliance_data_verifier.py --input $(GENDIR)/compliance.extension.meta
+	python3 tools/compliance_data_verifier.py --input $(GENDIR)/compliance.profile.meta
+	python3 tools/compliance_data_verifier.py --input $(GENDIR)/compliance.extension.meta
 	@touch $@
 
 $(HTMLDIR)/tosa_spec.html: $(SPECSRC) $(SPECFILES) $(GEN) $(PSEUDOCODEFILES)
