@@ -113,5 +113,3 @@ include::custom.adoc[]
 include::control_flow.adoc[]
 
 include::variable.adoc[]
-
-include::shape.adoc[]
