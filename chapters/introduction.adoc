@@ -432,7 +432,7 @@ Other non NaN results must be exact.
 (1) The sign of the zero is ignored +
 (2) Infinities of the same sign compare as equal
 
-| <<CONV2D>>, <<CONV3D>>, <<DEPTHWISE_CONV2D>>, <<FULLY_CONNECTED>>, <<MATMUL>>, <<TRANSPOSE_CONV2D>>
+| <<CONV2D>>, <<CONV3D>>, <<DEPTHWISE_CONV2D>>, <<MATMUL>>, <<TRANSPOSE_CONV2D>>
 | Each output can be expressed as a dot product of two input vectors. +
 The dot product must meet the <<Dot product accuracy requirements>>
 

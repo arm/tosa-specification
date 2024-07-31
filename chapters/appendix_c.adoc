@@ -30,5 +30,10 @@ SIN and COS were added to provide a base level of trigonometric functionality as
 === Removed operators
 
 In version 0.90, a set of shape operators were introduced to attempt to allow dynamically shaped network to be expressed completely with TOSA.
-We found gaps in this implementation, and as such have removed the shape operators in order to reevaluate without requiring future implementations retain compatibility with these operators.
+There are gaps in this implementation, and as such have the shape operators have been removed.
+This removes the requirement on future implementations retain compatibility with these operators.
 The shape_t type remains, and the CONST_SHAPE operator allows creating instances of shape_t type.
+
+FULLY_CONNECTED has been removed from TOSA.
+FULLY_CONNECTED functionality can be achieved by using the CONV2D operator.
+Using CONV2D allows the bias add to be included in the operator, where MATMUL does not include bias support.
