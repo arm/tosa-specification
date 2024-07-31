@@ -199,26 +199,6 @@ for (0 <= oc < C*M) {
 }
 ----
 
-==== FULLY_CONNECTED
-
-The following generates input test data for test set S.
-For compliant implementation, the test must pass whenever the attributes satisfy:
-`N*OC >= MIN_DOT_PRODUCTS`
-
-[source,c++]
-----
-KS = IC;
-for (0 <= n < N, 0 <= ic < IC) {
-  input [ n, ic] = tosa_pro_fp_data(S, KS, 0, ic,  n*IC+ic);
-}
-for (0 <= oc < OC, 0 <= ic < IC) {
-  weight[oc, ic] = tosa_pro_fp_data(S, KS, 1, ic, oc*IC+ic);
-}
-for (0 <= oc < BC) {
-  bias[oc] = tosa_pro_fp_data(S, KS, 2, oc)
-}
-----
-
 ==== MATMUL
 
 The following generates input test data for test set S.

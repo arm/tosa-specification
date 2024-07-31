@@ -93,20 +93,9 @@ include::{generated}/operators/FFT2D.adoc[]
 include::{pseudocode}/operators/FFT2D.tosac[lines=10..-1]
 ----
 
-==== FULLY_CONNECTED
-
-Performs a fully connected network.
-
-include::{generated}/operators/FULLY_CONNECTED.adoc[]
-
-[source,c++]
-----
-include::{pseudocode}/operators/FULLY_CONNECTED.tosac[lines=10..-1]
-----
-
 ==== MATMUL
 
-Performs two dimensional matrix multiplications. This allows both inputs to be activations, rather than reserving weights as an attribute in the FULLY_CONNECTED operator.
+Performs two dimensional matrix multiplications.
 
 include::{generated}/operators/MATMUL.adoc[]
 
