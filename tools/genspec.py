@@ -56,7 +56,14 @@ class TOSASpecAsciidocGenerator:
 
             # Type
             if arg.type == "tensor_t":
-                argtype = f"T<{arg.tensor_element_type}>"
+                if (
+                    arg.categories[0].name == "attribute"
+                    and len(arg.rank) == 2
+                    and arg.rank[0] == arg.rank[1] == "0"
+                ):
+                    argtype = f"{arg.tensor_element_type}"
+                else:
+                    argtype = f"T<{arg.tensor_element_type}>"
             elif arg.type == "tensor_list_t":
                 if arg.tensor_element_type == "-":
                     argtype = "tensor_list_t"
