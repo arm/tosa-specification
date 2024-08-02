@@ -22,6 +22,9 @@ bool tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64_t
   if (is_a_NaN(ref_value)) {
     return is_a_NaN(test_value);
   }
+  if (!is_finite(err_bnd))) {
+    return true;
+  }
   REQUIRE(err_bnd >= 0.0);
   if (ref_value < 0) {
     ref_value  = -ref_value;
