@@ -517,13 +517,13 @@ Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be 
 | <<COS>>
 | Let `x` be an input element and `out_imp` the implementation output of `cos(x)`. +
 Let `out_ref` be the result of the fp64_t reference implementation of `cos(x)`. +
-Let `err_bnd = calcAbsErrorBound<in_out_t>(x, 1+abs(x), 0, 2)` +
+Let `err_bnd = calcAbsErrorBound<in_out_t>(1+abs(x), 1, 0, 2)` +
 Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 | <<SIN>>
 | Let `x` be an input element and `out_imp` the implementation output of `sin(x)`. +
 Let `out_ref` be the result of the fp64_t reference implementation of `sin(x)`. +
-Let `err_bnd = calcAbsErrorBound<in_out_t>(x, abs(x), 0, 2)` +
+Let `err_bnd = max(calcAbsErrorBound<in_out_t>(x, 1, 0, 2), pi*normal_min<in_out_t>())` +
 Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true
 
 | <<RESIZE>>
