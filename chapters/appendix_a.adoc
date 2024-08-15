@@ -74,9 +74,9 @@ The aim of this test set is to check values with large exponents.
 [cols="1,9"]
 |===
 | p | tosa_pro_fp_data(S, KS, p, k, i) =
-| 0 | (B/sqrt(KS+1))*(0.75 + 0.25*set_data(3*S+0, i))
-| 1 | (B/sqrt(KS+1))*(0.75 + 0.25*set_data(3*S+1, i))
-| 2 | (B*B/(KS+1))*(0.75 + 0.25*set_data(3*S+2, i))
+| 0 | (B/sqrt(KS+1))*((set_data(3*S+0, i*2) < 0 ? -0.75 : 0.75) + 0.25*set_data(3*S+0, 2*i+1) )
+| 1 | (B/sqrt(KS+1))*((set_data(3*S+1, i*2) < 0 ? -0.75 : 0.75) + 0.25*set_data(3*S+1, 2*i+1) )
+| 2 | (B*B/(KS+1))*((set_data(3*S+2, i*2) < 0 ? -0.75 : 0.75) + 0.25*set_data(3*S+2, 2*i+1) )
 |===
 
 ==== Test Set S=2
@@ -102,8 +102,8 @@ If the implementation changes the order of the sum, then the test data must also
 [cols="1,9"]
 |===
 | p | tosa_pro_fp_data(S, KS, p, k, i) =
-| 0 | (k==0) ? ((set_data(3*S+0, 2*i+0) < 0) ? -16.0 : 16.0) : exp(2*set_data(3*S+0, 2*i+0)) * set_data(3*S+0, 2*i+1)
-| 1 | (k==0) ? ((set_data(3*S+1, 2*i+0) < 0) ? -16.0 : 16.0) : exp(2*set_data(3*S+1, 2*i+0)) * set_data(3*S+1, 2*i+1)
+| 0 | (k==0) ? ((set_data(3*S+0, 2*i+0) < 0) ? -16.0 : 16.0) : exp(2*set_data(3*S+0, 2*i+0) ) * set_data(3*S+0, 2*i+1)
+| 1 | (k==0) ? ((set_data(3*S+1, 2*i+0) < 0) ? -16.0 : 16.0) : exp(2*set_data(3*S+1, 2*i+0) ) * set_data(3*S+1, 2*i+1)
 | 2 | 0.0
 |===
 
