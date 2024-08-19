@@ -729,7 +729,7 @@ In particular, a 48-bit value cannot be scaled with the 32-bit multiplier becaus
 The apply_scale_* functions provide a scaling of approximately (multiplier / 2^shift^).
 The shift and value range are limited to allow a variety of implementations.
 The limit of 62 on shift allows the shift to be decomposed as two right shifts of 31.
-For apply_scale_32, the value must be between (-1 << (shift - 1)) <= value < (1 << (shift - 1)).
+For apply_scale_32, the value must be between (-1 << (shift - 1)) \<= value < (1 << (shift - 1)).
 This allows for implementations that left-shift the value before the multiply in the case of shifts of 32 or less.
 For example, in the case shift=30 an implementation of the form ((value\<<2) * multiplier + round)>>32 can be used.
 A scaling range of 2^+12^ down to 2^-32^ is supported for both functions with a normalized multiplier.
