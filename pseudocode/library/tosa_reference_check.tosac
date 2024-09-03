@@ -18,7 +18,7 @@ bool tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num
   return tosa_reference_check_fp_bnd<in_t>(test_value, ref_value, err_bnd);
 }
 
-bool tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64_t err_bnd) {
+bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64_t err_bnd) {
   if (is_a_NaN(ref_value)) {
     return is_a_NaN(test_value);
   }

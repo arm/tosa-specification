@@ -71,7 +71,7 @@ in_out_t maximum_u<in_out_t>();
 in_out_t minimum_u<in_out_t>();
 
 // return true if the given value is a NaN. Only valid for floating-point types
-bool is_a_NaN(fp64_t value);
+bool_t is_a_NaN(fp64_t value);
 
 // return true if value is a normal fp64 value (Not zero, subnormal, infinite or NaN)
-bool is_normal_fp64(fp64_t value);
+bool_t is_normal_fp64(fp64_t value);
