@@ -1477,7 +1477,7 @@
             <operator>
         <name>COS</name>
         <arguments>
-          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
@@ -1747,7 +1747,7 @@
             <operator>
         <name>SIN</name>
         <arguments>
-          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
