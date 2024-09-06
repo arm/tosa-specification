@@ -103,12 +103,24 @@
 
 <xs:simpleType name="argument-type">
   <xs:restriction base="xs:string">
+    <xs:enumeration value="A_t"/>
+    <xs:enumeration value="acc_type_t"/>
+    <xs:enumeration value="B_t"/>
+    <xs:enumeration value="bool_t"/>
+    <xs:enumeration value="i8_t"/>
+    <xs:enumeration value="i32_t"/>
+    <xs:enumeration value="in_t"/>
+    <xs:enumeration value="in_out_t"/>
+    <xs:enumeration value="out_t"/>
+    <xs:enumeration value="resize_mode_t"/>
+    <xs:enumeration value="shape_t"/>
+    <xs:enumeration value="shape_list_t"/>
+    <xs:enumeration value="String"/>
     <xs:enumeration value="tensor_t"/>
     <xs:enumeration value="tensor_list_t"/>
     <xs:enumeration value="tosa_graph_t"/>
-    <xs:enumeration value="String"/>
-    <xs:enumeration value="shape_t"/>
-    <xs:enumeration value="shape_list_t"/>
+    <xs:enumeration value="var_t"/>
+    <xs:enumeration value="weight_t"/>
   </xs:restriction>
 </xs:simpleType>
 
