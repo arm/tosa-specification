@@ -48,7 +48,7 @@
             <levellimit value="rank(shape1)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
+          <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis in range from 0 to rank(shape1) - 1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -117,17 +117,14 @@
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
+          <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
             <description>Enumerated type, must be one of INT32, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_out_t">
+          <argument category="attribute" name="input_zp" type="in_out_t" shape="-" tensor-element-type="-">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="output_zp" type="tensor_t" shape="-" tensor-element-type="in_out_t">
+          <argument category="attribute" name="output_zp" type="in_out_t" shape="-" tensor-element-type="-">
             <description>Output tensor zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,C]" tensor-element-type="in_out_t">
             <description>Output tensor 4D</description>
@@ -199,25 +196,21 @@
             <description>[dilation_y, dilation_x]</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
+          <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
             <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
+          <argument category="attribute" name="input_zp" type="in_t" shape="-" tensor-element-type="-">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="tensor_t" shape="-" tensor-element-type="weight_t">
+          <argument category="attribute" name="weight_zp" type="weight_t" shape="-" tensor-element-type="-">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="local_bound" type="tensor_t" shape="-" tensor-element-type="bool_t" optional="true">
+          <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
                 This optional attribute affects the floating-point compliance error bound.
                 The default of false allows for direct and transform based, fast convolution algorithms.
                 Only set to true if direct dot-product calculation precision is required.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,OC]" tensor-element-type="out_t">
             <description>Output tensor</description>
@@ -298,25 +291,21 @@
             <description>[dilation_d, dilation_y, dilation_x]</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
+          <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
             <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
+          <argument category="attribute" name="input_zp" type="in_t" shape="-" tensor-element-type="-">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="tensor_t" shape="-" tensor-element-type="weight_t">
+          <argument category="attribute" name="weight_zp" type="weight_t" shape="-" tensor-element-type="-">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="local_bound" type="tensor_t" shape="-" tensor-element-type="bool_t" optional="true">
+          <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
                 This optional attribute affects the floating-point compliance error bound.
                 The default of false allows for direct and transform based, fast convolution algorithms.
                 Only set to true if direct dot-product calculation precision is required.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OD,OH,OW,OC]" tensor-element-type="out_t">
             <description>Output tensor</description>
@@ -393,25 +382,21 @@
             <description>[dilation_y, dilation_x]</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
+          <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
             <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
+          <argument category="attribute" name="input_zp" type="in_t" shape="-" tensor-element-type="-">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="tensor_t" shape="-" tensor-element-type="weight_t">
+          <argument category="attribute" name="weight_zp" type="weight_t" shape="-" tensor-element-type="-">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="local_bound" type="tensor_t" shape="-" tensor-element-type="bool_t" optional="true">
+          <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
                 This optional attribute affects the floating-point compliance error bound.
                 The default of false allows for direct and transform based, fast convolution algorithms.
                 Only set to true if direct dot-product calculation precision is required.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,C*M]" tensor-element-type="out_t">
             <description>Output tensor</description>
@@ -465,17 +450,15 @@
             <description>Imaginary part of the complex input. H,W must be powers of two.</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="attribute" name="inverse" type="tensor_t" shape="-" tensor-element-type="bool_t">
+          <argument category="attribute" name="inverse" type="bool_t" shape="-" tensor-element-type="-">
             <description>false for forward FFT, true for inverse FFT</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="local_bound" type="tensor_t" shape="-" tensor-element-type="bool_t" optional="true">
+          <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
                 This optional attribute affects the floating-point compliance error bound.
                 The default of false allows for direct and transform based, fast convolution algorithms.
                 Only set to true if direct dot-product calculation precision is required.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output_real" type="tensor_t" shape="[N,H,W]" tensor-element-type="in_out_t">
             <description>Real part of the complex output.</description>
@@ -504,13 +487,11 @@
             <description>Input tensor B, N matrices of size CxW</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="attribute" name="A_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
+          <argument category="attribute" name="A_zp" type="in_t" shape="-" tensor-element-type="-">
             <description>Input tensor A zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="B_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
+          <argument category="attribute" name="B_zp" type="in_t" shape="-" tensor-element-type="-">
             <description>Input tensor B zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,H,W]" tensor-element-type="out_t">
             <description>Output tensor, N matrices of size HxW</description>
@@ -619,13 +600,12 @@
             <levellimit value="W" limit="MAX_KERNEL"/>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="attribute" name="local_bound" type="tensor_t" shape="-" tensor-element-type="bool_t" optional="true">
+          <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
                 This optional attribute affects the floating-point compliance error bound.
                 The default of false allows for direct and transform based, fast convolution algorithms.
                 Only set to true if direct dot-product calculation precision is required.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output_real" type="tensor_t" shape="[N,H,W/2 + 1]" tensor-element-type="in_out_t">
             <description>Real part of the complex output</description>
@@ -675,25 +655,21 @@
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="acc_type" type="tensor_t" shape="-" tensor-element-type="acc_type_t">
+          <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
             <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
+          <argument category="attribute" name="input_zp" type="in_t" shape="-" tensor-element-type="-">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="tensor_t" shape="-" tensor-element-type="weight_t">
+          <argument category="attribute" name="weight_zp" type="weight_t" shape="-" tensor-element-type="-">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="local_bound" type="tensor_t" shape="-" tensor-element-type="bool_t" optional="true">
+          <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
                 This optional attribute affects the floating-point compliance error bound.
                 The default of false allows for direct and transform based, fast convolution algorithms.
                 Only set to true if direct dot-product calculation precision is required.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,OC]" tensor-element-type="out_t">
             <description>Output tensor</description>
@@ -744,11 +720,10 @@
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="min_val" type="tensor_t" shape="-" tensor-element-type="in_out_t">
+          <argument category="attribute" name="min_val" type="in_out_t" shape="-" tensor-element-type="-">
             <description>Minimum clip value</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="max_val" type="tensor_t" shape="-" tensor-element-type="in_out_t">
+          <argument category="attribute" name="max_val" type="in_out_t" shape="-" tensor-element-type="-">
             <description>Maximum clip value</description>
             <rank min="0" max="0"/>
           </argument>
@@ -908,9 +883,8 @@
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="round" type="tensor_t" shape="-" tensor-element-type="bool_t">
+          <argument category="attribute" name="round" type="bool_t" shape="-" tensor-element-type="-">
             <description>If true then the shift is rounded</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor</description>
@@ -1278,9 +1252,9 @@
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="shift" type="tensor_t" shape="-" tensor-element-type="i8_t">
-            <description>Result right shift (i32_t data type only)</description>
-            <rank min="0" max="0"/>
+          <argument category="input" name="shift" type="tensor_t" shape="[1]" tensor-element-type="i8_t">
+            <description>Result right shift (used with i32_t data type only)</description>
+            <rank min="1" max="1"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor</description>
@@ -1642,13 +1616,11 @@
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="input1_zp" type="tensor_t" shape="-" tensor-element-type="in_out_t">
+          <argument category="attribute" name="input1_zp" type="in_out_t" shape="-" tensor-element-type="-">
             <description>Input 1 zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="output_zp" type="tensor_t" shape="-" tensor-element-type="in_out_t">
+          <argument category="attribute" name="output_zp" type="in_out_t" shape="-" tensor-element-type="-">
             <description>Output zero point. Must be zero for non-int8 types.</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -1918,9 +1890,8 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
+          <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
@@ -1942,9 +1913,8 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
+          <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
@@ -1966,7 +1936,7 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
+          <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -2011,7 +1981,7 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
+          <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
             <rank min="0" max="0"/>
           </argument>
@@ -2056,9 +2026,8 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
+          <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
@@ -2085,9 +2054,8 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
+          <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
@@ -2121,9 +2089,8 @@
             <levellimit value="tensor_list_shape(input1)" limit="MAX_TENSOR_LIST_SIZE"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
+          <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis along which concatenation is to occur, in range from 0 to rank(shape)-1</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor</description>
@@ -2176,9 +2143,8 @@
             As an example for rank 2, the values would be interpreted as [start_dim0, end_dim0, start_dim1, end_dim1].</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad_const" type="tensor_t" shape="-" tensor-element-type="in_out_t">
+          <argument category="attribute" name="pad_const" type="in_out_t" shape="-" tensor-element-type="-">
             <description>Constant value to be used as padding</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type as the input tensor</description>
@@ -2276,9 +2242,8 @@
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
+          <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis to reverse, in range from 0 to rank(shape)-1</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same shape as input tensor</description>
@@ -2586,9 +2551,8 @@ used.</description>
             <description>[border_y, border_x]</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="mode" type="tensor_t" shape="-" tensor-element-type="resize_mode_t">
+          <argument category="attribute" name="mode" type="resize_mode_t" shape="-" tensor-element-type="-">
             <description>BILINEAR or NEAREST</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,C]" tensor-element-type="out_t">
             <description>Output tensor</description>
@@ -2796,33 +2760,26 @@ used.</description>
             <description>Scaling shift array</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="tensor_t" shape="-" tensor-element-type="in_t">
+          <argument category="attribute" name="input_zp" type="in_t" shape="-" tensor-element-type="-">
             <description>Input tensor zero point. int8/uint8 can have zero point within their valid range. uint16 zero point must be either 0 or 32768. All other types must have zero point equal to 0.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="output_zp" type="tensor_t" shape="-" tensor-element-type="out_t">
+          <argument category="attribute" name="output_zp" type="out_t" shape="-" tensor-element-type="-">
             <description>Output tensor zero point.int8/uint8 can have zero point within their valid range. uint16 zero point must be either 0 or 32768. All other types must have zero point equal to 0.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="scale32" type="tensor_t" shape="-" tensor-element-type="bool_t">
+          <argument category="attribute" name="scale32" type="bool_t" shape="-" tensor-element-type="-">
             <description>if (scale32) mul_t=i32_t else mul_t=i16_t</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="double_round" type="tensor_t" shape="-" tensor-element-type="bool_t">
+          <argument category="attribute" name="double_round" type="bool_t" shape="-" tensor-element-type="-">
             <description>Select double round mode</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="per_channel" type="tensor_t" shape="-" tensor-element-type="bool_t">
+          <argument category="attribute" name="per_channel" type="bool_t" shape="-" tensor-element-type="-">
             <description>if (per_channel) NC=shape[rank(shape)-1] else NC=1</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="input_unsigned" type="tensor_t" shape="-" tensor-element-type="bool_t">
+          <argument category="attribute" name="input_unsigned" type="bool_t" shape="-" tensor-element-type="-">
             <description>If True, treat the input values as unsigned.</description>
-            <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="output_unsigned" type="tensor_t" shape="-" tensor-element-type="bool_t">
+          <argument category="attribute" name="output_unsigned" type="bool_t" shape="-" tensor-element-type="-">
             <description>If True, treat the output values as unsigned.</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor with the same shape as input</description>
@@ -3074,17 +3031,15 @@ used.</description>
       <operator>
         <name>VARIABLE</name>
         <arguments>
-          <argument category="attribute" name="uid" type="tensor_t" shape="-" tensor-element-type="i32_t">
+          <argument category="attribute" name="uid" type="i32_t" shape="-" tensor-element-type="-">
             <description>Globally unique identifier for the declared variable tensor.</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="var_shape" type="tensor_t" shape="var_shape" tensor-element-type="size_t">
             <description>The variable tensor shape</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="type" type="tensor_t" shape="-" tensor-element-type="var_t">
+          <argument category="attribute" name="type" type="var_t" shape="-" tensor-element-type="-">
             <description>Type of the tensor variable elements.</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="initial_value" type="tensor_t" shape="shape" tensor-element-type="in_t" optional="true">
             <description>Initial value of the variable tensor. This argument is optional with default value NULL.</description>
@@ -3113,9 +3068,8 @@ used.</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="uid" type="tensor_t" shape="-" tensor-element-type="i32_t">
+          <argument category="attribute" name="uid" type="i32_t" shape="-" tensor-element-type="-">
             <description>Globally unique identifier of the variable tensor that is writing to</description>
-            <rank min="0" max="0"/>
           </argument>
         </arguments>
         <types>
@@ -3134,9 +3088,8 @@ used.</description>
       <operator>
         <name>VARIABLE_READ</name>
         <arguments>
-          <argument category="attribute" name="uid" type="tensor_t" shape="-" tensor-element-type="i32_t">
+          <argument category="attribute" name="uid" type="i32_t" shape="-" tensor-element-type="-">
             <description>Globally unique identifier of the variable tensor that is reading from </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output1" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor</description>
