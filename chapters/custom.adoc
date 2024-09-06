@@ -17,6 +17,7 @@ Runs an implementation defined custom operator.
 CUSTOM operators are not tested in the conformance suite as results will be implementation defined.
 The `domain_name` attribute should be unique to each implementation.
 To achieve this, using a domain name as the `domain_name` attribute is recommended.
+No conformance testing is done for CUSTOM operators as they are implementation dependent.
 
 include::{generated}/operators/CUSTOM.adoc[]
 
