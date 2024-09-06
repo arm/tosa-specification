@@ -120,11 +120,13 @@
           <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
             <description>Enumerated type, must be one of INT32, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_out_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="output_zp" type="in_out_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="output_zp" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
             <description>Output tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,C]" tensor-element-type="in_out_t">
             <description>Output tensor 4D</description>
@@ -199,11 +201,13 @@
           <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
             <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="weight_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="weight_zp" type="tensor_t" shape="[1]" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
@@ -294,11 +298,13 @@
           <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
             <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="weight_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="weight_zp" type="tensor_t" shape="[1]" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
@@ -385,11 +391,13 @@
           <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
             <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="weight_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="weight_zp" type="tensor_t" shape="[1]" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
@@ -487,11 +495,13 @@
             <description>Input tensor B, N matrices of size CxW</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="attribute" name="A_zp" type="in_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="A_zp" type="tensor_t" shape="[1]" tensor-element-type="A_t">
             <description>Input tensor A zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="B_zp" type="in_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="B_zp" type="tensor_t" shape="[1]" tensor-element-type="B_t">
             <description>Input tensor B zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,H,W]" tensor-element-type="out_t">
             <description>Output tensor, N matrices of size HxW</description>
@@ -658,11 +668,13 @@
           <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
             <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="weight_zp" type="weight_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="weight_zp" type="tensor_t" shape="[1]" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
@@ -1616,11 +1628,13 @@
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="input1_zp" type="in_out_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="input1_zp" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
             <description>Input 1 zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="output_zp" type="in_out_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="output_zp" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
             <description>Output zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -2761,11 +2775,13 @@ used.</description>
             <description>Scaling shift array</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="input_zp" type="in_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. int8/uint8 can have zero point within their valid range. uint16 zero point must be either 0 or 32768. All other types must have zero point equal to 0.</description>
+            <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="output_zp" type="out_t" shape="-" tensor-element-type="-">
+          <argument category="input" name="output_zp" type="tensor_t" shape="[1]" tensor-element-type="out_t">
             <description>Output tensor zero point.int8/uint8 can have zero point within their valid range. uint16 zero point must be either 0 or 32768. All other types must have zero point equal to 0.</description>
+            <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="scale32" type="bool_t" shape="-" tensor-element-type="-">
             <description>if (scale32) mul_t=i32_t else mul_t=i16_t</description>

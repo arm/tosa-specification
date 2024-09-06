@@ -74,6 +74,8 @@
 
 <xs:simpleType name="typename">
   <xs:restriction base="xs:string">
+    <xs:enumeration value="A_t"/>
+    <xs:enumeration value="B_t"/>
     <xs:enumeration value="in_t"/>
     <xs:enumeration value="out_t"/>
     <xs:enumeration value="in_out_t"/>
