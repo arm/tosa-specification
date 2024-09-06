@@ -116,6 +116,8 @@ The following portions of the specification and implementation will not change w
 
 Changes to the following do not break compatibility:
 
+* Machine readable specification format (currently XML)
+* Machine readable specification schema
 * Order of operation definitions within the XML specification
 * Operator section names
 * Descriptive text that does not affect functionality
