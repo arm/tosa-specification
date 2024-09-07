@@ -67,6 +67,7 @@
   <xs:restriction base="xs:string">
     <xs:enumeration value="resize_mode_t"/>
     <xs:enumeration value="acc_type_t"/>
+    <xs:enumeration value="nan_propagation_t"/>
   </xs:restriction>
 </xs:simpleType>
 

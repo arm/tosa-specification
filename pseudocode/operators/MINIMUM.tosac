@@ -13,6 +13,6 @@ for_each(index in shape) {
     shape_t index2 = apply_broadcast(shape, shape2, index);
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
-    in_out_t result = apply_min_s(value1, value2);
+    in_out_t result = apply_min_s(value1, value2, nan_mode);
     tensor_write<in_out_t>(output, shape, index, result);
 }
