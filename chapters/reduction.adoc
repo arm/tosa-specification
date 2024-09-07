@@ -47,12 +47,17 @@ Reduce a tensor along the given axis with a maximum operation
 
 Integer results must be exact.
 
+NaN propagation mode only affects floating-point types.
+It indicates either propagating or ignoring NaN.
+
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
 ** The sign of a zero is ignored.
 ** Infinities of the same sign compare as equal.
-** If any input value is a NaN, the result is NaN.
+** In the NaN propagating mode, if any input value along the reduction axis is a NaN, the result is NaN.
+** In the NaN ignoring mode, if all input values along the reduction axis are NaN, the result is NaN.
+Otherwise the result is the maximum non-NaN value.
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * If a floating-point result is zero, then the result must be either +0.0 or -0.0 but either sign is permitted.
 * If the result is a subnormal value for bf16_t, fp16_t, or fp32_t, the result may be a zero of either sign.
@@ -69,12 +74,21 @@ include::{pseudocode}/operators/REDUCE_MAX.tosac[lines=10..-1]
 
 Reduce a tensor along the given axis with a minimum operation
 
+*Precision Requirements*
+
+Integer results must be exact.
+
+NaN propagation mode only affects floating-point types.
+It indicates either propagating or ignoring NaN.
+
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
 ** The sign of a zero is ignored.
 ** Infinities of the same sign compare as equal.
-** If any input value is a NaN, the result is NaN.
+** In the NaN propagating mode, if any input value along the reduction axis is a NaN, the result is NaN.
+** In the NaN ignoring mode, if all input values along the reduction axis are NaN, the result is NaN.
+Otherwise the result is the minimum non-NaN value.
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * If a floating-point result is zero, then the result must be either +0.0 or -0.0 but either sign is permitted.
 * If the result is a subnormal value for bf16_t, fp16_t, or fp32_t, the result may be a zero of either sign.

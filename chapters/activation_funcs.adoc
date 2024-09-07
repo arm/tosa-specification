@@ -20,12 +20,16 @@ No zero point subtraction is done to the values, thus to clamp to the zero point
 
 Integer results must be exact.
 
+NaN propagation mode only affects floating-point types.
+It indicates either propagating or ignoring NaN.
+
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
 ** The sign of a zero is ignored.
 ** Infinities of the same sign compare as equal.
-* If the input is a NaN, the output must be a NaN.
+** In the NaN propagating mode, if the input is a NaN, the output must be a NaN.
+** In the NaN ignoring mode, if the input is a NaN, the output is the specified minimum value.
 * bf16_t, fp16_t, and fp32_t subnormal values may be flushed to zero before computation.
 * If a floating-point result is zero, then the result must be either +0.0 or -0.0 but either sign is permitted.
 * If the result is a subnormal value for bf16_t, fp16_t, or fp32_t, the result may be a zero of either sign.

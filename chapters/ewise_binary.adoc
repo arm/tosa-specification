@@ -204,12 +204,17 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 Integer results must be exact.
 
+NaN propagation mode only affects floating-point types.
+It indicates either propagating or ignoring NaN.
+
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
 ** The sign of a zero is ignored.
 ** Infinities of the same sign compare as equal.
-** If either input value is a NaN, the result is NaN.
+** In the NaN propagating mode, if either input value is a NaN, the result is NaN.
+** In the NaN ignoring mode, if either input value is a NaN, the result is the non-NaN element.
+** If both values are NaN, the result is NaN.
 * bf16_t, fp16_t, and fp32_t subnormal values may be flushed to zero before computation.
 * If a floating-point result is zero, then the result must be either +0.0 or -0.0 but either sign is permitted.
 * If the result is a subnormal value for bf16_t, fp16_t, or fp32_t, the result may be a zero of either sign.
@@ -231,12 +236,17 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 Integer results must be exact.
 
+NaN propagation mode only affects floating-point types.
+It indicates either propagating or ignoring NaN.
+
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
 ** The sign of a zero is ignored.
 ** Infinities of the same sign compare as equal.
-** If either input value is a NaN, the result is NaN.
+** In the NaN propagating mode, if either input value is a NaN, the result is NaN.
+** In the NaN ignoring mode, if either input value is a NaN, the result is the non-NaN element.
+** If both values are NaN, the result is NaN.
 * bf16_t, fp16_t, and fp32_t subnormal values may be flushed to zero before computation.
 * If a floating-point result is zero, then the result must be either +0.0 or -0.0 but either sign is permitted.
 * If the result is a subnormal value for bf16_t, fp16_t, or fp32_t, the result may be a zero of either sign.

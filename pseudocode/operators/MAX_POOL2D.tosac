@@ -18,7 +18,9 @@ ERROR_IF(OH != idiv_check(IH + pad_top + pad_bottom - kernel_y, stride_y) + 1);
 ERROR_IF(OW != idiv_check(IW + pad_left + pad_right - kernel_x, stride_x) + 1);
 
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C ) {
-    in_out_t acc = minimum_s<in_out_t>();
+    in_out_t acc = (is_floating_point<in_out_t>() && nan_mode == IGNORE)
+                       : nan<in_out_t>()
+                       ? minimum_s<in_out_t>();
     index_t iy = oy * stride_y - pad_top;
     index_t ix = ox * stride_x - pad_left;
     for_each( 0 <= ky < kernel_y, 0 <= kx < kernel_x ) {
@@ -26,7 +28,7 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C ) {
         index_t x = ix + kx;
         if (y >= 0 && y < IH && x >= 0 && x < IW) {
             in_out_t value = tensor_read<in_out_t>(input, [N,IH,IW,C], [n,y,x,c]);
-            acc = apply_max_s<in_out_t>(acc, value);
+            acc = apply_max_s<in_out_t>(acc, value, nan_mode);
         }
     }
     tensor_write<in_out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc);
