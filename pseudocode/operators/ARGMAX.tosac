@@ -29,9 +29,12 @@ for_each(left_index in left_shape) {
         for (size_t i = 0; i < shape1[axis]; i++) {
             shape_t index = flatten(left_index, [i], right_index);
             in_t value = tensor_read<in_t>(input, shape1, index);
-            if (apply_max_s<in_t>(value, max_value, nan_mode) != max_value) {
-                max_value = value;
-                max_index = i;
+            in_t result = apply_max_s<in_t>(value, max_value, nan_mode);
+            if (result != max_value) {
+                if (!(isNaN(result) && isNaN(max_value))) {
+                    max_value = result;
+                    max_index = i;
+                }
             }
         }
         shape_t index = flatten(left_index, right_index);
