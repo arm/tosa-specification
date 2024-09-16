@@ -1344,7 +1344,7 @@
       <operator>
         <name>TABLE</name>
         <arguments>
-          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_t">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_t">
             <description>Input tensor</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
@@ -2222,7 +2222,7 @@
       <operator>
         <name>REVERSE</name>
         <arguments>
-          <argument category="input" name="input" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Input tensor</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
