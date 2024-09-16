@@ -18,7 +18,7 @@ for_each(input_shape in shapes1) {
 }
 for_each(index1 in shape) {
     shape_t index2 = index1;
-    for (tensor t = 0; t < length(input1); t++) {
+    for (int32_t t = 0; t < length(input1); t++) {
         // Continue to concatenate along axis from each tensor
         // For each output location, we are looking for the
         // appropriate input tensor
