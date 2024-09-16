@@ -10,6 +10,7 @@
 ERROR_IF(rank(shape1) != rank(shape));
 ERROR_IF(tensor_size(shape1) != tensor_size(shape));
 
+bool_t indexes_used[rank(shape1)];
 for_each(index in perms) {
     // Ensure each perms value is a valid value
     ERROR_IF(index >= rank(shape1));

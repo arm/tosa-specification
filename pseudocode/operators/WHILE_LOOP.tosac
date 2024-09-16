@@ -8,7 +8,7 @@
 // by a licensing agreement from ARM Limited.
 
 ERROR_IF(tosa_nesting_depth >= MAX_NESTING);
-ERROR_IF(tensor_list_shape(input_list) != tosa_list_shape(output_list));
+ERROR_IF(tensor_list_shape(input_list) != tensor_list_shape(output_list));
 ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(cond_graph));
 ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(body_graph));
 ERROR_IF(tensor_list_shape(input_list) != tosa_output_shape(body_graph));

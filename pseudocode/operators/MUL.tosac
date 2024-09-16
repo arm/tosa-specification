@@ -20,7 +20,7 @@ for_each(index in shape) {
         int64_t product = sign_extend<int64_t>(value1) * sign_extend<int64_t>(value2);
         int64_t round   = static_cast<int64_t>(1) << (shift - 1);
         product = (product + round) >> shift;
-        REQUIRE(product >= minimum_s<i32_t>() && product <= maximum_s<i32_t>())
+        REQUIRE(product >= minimum_s<i32_t>() && product <= maximum_s<i32_t>());
         result = product;
     } else {
         result = apply_mul_s(value1, value2);  // low 32-bits of result for i32_t
