@@ -530,10 +530,13 @@ Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be 
 
 | <<RESIZE>>
 | The result corresponds to a sequence of floating-point calculations. +
-The allowable error bound for the result of a resize is based on the maximum value of an element in the input tensor. +
+The allowable error bound for the result of a resize is based on the maximum value of an element in the input tensor and a minimum of 20.0 ulp. +
 Let `out_imp` be the implementation output. +
 Let `out_ref` be the result of the fp64_t reference implementation. +
-Let `err_bnd = max(abs(input)) * 0.006`. +
+
+Let `ulp_bnd = calcAbsErrorBound<in_out_t>(max(abs(input)), 20.0, 0, 1)`. +
+Let `relative_bnd = max(abs(input)) * 0.006` +
+Let `err_bnd = max(ulp_bnd, relative_bnd)` +
 Then `tosa_reference_check_fp_bnd<out_t>(out_imp, out_ref, err_bnd)` must be true.
 
 |===
