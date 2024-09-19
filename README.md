@@ -22,3 +22,22 @@ If only an html build is required, `make html` will build only the html file,
 and asciidoctor-pdf is not needed.
 
 If only a pdf build is required, `make pdf` will build only the pdf.
+
+# Pre Commit Checks
+
+Before pushing a commit, pre commit checks must be run to ensure conformity.
+
+## Prerequisites
+* pre-commit (tested with 3.8.0)
+
+Install with:
+
+``` bash
+pip install pre-commit==3.8.0
+```
+
+## Run Pre Commit Checks
+
+``` bash
+pre-commit run --all
+```
