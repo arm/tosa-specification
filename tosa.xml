@@ -29,6 +29,10 @@
       <profile_supported>PRO-INT</profile_supported>
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
+    <profile_extension name="EXT-CONTROLFLOW" description="Control Flow operations" status="Unstable">
+      <profile_supported>PRO-INT</profile_supported>
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
   </profile_extensions>
   <levels>
     <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256" max_tensor_list_size="256">No level</level>
@@ -3054,8 +3058,8 @@ used.</description>
           <type name='cond_t' />
         </types>
         <typesupport mode="Boolean" cond_t="bool_t"  version_added="1.0">
-          <op_profile name="PRO-INT"/>
-          <op_profile name="PRO-FP"/>
+          <op_profile name="EXT-CONTROLFLOW"/>
+          <op_profile name="EXT-CONTROLFLOW"/>
         </typesupport>
       </operator>
       <operator>
@@ -3080,8 +3084,8 @@ used.</description>
           <type name='cond_t' />
         </types>
         <typesupport mode="Boolean" cond_t="bool_t"  version_added="1.0">
-          <op_profile name="PRO-INT"/>
-          <op_profile name="PRO-FP"/>
+          <op_profile name="EXT-CONTROLFLOW"/>
+          <op_profile name="EXT-CONTROLFLOW"/>
         </typesupport>
       </operator>
     </operatorgroup>
