@@ -36,6 +36,7 @@ class TOSASpecAsciidocGenerator:
         file.write("|===\n")
 
     def generate_operator(self, op, file):
+        has_ctc = False
         file.write("\n*Arguments:*\n")
         file.write("[cols='3,3,2,2,4,8']")
         file.write("\n|===\n")
@@ -53,6 +54,9 @@ class TOSASpecAsciidocGenerator:
                     sep = " "
             else:
                 cattext = cats[0].name.title()
+
+            if arg.ctc:
+                has_ctc = True
 
             # Type
             if arg.type == "tensor_t":
@@ -93,6 +97,19 @@ class TOSASpecAsciidocGenerator:
             )
 
         file.write("|===\n")
+
+        if has_ctc:
+            file.write("\n*Compile Time Constant Status:*\n\n")
+            file.write("|===\n")
+            file.write("|Argument|CTC enabled profile(s)|CTC disabled extension(s)\n\n")
+            for arg in op.arguments:
+                if len(arg.ctc) > 0:
+                    file.write(f"|{arg.name}|{', '.join(arg.ctc)}|")
+                if len(arg.ctc_remove) > 0:
+                    file.write(f"{', '.join(arg.ctc_remove)}")
+                file.write("\n")
+            file.write("|===\n")
+
         if op.typesupports:
             file.write("\n*Supported Data Types:*\n\n")
             file.write("|===\n")
@@ -230,6 +247,9 @@ class TOSASpecAsciidocGenerator:
                                         f"|{op.name}|{tysup.mode}|"
                                         f"{tysup.version_added}|{note}\n"
                                     )
+                    for arg in op.arguments:
+                        if pext.name in arg.ctc_remove:
+                            f.write(f"|{op.name}|all||Remove CTC from {arg.name}\n")
                 f.write("|===\n")
 
 

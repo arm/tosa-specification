@@ -24,6 +24,7 @@
     <xs:enumeration value="EXT-SHAPE"/>
     <xs:enumeration value="EXT-VARIABLE"/>
     <xs:enumeration value="EXT-CONTROLFLOW"/>
+    <xs:enumeration value="EXT-DYNAMIC"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -131,6 +132,24 @@
 </xs:simpleType>
 
 <!-- Element definitions -->
+
+<!-- Defines what profiles this argument is CTC for-->
+<xs:element name="ctc">
+  <xs:complexType>
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element ref="op_profile"/>
+    </xs:choice>
+  </xs:complexType>
+</xs:element>
+
+<!-- Defines what profiles this argument CTC is removed for-->
+<xs:element name="ctc_remove">
+  <xs:complexType>
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element ref="op_profile"/>
+    </xs:choice>
+  </xs:complexType>
+</xs:element>
 
 <xs:element name="version">
   <xs:complexType>
@@ -280,6 +299,8 @@
       <xs:element name="description" type="xs:string"/>
       <xs:element ref="levellimit" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element ref="rank" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="ctc" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="ctc_remove" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="category" type="argumentcategory" use="required"/>
     <xs:attribute name="name" type="xs:string" use="required"/>
