@@ -33,6 +33,10 @@
       <profile_supported>PRO-INT</profile_supported>
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
+    <profile_extension name="EXT-DYNAMIC" description="Removes all Compile Time Constant state for CTC inputs" status="Experimental">
+      <profile_supported>PRO-INT</profile_supported>
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
   </profile_extensions>
   <levels>
     <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256" max_tensor_list_size="256">No level</level>
@@ -123,10 +127,24 @@
           <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="output_zp" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
             <description>Output tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,C]" tensor-element-type="in_out_t">
             <description>Output tensor 4D</description>
@@ -204,10 +222,24 @@
           <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="weight_zp" type="tensor_t" shape="[1]" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
@@ -301,10 +333,24 @@
           <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="weight_zp" type="tensor_t" shape="[1]" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
@@ -394,10 +440,24 @@
           <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="weight_zp" type="tensor_t" shape="[1]" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
@@ -498,10 +558,24 @@
           <argument category="input" name="A_zp" type="tensor_t" shape="[1]" tensor-element-type="A_t">
             <description>Input tensor A zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="B_zp" type="tensor_t" shape="[1]" tensor-element-type="B_t">
             <description>Input tensor B zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,H,W]" tensor-element-type="out_t">
             <description>Output tensor, N matrices of size HxW</description>
@@ -671,10 +745,24 @@
           <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="weight_zp" type="tensor_t" shape="[1]" tensor-element-type="weight_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
@@ -1267,6 +1355,13 @@
           <argument category="input" name="shift" type="tensor_t" shape="[1]" tensor-element-type="i8_t">
             <description>Result right shift (used with i32_t data type only)</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor</description>
@@ -1372,6 +1467,12 @@
           <argument category="input" name="table" type="tensor_t" shape="[TABLE_SIZE]" tensor-element-type="table_t">
             <description>Lookup table tensor</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor</description>
@@ -1631,10 +1732,24 @@
           <argument category="input" name="input1_zp" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
             <description>Input 1 zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="output_zp" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
             <description>Output zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -2156,10 +2271,24 @@
             The values in padding are interpreted as start, end of each dimension.
             As an example for rank 2, the values would be interpreted as [start_dim0, end_dim0, start_dim1, end_dim1].</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="pad_const" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
             <description>The value to be used as padding.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type as the input tensor</description>
@@ -2210,6 +2339,13 @@
           <argument category="input" name="shape" type="shape_t" shape="[rank(shape)]" tensor-element-type="-">
             <description>shape_t giving the new shape.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, size as the input tensor</description>
@@ -2307,12 +2443,26 @@
           <argument category="input" name="start" type="shape_t" shape="[rank(shape1)]" tensor-element-type="-">
             <description>List of integer coordinates, of length equal to the rank of input1. Start coordinate for slicing.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="size" type="shape_t" shape="[rank(shape1)]" tensor-element-type="-">
             <description>List of integer size values, of length equal to the rank of input1. Size of the input to be
 used.</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type as the input tensor</description>
@@ -2361,6 +2511,13 @@ used.</description>
           <argument category="input" name="multiples" type="shape_t" shape="[rank(shape1)]" tensor-element-type="-">
             <description>Number of times to replicate input1 in each dimension</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type, rank as the input tensor</description>
@@ -2559,14 +2716,35 @@ used.</description>
             <levellimit value="scale_y_n/scale_y_d" limit="MAX_SCALE"/>
             <levellimit value="scale_x_n/scale_x_d" limit="MAX_SCALE"/>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="offset" type="shape_t" shape="[2]" tensor-element-type="-">
             <description>[offset_y, offset_x]</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="border" type="shape_t" shape="[2]" tensor-element-type="-">
             <description>[border_y, border_x]</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="attribute" name="mode" type="resize_mode_t" shape="-" tensor-element-type="-">
             <description>BILINEAR or NEAREST</description>
@@ -2772,18 +2950,46 @@ used.</description>
           <argument category="input" name="multiplier" type="tensor_t" shape="[NC]" tensor-element-type="mul_t">
             <description>Scaling multiplier array</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="shift" type="tensor_t" shape="[NC]" tensor-element-type="i8_t">
             <description>Scaling shift array</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. int8/uint8 can have zero point within their valid range. uint16 zero point must be either 0 or 32768. All other types must have zero point equal to 0.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="input" name="output_zp" type="tensor_t" shape="[1]" tensor-element-type="out_t">
             <description>Output tensor zero point.int8/uint8 can have zero point within their valid range. uint16 zero point must be either 0 or 32768. All other types must have zero point equal to 0.</description>
             <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
           </argument>
           <argument category="attribute" name="scale32" type="bool_t" shape="-" tensor-element-type="-">
             <description>if (scale32) mul_t=i32_t else mul_t=i16_t</description>
@@ -2858,6 +3064,10 @@ used.</description>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor</description>
             <rank min="0" max="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
           </argument>
         </arguments>
         <types>
@@ -3139,6 +3349,10 @@ used.</description>
           </argument>
           <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
             <description>Output shape</description>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
           </argument>
         </arguments>
         <types>

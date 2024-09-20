@@ -74,7 +74,9 @@ class TOSAOperatorArgument:
         shape,
         levellimits,
         rank,
-        optional=False,
+        optional,
+        ctc,
+        ctc_remove,
     ):
         assert isinstance(optional, bool)
         self.name = name
@@ -86,6 +88,8 @@ class TOSAOperatorArgument:
         self.levellimits = levellimits
         self.rank = rank
         self.optional = optional
+        self.ctc = ctc
+        self.ctc_remove = ctc_remove
 
 
 class TOSAOperatorDataTypeSupport:
@@ -226,6 +230,7 @@ class TOSASpec:
         levellimits = []
         rank = []
         optional = arg.get("optional", "false") == "true"
+
         r = arg.find("rank")
         if r is not None:
             rank = [r.get("min"), r.get("max")]
@@ -258,8 +263,30 @@ class TOSASpec:
         for cat in cats:
             argcats.append(TOSAOperatorArgumentCategory(cat[0], cat[1].split(",")))
 
+        ctc = []
+        ctc_elements = arg.find("ctc")
+        if ctc_elements is not None:
+            for profile in ctc_elements.findall("op_profile"):
+                ctc.append(profile.get("name"))
+
+        ctc_remove = []
+        ctc_remove_elements = arg.find("ctc_remove")
+        if ctc_remove_elements is not None:
+            for profile in ctc_remove_elements.findall("op_profile"):
+                ctc_remove.append(profile.get("name"))
+
         return TOSAOperatorArgument(
-            name, desc, argcats, argtype, argtelty, shape, levellimits, rank, optional
+            name,
+            desc,
+            argcats,
+            argtype,
+            argtelty,
+            shape,
+            levellimits,
+            rank,
+            optional,
+            ctc,
+            ctc_remove,
         )
 
     def __load_enum(self, arg):

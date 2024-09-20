@@ -23,8 +23,20 @@ The maximum number of elements in a tensor list is set by the MAX_TENSOR_LIST_SI
 Arguments belong to one of three categories: Input, Output, or Attribute. The category to which an argument belongs further constrains its type:
 
 * An Input argument must be a tensor or a list of tensors used to provide the data read by the operation.
+* An Attribute argument is constant, its value is always known at compilation time.
 * An Output argument must be a tensor or a list of tensors into which the data produced by the operation is written.
-* An Attribute argument is constant, its value is known at compilation time. It may have any data type supported by TOSA.
+
+Profiles may restrict a set of inputs and/or outputs to be known (constant) at compile time.
+Compile time is defined as the time at which TOSA operators are converted to implementation specific commands prior to execution.
+This type of input or output is called a Compile Time Constant (CTC).
+
+* A TOSA profile may define some input and/or output arguments to be CTC.
+** A TOSA extension may change the state of a CTC back to a non-constant input or output.
+** A TOSA extension is not allowed to change a non-constant input or output to a CTC.
+** When a profile defines a CTC for an operator a *Compile Time Constant Status* table will be defined for that operator. +
+For any arguments in the table, the profiles under which it must be constant are listed as well as the extensions which change this back to a variable input or output.
+** For a TOSA conformant graph a CTC input must be connected to a CTC output, such as the output of a <<CONST>> or <<CONST_SHAPE>> operator.
+
 
 [[operator-graphs]]
 === Operator Graphs
