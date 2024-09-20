@@ -23,6 +23,7 @@
     <xs:enumeration value="EXT-FFT"/>
     <xs:enumeration value="EXT-SHAPE"/>
     <xs:enumeration value="EXT-VARIABLE"/>
+    <xs:enumeration value="EXT-CONTROLFLOW"/>
   </xs:restriction>
 </xs:simpleType>
 
