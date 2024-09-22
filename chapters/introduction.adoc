@@ -363,7 +363,7 @@ tosa_result_t tosa_graph_result;
 // Tracks the nesting depth of TOSA operators to allow a limit on nesting depth to be checked.
 int32_t tosa_nesting_depth;
 
-bool tosa_test_compliance(tosa_graph_t graph, tensor_list_t input_list, tosa_level_t level) {
+bool_t tosa_test_compliance(tosa_graph_t graph, tensor_list_t input_list, tosa_level_t level) {
     shape_list_t output_list_spec = tosa_allocate_list(tosa_output_shape(graph));
     shape_list_t output_list_test = tosa_allocate_list(tosa_output_shape(graph));
     tosa_graph_result = tosa_valid;    // result starts as valid
