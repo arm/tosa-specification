@@ -7,7 +7,7 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-bool tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num_ulp) {
+bool_t tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num_ulp) {
   fp64_t err_bnd = 0.0;
   if (is_normal_fp64(ref_value) && abs(ref_value) != 0) {
     int ref_exp = ilog2(abs(ref_value));
