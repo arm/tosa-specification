@@ -62,11 +62,12 @@ double calcAbsErrorBound<in_t>(double bound_magnitude, double bounds_value,
     double error_bound = 0.0;
     // Avoid cases where we generate an error_bound of NaN by multiplying inf * 0
     if (is_finite(bounds_value) || abs(bound_magnitude) != 0.0) {
-      double value_bound = abs(bound_magnitude) * bounds_value;
+      double value_bound = max(abs(bound_magnitude), normal_min<in_t>());
       if (lower_bound > 0) {
-        value_bound = max(lower_bound, value_bound);
+        value_bound = max(lower_bound / bounds_value, value_bound);
       }
       error_bound = exp2(-normal_frac<in_t> / normal_divisor) * value_bound;
+      error_bound = error_bound * bounds_value
     }
     return error_bound;
 }
