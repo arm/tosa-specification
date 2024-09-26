@@ -7,7 +7,7 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-for_each(index in shape) {
+for_each_data_position(index in shape) {
     in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
     in_out_t result = ~value1;
     tensor_write<in_out_t>(output, shape, index, result);

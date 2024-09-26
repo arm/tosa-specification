@@ -11,7 +11,7 @@ ERROR_IF(rank(shape1) != rank(shape));
 ERROR_IF(tensor_size(shape1) != tensor_size(shape));
 
 bool_t indexes_used[rank(shape1)];
-for_each(index in perms) {
+for_each_data_position(index in perms) {
     // Ensure each perms value is a valid value
     ERROR_IF(index >= rank(shape1));
     ERROR_IF(index < 0);
@@ -26,7 +26,7 @@ for(int32_t i = 0; i < rank(shape); i++) {
     ERROR_IF(shape1[perms[i]] != shape[i]);
 }
 
-for_each(index in shape) {
+for_each_data_position(index in shape) {
     shape_t tmp_index = index;
     for(int32_t i = 0; i < rank(shape); i++) {
         tmp_index[perms[i]] = index[i];

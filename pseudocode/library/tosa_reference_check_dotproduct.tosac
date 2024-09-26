@@ -13,7 +13,7 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(i32_t S
     bias_abs   = abs(bias);    // Element-wise absolute
     if (!local_bound) {
         input_abs_max = max_value(input_abs);  // maximum over all elements
-        for_each(index in shape(input_abs)) {
+        for_each_data_position(index in shape(input_abs)) {
             input_abs[index] = input_abs_max;  // set all entries to global maximum
         }
     }
@@ -23,7 +23,7 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(i32_t S
     size ksb = ceil(KS / pow(2, (normal_frac<acc_t>() - normal_frac<out_t>())/2)) + ((max_value(bias_abs) > 0) ? 1 : 0);
     fp64_t out_err_sum = 0.0;
     fp64_t out_err_sumsq = 0.0;
-    for_each(index in output_shape) {
+    for_each_data_position(index in output_shape) {
         fp64_t out_bnd = tensor_read<fp64_t>(output_bnd, output_shape, index);
         fp64_t out_ref = tensor_read<fp64_t>(output_ref, output_shape, index);
         acc_t  out_imp = tensor_read<acc_t> (output_imp, output_shape, index);

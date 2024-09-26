@@ -479,15 +479,15 @@ Tensors have metadata associated with them that describe characteristics of the 
 
 The number of dimensions in a shape is called the rank.
 A tensor with rank equal to zero is permitted.
-In that case, the tensor has a single entry and is also known as a scalar.
 A tensor shape is an array of integers of size equal to the rank of the tensor.
 Each element in the tensor shape describes the number of elements in the dimension.
 The tensor shape in each dimension must be greater than or equal to 1.
 For tensor access information, see <<Tensor Access Helpers>>.
 
-The shape of a tensor of non-zero rank is a special type shape_t.
+The shape of a tensor is a special type shape_t.
 shape_t is a one-dimensional list with the size equal to the rank of the original tensor.
 The components of a shape_t are of type size_t.
+The shape_t for a zero-dimensional tensor is the empty list.
 
 In this version of the specification, shape_t values must be resolvable to constants at backend compile time.
 

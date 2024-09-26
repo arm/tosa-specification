@@ -9,15 +9,29 @@
 
 ERROR_IF(input1 == []); // There must be at least one input in the input list
 ERROR_IF(axis < 0 || axis >= max(1,rank(shapes1[0])));
+
 // The following checks ensure all inputs are compatible for concatenation
-for_each(input_shape in shapes1) {
-    ERROR_IF(shape[axis] != sum(shape_dim(input_shape, axis)));
-    ERROR_IF(rank(input_shape) != rank(shapes1[0]));
-    for_each(index in input_shape) {
-        ERROR_IF(index != axis && input_shape[index] != shapes1[0][index]);
+// Iterate over each shape and dimension
+// All shapes must have the same rank
+// If the dimension is the axis dimension, sum the size of this dimension to check
+// that the size of the output equals the size of the concatenated shapes
+// For all other dimensions, the size must match for all inputs
+
+size_t axis_sum = 0;
+for (int32_t shape_index = 0; shape_index < length(shapes1); shape_index++) {
+    ERROR_IF(rank(shapes1[shape_index] != rank(shapes1[0])));
+    for (int32_t axis_index = 0; axis_index < length(shapes1[0]); axis_index++) {
+        if (axis_index == axis) {
+            axis_sum += shapes1[shape_index][axis_index];
+        }
+        else {
+            ERROR_IF(shapes1[shape_index][axis_index] != shapes1[0][axis_index]);
+        }
     }
 }
-for_each(index1 in shape) {
+ERROR_IF(axis_sum != shape[axis]);
+
+for_each_data_position(index1 in shape) {
     shape_t index2 = index1;
     for (int32_t t = 0; t < length(input1); t++) {
         // Continue to concatenate along axis from each tensor

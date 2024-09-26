@@ -9,7 +9,7 @@
 
 ERROR_IF(rank(shape1) != rank(shape));
 
-for_each(index in shape) {
+for_each_data_position(index in shape) {
     shape_t tmp_index = index;
     for(int32_t i = 0; i < rank(shape); i++) {
         ERROR_IF(shape1[i] * multiples[i] != shape[i]);

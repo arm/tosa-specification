@@ -9,7 +9,7 @@
 
 ERROR_IF(max_val < min_val);
 ERROR_IF(is_a_NaN(min_val) || is_a_NaN(max_val));
-for_each(index in shape) {
+for_each_data_position(index in shape) {
     in_out_t value = tensor_read<in_out_t>(input, shape, index);
     value = apply_clip_s<in_out_t>(value, min_val, max_val, nan_mode);
     tensor_write<in_out_t>(output, shape, index, value);

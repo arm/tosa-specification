@@ -13,6 +13,46 @@ The TOSA pseudocode provides precise descriptions of TOSA operations.
 Each operator contains pseudocode describing the operator's functionality.
 This section contains pseudocode functions shared across multiple operators in the specification.
 
+=== for_each
+
+The TOSA pseudocode uses the `for_each` loop to describe iterating over a multidimensional range.
+`for_each` is specified as:
+
+[source,c++]
+----
+for_each(Amin <= a < Amax, Bmin <= b < Bmax,  ...) {
+    // body statements
+}
+----
+
+The body of the `for_each` is executed for every possible combination of the iteration variables in the condition.
+The variables `a` and `b` are defined within the scope of the `for_each` body.
+
+=== for_each_data_position
+
+The TOSA pseudocode uses the `for_each_data_position` to execute a body over each data position in a shape.
+If the shape is empty, the body is executed a single time with the index being the empty list
+
+[source,c++]
+----
+// shape must be of type shape_t
+for_each_data_position(index in shape) {
+    // body statements
+}
+----
+
+is executed as
+
+[source,c++]
+----
+if (shape == []) {
+    // Execute body statements with index == []
+}
+else {
+    // Execute body statements with index iterating over all locations in the shape
+}
+----
+
 === Operator Validation Helpers
 
 The following functions are used to define the valid conditions for TOSA operators.
