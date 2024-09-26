@@ -13,7 +13,7 @@ for (int32_t i = 0; i < rank(shape); i++) {
     ERROR_IF(padding[i * 2] < 0 || padding[(i * 2) + 1] < 0);
     ERROR_IF(shape[i] != padding[i * 2] + shape1[i] + padding[(i * 2) + 1]);
 }
-for_each(index in shape) {
+for_each_data_position(index in shape) {
     shape_t index1 = index;
     bool_t is_pad = false;
     for(int32_t i = 0; i < rank(shape); i++) {

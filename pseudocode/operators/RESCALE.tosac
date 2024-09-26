@@ -7,7 +7,7 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-for_each(index in shape) {
+for_each_data_position(index in shape) {
     // uint16 values can have zero_point 0 or 32768
     // int8/uint8 can have zero point within their valid range
     // No other types can have zero point != 0

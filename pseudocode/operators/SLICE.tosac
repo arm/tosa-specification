@@ -11,14 +11,14 @@ ERROR_IF(rank(shape1) != length(start) || rank(shape1) != length(size));
 ERROR_IF(rank(shape1) != rank(shape));
 // Sanity check the given coordinates, ensure start and end are
 // within tensor bounds
-for_each(index in rank(shape1)) {
+for_each(0 <= index < rank(shape1)) {
     ERROR_IF(start[index] < 0);
     ERROR_IF(size[index] <= 0); //Output must be positive size
     ERROR_IF(start[index] + size[index] > shape1[index]);
     ERROR_IF(shape[index] != size[index]);
 }
 
-for_each(index in shape) {
+for_each_data_position(index in shape) {
     shape_t tmp_index = index;
     for(int32_t i = 0; i < rank(shape); i++) {
        tmp_index[i] = index[i] + start[i];
