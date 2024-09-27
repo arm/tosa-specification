@@ -209,7 +209,8 @@ include::{pseudocode}/operators/MAX_POOL2D.tosac[lines=10..-1]
 Performs a batched 2D real-valued Fast Fourier Transform over the input where the input tensor consists of real values producing complex valued output.
 The complex output values will be split into the output_real and output_imag tensor arguments.
 RFFT2D takes advantage of Hermitian symmetry to only calculate the first half of the final output axis.
-Imaginary values with locations (0,0), (0,W/2), (H/2,0) and (H/2,W/2) are zero.
+Implementations may choose to skip calculation of the imaginary values at (0,0), (0,W/2), (H/2,0), and (H/2, W/2).
+If the calculation is skipped, the result at that location must be zero.
 
 // output[h][w] = \sum_{m=0}^{H-1}\sum_{n=0}^{W-1}input[m][n] * \exp\left(-2\pi i\left(\frac{mh}{H} + \frac{nw}{W}\right)\right)
 
@@ -219,8 +220,16 @@ image::forward_fft2d.svg["forward RFFT definition", align="center"]
 
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * Each output can be expressed as a dot product of an input vector with a constant coefficient vector.
-* The dot product must meet the <<Dot product accuracy requirements>>.
-
+* The following may be used to validate the output
+** Let `input` be the input tensor.
+** Let `weight` be the coefficient vector tensor.
+** Let `out_imp` be the real component of the implementation output for `input`.
+** Let `out_imp_imag` be the imaginary component of the implementation output for `input`.
+** Let `out_ref` be the real component of the result of the fp64_t reference implementation for `input`.
+** Let `out_ref` be the imaginary component of the result of the fp64_t reference implementation for `input`.
+** For all `S` in the defined data sets in Appendix A <<Floating-Point Operator Test Data>>.
+** `tosa_reference_check_dotproduct<RFFT_Real, in_out_t, in_out_t, in_out_t, in_out_t>(S, input, weight, [], out_imp, out_ref) must be true.
+** `tosa_reference_check_dotproduct<RFFT_Imag, in_out_t, in_out_t, in_out_t, in_out_t>(S, input, weight, [], out_imp_imag, out_ref_imag) must be true.
 
 include::{generated}/operators/RFFT2D.adoc[]
 

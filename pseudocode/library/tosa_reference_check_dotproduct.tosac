@@ -1,0 +1,79 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(i32_t S, in_t input, weight_t weight, out_t bias, out_t output_imp, fp64_t output_ref) {
+    input_abs  = abs(input);   // Element-wise absolute
+    weight_abs = abs(weight);  // Element-wise absolute
+    bias_abs   = abs(bias);    // Element-wise absolute
+    if (!local_bound) {
+        input_abs_max = max_value(input_abs);  // maximum over all elements
+        for_each(index in shape(input_abs)) {
+            input_abs[index] = input_abs_max;  // set all entries to global maximum
+        }
+    }
+    output_bnd = operation_fp64(input_abs, weight_abs, bias_abs);
+
+    size_t T = tensor_size(output_shape);  // number dot product results
+    size ksb = ceil(KS / pow(2, (normal_frac<acc_t>() - normal_frac<out_t>())/2)) + ((max_value(bias_abs) > 0) ? 1 : 0);
+    fp64_t out_err_sum = 0.0;
+    fp64_t out_err_sumsq = 0.0;
+    for_each(index in output_shape) {
+        fp64_t out_bnd = tensor_read<fp64_t>(output_bnd, output_shape, index);
+        fp64_t out_ref = tensor_read<fp64_t>(output_ref, output_shape, index);
+        acc_t  out_imp = tensor_read<acc_t> (output_imp, output_shape, index);
+        fp64_t out_err;
+
+        if (OP == RFFT_imag) {
+            if (((index[1] == 0) && (index[2] == 0)) || // (0,0)
+                ((index[1] == (output_shape[1] / 2)) && (index[2] == 0)) || // (H/2, 0)
+                ((index[1] == 0) && (index[2] == (output_shape[2] / 2))) || // (0, W/2)
+                ((index[1] == (output_shape[1] / 2)) && (index[2] == (output_shape[2] / 2)))) { // (H/2, W/2)
+                if (is_a_NaN(out_ref) && (out_imp == 0)) {
+                    // special case where we allow implementations to skip the calculation
+                    out_imp = out_ref;
+                }
+            }
+        }
+
+        if (is_a_NaN(out_ref)) {
+            if (!is_a_NaN(out_imp)) {
+                return false;
+            }
+            out_err = 0.0;
+        } else if (static_cast<out_t>(out_bnd * (1 + ksb * exp2(-1-normal_frac<out_t>()))) == infinity) {
+            // dot product can overflow within error bound and there is no accuracy limit
+            out_err = 0.0;
+        } else if (out_bnd == 0.0) {
+            if (out_ref != 0.0 || out_imp != 0.0) {
+                return false;
+            }
+            out_err = 0.0;
+        } else {  // 0.0 < out_bnd < infinity
+            fp64_t out_err_bnd = max(out_bnd * exp2(-1-normal_frac<out_t>()), normal_min<out_t>());
+            out_err = (static_cast<fp64_t>(out_imp) - out_ref) / out_err_bnd;
+            if (abs(out_err) > ksb) {
+                return false;
+            }
+        }
+        out_err_sum   += out_err;
+        out_err_sumsq += out_err * out_err;
+    }
+    // Only check this for input and weights for test data sets 3-5
+    if ( S >= 3 && S <= 5) {
+        // check output error bias magnitude for data sets S which are not positive biased
+        if (abs(out_err_sum) > 2*sqrt(ksb*T)) {
+            return false;
+        }
+    }
+    // check output error variance magnitude
+    if (out_err_sumsq > 0.4*ksb*T) {
+        return false;
+    }
+    return true;
+}
