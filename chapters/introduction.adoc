@@ -464,48 +464,7 @@ For the checks described in the following code:
 
 [source,c++]
 ----
-output_ref = operation_fp64(input, weight, bias);
-output_imp = operation_imp (input, weight, bias);
-input_abs  = abs(input);   // Element-wise absolute
-weight_abs = abs(weight);  // Element-wise absolute
-bias_abs   = abs(bias);    // Element-wise absolute
-if (!local_bound) {
-    input_abs_max = max_value(input_abs);  // maximum over all elements
-    for_each(index in shape(input_abs) {
-        input_abs[index] = input_abs_max;  // set all entries to global maximum
-    }
-}
-output_bnd = operation_fp64(input_abs, weight_abs, bias_abs);
-
-size_t T = tensor_size(output_shape)  // number dot product results
-size ksb = ceil(KS / pow(2, (normal_frac<acc_t>() - normal_frac<out_t>())/2)) + ((max_value(bias_abs) > 0) ? 1 : 0);
-fp64_t out_err_sum = 0.0;
-fp64_t out_err_sumsq = 0.0;
-for_each(index in output_shape) {
-    fp64_t out_bnd = tensor_read<fp64_t>(output_bnd, output_shape, index);
-    fp64_t out_ref = tensor_read<fp64_t>(output_ref, output_shape, index);
-    acc_t  out_imp = tensor_read<acc_t> (output_imp, output_shape, index);
-    fp64_t out_err;
-    if ((out_t)(out_bnd * (1 + ksb * exp2(-1-normal_frac<out_t>()))) == infinity) {
-        // dot product can overflow within error bound and there is no accuracy limit
-        out_err = 0.0;
-    } else if (out_bnd == 0.0) {
-        REQUIRE(out_ref == 0.0 && out_imp == 0.0);
-        out_err = 0.0;
-    } else {  // 0.0 < out_bnd < infinity
-        fp64_t out_err_bnd = max(out_bnd * exp2(-1-normal_frac<out_t>()), normal_min<out_t>());
-        out_err = (static_cast<fp64_t>(out_imp) - out_ref) / out_err_bnd;
-        REQUIRE(abs(out_err) <= ksb);
-    }
-    out_err_sum   += out_err;
-    out_err_sumsq += out_err * out_err;
-}
-if (input and weights are data set S with 3 <= S <= 5) {
-    // check output error bias magnitude for data sets S which are not positive biased
-    REQUIRE(abs(out_err_sum) <= 2*sqrt(ksb*T));
-}
-// check output error variance magnitude
-REQUIRE(out_err_sumsq <= 0.4*ksb*T)
+include::{pseudocode}/library/tosa_reference_check_dotproduct.tosac[lines=10..-1]
 ----
 
 === Tensor Definitions
