@@ -9,7 +9,7 @@
 
 REQUIRE(length(table) == TABLE_SIZE);
 for_each(index in shape) {
-    in_t value = tensor_read<in_t>(input, shape, index);
+    in_t value = tensor_read<in_t>(input1, shape, index);
     out_t result;
     if (in_t == i8_t) {
         // value is a signed int, convert to a 0 based index

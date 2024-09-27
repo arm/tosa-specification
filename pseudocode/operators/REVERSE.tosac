@@ -11,6 +11,6 @@ ERROR_IF(axis < 0 || axis >= rank(shape));
 for_each(index in shape) {
     shape_t tmp_index = index;
     tmp_index[axis] = shape[axis] - 1 - index[axis];
-    in_out_t value = tensor_read<in_out_t>(input, shape, tmp_index);
+    in_out_t value = tensor_read<in_out_t>(input1, shape, tmp_index);
     tensor_write<in_out_t>(output, shape, index, value);
 }
