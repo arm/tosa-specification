@@ -3177,6 +3177,26 @@ used.</description>
         </typesupport>
       </operator>
     </operatorgroup>
+    <operatorgroup name="shape">
+      <operator>
+        <name>CONST_SHAPE</name>
+        <arguments>
+          <argument category="attribute" name="values" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Constant shape</description>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
+          <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-FP"/>
+        </typesupport>
+      </operator>
+    </operatorgroup>
   </operators>
 
   <enum name="resize_mode_t" description="Valid resize types">
