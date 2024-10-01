@@ -29,7 +29,7 @@
       <profile_supported>PRO-INT</profile_supported>
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-CONTROLFLOW" description="Control Flow operations" status="Unstable">
+    <profile_extension name="EXT-CONTROLFLOW" description="Control Flow operations" status="Experimental">
       <profile_supported>PRO-INT</profile_supported>
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
