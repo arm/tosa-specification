@@ -21,7 +21,7 @@ for_each(0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= dy < stride_y, 0 <= dx < s
     index_t oy = iy * stride_y + dy + out_pad_top;
     index_t ox = ix * stride_x + dx + out_pad_left;
 
-    for_each(0 <= sy * stride_y < KY - dy, 0 <= sx * stride_x < KX - dx, 0 <= ic < IC) {
+    for_each(0 <= sy < (KH - dy) / stride_y, 0 <= sx < (KW - dx) / stride_x, 0 <= ic < IC) {
         index_t y = iy - sy;
         index_t x = ix - sx;
         index_t ky = dy + sy * stride_y;
