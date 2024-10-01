@@ -15,7 +15,8 @@ for_each_data_position(index in shape) {
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
 
     // Ensure that shift amount is appropriate for the data type
-    REQUIRE((is_same<in_out_t,i32_t>() && 0 <= value2 && value2 <= 31) ||
+    REQUIRE((is_same<in_out_t,i64_t>() && 0 <= value2 && value2 <= 63) ||
+            (is_same<in_out_t,i32_t>() && 0 <= value2 && value2 <= 31) ||
             (is_same<in_out_t,i16_t>() && 0 <= value2 && value2 <= 15) ||
             (is_same<in_out_t,i8_t>() && 0 <= value2 && value2 <= 7));
 

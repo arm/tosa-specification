@@ -1,4 +1,4 @@
-# Copyright (c) 2024, ARM Limited.
+# Copyright (c) 2024-2025, ARM Limited.
 # SPDX-License-Identifier: Apache-2.0
 import os
 
@@ -9,6 +9,7 @@ from tosa import TOSAOperatorArgument
 validation_term_mapping_profile = {
     "PRO-INT": "Profile::pro_int",
     "PRO-FP": "Profile::pro_fp",
+    "EXT-INT64": "Extension::int64",
     "EXT-INT16": "Extension::int16",
     "EXT-INT4": "Extension::int4",
     "EXT-BF16": "Extension::bf16",
@@ -27,6 +28,7 @@ validation_term_mapping_type = {
     "i16_t": "i16T",
     "i32_t": "i32T",
     "i48_t": "i48T",
+    "i64_t": "i64T",
     "bf16_t": "bf16T",
     "fp16_t": "fp16T",
     "fp32_t": "fp32T",

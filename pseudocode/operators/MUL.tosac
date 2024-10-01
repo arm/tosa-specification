@@ -23,7 +23,9 @@ for_each_data_position(index in shape) {
         REQUIRE(product >= minimum_s<i32_t>() && product <= maximum_s<i32_t>());
         result = static_cast<out_t>(product);
     } else {
-        result = apply_mul_s<out_t>(static_cast<out_t>(value1), static_cast<out_t>(value2));  // low 32-bits of result for i32_t
+        // low 32-bits of result for i32_t
+        // low 64-bits of result for i64_t
+        result = apply_mul_s<out_t>(static_cast<out_t>(value1), static_cast<out_t>(value2));
     }
     tensor_write<out_t>(output, shape, index, result);
 }

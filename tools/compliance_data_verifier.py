@@ -96,6 +96,7 @@ op_list = [
 profile_list = [
     "Profile::pro_int",
     "Profile::pro_fp",
+    "Extension::int64",
     "Extension::int16",
     "Extension::int4",
     "Extension::bf16",
@@ -114,6 +115,7 @@ type_list = [
     "i16T",
     "i32T",
     "i48T",
+    "i64T",
     "bf16T",
     "fp16T",
     "fp32T",

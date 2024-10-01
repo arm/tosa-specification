@@ -271,6 +271,16 @@ Number formats not required for any operators in a profile do not need to be imp
 | (1<<47)-1
 |Signed 48-bit two's-complement value.
 
+|i64_t
+| -
+| -
+|Signless 64-bit integer value. Will be interpreted as int64_t by all operators.
+
+|int64_t
+| -(1<<63)
+| (1<<63)-1
+|Signed 64-bit two's-complement value.
+
 |fp4e2m1_t
 | -6.0
 | +6.0

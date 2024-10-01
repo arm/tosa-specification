@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -14,7 +14,8 @@ for_each_data_position(index in shape) {
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     // Ensure that shift amount is appropriate for the data type
-    REQUIRE((is_same<in_out_t,i32_t>() && 0 <= value2 && value2 <= 31) ||
+    REQUIRE((is_same<in_out_t,i64_t>() && 0 <= value2 && value2 <= 63) ||
+            (is_same<in_out_t,i32_t>() && 0 <= value2 && value2 <= 31) ||
             (is_same<in_out_t,i16_t>() && 0 <= value2 && value2 <= 15) ||
             (is_same<in_out_t,i8_t>() && 0 <= value2 && value2 <= 7));
     in_out_t result = value1 << value2;

@@ -12,7 +12,7 @@ for_each_data_position(index in shape) {
     if (is_floating_point<in_out_t>() && value1 == -0.0) {
         value1 = 0.0;
     }
-    if (static_cast<int32_t>(value1) < 0.0) {
+    if (value1 < 0) {
         value1 = apply_sub_s<in_out_t>(0, value1);
     }
     tensor_write<in_out_t>(output, shape, index, value1);
