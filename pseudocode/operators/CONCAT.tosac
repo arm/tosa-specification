@@ -7,6 +7,7 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
+ERROR_IF(input1 == []); // There must be at least one input in the input list
 ERROR_IF(axis < 0 || axis >= max(1,rank(shapes1[0])));
 // The following checks ensure all inputs are compatible for concatenation
 for_each(input_shape in shapes1) {
