@@ -109,6 +109,7 @@
     <xs:enumeration value="i32_t"/>
     <xs:enumeration value="in_t"/>
     <xs:enumeration value="in_out_t"/>
+    <xs:enumeration value="nan_propagation_t"/>
     <xs:enumeration value="out_t"/>
     <xs:enumeration value="resize_mode_t"/>
     <xs:enumeration value="shape_t"/>

@@ -52,7 +52,7 @@
             <description>Axis in range from 0 to rank(shape1) - 1</description>
             <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="nan_mode" type="tensor_t" shape="-" tensor-element-type="nan_propagation_t">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -554,7 +554,7 @@
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="nan_mode" type="tensor_t" shape="-" tensor-element-type="nan_propagation_t">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -727,7 +727,7 @@
             <description>Maximum clip value</description>
             <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="nan_mode" type="tensor_t" shape="-" tensor-element-type="nan_propagation_t">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -1172,7 +1172,7 @@
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="nan_mode" type="tensor_t" shape="-" tensor-element-type="nan_propagation_t">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -1212,7 +1212,7 @@
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="nan_mode" type="tensor_t" shape="-" tensor-element-type="nan_propagation_t">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -1940,7 +1940,7 @@
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
             <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="nan_mode" type="tensor_t" shape="-" tensor-element-type="nan_propagation_t">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -1985,7 +1985,7 @@
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
             <rank min="0" max="0"/>
           </argument>
-          <argument category="attribute" name="nan_mode" type="tensor_t" shape="-" tensor-element-type="nan_propagation_t">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
