@@ -19,3 +19,12 @@ repos:
     hooks:
     -   id: flake8
         args: [--max-line-length=88]
+
+-   repo: local
+    hooks:
+    -   id: speclint
+        name: speclint
+        entry: python3 tools/speclint.py
+        files: "tosa.xml"
+        args: ["--xml"]
+        language: python
