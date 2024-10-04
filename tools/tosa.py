@@ -94,11 +94,12 @@ class TOSAOperatorArgument:
 
 
 class TOSAOperatorDataTypeSupport:
-    def __init__(self, mode, tymap, version_added, profiles):
+    def __init__(self, mode, tymap, version_added, profiles, tskeys):
         self.mode = mode
         self.tymap = tymap
         self.profiles = profiles
         self.version_added = version_added
+        self.tskeys = tskeys
 
 
 class TOSAOperator:
@@ -200,6 +201,7 @@ class TOSASpec:
             types.append(ty.get("name"))
 
         for tysup in op.findall("typesupport"):
+            tskeys = tysup.keys()
             tsmode = tysup.get("mode")
             tsmap = {}
             version_added = tysup.get("version_added")
@@ -217,7 +219,9 @@ class TOSASpec:
             for ty in types:
                 tsmap[ty] = tysup.get(ty)
             typesupports.append(
-                TOSAOperatorDataTypeSupport(tsmode, tsmap, version_added, tsprofiles)
+                TOSAOperatorDataTypeSupport(
+                    tsmode, tsmap, version_added, tsprofiles, tskeys
+                )
             )
         return TOSAOperator(name, args, types, typesupports)
 

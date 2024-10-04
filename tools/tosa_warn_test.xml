@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tosa SYSTEM "tosa.dtd">
+<tosa>
+  <version major="999" minor="888" patch="777" draft="true"/>
+  <profiles>
+    <profile profile="Integer" name="PRO-INT" status="Complete" description="Integer operations, primarily 8- and 32-bit values"/>
+    <profile profile="Floating-Point" name="PRO-FP" status="Complete" description="FP16 and FP32 operations"/>
+  </profiles>
+  <levels>
+    <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256" max_tensor_list_size="256">No level</level>
+  </levels>
+  <operators>
+    <operatorgroup name="warnings">
+      <operator>
+        <name>RANK0_TENSOR_ARG</name>
+        <arguments>
+          <!--- Rank 0 tensor argument warning -->
+          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
+            <description>Axis in range from 0 to rank(shape1) - 1</description>
+            <rank min="0" max="0"/>
+          </argument>
+        </arguments>
+      </operator>
+      <operator>
+        <name>UNSORTED_ARGS</name>
+        <arguments>
+          <!--- Args are not in input/attribute/output order -->
+          <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
+            <description>Axis in range from 0 to rank(shape1) - 1</description>
+          </argument>
+          <argument category="input" name="input1" type="tensor_t" shape="shape1" tensor-element-type="i32_t">
+            <description>Input coming after attribute</description>
+            <rank min="0" max="MAX_RANK"/>
+          </argument>
+        </arguments>
+      </operator>
+      <operator>
+        <name>MULTI_CATEGORY_ARG</name>
+        <arguments>
+          <!--- Args are not in input/attribute/output order -->
+          <argument category="input(A),attribute(B)" name="multi_cat_arg" type="tensor_t" shape="shape1" tensor-element-type="i32_t">
+            <description>Argument in multiple categories</description>
+            <rank min="0" max="MAX_RANK"/>
+          </argument>
+        </arguments>
+      </operator>
+      <operator>
+        <name>TYPESUPPORT_MISSING_AND_EXTRA_TYPE</name>
+        <!--- Typesupport line does not have one of the types -->
+        <arguments>
+          <argument category="input" name="values" type="tensor_t" shape="[N,K,C]" tensor-element-type="in_out_t">
+            <description>3D value tensor</description>
+            <rank min="3" max="3"/>
+          </argument>
+          <argument category="input" name="indices" type="tensor_t" shape="[N,W]" tensor-element-type="index_t">
+            <description>2D index tensor</description>
+            <rank min="2" max="2"/>
+          </argument>
+          <argument category="output" name="output" type="tensor_t" shape="[N,W,C]" tensor-element-type="in_out_t">
+            <description>3D output tensor</description>
+            <rank min="3" max="3"/>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+          <type name='index_t'/>
+        </types>
+        <typesupport mode="ts_missing_type" in_out_t="i8_t" version_added="1.0">
+          <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="ts_extra_type" in_out_t="i8_t" index_t="i32_t" in_t="i16_t" version_added="1.0">
+          <op_profile name="PRO-INT"/>
+        </typesupport>
+      </operator>
+    </operatorgroup>
+</operators>
+</tosa>

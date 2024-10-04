@@ -107,6 +107,28 @@
             <description>Input tensor</description>
             <rank min="4" max="4"/>
           </argument>
+          <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
+            <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
+          </argument>
+          <argument category="input" name="output_zp" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
+            <description>Output tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
+          </argument>
           <argument category="attribute" name="kernel" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
             <description>[kernel_y, kernel_x]</description>
             <levellimit value="kernel_y" limit="MAX_KERNEL"/>
@@ -129,28 +151,6 @@
           </argument>
           <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
             <description>Enumerated type, must be one of INT32, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
-          </argument>
-          <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
-            <description>Input tensor zero point. Must be zero for non-int8 types.</description>
-            <rank min="1" max="1"/>
-            <ctc>
-              <op_profile name="PRO-INT"/>
-              <op_profile name="PRO-FP"/>
-            </ctc>
-            <ctc_remove>
-              <op_profile name="EXT-DYNAMIC"/>
-            </ctc_remove>
-          </argument>
-          <argument category="input" name="output_zp" type="tensor_t" shape="[1]" tensor-element-type="in_out_t">
-            <description>Output tensor zero point. Must be zero for non-int8 types.</description>
-            <rank min="1" max="1"/>
-            <ctc>
-              <op_profile name="PRO-INT"/>
-              <op_profile name="PRO-FP"/>
-            </ctc>
-            <ctc_remove>
-              <op_profile name="EXT-DYNAMIC"/>
-            </ctc_remove>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,C]" tensor-element-type="in_out_t">
             <description>Output tensor 4D</description>
@@ -204,27 +204,6 @@
             Bias data will be broadcast if BC == 1.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
-            <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
-            <levellimit value="pad_top"    limit="MAX_KERNEL"/>
-            <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
-            <levellimit value="pad_left"   limit="MAX_KERNEL"/>
-            <levellimit value="pad_right"  limit="MAX_KERNEL"/>
-            <rank min="1" max="1"/>
-          </argument>
-          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
-            <description>[stride_y, stride_x]</description>
-            <levellimit value="stride_y" limit="MAX_STRIDE"/>
-            <levellimit value="stride_x" limit="MAX_STRIDE"/>
-            <rank min="1" max="1"/>
-          </argument>
-          <argument category="attribute" name="dilation" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
-            <description>[dilation_y, dilation_x]</description>
-            <rank min="1" max="1"/>
-          </argument>
-          <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
-            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
-          </argument>
           <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
@@ -246,6 +225,27 @@
             <ctc_remove>
               <op_profile name="EXT-DYNAMIC"/>
             </ctc_remove>
+          </argument>
+          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
+            <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
+            <levellimit value="pad_top"    limit="MAX_KERNEL"/>
+            <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
+            <levellimit value="pad_left"   limit="MAX_KERNEL"/>
+            <levellimit value="pad_right"  limit="MAX_KERNEL"/>
+            <rank min="1" max="1"/>
+          </argument>
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
+            <description>[stride_y, stride_x]</description>
+            <levellimit value="stride_y" limit="MAX_STRIDE"/>
+            <levellimit value="stride_x" limit="MAX_STRIDE"/>
+            <rank min="1" max="1"/>
+          </argument>
+          <argument category="attribute" name="dilation" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
+            <description>[dilation_y, dilation_x]</description>
+            <rank min="1" max="1"/>
+          </argument>
+          <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
+            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
@@ -312,6 +312,28 @@
             Bias data will be broadcast if BC == 1.</description>
             <rank min="1" max="1"/>
           </argument>
+          <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
+            <description>Input tensor zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
+          </argument>
+          <argument category="input" name="weight_zp" type="tensor_t" shape="[1]" tensor-element-type="weight_t">
+            <description>Weight zero point. Must be zero for non-int8 types.</description>
+            <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
+          </argument>
           <argument category="attribute" name="pad" type="tensor_t" shape="[6]" tensor-element-type="i32_t">
             <description>[pad_d0, pad_d1, pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_d0"     limit="MAX_KERNEL"/>
@@ -335,28 +357,6 @@
           </argument>
           <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
             <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
-          </argument>
-          <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
-            <description>Input tensor zero point. Must be zero for non-int8 types.</description>
-            <rank min="1" max="1"/>
-            <ctc>
-              <op_profile name="PRO-INT"/>
-              <op_profile name="PRO-FP"/>
-            </ctc>
-            <ctc_remove>
-              <op_profile name="EXT-DYNAMIC"/>
-            </ctc_remove>
-          </argument>
-          <argument category="input" name="weight_zp" type="tensor_t" shape="[1]" tensor-element-type="weight_t">
-            <description>Weight zero point. Must be zero for non-int8 types.</description>
-            <rank min="1" max="1"/>
-            <ctc>
-              <op_profile name="PRO-INT"/>
-              <op_profile name="PRO-FP"/>
-            </ctc>
-            <ctc_remove>
-              <op_profile name="EXT-DYNAMIC"/>
-            </ctc_remove>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
@@ -422,27 +422,6 @@
             Bias data will be broadcast if BC == 1.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
-            <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
-            <levellimit value="pad_top"    limit="MAX_KERNEL"/>
-            <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
-            <levellimit value="pad_left"   limit="MAX_KERNEL"/>
-            <levellimit value="pad_right"  limit="MAX_KERNEL"/>
-            <rank min="1" max="1"/>
-          </argument>
-          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
-            <description>[stride_y, stride_x]</description>
-            <levellimit value="stride_y" limit="MAX_STRIDE"/>
-            <levellimit value="stride_x" limit="MAX_STRIDE"/>
-            <rank min="1" max="1"/>
-          </argument>
-          <argument category="attribute" name="dilation" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
-            <description>[dilation_y, dilation_x]</description>
-            <rank min="1" max="1"/>
-          </argument>
-          <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
-            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
-          </argument>
           <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
@@ -464,6 +443,27 @@
             <ctc_remove>
               <op_profile name="EXT-DYNAMIC"/>
             </ctc_remove>
+          </argument>
+          <argument category="attribute" name="pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
+            <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
+            <levellimit value="pad_top"    limit="MAX_KERNEL"/>
+            <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
+            <levellimit value="pad_left"   limit="MAX_KERNEL"/>
+            <levellimit value="pad_right"  limit="MAX_KERNEL"/>
+            <rank min="1" max="1"/>
+          </argument>
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
+            <description>[stride_y, stride_x]</description>
+            <levellimit value="stride_y" limit="MAX_STRIDE"/>
+            <levellimit value="stride_x" limit="MAX_STRIDE"/>
+            <rank min="1" max="1"/>
+          </argument>
+          <argument category="attribute" name="dilation" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
+            <description>[dilation_y, dilation_x]</description>
+            <rank min="1" max="1"/>
+          </argument>
+          <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
+            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
@@ -726,28 +726,6 @@
             <levellimit value="KW" limit="MAX_KERNEL"/>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="input" name="bias" type="tensor_t" shape="[BC]" tensor-element-type="out_t">
-            <description>Per output channel bias data. +
-            Bias data will be broadcast if BC == 1.</description>
-            <rank min="1" max="1"/>
-          </argument>
-          <argument category="attribute" name="out_pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
-            <description>[out_pad_top, out_pad_bottom, out_pad_left, out_pad_right]</description>
-            <levellimit value="out_pad_top"    limit="MAX_KERNEL"/>
-            <levellimit value="out_pad_bottom" limit="MAX_KERNEL"/>
-            <levellimit value="out_pad_left"   limit="MAX_KERNEL"/>
-            <levellimit value="out_pad_right"  limit="MAX_KERNEL"/>
-            <rank min="1" max="1"/>
-          </argument>
-          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
-            <description>[stride_y, stride_x]</description>
-            <levellimit value="stride_y" limit="MAX_STRIDE"/>
-            <levellimit value="stride_x" limit="MAX_STRIDE"/>
-            <rank min="1" max="1"/>
-          </argument>
-          <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
-            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
-          </argument>
           <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
@@ -769,6 +747,28 @@
             <ctc_remove>
               <op_profile name="EXT-DYNAMIC"/>
             </ctc_remove>
+          </argument>
+          <argument category="input" name="bias" type="tensor_t" shape="[BC]" tensor-element-type="out_t">
+            <description>Per output channel bias data. +
+            Bias data will be broadcast if BC == 1.</description>
+            <rank min="1" max="1"/>
+          </argument>
+          <argument category="attribute" name="out_pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
+            <description>[out_pad_top, out_pad_bottom, out_pad_left, out_pad_right]</description>
+            <levellimit value="out_pad_top"    limit="MAX_KERNEL"/>
+            <levellimit value="out_pad_bottom" limit="MAX_KERNEL"/>
+            <levellimit value="out_pad_left"   limit="MAX_KERNEL"/>
+            <levellimit value="out_pad_right"  limit="MAX_KERNEL"/>
+            <rank min="1" max="1"/>
+          </argument>
+          <argument category="attribute" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
+            <description>[stride_y, stride_x]</description>
+            <levellimit value="stride_y" limit="MAX_STRIDE"/>
+            <levellimit value="stride_x" limit="MAX_STRIDE"/>
+            <rank min="1" max="1"/>
+          </argument>
+          <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
+            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
