@@ -14,8 +14,8 @@ shape_t right_shape = (axis < rank(shape)-1) ? shape[axis+1:rank(shape)-1] : [];
 for_each(left_index in left_shape) {
     for_each(right_index in right_shape) {
         in_out_t acc = (is_floating_point<in_out_t>() && nan_mode == IGNORE)
-                           : nan<in_out_t>()
-                           ? minimum_s<in_out_t>();
+                           ? nan<in_out_t>()
+                           : minimum_s<in_out_t>();
         for (size_t i = 0; i < shape1[axis]; i++) {
             size_t index = flatten(left_index, [i], right_index);
             in_out_t value = tensor_read<in_out_t>(input, shape1, index);
