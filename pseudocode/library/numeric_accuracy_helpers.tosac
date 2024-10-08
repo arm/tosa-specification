@@ -27,33 +27,45 @@ int ilog2(fp64_t v) {
 }
 
 fp64_t normal_min<in_t>() {
-  switch (in_t) {
-    case fp32_t: return exp2(-126);
-    case bf16_t: return exp2(-126);
-    case fp16_t: return exp2( -14);
-    case fp8e4m3_t: return exp2(-6);
-    case fp8e5m2_t: return exp2(-14);
+  if (is_same<in_t,fp32_t>()) {
+    return exp2(-126);
+  } else if (is_same<in_t,bf16_t>()) {
+    return exp2(-126);
+  } else if (is_same<in_t,fp16_t>()) {
+    return exp2( -14);
+  } else if (is_same<in_t,fp8e4m3_t>()) {
+    return exp2(-6);
+  } else if (is_same<in_t,fp8e5m2_t>()) {
+    return exp2(-14);
   }
 }
 
 fp64_t normal_max<in_t>() {
-  switch (in_t) {
-    case fp32_t: return exp2(128) - exp2(127-23);
-    case bf16_t: return exp2(128) - exp2(127- 7);
-    case fp16_t: return exp2( 16) - exp2( 15-10);
-    case fp8e4m3_t: return exp2( 9) - exp2( 8-2);
-    case fp8e5m2_t: return exp2( 16) - exp2( 15-2);
+  if (is_same<in_t,fp32_t>()) {
+    return exp2(128) - exp2(127-23);
+  } else if (is_same<in_t,bf16_t>()) {
+    return exp2(128) - exp2(127- 7);
+  } else if (is_same<in_t,fp16_t>()) {
+    return exp2( 16) - exp2( 15-10);
+  } else if (is_same<in_t,fp8e4m3_t>()) {
+    return exp2( 9) - exp2( 8-2);
+  } else if (is_same<in_t,fp8e5m2_t>()) {
+    return exp2( 16) - exp2( 15-2);
   }
 }
 
 // Number of fractional (mantissa bits)
 int normal_frac<in_t> () {
-  switch (in_t) {
-    case fp32_t: return 23;
-    case fp16_t: return 10;
-    case bf16_t: return  7;
-    case fp8e4m3_t: return 3;
-    case fp8e5m2_t: return 2;
+  if (is_same<in_t,fp32_t>()) {
+    return 23;
+  } else if (is_same<in_t,bf16_t>()) {
+    return  7;
+  } else if (is_same<in_t,fp16_t>()) {
+    return 10;
+  } else if (is_same<in_t,fp8e4m3_t>()) {
+    return 3;
+  } else if (is_same<in_t,fp8e5m2_t>()) {
+    return 2;
   }
 }
 
