@@ -75,6 +75,7 @@
 <xs:simpleType name="typename">
   <xs:restriction base="xs:string">
     <xs:enumeration value="in_t"/>
+    <xs:enumeration value="index_t"/>
     <xs:enumeration value="out_t"/>
     <xs:enumeration value="in_out_t"/>
     <xs:enumeration value="acc_t"/>
@@ -319,6 +320,7 @@
     <xs:attribute name="mode" type="xs:string" use="required"/>
     <xs:attribute name="version_added" type="xs:string" use="required"/>
     <xs:attribute name="in_t" type="datatype"/>
+    <xs:attribute name="index_t" type="datatype"/>
     <xs:attribute name="out_t" type="datatype"/>
     <xs:attribute name="in_out_t" type="datatype"/>
     <xs:attribute name="weight_t" type="datatype"/>
