@@ -2304,11 +2304,11 @@
             <description>Input tensor</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
-          <argument category="input" name="start" type="shape_t" shape="[rank(shape1)]" tensor-element-type="size_t">
+          <argument category="input" name="start" type="shape_t" shape="[rank(shape1)]" tensor-element-type="-">
             <description>List of integer coordinates, of length equal to the rank of input1. Start coordinate for slicing.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="input" name="size" type="shape_t" shape="[rank(shape1)]" tensor-element-type="size_t">
+          <argument category="input" name="size" type="shape_t" shape="[rank(shape1)]" tensor-element-type="-">
             <description>List of integer size values, of length equal to the rank of input1. Size of the input to be
 used.</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
@@ -2458,7 +2458,7 @@ used.</description>
             <description>3D value tensor</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="input" name="indices" type="tensor_t" shape="[N,W]" tensor-element-type="size_t">
+          <argument category="input" name="indices" type="tensor_t" shape="[N,W]" tensor-element-type="index_t">
             <description>2D index tensor</description>
             <rank min="2" max="2"/>
           </argument>
@@ -2468,30 +2468,31 @@ used.</description>
           </argument>
         </arguments>
         <types>
+          <type name='index_t'/>
           <type name='in_out_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
+        <typesupport mode="signed 8" in_out_t="i8_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
+        <typesupport mode="signed 16" in_out_t="i16_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
+        <typesupport mode="signed 32" in_out_t="i32_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" index_t="i32_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" index_t="i32_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp16" in_out_t="fp16_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
+        <typesupport mode="bf16" in_out_t="bf16_t" index_t="i32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
+        <typesupport mode="fp32" in_out_t="fp32_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
       </operator>
@@ -2502,7 +2503,7 @@ used.</description>
             <description>3D values in tensor</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="input" name="indices" type="tensor_t" shape="[N,W]" tensor-element-type="size_t">
+          <argument category="input" name="indices" type="tensor_t" shape="[N,W]" tensor-element-type="index_t">
             <description>2D index tensor</description>
             <rank min="2" max="2"/>
           </argument>
@@ -2517,29 +2518,30 @@ used.</description>
         </arguments>
         <types>
           <type name='in_out_t'/>
+          <type name='index_t'/>
         </types>
-        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
+        <typesupport mode="signed 8" in_out_t="i8_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
+        <typesupport mode="signed 16" in_out_t="i16_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
+        <typesupport mode="signed 32" in_out_t="i32_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" index_t="i32_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" index_t="i32_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp16" in_out_t="fp16_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" version_added="1.0">
+        <typesupport mode="bf16" in_out_t="bf16_t" index_t="i32_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
+        <typesupport mode="fp32" in_out_t="fp32_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
       </operator>
