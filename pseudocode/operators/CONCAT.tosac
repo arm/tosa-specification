@@ -19,7 +19,7 @@ ERROR_IF(axis < 0 || axis >= max(1,rank(shapes1[0])));
 
 size_t axis_sum = 0;
 for (int32_t shape_index = 0; shape_index < length(shapes1); shape_index++) {
-    ERROR_IF(rank(shapes1[shape_index] != rank(shapes1[0])));
+    ERROR_IF(rank(shapes1[shape_index]) != rank(shapes1[0]));
     for (int32_t axis_index = 0; axis_index < length(shapes1[0]); axis_index++) {
         if (axis_index == axis) {
             axis_sum += shapes1[shape_index][axis_index];
