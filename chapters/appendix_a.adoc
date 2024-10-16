@@ -43,18 +43,21 @@ This function takes the following arguments:
 * i is the index within the tensor to write
 
 Some test data values are scaled by the bound parameter B which is defined in the table below.
-B is set to be the largest value that is both representable by the input type and such that B*B does not overflow the accumulator precision.
-In the case of mixed input types, B is the largest value that is representable by both input types such that B*B does not overflow the accumulator precision.
+B is set to be the largest value that is both representable by the input type and such that B*B does not overflow the output precision.
+In the case of mixed input types, B is the largest value that is representable by both input types such that B*B does not overflow the output precision.
 |===
-| inputs type         | accumulator type | B value
+| inputs type         | output type      | B value
 | fp8e4m3             | fp16             | (1<<8) - (1<<4)  = 240
 | fp8e4m3             | fp32             | 448
 | fp8e5m2             | fp16             | (1<<8) - (1<<5)  = 224
 | fp8e5m2             | fp32             | 57344
 | fp8e4m3 and fp8e5m2 | fp16             | 224
 | fp8e4m3 and fp8e5m2 | fp32             | 448
+| fp8e4m3             | fp8e4m3          | 20
+| fp8e5m2             | fp8e5m2          | 224
 | fp16                | fp16             | (1<<8)  - (1/8)  = 255.875
 | fp16                | fp32             | (1<<16) - (1<<5) = 65504
+| bf16                | bf16             | (1<<64) - (1<<56)
 | bf16                | fp32             | (1<<64) - (1<<56)
 | fp32                | fp32             | (1<<64) - (1<<40)
 |===
