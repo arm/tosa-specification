@@ -18,7 +18,7 @@ REQUIRE(variable_tensor.shape == shape);
 //  Output tensor's shape and variable_tensor's type have to match
 REQUIRE(variable_tensor.type == out_t);
 
-for_each (index in shape) {
+for_each_data_position (index in shape) {
     // Read data from pseudo-buffer resource to the output
     out_t value = tensor_read<tensor_t>(variable_tensor.data, variable_tensor.shape, index);
     tensor_write<out_t>(output1, shape, index, value);

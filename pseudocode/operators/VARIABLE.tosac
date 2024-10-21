@@ -18,7 +18,7 @@ if (var_tensor == NULL) {
   if (initial_value != NULL) {
     REQUIRE(var_t == in_t);
     REQUIRE(var_shape == shape);
-    for_each (index in shape) {
+    for_each_data_position (index in shape) {
       // Copy data from initial_value to var_tensor
       in_t value = tensor_read<in_t>(initial_value, shape, index);
       tensor_write<in_t>(var_tensor.data, var_shape, index, value);
