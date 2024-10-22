@@ -62,6 +62,7 @@ include::{pseudocode}/operators/AVG_POOL2D.tosac[lines=10..-1]
 ==== CONV2D
 
 Performs a 2D convolution over the given tensor input, using the weight tensor.
+Implementations may choose to skip calculation of multiplies in the padding area.
 
 *Precision Requirements*
 
@@ -83,6 +84,7 @@ include::{pseudocode}/operators/CONV2D.tosac[lines=10..-1]
 ==== CONV3D
 
 Performs a 3D convolution over the given input tensor.
+Implementations may choose to skip calculation of multiplies in the padding area.
 
 *Precision Requirements*
 
@@ -104,6 +106,7 @@ include::{pseudocode}/operators/CONV3D.tosac[lines=10..-1]
 ==== DEPTHWISE_CONV2D
 
 Performs 2D convolutions separately over each channel of the given tensor input, using the weight tensor.
+Implementations may choose to skip calculation of multiplies in the padding area.
 
 *Precision Requirements*
 
@@ -241,6 +244,7 @@ include::{pseudocode}/operators/RFFT2D.tosac[lines=10..-1]
 ==== TRANSPOSE_CONV2D
 
 Performs a 2D transposed convolution over the given tensor input, using the weights tensor.
+Implementations may choose to skip calculation of multiplies by zero at fractional input positions.
 
 *Precision Requirements*
 

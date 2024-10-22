@@ -23,16 +23,19 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= oc < OC) {
     for_each(0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
         index_t y = iy + ky * dilation_y;
         index_t x = ix + kx * dilation_x;
+        acc_t value = 0;
         if (0 <= y < IH && 0 <= x < IW) {
-            acc_t value  = static_cast<out_t>(tensor_read<in_t>(input,
-                                                                [N,IH,IW,IC],
-                                                                [n,y,x,ic]));
-            acc_t weight = static_cast<out_t>(tensor_read<weight_t>(weight,
-                                                                   [OC,KH,KW,IC],
-                                                                   [oc,ky,kx,ic]));
+            value  = static_cast<out_t>(tensor_read<in_t>(input,
+                                                          [N,IH,IW,IC],
+                                                          [n,y,x,ic]));
             value  = apply_sub_s<acc_t>(value, static_cast<out_t>(input_zp));
-            weight = apply_sub_s<acc_t>(weight, static_cast<out_t>(weight_zp));
-            acc = apply_add_s<acc_t>(acc, apply_mul_s<acc_t>(value, weight));
+        }
+        if ((0 <= y < IH && 0 <= x < IW) || tosa_extra_multiplies)
+            acc_t weight_el = static_cast<out_t>(tensor_read<weight_t>(weight,
+                                                                       [OC,KH,KW,IC],
+                                                                       [oc,ky,kx,ic]));
+            weight_el = apply_sub_s<acc_t>(weight_el, static_cast<out_t>(weight_zp));
+            acc = apply_add_s<acc_t>(acc, apply_mul_s<acc_t>(value, weight_el));
         }
     }
     out_t out = static_cast<out_t>(acc);
