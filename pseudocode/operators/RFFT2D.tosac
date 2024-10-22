@@ -21,6 +21,8 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W/2 + 1) {
         sum_real += val_real * cos(a);
         if ((H > 1 && (ay % (H/2)) > 0) || (W > 1 && (ax % (W/2)) > 0)) {
             sum_imag += -val_real * sin(a);
+        } else if (tosa_extra_multiplies) {
+            sum_imag += -val_real * 0.0;
         }
     }
     tensor_write<in_out_t>(output_real, [N,H,W], [n,oy,ox], sum_real);

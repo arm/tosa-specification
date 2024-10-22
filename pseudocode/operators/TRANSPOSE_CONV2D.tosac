@@ -16,23 +16,28 @@ ERROR_IF(OH != (IH - 1) * stride_y + out_pad_top + out_pad_bottom + KH);
 ERROR_IF(OW != (IW - 1) * stride_x + out_pad_left + out_pad_right + KW);
 ERROR_IF(BC != OC && BC != 1);
 
-for_each(0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= dy < stride_y, 0 <= dx < stride_x, 0 <= oc < OC) {
+for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= oc < OC) {
     acc_t acc = 0;
-    index_t oy = iy * stride_y + dy + out_pad_top;
-    index_t ox = ix * stride_x + dx + out_pad_left;
-
-    for_each(0 <= sy < (KH - dy) / stride_y, 0 <= sx < (KW - dx) / stride_x, 0 <= ic < IC) {
-        index_t y = iy - sy;
-        index_t x = ix - sx;
-        index_t ky = dy + sy * stride_y;
-        index_t kx = dx + sx * stride_x;
-        acc_t value = static_cast<acc_t>(tensor_read<in_t>(input, [N,IH,IW,IC], [n,y,x,ic]));
-        acc_t weight_value = static_cast<acc_t>(tensor_read<weight_t>(weight, [OH,KH,KW,IC], [oc,ky,kx,ic]));
-        value = apply_sub_s<acc_t>(value, static_cast<acc_t>(input_zp));
-        weight_value = apply_sub_s<acc_t>(weight_value, static_cast<acc_t>(weight_zp));
-        acc = apply_add_s<acc_t>(acc, apply_mul_s<acc_t>(value, weight_value));
+    index_t iy = oy - out_pad_top;
+    index_t ix = ox - out_pad_left;
+    for_each(0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
+        index_t y = iy - ky;
+        index_t x = ix - kx;
+        acc_t value = 0;
+        if (0 <= y < IH*stride_y && 0 <= x < IW*stride_y && (y % stride_y)==0 && (x % stride_x)==0) {
+            value  = static_cast<out_t>(tensor_read<in_t>(input,
+                                                          [N,IH,IW,IC],
+                                                          [n,y/stride_y,x/stride_x,ic]));
+            value  = apply_sub_s<acc_t>(value, static_cast<out_t>(input_zp));
+        }
+        if ((0 <= y < IH*stride_y && 0 <= x < IW*stride_y && (y % stride_y)==0 && (x % stride_x)==0) || tosa_extra_multiplies)
+            acc_t weight_el = static_cast<out_t>(tensor_read<weight_t>(weight,
+                                                                      [OC,KH,KW,IC],
+                                                                      [oc,ky,kx,ic]));
+            weight_el = apply_sub_s<acc_t>(weight_el, static_cast<out_t>(weight_zp));
+            acc = apply_add_s<acc_t>(acc, apply_mul_s<acc_t>(value, weight_el));
+        }
     }
-
     out_t out = static_cast<out_t>(acc);
     out = apply_add_s<out_t>(out, bias[(BC == 1) ? 0 : oc]);
     tensor_write<out_t>(output, [N,OH,OW,OC], [n,oy,ox,oc], out);
