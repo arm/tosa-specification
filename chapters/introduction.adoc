@@ -556,82 +556,9 @@ Then the ADD is performed, and a RESCALE can be used to ensure that the result i
 
 RESCALE provides support for per-tensor and per-channel scaling values to ensure compatibility with a range of possible quantization implementations.
 
-
-
 ==== Precision Scaling
 
-TOSA uses the RESCALE operation to scale between values with differing precision.
-The RESCALE operator is defined using an integer multiply, add, and shift.
-This guarantees that all TOSA implementations will return the same result for a RESCALE, including those with no support for floating-point numbers.
-
-This TOSA specification supports two precisions of multiplier: 16-bit and 32-bit.
-The 32-bit multiplier version supports two rounding modes to enable simpler lowering of existing frameworks that use two stage rounding.
-All arithmetic is designed so that it does not overflow a 64-bit accumulator and that the result fits in 32 bits.
-In particular, a 48-bit value cannot be scaled with the 32-bit multiplier because the accumulator would need to have 80 bits.
-
-The apply_scale_* functions provide a scaling of approximately (multiplier / 2^shift^).
-The shift and value range are limited to allow a variety of implementations.
-The limit of 62 on shift allows the shift to be decomposed as two right shifts of 31.
-For apply_scale_32, the value must be between (-1 << (shift - 1)) \<= value < (1 << (shift - 1)).
-This allows for implementations that left-shift the value before the multiply in the case of shifts of 32 or less.
-For example, in the case shift=30 an implementation of the form ((value\<<2) * multiplier + round)>>32 can be used.
-A scaling range of 2^+12^ down to 2^-32^ is supported for both functions with a normalized multiplier.
-In typical usage, a scaling of m*2^-n^ (where m is a fraction in the range 1.0 \<= m < 2.0) can be represented using multiplier=(1<<30)*m, shift=(30+n) for apply_scale_32() and multiplier=(1<<14)*m, shift=(14+n) for apply_scale_16().
-The values to achieve a scaling of 1.0 are shift=30, multiplier=1<<30 for apply_scale_32 and shift=14, multiplier=1<<14 for apply_scale_16.
-The right shift of result is an arithmetic shift.
-
-[source,c++]
-----
-int32_t apply_scale_32(int32_t value, int32_t multiplier, int8_t shift, bool_t double_round=false) {
-    REQUIRE(multiplier >= 0);
-    REQUIRE(2 <= shift && shift <= 62);
-    REQUIRE(value >= (-1 << (shift - 1)) && value < (1 << (shift - 1)));
-    int64_t round = 1 << (shift - 1);
-    if (double_round) {
-        if (shift > 31 && value >= 0) round += 1<<30;
-        if (shift > 31 && value < 0)  round -= 1<<30;
-    }
-    int64_t result = (static_cast<int64_t>(value) * multiplier) + round;
-    result >>= shift;
-    // result will fit a 32-bit range due to the REQUIRE on value
-    return static_cast<int32_t>(result);
-}
-
-int32_t apply_scale_16(int48_t value, int16_t multiplier, int8_t shift) {
-    REQUIRE(multiplier >= 0);
-    REQUIRE(2 <= shift && shift <= 62);
-    int64_t round = 1 << (shift - 1);
-    int64_t result = (static_cast<int64_t>(value) * multiplier) + round;
-    result >>= shift;
-    REQUIRE(result >= minimum<int32_t> && result <= maximum<int32_t>);
-    return static_cast<int32_t>(result);
-}
-----
-
-In some functions, the multiplier and shift are combined into a scale_t structure:
-
-[source,c++]
-----
-typedef struct {
-    int32_t multiplier;
-    int8_t shift;
-} scale_t;
-----
-
-In places where a divide is required, we also use the function below to calculate an appropriate scaling value.
-
-[source,c++]
-----
-scale_t reciprocal_scale(uint32_t value) {
-    REQUIRE(value > 0);
-    scale_t scale;
-    int32_t k = 32 - count_leading_zeros(value - 1); // (1 << k) / 2 < value <= (1 << k)
-    int64_t numerator = ((1 << 30) + 1) << k;
-    scale.multiplier = numerator / value; // (1 << 30) <= multiplier < (1 << 31)
-    scale.shift = 30 + k;
-    return scale;
-}
-----
+TOSA uses the <<RESCALE>> operation to scale between values with differing precision.
 
 ==== Integer Convolutions
 

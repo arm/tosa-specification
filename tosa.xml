@@ -37,6 +37,12 @@
       <profile_supported>PRO-INT</profile_supported>
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
+    <profile_extension name="EXT-DOUBLEROUND" description="Adds double rounding support to the RESCALE operator" status="Complete">
+      <profile_supported>PRO-INT</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-INEXACTROUND" description="Adds inexact rounding support to the RESCALE operator" status="Experimental">
+      <profile_supported>PRO-INT</profile_supported>
+    </profile_extension>
   </profile_extensions>
   <levels>
     <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256" max_tensor_list_size="256">No level</level>
@@ -2967,7 +2973,6 @@ used.</description>
             <rank min="1" max="1"/>
             <ctc>
               <op_profile name="PRO-INT"/>
-              <op_profile name="PRO-FP"/>
             </ctc>
             <ctc_remove>
               <op_profile name="EXT-DYNAMIC"/>
@@ -2978,7 +2983,6 @@ used.</description>
             <rank min="1" max="1"/>
             <ctc>
               <op_profile name="PRO-INT"/>
-              <op_profile name="PRO-FP"/>
             </ctc>
             <ctc_remove>
               <op_profile name="EXT-DYNAMIC"/>
@@ -2989,7 +2993,6 @@ used.</description>
             <rank min="1" max="1"/>
             <ctc>
               <op_profile name="PRO-INT"/>
-              <op_profile name="PRO-FP"/>
             </ctc>
             <ctc_remove>
               <op_profile name="EXT-DYNAMIC"/>
@@ -3000,7 +3003,6 @@ used.</description>
             <rank min="1" max="1"/>
             <ctc>
               <op_profile name="PRO-INT"/>
-              <op_profile name="PRO-FP"/>
             </ctc>
             <ctc_remove>
               <op_profile name="EXT-DYNAMIC"/>
@@ -3009,8 +3011,8 @@ used.</description>
           <argument category="attribute" name="scale32" type="bool_t" shape="-" tensor-element-type="-">
             <description>if (scale32) mul_t=i32_t else mul_t=i16_t</description>
           </argument>
-          <argument category="attribute" name="double_round" type="bool_t" shape="-" tensor-element-type="-">
-            <description>Select double round mode</description>
+          <argument category="attribute" name="rounding_mode" type="rounding_t" shape="-" tensor-element-type="-">
+            <description>Select rounding mode</description>
           </argument>
           <argument category="attribute" name="per_channel" type="bool_t" shape="-" tensor-element-type="-">
             <description>if (per_channel) NC=shape[rank(shape)-1] else NC=1</description>
@@ -3405,5 +3407,11 @@ used.</description>
     <enumval value="0" name="PROPAGATE" description="NaN is returned when the operation has a NaN"/>
     <enumval value="1" name="IGNORE" description="NaN is ignored when the operation has a NaN. NaN is produced if and only if all operands are NaN"/>
   </enum>
+
+ <enum name="rounding_t" description="Rounding mode">
+    <enumval value="0" name="SINGLE_ROUND" description="Perform single rounding."/>
+    <enumval value="1" name="INEXACT_ROUND" description="Allow rounding results to be inexact." extension="EXT-INEXACTROUND"/>
+    <enumval value="2" name="DOUBLE_ROUND" description="Perform double rounding." extension="EXT-DOUBLEROUND"/>
+ </enum>
 
 </tosa>

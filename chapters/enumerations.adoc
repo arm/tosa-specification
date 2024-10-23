@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2023 ARM Limited
+// (C) COPYRIGHT 2023-2024 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -12,5 +12,6 @@
 Where enumerated types are specified for an operator, the provided value must be a valid enumerant for that type.
 The included tables provide reference values for the enumerations.
 Implementations do not need to use these values, they may substitute other values as long as they are functionally equivalent.
+If no entry is listed in 'Required Extension' then the enumeration is always available.
 
 include::{generated}/enums.adoc[]

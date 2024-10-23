@@ -1,0 +1,50 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2024 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+int32_t apply_scale_32(int32_t value, int32_t multiplier, int8_t shift, bool_t double_round=false) {
+    REQUIRE(multiplier >= 0);
+    REQUIRE(2 <= shift && shift <= 62);
+    REQUIRE(value >= (-1 << (shift - 1)) && value < (1 << (shift - 1)));
+    int64_t round = 1 << (shift - 1);
+    if (double_round) {
+        if (shift > 31 && value >= 0) round += 1<<30;
+        if (shift > 31 && value < 0)  round -= 1<<30;
+    }
+    int64_t result = (static_cast<int64_t>(value) * multiplier) + round;
+    result >>= shift;
+    // result will fit a 32-bit range due to the REQUIRE on value
+    return static_cast<int32_t>(result);
+}
+
+int32_t apply_scale_16(int48_t value, int16_t multiplier, int8_t shift) {
+    REQUIRE(multiplier >= 0);
+    REQUIRE(2 <= shift && shift <= 62);
+    int64_t round = 1 << (shift - 1);
+    int64_t result = (static_cast<int64_t>(value) * multiplier) + round;
+    result >>= shift;
+    REQUIRE(result >= minimum<int32_t> && result <= maximum<int32_t>);
+    return static_cast<int32_t>(result);
+}
+
+// Struct which describes the scale factors
+typedef struct {
+    int32_t multiplier;
+    int8_t shift;
+} scale_t;
+
+// Calculate an appropriate scale factor to use when a divide is required
+scale_t reciprocal_scale(uint32_t value) {
+    REQUIRE(value > 0);
+    scale_t scale;
+    int32_t k = 32 - count_leading_zeros(value - 1); // (1 << k) / 2 < value <= (1 << k)
+    int64_t numerator = ((1 << 30) + 1) << k;
+    scale.multiplier = numerator / value; // (1 << 30) <= multiplier < (1 << 31)
+    scale.shift = 30 + k;
+    return scale;
+}

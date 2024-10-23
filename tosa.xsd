@@ -25,6 +25,8 @@
     <xs:enumeration value="EXT-VARIABLE"/>
     <xs:enumeration value="EXT-CONTROLFLOW"/>
     <xs:enumeration value="EXT-DYNAMIC"/>
+    <xs:enumeration value="EXT-DOUBLEROUND"/>
+    <xs:enumeration value="EXT-INEXACTROUND"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -70,6 +72,7 @@
     <xs:enumeration value="resize_mode_t"/>
     <xs:enumeration value="acc_type_t"/>
     <xs:enumeration value="nan_propagation_t"/>
+    <xs:enumeration value="rounding_t"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -116,6 +119,7 @@
     <xs:enumeration value="nan_propagation_t"/>
     <xs:enumeration value="out_t"/>
     <xs:enumeration value="resize_mode_t"/>
+    <xs:enumeration value="rounding_t"/>
     <xs:enumeration value="shape_t"/>
     <xs:enumeration value="shape_list_t"/>
     <xs:enumeration value="String"/>
@@ -280,6 +284,7 @@
     <xs:attribute name="name" type="xs:string"/>
     <xs:attribute name="value" type="xs:integer"/>
     <xs:attribute name="description" type="xs:string"/>
+    <xs:attribute name="extension" type="profile_ext_name"/>
   </xs:complexType>
 </xs:element>
 
@@ -290,6 +295,7 @@
     </xs:sequence>
     <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="description" type="xs:string" use="required"/>
+    <xs:attribute name="extension" type="profile_ext_name"/>
   </xs:complexType>
 </xs:element>
 

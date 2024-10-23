@@ -29,10 +29,13 @@ class TOSASpecAsciidocGenerator:
     def generate_enum(self, enum, file):
         file.write(f"\n=== {enum.name}\n")
         file.write(f"{enum.description}\n")
+        if enum.extension:
+            file.write(f"\n*Only valid if {enum.extension} extension is supported.*")
+        file.write("[width=99]\n")
         file.write("|===\n")
-        file.write("|Name|Value|Description\n\n")
+        file.write("|Name|Value|Description|Required Extension\n\n")
         for val in enum.values:
-            file.write(f"|{val[0]}|{val[1]}|{val[2]}\n")
+            file.write(f"|{val[0]}|{val[1]}|{val[2]}|{val[3]}\n")
         file.write("|===\n")
 
     def generate_operator(self, op, file):
@@ -229,8 +232,10 @@ class TOSASpecAsciidocGenerator:
                 f.write(f"{pext.description}\n\n")
                 f.write(f"Status: {pext.status}\n\n")
                 f.write(f"Compatible profiles: {', '.join(pext.profiles)}\n\n")
-                f.write("|===\n")
+                f.write("*Operator Change Table*\n\n")
+                f.write("[width=99]\n|===\n")
                 f.write("|Operator|Mode|Version Added|Note\n\n")
+                op_changed = False
                 for op in sorted(all_operators, key=lambda o: o.name):
                     if op.typesupports:
                         for tysup in op.typesupports:
@@ -247,10 +252,30 @@ class TOSASpecAsciidocGenerator:
                                         f"|{op.name}|{tysup.mode}|"
                                         f"{tysup.version_added}|{note}\n"
                                     )
+                                    op_changed = True
                     for arg in op.arguments:
                         if pext.name in arg.ctc_remove:
+                            op_changed = True
                             f.write(f"|{op.name}|all||Remove CTC from {arg.name}\n")
+                if not op_changed:
+                    f.write("|No changes|||\n")
                 f.write("|===\n")
+
+                header_text = "*Enum Changes*\n\n[width=99]\n|===\n|Enum|Value|Note\n\n"
+                for enum in self.spec.enums:
+                    if enum.extension == pext.name:
+                        f.write(header_text)
+                        header_text = ""
+                        for val in enum.values:
+                            f.write(f"|{enum.name}|{val[0]}|New Enum\n")
+                    else:
+                        for val in enum.values:
+                            if val[3] == pext.name:
+                                f.write(header_text)
+                                header_text = ""
+                                f.write(f"|{enum.name}|{val[0]}|New Value\n")
+                if header_text == "":
+                    f.write("|===\n")
 
 
 if __name__ == "__main__":
