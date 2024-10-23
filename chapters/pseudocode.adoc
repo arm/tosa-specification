@@ -234,3 +234,12 @@ Generic helper functions used to keep the pseudocode concise.
 ----
 include::{pseudocode}/library/generic_helpers.tosac[lines=10..-1]
 ----
+
+==== Scaling Helpers
+
+Helper functions used to scale between different integer domains
+
+[source,c++]
+----
+include::{pseudocode}/library/scale_helpers.tosac[lines=10..-1]
+----

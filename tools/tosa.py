@@ -50,10 +50,11 @@ class TOSAProfileExtension:
 
 
 class TOSAEnum:
-    def __init__(self, name, description, values):
+    def __init__(self, name, description, values, extension):
         self.name = name
         self.description = description
         self.values = values
+        self.extension = extension
 
 
 class TOSALevel:
@@ -292,10 +293,19 @@ class TOSASpec:
     def __load_enum(self, arg):
         name = arg.get("name")
         desc = arg.get("description").strip()
+        enumextension = arg.get("extension", "")
         values = []
         for val in arg.findall("enumval"):
-            values.append((val.get("name"), val.get("value"), val.get("description")))
-        return TOSAEnum(name, desc, values)
+            valextension = val.get("extension", "")
+            values.append(
+                (
+                    val.get("name"),
+                    val.get("value"),
+                    val.get("description"),
+                    valextension,
+                )
+            )
+        return TOSAEnum(name, desc, values, enumextension)
 
     def get_enum_by_name(self, name):
         for e in self.enums:

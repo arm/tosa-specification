@@ -40,7 +40,7 @@ for_each_data_position(index in shape) {
     value = value - extended_in_zp;
     int c = (per_channel) ? index[rank(input) - 1] : 0;
     int32_t result = (scale32) ?
-        apply_scale_32(value, multiplier[c], shift[c], double_round) :
+        apply_scale_32(value, multiplier[c], shift[c], rounding_mode == DOUBLE_ROUND) :
         apply_scale_16(value, multiplier[c], shift[c]);
 
     out_t out;
