@@ -3226,7 +3226,6 @@ used.</description>
         </types>
         <typesupport mode="Boolean" cond_t="bool_t"  version_added="1.0">
           <op_profile name="EXT-CONTROLFLOW"/>
-          <op_profile name="EXT-CONTROLFLOW"/>
         </typesupport>
       </operator>
       <operator>
@@ -3251,7 +3250,6 @@ used.</description>
           <type name='cond_t' />
         </types>
         <typesupport mode="Boolean" cond_t="bool_t"  version_added="1.0">
-          <op_profile name="EXT-CONTROLFLOW"/>
           <op_profile name="EXT-CONTROLFLOW"/>
         </typesupport>
       </operator>
