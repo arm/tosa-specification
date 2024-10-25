@@ -28,8 +28,8 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
     T<fp64_t> output_ref = reference_fp64(OP, input, weight, bias, tosa_extra_multiplies = false);
     T<fp64_t> output_bnd = reference_fp64(OP,.input_abs, weight_abs, bias_abs, tosa_extra_multiplies = true);
 
-    size_t T = tensor_size(output_shape);  // number dot product results
-    size ksb = ceil(KS / pow(2, (normal_frac<acc_t>() - normal_frac<out_t>())/2)) + ((max_value(bias_abs) > 0) ? 1 : 0);
+    tensor_size_t T = tensor_size(output_shape);  // number dot product results
+    tensor_size_t ksb = ceil(KS / pow(2, (normal_frac<acc_t>() - normal_frac<out_t>())/2)) + ((max_value(bias_abs) > 0) ? 1 : 0);
     fp64_t out_err_sum = 0.0;
     fp64_t out_err_sumsq = 0.0;
     for_each_data_position(index in output_shape) {

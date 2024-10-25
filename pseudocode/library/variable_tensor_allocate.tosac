@@ -8,7 +8,7 @@
 // by a licensing agreement from ARM Limited.
 
 tensor_t* variable_tensor_allocate<in_t>(shape_t shape, int32_t uid) {
-    size_t size = tensor_size(shape);
+    tensor_size_t size = tensor_size(shape);
     tensor_t *allocated_tensor = new tensor_t;
     allocated_tensor->data = new in_t[size];
     allocated_tensor->uid = uid;

@@ -485,22 +485,14 @@ For tensor access information, see <<Tensor Access Helpers>>.
 
 The shape of a tensor is a special type shape_t.
 shape_t is a one-dimensional list with the size equal to the rank of the original tensor.
-The components of a shape_t are of type size_t.
+The components of a shape_t are of type tensor_size_t.
+tensor_size_t is a signed integer as it may be used for negative offsets.
+This type must be able to hold integers in the range [-(1 << MAX_LOG2_SIZE) .. (1 << MAX_LOG2_SIZE) - 1] where MAX_LOG2_SIZE is defined in <<Levels>>.
 The shape_t for a zero-dimensional tensor is the empty list.
 
+For each tensor, the number of tensor elements multiplied by the element size in bytes (which is taken to be 1 for elements smaller than a 8-bit) must be representable as a tensor_size_t.
+
 In this version of the specification, shape_t values must be resolvable to constants at backend compile time.
-
-==== Tensor Size Limit
-
-The tensor overall size is limited by the data type size_t.
-This type must be able to hold integers in the range 0 to (1 << (MAX_LOG2_SIZE + 1)) - 1 where MAX_LOG2_SIZE is defined in <<Levels>>.
-For each tensor, the number of tensor elements multiplied by the element size in bytes (which is taken to be 1 for elements smaller than a 8-bit) must be less than or equal to (1 << (MAX_LOG2_SIZE + 1)) - 1.
-
-The size of tensors along each of their dimensions is limited by the data type size_t.
-
-This means that the maximum size of a tensor along each dimension is (1 << MAX_LOG2_SIZE) - 1 and therefore the maximum coordinate value is (1 << MAX_LOG2_SIZE) - 2.
-Indices used to access tensors must be non-negative.
-
 
 ==== Data Layouts
 

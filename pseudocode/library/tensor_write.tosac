@@ -8,6 +8,6 @@
 // by a licensing agreement from ARM Limited.
 
 void tensor_write<type>(<type> *address, shape_t shape, shape_t index, <type> value) {
-    size_t offset = tensor_index_to_offset(shape, index);
+    tensor_size_t offset = tensor_index_to_offset(shape, index);
     address[offset] = value;
 }

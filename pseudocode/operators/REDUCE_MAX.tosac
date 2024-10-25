@@ -16,12 +16,12 @@ for_each_data_position(left_index in left_shape) {
         in_out_t acc = (is_floating_point<in_out_t>() && nan_mode == IGNORE)
                            ? nan<in_out_t>()
                            : minimum_s<in_out_t>();
-        for (size_t i = 0; i < shape1[axis]; i++) {
-            size_t index = flatten(left_index, [i], right_index);
+        for (tensor_size_t i = 0; i < shape1[axis]; i++) {
+            shape_t index = flatten(left_index, [i], right_index);
             in_out_t value = tensor_read<in_out_t>(input, shape1, index);
             acc = apply_max_s<in_out_t>(acc, value, nan_mode);
         }
-        size_t out_index = flatten(left_index, [0], right_index);
+        shape_t out_index = flatten(left_index, [0], right_index);
         tensor_write<in_out_t>(output, shape, out_index, acc);
     }
 }

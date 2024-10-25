@@ -7,10 +7,10 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-in_t* flatten(in_t lists[]) {
-    in_t output = [];
-    for_each(list in lists) {
-        for_each(element in list) {
+shape_t flatten(shape_t shapes[]) {
+    shape_t output = [];
+    for_each(shape in shapes) {
+        for_each(element in shapes) {
             output.append(element);
         }
     }

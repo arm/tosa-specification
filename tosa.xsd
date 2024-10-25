@@ -63,7 +63,7 @@
     <xs:enumeration value="fp16_t"/>
     <xs:enumeration value="bf16_t"/>
     <xs:enumeration value="fp32_t"/>
-    <xs:enumeration value="size_t"/>
+    <xs:enumeration value="tensor_size_t"/>
   </xs:restriction>
 </xs:simpleType>
 
