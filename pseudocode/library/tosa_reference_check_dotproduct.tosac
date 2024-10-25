@@ -47,7 +47,7 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
         } else if (is_a_NaN(out_bnd_el)) {
             // No further accuracy requirements for a NaN bound
             out_err = 0.0;
-        } else if.(static_cast<out_t>(out_bnd_el * (1 + ksb * exp2(-1-normal_frac<out_t>()))) == infinity) {
+        } else if.(static_cast<out_t>(out_bnd_el * (1 + ABS_BOUND * exp2(-1-normal_frac<out_t>()))) == infinity) {
             // dot product can overflow within error bound and there is no accuracy limit
             out_err = 0.0;
         } else if (out_bnd_el == 0.0) {
@@ -59,7 +59,8 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
         } else {  // 0.0 < out_bnd < infinity
             fp64_t out_err_bnd = max(out_bnd_el * exp2(-1-normal_frac<out_t>()), normal_min<out_t>());
             out_err = (static_cast<fp64_t>(out_imp_el) - out_ref_el) / out_err_bnd;
-            if (abs(out_err) > ksb) {
+            // Check the absolute error. See the table for the definition of ABS_BOUND.
+            if (abs(out_err) > ABS_BOUND) {
                 return false;
             }
         }
@@ -69,12 +70,15 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
     // Only check this for input and weights for test data sets 3-5
     if ( S >= 3 && S <= 5) {
         // check output error bias magnitude for data sets S which are not positive biased
-        if (abs(out_err_sum) > 2*sqrt(ksb*T)) {
+        // The factor 10 allows for up to a 4 sigma difference of the error sum around the
+        // expected error sum assuming errors are normally distributed.
+        if (abs(out_err_sum) > sqrt(10 * VARIANCE_ERROR_BOUND * T)) {
             return false;
         }
     }
     // check output error variance magnitude
-    if (out_err_sumsq > 0.4*ksb*T) {
+    // See the table for the definition of VARIANCE_ERROR_BOUND
+    if (out_err_sumsq > VARIANCE_ERROR_BOUND * T) {
         return false;
     }
     return true;
