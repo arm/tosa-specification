@@ -461,6 +461,31 @@ For the checks described in the following code:
 
 * Data sets defined for the operation in Appendix A <<Floating-Point Operator Test Data>> must pass.
 
+The following tables describe some of the constraints applied during the dot product conformance check.
+
+ABS_BOUND is the maximum allowed absolute error when NaN or overflow is not present.
+
+|===
+|Condition|ABS_BOUND|Notes
+
+|all cases
+|`2 * ksb`
+|Allow one rounding error for each accumulation. The 2 factor allows for different rounding modes.
+|===
+
+
+VARIANCE_ERROR_BOUND is the maximum allowed variance across the entire output tensor.
+The squared error for each result is summed, and the result must be less than the VARIANCE_ERROR_BOUND.
+
+|===
+|Condition|VARIANCE_ERROR_BOUND|Notes
+
+|all cases
+|`4 * 0.4 * ksb`
+|The 0.4 factor is derived from the uniform [-1,1] distribution variance of 1/3 by rounding up. +
+The 4 factor is the square of the 2 factor in the absolute bound  to allow for different rounding modes.
+|===
+
 [source,c++]
 ----
 include::{pseudocode}/library/tosa_reference_check_dotproduct.tosac[lines=10..-1]
