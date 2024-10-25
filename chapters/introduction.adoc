@@ -460,7 +460,6 @@ In this section:
 For the checks described in the following code:
 
 * Data sets defined for the operation in Appendix A <<Floating-Point Operator Test Data>> must pass.
-* Data sets that have at least MIN_DOT_PRODUCT different output values should pass with S=-1 in the following code to disable the bias test.
 
 [source,c++]
 ----
