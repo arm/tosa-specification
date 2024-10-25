@@ -3278,7 +3278,7 @@ used.</description>
           <argument category="attribute" name="uid" type="i32_t" shape="-" tensor-element-type="-">
             <description>Globally unique identifier for the declared variable tensor.</description>
           </argument>
-          <argument category="attribute" name="var_shape" type="tensor_t" shape="var_shape" tensor-element-type="size_t">
+          <argument category="attribute" name="var_shape" type="tensor_t" shape="var_shape" tensor-element-type="tensor_size_t">
             <description>The variable tensor shape</description>
             <rank min="1" max="1"/>
           </argument>
@@ -3373,7 +3373,7 @@ used.</description>
         <types>
           <type name='shape_t' />
         </types>
-        <typesupport mode="shape" shape_t="size_t"  version_added="1.0">
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.0">
           <op_profile name="PRO-INT"/>
           <op_profile name="PRO-FP"/>
         </typesupport>

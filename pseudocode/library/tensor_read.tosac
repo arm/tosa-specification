@@ -8,6 +8,6 @@
 // by a licensing agreement from ARM Limited.
 
 in_t tensor_read<in_t>(in_t *address, shape_t shape, shape_t index) {
-    size_t offset = tensor_index_to_offset(shape, index);
+    tensor_size_t offset = tensor_index_to_offset(shape, index);
     return address[offset];
 }

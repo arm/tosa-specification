@@ -8,9 +8,9 @@
 // by a licensing agreement from ARM Limited.
 
 // Convert tensor index coordinates to an element offset
-size_t tensor_index_to_offset(shape_t shape, shape_t index) {
-    size_t size = tensor_size(shape);  // check tensor shape is valid
-    size_t offset = 0;
+tensor_size_t tensor_index_to_offset(shape_t shape, shape_t index) {
+    tensor_size_t size = tensor_size(shape);  // check tensor shape is valid
+    tensor_size_t offset = 0;
     for (int32_t i = 0; i < rank(shape); i++) {
         REQUIRE(index[i] >= 0 && index[i] < shape[i]);
         offset = offset * shape[i] + index[i];
@@ -19,9 +19,10 @@ size_t tensor_index_to_offset(shape_t shape, shape_t index) {
 }
 
 // Convert an element offset to tensor index coordinates
-shape_t tensor_offset_to_index(shape_t shape, size_t offset) {
-    size_t size = tensor_size(shape);  // check tensor shape is valid
+shape_t tensor_offset_to_index(shape_t shape, tensor_size_t offset) {
+    tensor_size_t size = tensor_size(shape);  // check tensor shape is valid
     REQUIRE(offset < size);
+    REQUIRE(offset >= 0);
     shape_t index(rank(shape));    // index has rank(shape) indicies
     for(int32_t i = rank(shape) - 1; i >= 0; i--) {
         index[i] = offset % shape[i];
@@ -31,10 +32,10 @@ shape_t tensor_offset_to_index(shape_t shape, size_t offset) {
 }
 
 // Check the tensor shape is valid and return the tensor size in elements
-size_t tensor_size(shape_t shape) {
-    size_t size = 1;
+tensor_size_t tensor_size(shape_t shape) {
+    tensor_size_t size = 1;
     for (int32_t i = 0; i < rank(shape); i++) {
-        REQUIRE(1 <= shape[i] && shape[i] <= maximum<size_t> / size);
+        REQUIRE(1 <= shape[i] && shape[i] <= maximum<tensor_size_t> / size);
         size *= shape[i];
     }
     return size;
@@ -42,6 +43,6 @@ size_t tensor_size(shape_t shape) {
 
 // Return the size of the tensor in the given axis
 // For a rank=0 tensor, returns 1 for all axes
-size_t shape_dim(shape_t shape, int axis) {
+tensor_size_t shape_dim(shape_t shape, int axis) {
     return (axis >= rank(shape)) ? 1 : shape[axis];
 }

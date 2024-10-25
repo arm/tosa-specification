@@ -17,7 +17,7 @@ ERROR_IF(axis < 0 || axis >= max(1,rank(shapes1[0])));
 // that the size of the output equals the size of the concatenated shapes
 // For all other dimensions, the size must match for all inputs
 
-size_t axis_sum = 0;
+tensor_size_t axis_sum = 0;
 for (int32_t shape_index = 0; shape_index < length(shapes1); shape_index++) {
     ERROR_IF(rank(shapes1[shape_index]) != rank(shapes1[0]));
     for (int32_t axis_index = 0; axis_index < length(shapes1[0]); axis_index++) {

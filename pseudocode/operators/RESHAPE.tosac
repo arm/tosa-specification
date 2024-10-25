@@ -11,7 +11,7 @@ ERROR_IF(tensor_size(shape1) != tensor_size(shape));
 
 for_each_data_position(index in shape) {
     // Calculate flattened index for the output location (index)
-    size_t offset = tensor_index_to_offset(shape, index);
+    tensor_size_t offset = tensor_index_to_offset(shape, index);
     // Now convert to the location in the input
     shape_t tmp_index = tensor_offset_to_index(shape1, offset);
 
