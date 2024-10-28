@@ -11,7 +11,7 @@ REQUIRE(length(table) == TABLE_SIZE);
 for_each_data_position(index in shape) {
     in_t value = tensor_read<in_t>(input1, shape, index);
     out_t result;
-    if (in_t == i8_t) {
+    if (is_same<in_t,i8_t>()) {
         // value is a signed int, convert to a 0 based index
         result = table[static_cast<int16_t>(value) + 128];
     } else {

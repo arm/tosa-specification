@@ -10,17 +10,17 @@
 for_each_data_position(index in shape) {
     in_t in = tensor_read<in_t>(input, shape, index);
     out_t out;
-    if (out_t == bool_t) {
+    if (is_same<out_t,bool_t>()) {
         out = (in != 0) ? true : false;
     } else if (is_floating_point<out_t>()) {
         // Conversion to float cases
-        if (in_t == bool_t) {
+        if (is_same<in_t,bool_t>()) {
             out = (in) ? 1.0 : 0.0;
         }
         out = round_to_nearest_float(in);
     } else {
         // Conversion to integer cases
-        if (in_t == bool_t) {
+        if (is_same<in_t,bool_t>()) {
             out = (in) ? 1 : 0;
         } else if (is_floating_point<in_t>()) {
             out = truncate<out_t>(apply_clip_s<i32_t>(round_to_nearest_int(in), minimum_s<out_t>(), maximum_s<out_t>()));

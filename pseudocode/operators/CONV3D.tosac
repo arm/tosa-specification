@@ -7,8 +7,8 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-ERROR_IF(in_t != i8_t && input_zp != 0); // Zero point only for int8_t
-ERROR_IF(weight_t != i8_t && weight_zp != 0);
+ERROR_IF(!is_same<in_t,i8_t>() && input_zp != 0); // Zero point only for int8_t
+ERROR_IF(!is_same<weight_t,i8_t>() && weight_zp != 0);
 ERROR_IF(pad_d0 < 0 || pad_d1 < 0 || pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
 ERROR_IF(stride_d < 1 || stride_y < 1 || stride_x < 1);
 ERROR_IF(dilation_d < 1 || dilation_y < 1 || dilation_x < 1);

@@ -8,8 +8,9 @@
 // by a licensing agreement from ARM Limited.
 
 bool_t is_floating_point<type>() {
-    if (type == fp16_t || type == fp32_t || type == bf16_t || type == fp8e4m3_t || type == fp8e5m2_t)
+    if (is_same<type,fp16_t>() || is_same<type,fp32_t>() || is_same<type,bf16_t>() || is_same<type,fp8e4m3_t>() || is_same<type,fp8e5m2_t>()) {
         return true;
+    }
     return false;
 }
 

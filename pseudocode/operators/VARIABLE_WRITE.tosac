@@ -17,7 +17,7 @@ REQUIRE(variable_tensor.seen);
 //  Input tensor's shape and variable_tensor's shape have to match
 REQUIRE(variable_tensor.shape == shape);
 //  Input tensor's shape and variable_tensor's type have to match
-REQUIRE(variable_tensor.type == in_t);
+REQUIRE(is_same<variable_tensor.type,in_t>());
 
 for_each_data_position (index in shape) {
     // Write data from the input to the pseudo-buffer resource

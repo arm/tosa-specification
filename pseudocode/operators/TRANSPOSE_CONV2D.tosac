@@ -7,8 +7,8 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-ERROR_IF(in_t != i8_t  && input_zp != 0); // Zero point only allowed for int8_t
-ERROR_IF(weight_t != i8_t && weight_zp != 0);
+ERROR_IF(!is_same<in_t,i8_t>() && input_zp != 0); // Zero point only allowed for int8_t
+ERROR_IF(!is_same<weight_t,i8_t>() && weight_zp != 0);
 ERROR_IF(out_pad_top <= -KH || out_pad_bottom <= -KH);
 ERROR_IF(out_pad_left <= -KW || out_pad_right <= -KW);
 ERROR_IF(stride_y < 1 || stride_x < 1);
