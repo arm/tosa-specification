@@ -561,7 +561,7 @@
             <description>Input tensor B, N matrices of size CxW</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="input" name="A_zp" type="tensor_t" shape="[1]" tensor-element-type="A_t">
+          <argument category="input" name="A_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor A zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
             <ctc>
@@ -572,7 +572,7 @@
               <op_profile name="EXT-DYNAMIC"/>
             </ctc_remove>
           </argument>
-          <argument category="input" name="B_zp" type="tensor_t" shape="[1]" tensor-element-type="B_t">
+          <argument category="input" name="B_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor B zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
             <ctc>
