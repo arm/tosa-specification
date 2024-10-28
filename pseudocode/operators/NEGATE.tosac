@@ -7,8 +7,8 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-ERROR_IF(in_out_t != i8_t && input1_zp != 0); // Zero point only for int8_t
-ERROR_IF(in_out_t != i8_t && output_zp != 0); // Zero point only for int8_t
+ERROR_IF(!is_same<in_out_t,i8_t>() && input1_zp != 0); // Zero point only for int8_t
+ERROR_IF(!is_same<in_out_t,i8_t>() && output_zp != 0); // Zero point only for int8_t
 for_each_data_position(index in shape) {
     in_out_t value1 = tensor_read<in_out_t>(input1, shape, index);
     acc_t value = apply_sub_s<acc_t>(sign_extend<acc_t>(value1),

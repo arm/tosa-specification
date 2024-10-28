@@ -11,18 +11,18 @@ for_each_data_position(index in shape) {
     // uint16 values can have zero_point 0 or 32768
     // int8/uint8 can have zero point within their valid range
     // No other types can have zero point != 0
-    ERROR_IF(in_t != i8_t &&
-             (in_t != i16_t || input_unsigned == false) && input_zp != 0);
-    ERROR_IF(out_t != i8_t &&
-             (out_t != i16_t || output_unsigned == false) && output_zp != 0);
-    ERROR_IF(in_t == i16_t && input_unsigned == true && input_zp != 0 && input_zp != 32768);
-    ERROR_IF(out_t == i16_t && output_unsigned == true && output_zp != 0 && output_zp != 32768);
-    ERROR_IF(scale32 && in_t == i48_t);
+    ERROR_IF(!is_same<in_t,i8_t>() &&
+             (!is_same<in_t,i16_t>() || input_unsigned == false) && input_zp != 0);
+    ERROR_IF(!is_same<out_t,i8_t>() &&
+             (!is_same<out_t,i16_t>() || output_unsigned == false) && output_zp != 0);
+    ERROR_IF(is_same<in_t,i16_t>() && input_unsigned == true && input_zp != 0 && input_zp != 32768);
+    ERROR_IF(is_same<out_t,i16_t>() && output_unsigned == true && output_zp != 0 && output_zp != 32768);
+    ERROR_IF(scale32 && is_same<in_t,i48_t>());
     ERROR_IF(!scale32 && double_round);
     ERROR_IF(input_unsigned && output_unsigned);
-    ERROR_IF(out_t == i32_t && input_unsigned);
-    ERROR_IF(in_t == i32_t && output_unsigned);
-    ERROR_IF(in_t == i48_t && output_unsigned);
+    ERROR_IF(is_same<out_t,i32_t>() && input_unsigned);
+    ERROR_IF(is_same<in_t,i32_t>() && output_unsigned);
+    ERROR_IF(is_same<in_t,i48_t>() && output_unsigned);
     ERROR_IF(per_channel && rank(input) < 1);
 
     in_t in_value = tensor_read<in_t>(input, shape, index);

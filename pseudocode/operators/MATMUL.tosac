@@ -7,7 +7,7 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-ERROR_IF(in_t != i8_t && (A_zp != 0 || B_zp != 0)); // Zero point only for int8_t
+ERROR_IF(is_same<in_t,i8_t> && (A_zp != 0 || B_zp != 0)); // Zero point only for i8_t
 for_each(0 <= n < N, 0 <= h < H, 0 <= w < W) {
     out_t acc = 0;
     for_each(0 <= c < C) {

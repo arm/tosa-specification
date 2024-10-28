@@ -39,12 +39,12 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
   if (ref_min > normal_max<in_t>()) ref_min = infinity;
   if (ref_min < -normal_max<in_t>()) ref_min = -infinity;
 
-  if (in_t == bf16_t || in_t == fp16_t || in_t == fp32_t) {
+  if (is_same<in_t,bf16_t>() || is_same<in_t,fp16_t>() || is_same<in_t,fp32_t>()) {
     // Allow subnormal values to be flushed to zero for non-fp8
     if (test_value == 0) return (ref_min < normal_min());
   }
 
-  if (in_t == fp8e4m3 && is_a_NaN(test_value)) {
+  if (is_same<in_t,fp8e4m3_t>() && is_a_NaN(test_value)) {
     // The case where ref is NaN is handled at the beginning of the function
     // The following check is enough because `abs(ref_max) >= abs(ref_min)` and
     // `ref_max >= 0`.

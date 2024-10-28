@@ -8,7 +8,7 @@
 // by a licensing agreement from ARM Limited.
 
 REQUIRE(0 <= shift && shift <= 63);
-REQUIRE(in_t == int32_t || shift == 0);
+REQUIRE(is_same<in_t,int32_t>() || shift == 0);
 ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each_data_position(index in shape) {
     shape_t index1 = apply_broadcast(shape, shape1, index);
@@ -16,7 +16,7 @@ for_each_data_position(index in shape) {
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
     out_t result;
-    if (in_t == i32_t && shift > 0) {
+    if (is_same<in_t,i32_t>() && shift > 0) {
         int64_t product = sign_extend<int64_t>(value1) * sign_extend<int64_t>(value2);
         int64_t round   = static_cast<int64_t>(1) << (shift - 1);
         product = (product + round) >> shift;
