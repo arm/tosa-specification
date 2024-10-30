@@ -8,6 +8,11 @@
 // by a licensing agreement from ARM Limited.
 
 ERROR_IF(shape != broadcast_shape(shape1, shape2));
+REQUIRE(x >= 0);
+REQUIRE(x > 0 || y > 0);
+REQUIRE(!is_a_NaN(x) && !is_a_NaN(y));
+REQUIRE(is_finite(x) && is_finite(y));
+
 for_each_data_position(index in shape) {
     shape_t index1 = apply_broadcast(shape, shape1, index);
     shape_t index2 = apply_broadcast(shape, shape2, index);
