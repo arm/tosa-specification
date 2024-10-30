@@ -297,21 +297,16 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 * Otherwise the following may be used to validate the result.
 ** Let `x`, `y` be input elements from `input1` and `input2` respectively.
 ** Let `out_imp` be the implementation output of `pow(x,y)`.
-** If x!=1 and y is a NaN then the output must be a NaN.
-** If y!=0 and x is a NaN then the output must be a NaN.
-** If x==1 and y is a NaN then the output may be 1.0 or a NaN.
-** If y==0 and x is a NaN then the output may be 1.0 or a NaN.
-** If y is an inf then:
-*** If abs(x)>1 the result must be +inf.
-*** If abs(x)==1 the result must be +1.
-*** If abs(x)<1 then result must be +0.
-** If x is an inf then:
-*** If y>0 the result must be an inf.
-*** If y==0 the result must be +1.
-*** If y<0 then result must be a zero.
-** Let `out_ref` be the result of the fp64_t reference implementation of `pow(x,y)`.
-** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, 2 * (1+abs(log(abs(x))*y)), 0, 1)`.
-** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
+** If x or y is an infinity, the result is undefined.
+** If x or y is a NaN, the result is undefined.
+** If x < 0, the result is undefined.
+** If x == 0 and y <= 0, the result is undefined.
+** If x == 0 and y > 0 then the result is 0.
+** If x > 0 and y == 0 then the result is 1.
+** Otherwise:
+*** Let `out_ref` be the result of the fp64_t reference implementation of `pow(x,y)`.
+*** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, 2 * (1+abs(log(abs)*y)), 0, 1)`.
+*** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
 include::{generated}/operators/POW.adoc[]
 
