@@ -33,7 +33,7 @@ for_each(0 <= n < N, 0 <= od < OD, 0 <= oy < OH, 0 <= ox < OW, 0 <= oc < OC) {
                                                           [n,d,y,x,ic]));
             value  = apply_sub_s<out_t>(value, static_cast<out_t>(input_zp));
         }
-        if ((0 <= x < IW && 0 <= y < IH && 0 <= d < ID) || tosa_extra_multiples) {
+        if ((0 <= x < IW && 0 <= y < IH && 0 <= d < ID) || tosa_extra_multiplies) {
             out_t weight_el = static_cast<out_t>(tensor_read<weight_t>(weight,
                                                                        [OC,KD,KH,KW,IC],
                                                                        [oc,kd,ky,kx,ic]));
