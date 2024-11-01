@@ -30,7 +30,7 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= oc < OC) {
                                                           [n,y/stride_y,x/stride_x,ic]));
             value  = apply_sub_s<acc_t>(value, static_cast<out_t>(input_zp));
         }
-        if ((0 <= y < IH*stride_y && 0 <= x < IW*stride_y && (y % stride_y)==0 && (x % stride_x)==0) || tosa_extra_multiplies)
+        if ((0 <= y < IH*stride_y && 0 <= x < IW*stride_y && (y % stride_y)==0 && (x % stride_x)==0) || tosa_extra_multiplies) {
             acc_t weight_el = static_cast<out_t>(tensor_read<weight_t>(weight,
                                                                       [OC,KH,KW,IC],
                                                                       [oc,ky,kx,ic]));

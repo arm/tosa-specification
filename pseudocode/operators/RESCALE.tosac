@@ -18,7 +18,7 @@ for_each_data_position(index in shape) {
     ERROR_IF(is_same<in_t,i16_t>() && input_unsigned == true && input_zp != 0 && input_zp != 32768);
     ERROR_IF(is_same<out_t,i16_t>() && output_unsigned == true && output_zp != 0 && output_zp != 32768);
     ERROR_IF(scale32 && is_same<in_t,i48_t>());
-    ERROR_IF(!scale32 && double_round);
+    ERROR_IF(!scale32 && (rounding_mode == DOUBLE_ROUND));
     ERROR_IF(input_unsigned && output_unsigned);
     ERROR_IF(is_same<out_t,i32_t>() && input_unsigned);
     ERROR_IF(is_same<in_t,i32_t>() && output_unsigned);
