@@ -224,15 +224,14 @@ image::forward_fft2d.svg["forward RFFT definition", align="center"]
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * Each output can be expressed as a dot product of an input vector with a constant coefficient vector.
 * The following may be used to validate the output
+** Let `RFFT_Real` be the operation that calculates the real output (`output_real`).
+** Let `RFFT_Imag` be the operation that calculates the imaginary output (`output_imag`).
 ** Let `input` be the input tensor.
-** Let `weight` be the coefficient vector tensor.
-** Let `out_imp` be the real component of the implementation output for `input`.
-** Let `out_imp_imag` be the imaginary component of the implementation output for `input`.
-** Let `out_ref` be the real component of the result of the fp64_t reference implementation for `input`.
-** Let `out_ref` be the imaginary component of the result of the fp64_t reference implementation for `input`.
+** Let `weight_real` be the coefficient vector tensor of real values.
+** Let `weight_imag` be the coefficient vector tensor of imaginary values.
 ** For all `S` in the defined data sets in Appendix A <<Floating-Point Operator Test Data>>.
-** `tosa_reference_check_dotproduct<RFFT_Real, in_out_t, in_out_t, in_out_t, in_out_t>(S, input, weight, [], out_imp, out_ref) must be true.
-** `tosa_reference_check_dotproduct<RFFT_Imag, in_out_t, in_out_t, in_out_t, in_out_t>(S, input, weight, [], out_imp_imag, out_ref_imag) must be true.
+** `tosa_reference_check_dotproduct<RFFT_Real, in_out_t, in_out_t, in_out_t, in_out_t>(S, input, weight_real, [])` must be true.
+** `tosa_reference_check_dotproduct<RFFT_Imag, in_out_t, in_out_t, in_out_t, in_out_t>(S, input, weight_imag, [])` must be true.
 
 include::{generated}/operators/RFFT2D.adoc[]
 
