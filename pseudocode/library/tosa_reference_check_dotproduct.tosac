@@ -38,13 +38,13 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
         acc_t  out_imp_el = tensor_read<acc_t> (output_imp, output_shape, index);
         fp64_t out_err;
 
-        if (is_a_NaN(out_ref_el)) {
+        if (isNaN(out_ref_el)) {
             // Reference is a NaN on non-padded data, the implementation must match
-            if (!is_a_NaN(out_imp_el)) {
+            if (!isNaN(out_imp_el)) {
                 return false;
             }
             out_err = 0.0;
-        } else if (is_a_NaN(out_bnd_el)) {
+        } else if (isNaN(out_bnd_el)) {
             // No further accuracy requirements for a NaN bound
             out_err = 0.0;
         } else if.(static_cast<out_t>(out_bnd_el * (1 + ksb * exp2(-1-normal_frac<out_t>()))) == infinity) {

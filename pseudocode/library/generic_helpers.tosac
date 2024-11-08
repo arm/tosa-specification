@@ -44,9 +44,6 @@ int32_t rank(in_t input);
 // return the sum of values of an input list
 int32_t sum(in_t input[]);
 
-// return True if floating-point input value is NaN
-bool_t isNaN(float input);
-
 // returns value of pi
 float_t pi();
 
@@ -72,7 +69,10 @@ in_out_t maximum_u<in_out_t>();
 in_out_t minimum_u<in_out_t>();
 
 // return true if the given value is a NaN. Only valid for floating-point types
-bool_t is_a_NaN(fp64_t value);
+bool_t isNaN(in_t value);
+
+// return true if the given value is an Infinity. Only valid for floating-point types
+bool_t isInf(in_t input);
 
 // return true if value is a normal fp64 value (Not zero, subnormal, infinite or NaN)
 bool_t is_normal_fp64(fp64_t value);

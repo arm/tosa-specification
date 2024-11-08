@@ -19,9 +19,9 @@ bool_t tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t n
 }
 
 bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64_t err_bnd) {
-  if (is_a_NaN(ref_value)) {
+  if (isNaN(ref_value)) {
     // If the reference value is a NaN, the test value must also be any NaN.
-    return is_a_NaN(test_value);
+    return isNaN(test_value);
   }
   if (!is_finite(err_bnd)) {
     return true;
@@ -44,7 +44,7 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
     if (test_value == 0) return (ref_min < normal_min());
   }
 
-  if (is_same<in_t,fp8e4m3_t>() && is_a_NaN(test_value)) {
+  if (is_same<in_t,fp8e4m3_t>() && isNaN(test_value)) {
     // The case where ref is NaN is handled at the beginning of the function
     // The following check is enough because `abs(ref_max) >= abs(ref_min)` and
     // `ref_max >= 0`.

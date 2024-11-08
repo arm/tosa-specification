@@ -16,7 +16,7 @@ for_each_data_position(index in shape) {
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     REQUIRE(value1 >= 0);
     REQUIRE(value1 > 0 || value2 > 0);
-    REQUIRE(!is_a_NaN(value1) && !is_a_NaN(value2));
+    REQUIRE(!isNaN(value1) && !isNaN(value2));
     REQUIRE(is_finite(value1) && is_finite(value2));
     in_out_t result = apply_pow<in_out_t>(value1, value2);
     tensor_write<in_out_t>(output, shape, index, result);

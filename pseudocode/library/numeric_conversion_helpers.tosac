@@ -7,7 +7,7 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-// Converts the floating-point value to f, with rounding to the nearest integer value.
+// Converts the floating-point value f, with rounding to the nearest integer value.
 // For the required precision see the section: Main inference precision requirements.
 int round_to_nearest_int(float_t f);
 
