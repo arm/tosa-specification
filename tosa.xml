@@ -601,7 +601,7 @@
         <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
         <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" out_t="fp16_t" version_added="1.0">
