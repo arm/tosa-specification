@@ -14,9 +14,6 @@ for_each_data_position(index in shape) {
     in_out_t value1 = tensor_read<in_out_t>(input1, shape1, index1);
     in_out_t value2 = tensor_read<in_out_t>(input2, shape2, index2);
     REQUIRE(value2 != 0);
-    // This catches the case where we divide minimum<in_out_t> by -1
-    // which is not representable in two's complement
-    REQUIRE(static_cast<int64_t>(value1) / static_cast<int64_t>(value2) <= maximum_s<in_out_t>());
     in_out_t result = apply_intdiv_s<in_out_t>(value1, value2);
     tensor_write<in_out_t>(output, shape, index, result);
 }

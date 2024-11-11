@@ -24,6 +24,5 @@ for_each_data_position(index in shape) {
         (apply_arith_rshift<in_out_t>(value1, apply_sub_s<in_out_t>(value2, 1)) & 1 != 0)) {
         result = result + 1;
     }
-    result = apply_clip_s<in_out_t>(result, minimum_s<in_out_t>(), maximum_s<in_out_t>());
     tensor_write<in_out_t>(output, shape, index, result);
 }
