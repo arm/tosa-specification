@@ -66,7 +66,6 @@
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor, with rank = rank(shape1) - 1</description>
@@ -667,7 +666,6 @@
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="[N,OH,OW,C]" tensor-element-type="in_out_t">
             <description>Output tensor 4D</description>
@@ -855,7 +853,6 @@
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor of same type and shape as input</description>
@@ -1300,7 +1297,6 @@
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor</description>
@@ -1340,7 +1336,6 @@
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor</description>
@@ -2096,7 +2091,6 @@
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
@@ -2140,7 +2134,6 @@
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
             </description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="in_out_t">
             <description>Output tensor. Same rank as the input tensor.</description>
