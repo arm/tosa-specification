@@ -16,6 +16,10 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 *Precision Requirements*
 
+Integer results must be exact.
+
+The following rules apply to floating-point inputs:
+
 * If any input is a NaN, the result must be a NaN.
 * Addition of infinities of different signs must produce a NaN.
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
@@ -99,10 +103,13 @@ include::{pseudocode}/operators/BITWISE_XOR.tosac[lines=10..-1]
 ==== INTDIV
 
 Elementwise integer divide of input1 by input2.
+Axis of size 1 will be broadcast as necessary.
+Rank of input tensors must match.
 The result of the divide is truncated towards zero.
 Expected use is for operations on non-scaled integers.
 Floating point divide should use RECIPROCAL and MUL.
 Quantized integer divide should use TABLE (for 1/x) and MUL.
+
 
 *Precision Requirements*
 
@@ -268,6 +275,8 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 
 Integer results must be exact.
 
+The following rules apply to floating-point inputs:
+
 * If any input is a NaN, the result must be a NaN.
 * Multiplication of an infinity by a zero must produce a NaN.
 * Multiplication of two infinities must produce an infinity of the correct sign.
@@ -323,6 +332,8 @@ Axis of size 1 will be broadcast as necessary. Rank of input tensors must match.
 *Precision Requirements*
 
 Integer results must be exact.
+
+The following rules apply to floating-point inputs:
 
 * If any input is a NaN, the result must be a NaN.
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
