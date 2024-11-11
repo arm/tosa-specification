@@ -124,14 +124,14 @@ include::{pseudocode}/operators/SIGMOID.tosac[lines=10..-1]
 Parameterized hyperbolic tangent.
 // tanh(x) = \frac{1 - e^{-2x}}{1 + e^{-2x}}
 
-.Calculation for the sigmoid function
+.Calculation for the tanh function
 image::tanh.svg["Hyperbolic tangent definition"]
 
 For quantized integer data types, the TABLE operator should be used instead.
 Each implementation may choose an appropriate TABLE given the scale and zero point of the input data.
-Eight or sixteen bit precision tables may be used based on the input tensor to the sigmoid function.
+Eight or sixteen bit precision tables may be used based on the input tensor to the tanh function.
 Below we give an example table generation for 16-bit hyperbolic tangent.
-This tanh_table has 513 entries each of 16-bit precision and covering the input range -8.0 to +8.0 in steps of 1/32.
+This tanh table has 513 entries each of 16-bit precision and covering the input range -8.0 to +8.0 in steps of 1/32.
 
 .Calculation of an example 16-bit tanh table
 [source,c++]
