@@ -35,6 +35,16 @@ class TOSASpecLinter:
                 f"Operator {operator.name} tensor attribute argument {arg.name}"
                 " is always rank 0"
             )
+        # Check for non-tensor argument with rank specified
+        if (
+            arg.type not in ["shape_t", "tensor_t", "tensor_list_t"]
+            and len(arg.rank) > 0
+        ):
+            self.WARN(
+                f"Operator {operator.name} argument which is not tensor_t, "
+                f"shape_t, or tensor_list_t {arg.name} "
+                "has rank specified"
+            )
 
     def lint_typesupport(self, typesupport, op):
         # Check that all types are defined for each typesupport

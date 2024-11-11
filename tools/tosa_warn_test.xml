@@ -15,8 +15,12 @@
         <name>RANK0_TENSOR_ARG</name>
         <arguments>
           <!--- Rank 0 tensor argument warning -->
-          <argument category="attribute" name="axis" type="tensor_t" shape="-" tensor-element-type="i32_t">
-            <description>Axis in range from 0 to rank(shape1) - 1</description>
+          <argument category="attribute" name="rank_0_tensor_attribute" type="tensor_t" shape="-" tensor-element-type="i32_t">
+            <description>Rank 0 tensor attributes are Deprecated</description>
+            <rank min="0" max="0"/>
+          </argument>
+          <argument category="attribute" name="no_shape_but_rank_specified" type="i32_t" shape="-" tensor-element-type="-">
+            <description>If shape is -, rank shouldn't be specified.</description>
             <rank min="0" max="0"/>
           </argument>
         </arguments>
