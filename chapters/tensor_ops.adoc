@@ -146,7 +146,18 @@ image::inverse_fft2d.svg["inverse FFT definition", align="center"]
 
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * Each output can be expressed as a dot product of an input vector with a constant coefficient vector.
-* The dot product must meet the <<Dot product accuracy requirements>>
+* The following may be used to validate the output
+** Let `input_real` be the real input tensor.
+** Let `input_imag` be the imaginary input tensor.
+** Let `weight_real` be the coefficient vector tensor of real values.
+** Let `weight_imag` be the coefficient vector tensor of imaginary values.
+** Let `input` be an interleaved tensor of real values from input tensors `input_real` and `input_imag` such that `input = [input_real[0], input_imag[0], input_real[1], input_imag[1], ...]` and `shape(input) = [N,H,W*2]`.
+** Let `weight` be an interleaved tensor of real values from weight tensors `weight_real` and `weight_imag` such that `weight = [weight_real[0], weight_imag[0], weight_real[1], weight_imag[1], ...]` and `shape(weight) = [N,H,W*2]`.
+** Let `FFT_Real` be the operation that calculates the real output (`output_real`).
+** Let `FFT_Imag` be the operation that calculates the imaginary output (`output_imag`).
+** For all `S` in the defined data sets in Appendix A <<Floating-Point Operator Test Data>>.
+*** `tosa_reference_check_dotproduct<FFT_Real, in_out_t, in_out_t, in_out_t, in_out_t>(S, input, weight, [])` must be true.
+*** `tosa_reference_check_dotproduct<FFT_Imag, in_out_t, in_out_t, in_out_t, in_out_t>(S, input, weight, [])` must be true.
 
 include::{generated}/operators/FFT2D.adoc[]
 
@@ -230,8 +241,8 @@ image::forward_fft2d.svg["forward RFFT definition", align="center"]
 ** Let `weight_real` be the coefficient vector tensor of real values.
 ** Let `weight_imag` be the coefficient vector tensor of imaginary values.
 ** For all `S` in the defined data sets in Appendix A <<Floating-Point Operator Test Data>>.
-** `tosa_reference_check_dotproduct<RFFT_Real, in_out_t, in_out_t, in_out_t, in_out_t>(S, input, weight_real, [])` must be true.
-** `tosa_reference_check_dotproduct<RFFT_Imag, in_out_t, in_out_t, in_out_t, in_out_t>(S, input, weight_imag, [])` must be true.
+*** `tosa_reference_check_dotproduct<RFFT_Real, in_out_t, in_out_t, in_out_t, in_out_t>(S, input, weight_real, [])` must be true.
+*** `tosa_reference_check_dotproduct<RFFT_Imag, in_out_t, in_out_t, in_out_t, in_out_t>(S, input, weight_imag, [])` must be true.
 
 include::{generated}/operators/RFFT2D.adoc[]
 
