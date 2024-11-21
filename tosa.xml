@@ -60,7 +60,6 @@
           </argument>
           <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis in range from 0 to rank(shape1) - 1</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
             <description>
@@ -829,7 +828,6 @@
           </argument>
           <argument category="attribute" name="max_val" type="in_out_t" shape="-" tensor-element-type="-">
             <description>Maximum clip value</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
             <description>
@@ -2068,7 +2066,6 @@
           </argument>
           <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
             <description>
@@ -2112,7 +2109,6 @@
           </argument>
           <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
-            <rank min="0" max="0"/>
           </argument>
           <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
             <description>
@@ -2237,7 +2233,7 @@
           <op_profile name="PRO-INT"/>
         </typesupport>
         <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
-          <op_profile name="PRO-INT"/>
+          <op_profile name="EXT-INT16"/>
         </typesupport>
         <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
