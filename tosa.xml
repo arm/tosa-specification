@@ -742,6 +742,11 @@
             <levellimit value="KW" limit="MAX_KERNEL"/>
             <rank min="4" max="4"/>
           </argument>
+          <argument category="input" name="bias" type="tensor_t" shape="[BC]" tensor-element-type="out_t">
+            <description>Per output channel bias data. +
+            Bias data will be broadcast if BC == 1.</description>
+            <rank min="1" max="1"/>
+          </argument>
           <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
@@ -763,11 +768,6 @@
             <ctc_remove>
               <op_profile name="EXT-DYNAMIC"/>
             </ctc_remove>
-          </argument>
-          <argument category="input" name="bias" type="tensor_t" shape="[BC]" tensor-element-type="out_t">
-            <description>Per output channel bias data. +
-            Bias data will be broadcast if BC == 1.</description>
-            <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="out_pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
             <description>[out_pad_top, out_pad_bottom, out_pad_left, out_pad_right]</description>
