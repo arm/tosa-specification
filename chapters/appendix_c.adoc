@@ -30,7 +30,7 @@ SIN and COS were added to provide a base level of trigonometric functionality as
 === Removed operators
 
 In version 0.90, a set of shape operators were introduced to attempt to allow dynamically shaped network to be expressed completely with TOSA.
-There are gaps in this implementation, and as such have the shape operators have been removed.
+There are gaps in this implementation, and as such the shape operators have been removed.
 This removes the requirement on future implementations retain compatibility with these operators.
 The shape_t type remains, and the CONST_SHAPE operator allows creating instances of shape_t type.
 
