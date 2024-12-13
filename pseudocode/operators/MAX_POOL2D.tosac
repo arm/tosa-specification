@@ -21,11 +21,11 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C ) {
     in_out_t acc = (is_floating_point<in_out_t>() && nan_mode == IGNORE)
                        ? nan<in_out_t>()
                        : minimum_s<in_out_t>();
-    index_t iy = oy * stride_y - pad_top;
-    index_t ix = ox * stride_x - pad_left;
+    tensor_size_t iy = oy * stride_y - pad_top;
+    tensor_size_t ix = ox * stride_x - pad_left;
     for_each( 0 <= ky < kernel_y, 0 <= kx < kernel_x ) {
-        index_t y = iy + ky;
-        index_t x = ix + kx;
+        tensor_size_t y = iy + ky;
+        tensor_size_t x = ix + kx;
         if (y >= 0 && y < IH && x >= 0 && x < IW) {
             in_out_t value = tensor_read<in_out_t>(input, [N,IH,IW,C], [n,y,x,c]);
             acc = apply_max_s<in_out_t>(acc, value, nan_mode);
