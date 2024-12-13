@@ -18,11 +18,11 @@ ERROR_IF(BC != OC && BC != 1);
 
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= oc < OC) {
     acc_t acc = 0;
-    index_t iy = oy - out_pad_top;
-    index_t ix = ox - out_pad_left;
+    tensor_size_t iy = oy - out_pad_top;
+    tensor_size_t ix = ox - out_pad_left;
     for_each(0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
-        index_t y = iy - ky;
-        index_t x = ix - kx;
+        tensor_size_t y = iy - ky;
+        tensor_size_t x = ix - kx;
         acc_t value = 0;
         if (0 <= y < IH * stride_y && 0 <= x < IW * stride_x && (y % stride_y)==0 && (x % stride_x)==0) {
             value  = static_cast<acc_t>(tensor_read<in_t>(input,

@@ -23,11 +23,11 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C ) {
     in_out_t output_val;
     acc_t acc = 0;
     int count = 0;
-    index_t iy = oy * stride_y - pad_top;
-    index_t ix = ox * stride_x - pad_left;
+    tensor_size_t iy = oy * stride_y - pad_top;
+    tensor_size_t ix = ox * stride_x - pad_left;
     for_each(0 <= ky < kernel_y, 0 <= kx < kernel_x) {
-        index_t y = iy + ky;
-        index_t x = ix + kx;
+        tensor_size_t y = iy + ky;
+        tensor_size_t x = ix + kx;
         // Only values from the input tensor are used to calculate the
         // average, padding does not count
         if (0 <= y < IH && 0 <= x < IW) {
