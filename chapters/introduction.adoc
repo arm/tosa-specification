@@ -468,7 +468,14 @@ ABS_BOUND is the maximum allowed absolute error when NaN or overflow is not pres
 |===
 |Condition|ABS_BOUND|Notes
 
-|all cases
+|`(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3_t>()) && is_same<acc_t,fp32_t>`
+|`2 * max(ksb, min(ksb,64) * (1 << 10))`
+| The FP8 dot product with FP32 accumulator is allowed a relaxed absolute error bound. +
+The 2 factor allows for different rounding modes. +
+The second term in the maximum allows accumulating intermediates at lower precision. +
+If the operator does not use an accumulator type acc_t, the final comparison should be is_same<out_t,fp32_t>.
+
+|all other cases
 |`2 * ksb`
 |Allow one rounding error for each accumulation. The 2 factor allows for different rounding modes.
 |===
@@ -480,7 +487,15 @@ The squared error for each result is summed, and the result must be less than th
 |===
 |Condition|VARIANCE_ERROR_BOUND|Notes
 
-|all cases
+| `(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3_t>()) && is_same<acc_t,fp32_t>`
+| `4 * 0.4 * max(ksb, min(ksb,64) * (1 << 20))`
+| The FP8 dot product with FP32 accumulator is allowed a relaxed variance error bound. +
+The factors are similar to the absolute bound with precision factors squared for the variance bound. +
+The 0.4 factor is derived from the uniform [-1,1] distribution variance of 1/3 by rounding up. +
+The 4 factor is the square of the 2 factor in the absolute bound  to allow for different rounding modes. +
+If the operator does not use an accumulator type acc_t, the final comparison should be is_same<out_t,fp32_t>.
+
+|all other cases
 |`4 * 0.4 * ksb`
 |The 0.4 factor is derived from the uniform [-1,1] distribution variance of 1/3 by rounding up. +
 The 4 factor is the square of the 2 factor in the absolute bound  to allow for different rounding modes.
