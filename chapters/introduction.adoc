@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -483,16 +483,19 @@ Each element in the tensor shape describes the number of elements in the dimensi
 The tensor shape in each dimension must be greater than or equal to 1.
 For tensor access information, see <<Tensor Access Helpers>>.
 
-The shape of a tensor is a special type shape_t.
-shape_t is a one-dimensional list with the size equal to the rank of the original tensor.
-The components of a shape_t are of type tensor_size_t.
-tensor_size_t is a signed integer as it may be used for negative offsets.
-This type must be able to hold integers in the range [-(1 << MAX_LOG2_SIZE) .. (1 << MAX_LOG2_SIZE) - 1] where MAX_LOG2_SIZE is defined in <<Levels>>.
-The shape_t for a zero-dimensional tensor is the empty list.
+The shape of a tensor is a special type `shape_t`.
+`shape_t` is a one-dimensional list with the size equal to the rank of the original tensor.
+The components of a `shape_t` are of type `tensor_size_t`.
+`tensor_size_t` is a signed integer as it may be used for negative offsets.
+This type must be able to hold integers in the range [`-(1 << MAX_LOG2_SIZE)` .. `(1 << MAX_LOG2_SIZE) - 1`] where `MAX_LOG2_SIZE` is defined in <<Levels>>.
+The `shape_t` for a zero-dimensional tensor is the empty list.
 
-For each tensor, the number of tensor elements multiplied by the element size in bytes (which is taken to be 1 for elements smaller than a 8-bit) must be representable as a tensor_size_t.
+For each tensor, the number of tensor elements multiplied by the element size in
+bytes (which is taken to be 1 for elements smaller than a 8-bit) must be
+representable as a `tensor_size_t`.
 
-In this version of the specification, shape_t values must be resolvable to constants at backend compile time.
+In this version of the specification, `shape_t` values must be resolvable to
+constants at backend compile time.
 
 ==== Data Layouts
 
