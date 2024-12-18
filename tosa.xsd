@@ -353,8 +353,6 @@
     <xs:attribute name="cond_t" type="datatype"/>
     <xs:attribute name="TABLE_SIZE" type="xs:int"/>
     <xs:attribute name="var_t" type="datatype"/>
-    <xs:attribute name="shape_t" type="datatype"/>
-    <xs:attribute name="tensor_list_t" type="datatype"/>
   </xs:complexType>
 </xs:element>
 

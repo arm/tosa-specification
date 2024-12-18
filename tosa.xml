@@ -3180,10 +3180,7 @@ used.</description>
             <levellimit value="tensor_list_shape(output_list)" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
         </arguments>
-        <types>
-          <type name='tensor_list_t' />
-        </types>
-        <typesupport mode="All" tensor_list_t="-"  version_added="1.0">
+        <typesupport mode="All" version_added="1.0">
           <op_profile name="PRO-INT"/>
           <op_profile name="PRO-FP"/>
         </typesupport>
@@ -3344,10 +3341,7 @@ used.</description>
             </ctc>
           </argument>
         </arguments>
-        <types>
-          <type name='shape_t' />
-        </types>
-        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.0">
+        <typesupport mode="shape" version_added="1.0">
           <op_profile name="PRO-INT"/>
           <op_profile name="PRO-FP"/>
         </typesupport>
