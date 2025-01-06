@@ -22,11 +22,11 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
             input_abs[index] = input_abs_max;  // set all entries to global maximum
         }
     }
-    // reference_fp64(OP) runs operation OP using 64-bit precision in the reference model
+    // reference_fp64(OP) runs operation OP using fp64 arithmetic in the reference model
     // implementation(OP) runs operation OP using the implementation under test
     T<out_t>  output_imp = implementation(OP, input, weight, bias, tosa_extra_multiplies = IMPLEMENTATION_DEFINED);
     T<fp64_t> output_ref = reference_fp64(OP, input, weight, bias, tosa_extra_multiplies = false);
-    T<fp64_t> output_bnd = reference_fp64(OP,.input_abs, weight_abs, bias_abs, tosa_extra_multiplies = true);
+    T<fp64_t> output_bnd = reference_fp64(OP, input_abs, weight_abs, bias_abs, tosa_extra_multiplies = true);
 
     tensor_size_t T = tensor_size(output_shape);  // number dot product results
     tensor_size_t ksb = ceil(KS / pow(2, (normal_frac<acc_t>() - normal_frac<out_t>())/2)) + ((max_value(bias_abs) > 0) ? 1 : 0);

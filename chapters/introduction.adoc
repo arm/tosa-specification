@@ -451,8 +451,8 @@ This section defines the accuracy required for these operations.
 In this section:
 
 * "fp64 arithmetic" refers to double-precision floating-point arithmetic defined by <<IEEE-754,IEEE-754>>
-* `operation_fp64()` is an fp64 reference implementation of the operation
-* `operation_imp()` is the implementation under test
+* `reference_fp64()` is an fp64 arithmetic reference implementation of the operation
+* `implementation()` is the implementation under test
 * `local_bound` is defined as follows:
 **  For operations with a local_bound attribute it is the value of the optional attribute, with default value of false
 **  For operations that do not have a local_bound attribute the value is true
