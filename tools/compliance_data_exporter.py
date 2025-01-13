@@ -158,7 +158,11 @@ def print_argument_compliances(args: TOSAOperatorArgument, compliances: list) ->
             sym_ty = arg.tensor_element_type
 
             # Transform enumerated type to symbolic type.
-            if sym_ty == "acc_type_t":
+            if sym_ty == "-":
+                if not arg.type == "acc_type_t":
+                    raise RuntimeError(
+                        f"Type {arg.type} is not considered in the validation"
+                    )
                 sym_ty = "acc_t"
 
             if sym_ty in compl.keys():
