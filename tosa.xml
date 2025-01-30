@@ -61,7 +61,7 @@
           <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis in range from 0 to rank(shape1) - 1</description>
           </argument>
-          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_mode_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -661,7 +661,7 @@
             <levellimit value="pad_right"  limit="MAX_KERNEL"/>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_mode_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -848,7 +848,7 @@
           <argument category="attribute" name="max_val" type="in_out_t" shape="-" tensor-element-type="-">
             <description>Maximum clip value</description>
           </argument>
-          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_mode_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -1292,7 +1292,7 @@
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_mode_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -1331,7 +1331,7 @@
             <description>Input tensor with the same rank as input1</description>
             <rank min="0" max="MAX_RANK"/>
           </argument>
-          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_mode_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -2086,7 +2086,7 @@
           <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
           </argument>
-          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_mode_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -2129,7 +2129,7 @@
           <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
             <description>Axis to reduce, in range from 0 to rank(shape1)-1</description>
           </argument>
-          <argument category="attribute" name="nan_mode" type="nan_propagation_t" shape="-" tensor-element-type="-">
+          <argument category="attribute" name="nan_mode" type="nan_propagation_mode_t" shape="-" tensor-element-type="-">
             <description>
                 PROPAGATE or IGNORE. Set to PROPAGATE by default.
                 This attribute affects the floating-point NaN propagation approach. This attribute is ignored by non floating-point types.
@@ -3004,7 +3004,7 @@ used.</description>
           <argument category="attribute" name="scale32" type="bool_t" shape="-" tensor-element-type="-">
             <description>if (scale32) mul_t=i32_t else mul_t=i16_t</description>
           </argument>
-          <argument category="attribute" name="rounding_mode" type="rounding_t" shape="-" tensor-element-type="-">
+          <argument category="attribute" name="rounding_mode" type="rounding_mode_t" shape="-" tensor-element-type="-">
             <description>Select rounding mode</description>
           </argument>
           <argument category="attribute" name="per_channel" type="bool_t" shape="-" tensor-element-type="-">
@@ -3369,36 +3369,36 @@ used.</description>
   </operators>
 
   <enum name="resize_mode_t" description="Valid resize types">
-    <enumval value="0" name="NEAREST_NEIGHBOR" description="Nearest neighbor resize"/>
-    <enumval value="1" name="BILINEAR" description="Bilinear resize"/>
+    <enumval value="1" name="NEAREST_NEIGHBOR" description="Nearest neighbor resize"/>
+    <enumval value="2" name="BILINEAR" description="Bilinear resize"/>
   </enum>
 
   <enum name="acc_type_t" description="Allowed accumulator types">
-    <enumval value="0" name="INT32" description="32-bit integer"/>
-    <enumval value="1" name="FP16" description="16-bit floating-point"/>
-    <enumval value="2" name="FP32" description="32-bit floating-point"/>
-    <enumval value="3" name="INT48" description="48-bit integer"/>
+    <enumval value="1" name="INT32" description="32-bit integer"/>
+    <enumval value="2" name="FP16" description="16-bit floating-point"/>
+    <enumval value="3" name="FP32" description="32-bit floating-point"/>
+    <enumval value="4" name="INT48" description="48-bit integer"/>
   </enum>
 
   <enum name="var_t" description="Variable tensor data type">
-    <enumval value="0" name="BOOLEAN" description="Boolean"/>
-    <enumval value="1" name="INT8" description="8-bit integer"/>
-    <enumval value="2" name="INT16" description="16-bit integer"/>
-    <enumval value="3" name="INT32" description="32-bit integer"/>
-    <enumval value="4" name="FP16" description="16-bit floating-point"/>
-    <enumval value="5" name="BF16" description="16-bit brain floating-point"/>
-    <enumval value="6" name="FP32" description="32-bit floating-point"/>
+    <enumval value="1" name="BOOLEAN" description="Boolean"/>
+    <enumval value="2" name="INT8" description="8-bit integer"/>
+    <enumval value="3" name="INT16" description="16-bit integer"/>
+    <enumval value="4" name="INT32" description="32-bit integer"/>
+    <enumval value="5" name="FP16" description="16-bit floating-point"/>
+    <enumval value="6" name="BF16" description="16-bit brain floating-point"/>
+    <enumval value="7" name="FP32" description="32-bit floating-point"/>
   </enum>
 
-  <enum name="nan_propagation_t" description="NaN propagation policy">
-    <enumval value="0" name="PROPAGATE" description="NaN is returned when the operation has a NaN"/>
-    <enumval value="1" name="IGNORE" description="NaN is ignored when the operation has a NaN. NaN is produced if and only if all operands are NaN"/>
+  <enum name="nan_propagation_mode_t" description="NaN propagation policy">
+    <enumval value="1" name="PROPAGATE" description="NaN is returned when the operation has a NaN"/>
+    <enumval value="2" name="IGNORE" description="NaN is ignored when the operation has a NaN. NaN is produced if and only if all operands are NaN"/>
   </enum>
 
- <enum name="rounding_t" description="Rounding mode">
-    <enumval value="0" name="SINGLE_ROUND" description="Perform single rounding."/>
-    <enumval value="1" name="INEXACT_ROUND" description="Allow rounding results to be inexact." extension="EXT-INEXACTROUND"/>
-    <enumval value="2" name="DOUBLE_ROUND" description="Perform double rounding." extension="EXT-DOUBLEROUND"/>
+ <enum name="rounding_mode_t" description="Rounding mode">
+    <enumval value="1" name="SINGLE_ROUND" description="Perform single rounding."/>
+    <enumval value="2" name="INEXACT_ROUND" description="Allow rounding results to be inexact." extension="EXT-INEXACTROUND"/>
+    <enumval value="3" name="DOUBLE_ROUND" description="Perform double rounding." extension="EXT-DOUBLEROUND"/>
  </enum>
 
 </tosa>
