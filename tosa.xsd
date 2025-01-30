@@ -71,8 +71,8 @@
   <xs:restriction base="xs:string">
     <xs:enumeration value="resize_mode_t"/>
     <xs:enumeration value="acc_type_t"/>
-    <xs:enumeration value="nan_propagation_t"/>
-    <xs:enumeration value="rounding_t"/>
+    <xs:enumeration value="nan_propagation_mode_t"/>
+    <xs:enumeration value="rounding_mode_t"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -112,10 +112,10 @@
     <xs:enumeration value="i32_t"/>
     <xs:enumeration value="in_t"/>
     <xs:enumeration value="in_out_t"/>
-    <xs:enumeration value="nan_propagation_t"/>
+    <xs:enumeration value="nan_propagation_mode_t"/>
     <xs:enumeration value="out_t"/>
     <xs:enumeration value="resize_mode_t"/>
-    <xs:enumeration value="rounding_t"/>
+    <xs:enumeration value="rounding_mode_t"/>
     <xs:enumeration value="shape_t"/>
     <xs:enumeration value="shape_list_t"/>
     <xs:enumeration value="String"/>
