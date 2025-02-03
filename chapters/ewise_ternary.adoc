@@ -21,6 +21,7 @@ For floating-point values in input2 and input3, the following rules apply:
 
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * If an output is a NaN, any NaN is permitted.
+* Otherwise floating-point results must be exact.
 
 include::{generated}/operators/SELECT.adoc[]
 
