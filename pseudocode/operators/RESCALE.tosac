@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -23,6 +23,9 @@ for_each_data_position(index in shape) {
     ERROR_IF(is_same<out_t,i32_t>() && input_unsigned);
     ERROR_IF(is_same<in_t,i32_t>() && output_unsigned);
     ERROR_IF(is_same<in_t,i48_t>() && output_unsigned);
+    ERROR_IF(is_same<in_t, i48_t> && input_unsigned); // No support for u48 inputs
+    ERROR_IF(is_same<in_t, i32_t> && input_unsigned); // No support for u32 inputs
+    ERROR_IF(is_same<out_t, i32_t> && output_unsigned); // No support for u32 outputs
     ERROR_IF(per_channel && rank(input) < 1);
 
     in_t in_value = tensor_read<in_t>(input, shape, index);
