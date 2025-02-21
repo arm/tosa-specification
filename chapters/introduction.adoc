@@ -110,7 +110,7 @@ The following portions of the specification and implementation will not change w
 * ERROR_IF statements
 * Functionality of the pseudocode for each operator
 * Level definitions and checks
-* Supported Data Type tables
+* Removal of rows in the Supported Data Type tables
 * Conformance test definitions
 * Enumerated types and values
 
@@ -122,6 +122,7 @@ Changes to the following do not break compatibility:
 * Operator section names
 * Descriptive text that does not affect functionality
 * Non-functional changes to pseudocode (for example: cleanup, variable name changes)
+* Additions of new rows to the Supported Data Type tables
 
 Minor versions are allowed to add new operators or other functionality as long as the above guarantees hold.
 
