@@ -7,14 +7,12 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-// Converts the floating-point value to f, with rounding to the nearest integer value.
-// For the required precision see the section: Main inference precision requirements.
+// Converts the floating-point value to an integer value using round to nearest rounding.
 int round_to_nearest_int(float_t f);
 
-// Converts the input value into floating-point, rounding to the nearest representable value.
+// Converts the input value into floating-point, using round to nearest rounding.
 // Values that are not NaN outside of the representable range of the destination type must be set to infinity of the correct sign.
 // If the destination floating point type does not have an infinity representation, values outside of the representable range must be set to NaN.
-// For the required precision see the section: Main inference precision requirements.
 float_t round_to_nearest_float(in_t f);
 
 // Floating point values are unchanged.
