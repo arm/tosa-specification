@@ -3192,6 +3192,7 @@ used.</description>
         <arguments>
           <argument category="input" name="condition" type="tensor_t" shape="shape" tensor-element-type="bool_t">
             <description>Input condition as a size 1 tensor</description>
+            <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
           <argument category="input" name="input_list" type="tensor_list_t" shape="-" tensor-element-type="-">
