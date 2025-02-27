@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -46,13 +46,16 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
           static_cast<fp64_t>(test_value) <= ref_max);
 }
 
-bool_t tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num_ulp) {
-  fp64_t err_bnd = 0.0;
+fp64_t tosa_reference_ulp<in_t>(fp64_t ref_value) {
   if (is_normal_fp64(ref_value) && abs(ref_value) != 0) {
     int ref_exp = ilog2(abs(ref_value));
     fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<in_t>());
-    fp64_t val_ulp  = ref_pow2 * exp2(-normal_frac<in_t>());
-    err_bnd = val_ulp * num_ulp;
+    return ref_pow2 * exp2(-normal_frac<in_t>());
   }
+  return 0.0;
+}
+
+bool_t tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num_ulp) {
+  fp64_t err_bnd = tosa_reference_ulp<in_t>(ref_value) * num_ulp;
   return tosa_reference_check_fp_bnd<in_t>(test_value, ref_value, err_bnd);
 }
