@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -29,6 +29,12 @@ Rules when casting between floating-point types:
 ** For bf16_t, fp16_t, and fp32_t, if the resulting value is below the minimum normal number magnitude for the target format, either the corresponding subnormal value may be returned, or a zero of the appropriate sign may be returned.
 ** If the output type is fp8e4m3_t or fp8e5m2_t the result must use the non-saturating conversion mode defined in <<OCP-OFP8,OCP-OFP8>>.
 ** Otherwise if the resulting value is outside of the output representable range, an infinity of the appropriate sign must be returned.
+* If the input value is inside the output representable range then the following accuracy must be met:
+** Let `x` be an input element and `out_imp` the implementation output.
+** Let `out_ref` be the result of the fp64_t reference implementation.
+** Let `ulp = tosa_reference_ulp<out_t>(out_ref)` define one ulp of error.
+** Then `abs(out_ref) - ulp \<= abs(x) \<= abs(out_ref) + 0.5*ulp` must be true and `x` must have the correct sign.
+** This allows for both round to zero and round to nearest rounding modes.
 
 Rules when casting between different types:
 
