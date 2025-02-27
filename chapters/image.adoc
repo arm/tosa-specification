@@ -50,7 +50,7 @@ adjust the output size to allow fractional sampling beyond integer
 input position (IH - 1,IW - 1).
 
 The limit MAX_SCALE is applied to each scale ratio after reduction of the ratio.
-Individual scale numerator and denominaor values are allowed to be larger than MAX_SCALE.
+Individual scale numerator and denominator values are allowed to be larger than MAX_SCALE.
 
 *Precision Requirements*
 
@@ -70,7 +70,7 @@ include::{generated}/operators/RESIZE.adoc[]
 |Mode|Description
 
 |NEAREST|Nearest Neighbor
-|BILINEAR|Bilinear interpoloation
+|BILINEAR|Bilinear interpolation
 |===
 
 [source,c++]
