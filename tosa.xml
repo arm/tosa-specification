@@ -2669,8 +2669,8 @@ used.</description>
           </argument>
         </arguments>
         <types>
-          <type name='in_out_t'/>
           <type name='index_t'/>
+          <type name='in_out_t'/>
         </types>
         <typesupport mode="signed 8" in_out_t="i8_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
@@ -3168,7 +3168,7 @@ used.</description>
             <description>String which tells the backend which custom operator is being called</description>
           </argument>
           <argument category="attribute" name="domain_name" type="String" shape="-" tensor-element-type="-">
-            <description>String idenifier which can help avoid name collisions on the operator field.
+            <description>String identifier which can help avoid name collisions on the operator field.
             Different implementations of a given operator would be in different domains.
             Implementations can choose which domains they want to support.</description>
           </argument>
@@ -3210,10 +3210,7 @@ used.</description>
             <levellimit value="tensor_list_shape(output_list)" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
         </arguments>
-        <types>
-          <type name='cond_t' />
-        </types>
-        <typesupport mode="Boolean" cond_t="bool_t"  version_added="1.0">
+        <typesupport mode="All" version_added="1.0">
           <op_profile name="EXT-CONTROLFLOW"/>
         </typesupport>
       </operator>
@@ -3235,10 +3232,7 @@ used.</description>
             <levellimit value="tensor_list_shape(output_list)" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
         </arguments>
-        <types>
-          <type name='cond_t' />
-        </types>
-        <typesupport mode="Boolean" cond_t="bool_t"  version_added="1.0">
+        <typesupport mode="All" version_added="1.0">
           <op_profile name="EXT-CONTROLFLOW"/>
         </typesupport>
       </operator>
@@ -3264,15 +3258,15 @@ used.</description>
           </argument>
         </arguments>
         <types>
-          <type name='var_t' />
+          <type name='in_t' />
         </types>
-        <typesupport mode="signed 8" var_t="i8_t"  version_added="1.0">
+        <typesupport mode="signed 8" in_t="i8_t"  version_added="1.0">
           <op_profile name="PRO-INT" and_name="EXT-VARIABLE"/>
         </typesupport>
-        <typesupport mode="fp16" var_t="fp16_t"  version_added="1.0">
+        <typesupport mode="fp16" in_t="fp16_t"  version_added="1.0">
           <op_profile name="PRO-FP" and_name="EXT-VARIABLE"/>
         </typesupport>
-        <typesupport mode="fp32" var_t="fp32_t"  version_added="1.0">
+        <typesupport mode="fp32" in_t="fp32_t"  version_added="1.0">
           <op_profile name="PRO-FP" and_name="EXT-VARIABLE"/>
         </typesupport>
       </operator>
@@ -3289,15 +3283,15 @@ used.</description>
           </argument>
         </arguments>
         <types>
-          <type name='var_t' />
+          <type name='in_t' />
         </types>
-        <typesupport mode="signed 8" var_t="i8_t"  version_added="1.0">
+        <typesupport mode="signed 8" in_t="i8_t"  version_added="1.0">
           <op_profile name="PRO-INT" and_name="EXT-VARIABLE"/>
         </typesupport>
-        <typesupport mode="fp16" var_t="fp16_t"  version_added="1.0">
+        <typesupport mode="fp16" in_t="fp16_t"  version_added="1.0">
           <op_profile name="PRO-FP" and_name="EXT-VARIABLE"/>
         </typesupport>
-        <typesupport mode="fp32" var_t="fp32_t"  version_added="1.0">
+        <typesupport mode="fp32" in_t="fp32_t"  version_added="1.0">
           <op_profile name="PRO-FP" and_name="EXT-VARIABLE"/>
         </typesupport>
       </operator>
@@ -3314,15 +3308,15 @@ used.</description>
           </argument>
         </arguments>
         <types>
-          <type name='var_t' />
+          <type name='out_t' />
         </types>
-        <typesupport mode="signed 8" var_t="i8_t"  version_added="1.0">
+        <typesupport mode="signed 8" out_t="i8_t"  version_added="1.0">
           <op_profile name="PRO-INT" and_name="EXT-VARIABLE"/>
         </typesupport>
-        <typesupport mode="fp16" var_t="fp16_t"  version_added="1.0">
+        <typesupport mode="fp16" out_t="fp16_t"  version_added="1.0">
           <op_profile name="PRO-FP" and_name="EXT-VARIABLE"/>
         </typesupport>
-        <typesupport mode="fp32" var_t="fp32_t"  version_added="1.0">
+        <typesupport mode="fp32" out_t="fp32_t"  version_added="1.0">
           <op_profile name="PRO-FP" and_name="EXT-VARIABLE"/>
         </typesupport>
       </operator>
