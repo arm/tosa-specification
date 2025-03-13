@@ -292,7 +292,7 @@ Signed zero must be supported.
 |fp16_t
 | -infinity
 | +infinity
-| 16-bit half-precision floating-point defined by <<IEEE-754,IEEE-754>> . +
+| 16-bit half-precision floating-point defined by <<IEEE-754,IEEE-754>>. +
 Normal values must be supported. +
 Subnormal values must either be supported or flushed to sign-preserved zero. +
 Positive and negative infinity must be supported. +
@@ -312,7 +312,7 @@ Signed zero must be supported.
 |fp32_t
 | -infinity
 | +infinity
-| 32-bit single-precision floating-point defined by <<IEEE-754,IEEE-754>> . +
+| 32-bit single-precision floating-point defined by <<IEEE-754,IEEE-754>>. +
 Normal values must be supported. +
 Subnormal values must either be supported or flushed to sign-preserved zero. +
 Positive and negative infinity must be supported. +
@@ -358,7 +358,7 @@ For a given input graph (with attributes) and input tensors there are three poss
 An implementation must behave as follows given the above tosa_graph result values:
 
 * For tosa_unpredictable, the implementation can return whatever result it chooses (including error)
-* For tosa_error, the implementation must return an error result (and there is no requirement on how much of the graph is executed, if any)
+* For tosa_error, the implementation must return an error result (and there is no requirement on how much of the graph is executed, if any).
 * For tosa_valid, the implementation must execute the entire graph without error and return the result defined by this specification.
 
 In terms of pseudocode, if *graph* is a TOSA graph consisting of TOSA operators and *input_list* is a list of input tensors then the following test must pass.
@@ -396,9 +396,9 @@ bool_t tosa_test_compliance(tosa_graph_t graph, tensor_list_t input_list, tosa_l
 
 An Integer profile compliant implementation must satisfy the following:
 
-* The implementation must support all operator and data type combinations listed in <<Integer>>
-** The operations must meet the <<Integer Precision Requirements>>
-* The implementation must follow the <<TOSA Graph Compliance>> behavior
+* The implementation must support all operator and data type combinations listed in <<Integer>>.
+** The operations must meet the <<Integer Precision Requirements>>.
+* The implementation must follow the <<TOSA Graph Compliance>> behavior.
 
 ===== Integer Precision Requirements
 
@@ -408,10 +408,10 @@ In a compliant implementation, individual integer operations within the graph mu
 
 A Floating-Point profile compliant implementation must satisfy the following:
 
-* The implementation must support all operator and data type combinations listed in <<Floating-Point>>
-** The operations must meet the <<Floating-Point Precision Requirements>>
-** Note: These requirements allow fp16_t operations to be implemented using the fp32_t datatype
-* The implementation must follow the <<TOSA Graph Compliance>> behavior
+* The implementation must support all operator and data type combinations listed in <<Floating-Point>>.
+** The operations must meet the <<Floating-Point Precision Requirements>>.
+** Note: These requirements allow fp16_t operations to be implemented using the fp32_t datatype.
+* The implementation must follow the <<TOSA Graph Compliance>> behavior.
 
 ===== Floating-Point Precision Requirements
 
@@ -430,8 +430,8 @@ An implementation M of a sequence of n TOSA operators, A[0] to A[n-1] is said to
 be compliant if M gives the same result as a sequence of implementations
 M[0] to M[n-1] such that:
 
-* Each M[k] implements A[k] with same or higher precision datatypes
-* Each M[k] meets the accuracy defined in this specification for A[k] where the M[k] output is converted to A[k] output precision using round to nearest
+* Each M[k] implements A[k] with same or higher precision datatypes.
+* Each M[k] meets the accuracy defined in this specification for A[k] where the M[k] output is converted to A[k] output precision using round to nearest.
 
 ===== Dot product accuracy requirements
 
@@ -451,12 +451,12 @@ This may be, for example, a convolution.
 This section defines the accuracy required for these operations.
 In this section:
 
-* "fp64 arithmetic" refers to double-precision floating-point arithmetic defined by <<IEEE-754,IEEE-754>>
-* `reference_fp64()` is an fp64 arithmetic reference implementation of the operation
-* `implementation()` is the implementation under test
+* "fp64 arithmetic" refers to double-precision floating-point arithmetic defined by <<IEEE-754,IEEE-754>>.
+* `reference_fp64()` is an fp64 arithmetic reference implementation of the operation.
+* `implementation()` is the implementation under test.
 * `local_bound` is defined as follows:
-**  For operations with a local_bound attribute it is the value of the optional attribute, with default value of false
-**  For operations that do not have a local_bound attribute the value is true
+**  For operations with a local_bound attribute it is the value of the optional attribute, with default value of false.
+**  For operations that do not have a local_bound attribute the value is true.
 
 For the checks described in the following code:
 

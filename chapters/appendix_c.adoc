@@ -27,7 +27,7 @@ Originally, SIGMOID and TANH were added as the common functions used for activat
 ERF was added to support GELU style activation functions.
 SIN and COS were added to provide a base level of trigonometric functionality as well as support for Rotary Position Embedding.
 
-=== Removed operators
+=== Removed Operators
 
 In version 0.90, a set of shape operators were introduced to attempt to allow dynamically shaped network to be expressed completely with TOSA.
 There are gaps in this implementation, and as such the shape operators have been removed.
