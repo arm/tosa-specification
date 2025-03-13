@@ -95,8 +95,12 @@ If rounding_mode is INEXACT_ROUND, the following must be true:
 * Note (informational): The error bound is 0.5 for the final output rounding error plus three relative errors from casting the activation input, multiplier input, and floating-point multiply. +
 A SINGLE_ROUND exact implementation will automatically meet this error bound since the rounding error of SINGLE_BOUND is at most 0.5.
 * Let `err_bnd = 0.5 + 3 * abs(out_ref) * exp2(-normal_frac<fp32>() - 1)`.
-* Let `out_imp` be the implementation output cast to fp64_t.
-* Then `abs((out_imp - output_zp) - out_ref) \<= err_bnd` must be true.
+* Let `out_ref_min = apply_clip_s<fp64_t>(apply_ceil<fp64_t>(out_ref - err_bnd + output_zp), minimum_s<out_t>, maximum_s<out_t>)`.
+* Let `out_ref_max = apply_clip_s<fp64_t>(apply_floor<fp64_t>(out_ref + err_bnd + output_zp), minimum_s<out_t>, maximum_s<out_t>)`.
+* Let `out_ref_min_int = static_cast<out_t>(out_ref_min)`.
+* Let `out_ref_max_int = static_cast<out_t>(out_ref_max)`.
+* Let `out_imp` be the implementation output.
+* Then `out_ref_min_int \<= out_imp \<= out_ref_max_int` must be true.
 
 
 include::{generated}/operators/RESCALE.adoc[]
