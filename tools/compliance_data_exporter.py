@@ -90,7 +90,7 @@ def get_profile_compliance_info(operator: TOSAOperator, print_mode: str) -> set:
     return prof_info
 
 
-# Retrieve the required argurments for the profile-based validation.
+# Retrieve the profile/extension dependant argurments.
 def get_required_arguments_info(operator) -> list:
     # Symbolic types are formal parameters such as in_t, out_t, in_out_t, acc_t, etc.
     symbolic_types = operator.types
@@ -100,8 +100,8 @@ def get_required_arguments_info(operator) -> list:
         num = len(arg.categories)
         assert num == 1, f"Argument should only have 1 category, but found {num}"
 
-        # Profile-based validation primarily verify non-concrete-type operand such as
-        # the input and output tensor, plus the accumulator attribute.
+        # First, gather the input and output arguments that have symbolic
+        # (non-concrete) types.
 
         cat = arg.categories[0].name
         if cat == "input" or cat == "output":
@@ -110,6 +110,15 @@ def get_required_arguments_info(operator) -> list:
             if arg.tensor_element_type in symbolic_types:
                 args.append(arg)
 
+        # Then, handle uncommon cases where the argument type depends on the
+        # profile or extension.
+
+        # `initial_value` of VARIABLE is Attribute type.
+        if operator.name == "VARIABLE" and cat == "attribute":
+            if arg.tensor_element_type in symbolic_types:
+                args.append(arg)
+
+        # `acc_type` of CONV-like ops is Attribute type.
         if arg.name == "acc_type":
             args.append(arg)
 
