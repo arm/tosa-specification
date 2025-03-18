@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -63,8 +63,8 @@ include::{pseudocode}/operators/tables/ERF.tosac[lines=10..-1]
 
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * The following may be used to validate the result:
-** Let `x` be an input element and `out_imp` the implementation output.
-** Let `out_ref` be the result of the fp64_t reference implementation.
+** Let `out_imp` be the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 5)` must be true.
 
 include::{generated}/operators/ERF.adoc[]
@@ -100,8 +100,9 @@ include::{pseudocode}/operators/tables/SIGMOID.tosac[lines=10..-1]
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * Infinity, NaN, and Zero behavior as defined in the following table.
 * Otherwise the following may be used to validate the result:
-** Let `x` be an input element and `out_imp` the implementation output.
-** Let `out_ref` be the result of the fp64_t reference implementation.
+** Let `x` be an input element.
+** Let `out_imp` be the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, 2 * (1+abs(x)), 0, 1)`.
 ** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
@@ -144,8 +145,9 @@ include::{pseudocode}/operators/tables/TANH.tosac[lines=10..-1]
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * Infinity, NaN, and Zero behavior as defined in the following table.
 * Otherwise the following may be used to validate the result:
-** Let `x` be an input element and `out_imp` the implementation output.
-** Let `out_ref` be the result of the fp64_t reference implementation.
+** Let `x` be an input element.
+** Let `out_imp` be the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, 4 * (1+abs(x)), 0.5, 1)`.
 ** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 

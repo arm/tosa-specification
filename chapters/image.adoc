@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -57,7 +57,7 @@ Individual scale numerator and denominator values are allowed to be larger than 
 * The result corresponds to a sequence of floating-point calculations.
 * The allowable error bound for the result of a resize is based on the maximum value of an element in the input tensor.
 * Let `out_imp` be the implementation output.
-* Let `out_ref` be the result of the fp64_t reference implementation.
+* Let `out_ref` be the result calculated using fp64_t arithmetic.
 * Let `ulp_bnd = calcAbsErrorBound<in_out_t>(max(abs(input)), 20.0, 0, 1)`.
 * Let `relative_bnd = max(abs(input)) * 0.006`.
 * Let `err_bnd = max(ulp_bnd, relative_bnd)`.

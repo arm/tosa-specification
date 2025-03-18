@@ -30,8 +30,9 @@ Rules when casting between floating-point types:
 ** If the output type is fp8e4m3_t or fp8e5m2_t the result must use the non-saturating conversion mode defined in <<OCP-OFP8,OCP-OFP8>>.
 ** Otherwise if the resulting value is outside of the output representable range, an infinity of the appropriate sign must be returned.
 * If the input value is inside the output representable range then the following accuracy must be met:
-** Let `x` be an input element and `out_imp` the implementation output.
-** Let `out_ref` be the result of the fp64_t reference implementation.
+** Let `x` be an input element.
+** Let `out_imp` be the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Let `ulp = tosa_reference_ulp<out_t>(out_ref)` define one ulp of error.
 ** Then `abs(out_ref) - ulp \<= abs(x) \<= abs(out_ref) + 0.5*ulp` must be true and `x` must have the correct sign.
 ** This allows for both round to zero and round to nearest rounding modes.
@@ -44,8 +45,8 @@ Rules when casting between different types:
 ** Result overflows must be saturated.
 ** Conversion must use the round to nearest, ties to even rounding mode.
 * Casting from integer to floating-point:
-** Let `x` be an input element and `out_imp` the implementation output.
-** Let `out_ref` be the result of the fp64_t reference implementation.
+** Let `out_imp` be the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Then `tosa_reference_check_fp<out_t>(out_imp, out_ref, 0.5)` must be true.
 * Casting to boolean type:
 ** The result must be exact.
@@ -91,7 +92,7 @@ If rounding_mode is INEXACT_ROUND, the following must be true:
 
 * Let `x` be the input value to be rescaled.
 * Let `m` be the scaling multiplier.
-* Let `out_ref = (x - input_zp) * m * exp2(-shift)` calculated using fp64_t arithmetic.
+* Let `out_ref = (x - input_zp) * m * exp2(-shift)` be the result calculated using fp64_t arithmetic.
 * Note (informational): The error bound is 0.5 for the final output rounding error plus three relative errors from casting the activation input, multiplier input, and floating-point multiply. +
 A SINGLE_ROUND exact implementation will automatically meet this error bound since the rounding error of SINGLE_BOUND is at most 0.5.
 * Let `err_bnd = 0.5 + 3 * abs(out_ref) * exp2(-normal_frac<fp32>() - 1)`.

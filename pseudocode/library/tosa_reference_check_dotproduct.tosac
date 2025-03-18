@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2024 ARM Limited
+// (C) COPYRIGHT 2024-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -22,7 +22,7 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
             input_abs[index] = input_abs_max;  // set all entries to global maximum
         }
     }
-    // reference_fp64(OP) runs operation OP using fp64 arithmetic in the reference model
+    // reference_fp64(OP) calculates the results of operation OP using fp64_t arithmetic
     // implementation(OP) runs operation OP using the implementation under test
     T<out_t>  output_imp = implementation(OP, input, weight, bias, tosa_extra_multiplies = IMPLEMENTATION_DEFINED);
     T<fp64_t> output_ref = reference_fp64(OP, input, weight, bias, tosa_extra_multiplies = false);
