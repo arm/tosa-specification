@@ -415,12 +415,20 @@ A Floating-Point profile compliant implementation must satisfy the following:
 
 ===== Floating-Point Precision Requirements
 
+When evaluating floating-point precision, _ulp_ means unit of the last place.
+
 In a compliant implementation, individual integer operations must match exactly.
 To check exact matching, the tosa_reference_check_fp function can be used with num_ulp set to 0.
 In a compliant implementation, individual floating-point operations within the graph must meet the accuracy bounds defined in each operator definition.
-In the table, _ulp_ means unit of the last place.
+
+When the operator precision definitions refer to a result "calculated by fp64_t arithmetic", the following rules must be followed:
+
+* The operation order must follow that specified in the operator pseudocode.
+* Each fp64_t operation result must be round-to-nearest-even of the infinite precision result as defined by <<IEEE-754,IEEE-754>> round to nearest even rounding.
+
 The function tosa_reference_check_fp() defines the error range permitted by a given number of units of last place in this specification.
 For data types that allow subnormal values to be flushed to zero, either all values must be flushed to sign-preserved zero, or none of them.
+
 
 ===== Operator sequence precision requirement
 
@@ -452,7 +460,7 @@ This section defines the accuracy required for these operations.
 In this section:
 
 * "fp64 arithmetic" refers to double-precision floating-point arithmetic defined by <<IEEE-754,IEEE-754>>.
-* `reference_fp64()` is an fp64 arithmetic reference implementation of the operation.
+* `reference_fp64()` is the result of the operation calculated using fp64_t arithmetic.
 * `implementation()` is the implementation under test.
 * `local_bound` is defined as follows:
 **  For operations with a local_bound attribute it is the value of the optional attribute, with default value of false.

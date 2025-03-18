@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -110,7 +110,9 @@ Reduce a tensor along the given axis by computing the product of the axis.
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * If the input is a NaN, the output must be a NaN.
 ** Otherwise the following may be used to validate the result:
-** Let n be number of elements in the product, out_imp the implementation result, and out_ref the result of the fp64_t reference implementation.
+** Let `n` be number of elements in the product.
+** Let `out_imp` be the implementation result.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Let `err_bnd = max(abs(out_ref), normal_min<in_out_t>()) * (pow(1 + pow(2, -normal_frac<in_out_t>() - 1), n) - 1)`.
 ** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 

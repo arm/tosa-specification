@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -60,8 +60,8 @@ Elementwise ceiling operation
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * Infinity, NaN, and Zero behavior as defined in the following table.
 * The following may be used to validate the result:
-** Let `x` be an input element and `out_imp` the implementation output.
-** Let `out_ref` be the result of the fp64_t reference implementation.
+** Let `out_imp` the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 0.5)` must be true.
 
 include::{generated}/operators/CEIL.adoc[]
@@ -102,8 +102,9 @@ Elementwise cosine operation for values given in radians.
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * Infinity, NaN, and Zero behavior as defined in the following table.
 * The following may be used to validate the result:
-** Let `x` be an input element and `out_imp` the implementation output of `cos(x)`.
-** Let `out_ref` be the result of the fp64_t reference implementation of `cos(x)`.
+** Let `x` be an input element.
+** Let `out_imp` the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Let `err_bnd = calcAbsErrorBound<in_out_t>(1+abs(x), 1, 0, 2)`.
 ** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
@@ -130,8 +131,9 @@ Elementwise e to the x operation
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * Infinity, NaN, and Zero behavior as defined in the following table.
 * The following may be used to validate the result:
-** Let `x` be an input element and `out_imp` the implementation output of `exp(x)`.
-** Let `out_ref` be the result of the fp64_t reference implementation of `exp(x)`.
+** Let `x` be an input element.
+** Let `out_imp` the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, (1+abs(x)), 0, 1)`.
 ** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
@@ -158,8 +160,8 @@ Elementwise floor operation.
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * Infinity, NaN, and Zero behavior as defined in the following table.
 * The following may be used to validate the result:
-** Let `x` be an input element and `out_imp` the implementation output.
-** Let `out_ref` be the result of the fp64_t reference implementation.
+** Let `out_imp` the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 0.5)` must be true.
 
 include::{generated}/operators/FLOOR.adoc[]
@@ -186,8 +188,8 @@ Elementwise natural logarithm operation
 * Infinity, NaN, and Zero behavior as defined in the following table.
 * If the input to LOG is less than zero, then the result must be a NaN.
 * The following may be used to validate the result:
-** Let `x` be an input element and `out_imp` the implementation output.
-** Let `out_ref` be the result of the fp64_t reference implementation.
+** Let `out_imp` the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 5)` must be true.
 
 include::{generated}/operators/LOG.adoc[]
@@ -256,8 +258,8 @@ Elementwise reciprocal operation. For integer operation, a TABLE should be used 
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * Infinity, NaN, and Zero behave as defined in the following table.
 * Otherwise, the following may be used to validate the result:
-** Let `x` be an input element and `out_imp` the implementation output.
-** Let `out_ref` be the result of the fp64_t reference implementation.
+** Let `out_imp` the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 1)` must be true.
 
 include::{generated}/operators/RECIPROCAL.adoc[]
@@ -283,8 +285,8 @@ Elementwise reciprocal square root operation. For integer operation, a TABLE sho
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * Infinity, NaN, and Zero behave as defined in the following table.
 * Otherwise, the following may be used to validate the result:
-** Let `x` be an input element and `out_imp` the implementation output.
-** Let `out_ref` be the result of the fp64_t reference implementation.
+** Let `out_imp` the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 2)` must be true.
 
 include::{generated}/operators/RSQRT.adoc[]
@@ -310,8 +312,9 @@ Elementwise sine operation for values given in radians.
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * Infinity, NaN, and Zero behavior as defined in the Floating-point behavior table.
 * Otherwise, the following may be used to validate the result:
-** Let `x` be an input element and `out_imp` the implementation output of `sin(x)`.
-** Let `out_ref` be the result of the fp64_t reference implementation of `sin(x)`.
+** Let `x` be an input element.
+** Let `out_imp` the implementation output.
+** Let `out_ref` be the result calculated using fp64_t arithmetic.
 ** Let `err_bnd = max(calcAbsErrorBound<in_out_t>(x, 1, 0, 2), pi*normal_min<in_out_t>())`.
 ** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
