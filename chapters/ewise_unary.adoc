@@ -134,7 +134,8 @@ Elementwise e to the x operation
 ** Let `x` be an input element.
 ** Let `out_imp` the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, (1+abs(x)), 0, 1)`.
+** Let `err_base` be `is_same<in_out_t, fp32_t> ? 3 : 1`.
+** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, (err_base+2*abs(x)), 0, 1)`.
 ** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
 include::{generated}/operators/EXP.adoc[]
