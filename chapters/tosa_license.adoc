@@ -37,7 +37,7 @@ The Arm corporate logo and words marked with ® or ™ are registered trademarks
 
 The validity, construction and performance of this Licence shall be governed by English Law.
 
-Copyright © 2020-2024 Arm Limited (or its affiliates). All rights reserved.
+Copyright © 2020-2025 Arm Limited (or its affiliates). All rights reserved.
 
 Arm Limited. Company 02557590 registered in England.
 110 Fulbourn Road, Cambridge, England CB1 9NJ.
