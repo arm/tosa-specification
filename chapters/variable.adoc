@@ -45,11 +45,11 @@ include::{pseudocode}/operators/VARIABLE_WRITE.tosac[lines=10..-1]
 
 ==== VARIABLE_READ
 
+Reads the value from a pseudo-buffer resource holding a persistent mutable tensor.
+
 *Precision Requirements*
 
 Results must be exact.
-
-Reads the value from a pseudo-buffer resource holding a persistent mutable tensor.
 
 include::{generated}/operators/VARIABLE_READ.adoc[]
 
