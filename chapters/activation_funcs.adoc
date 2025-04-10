@@ -148,7 +148,10 @@ include::{pseudocode}/operators/tables/TANH.tosac[lines=10..-1]
 ** Let `x` be an input element.
 ** Let `out_imp` be the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, 4 * (1+abs(x)), 0.5, 1)`.
+*** Note (informational): The error bound is derived from the error bound for the exp operator based on implementation of TANH as `(exp(x) - exp(-x)) / (exp(x) + exp(-x))`.
+*** The absolute lower bound of 0.5 ulp relative to 1.0 is due to `exp(x) - exp(-x)` having an error of this magnitude when x is close to 0.
+** Let `exp_err_base = is_same<in_out_t, fp32_t>() ? 3 : 1`.
+** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, 4 * (exp_err_base + 2 * abs(x)), 0.5, 1)`.
 ** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
 include::{generated}/operators/TANH.adoc[]

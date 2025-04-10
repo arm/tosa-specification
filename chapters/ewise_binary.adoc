@@ -314,7 +314,9 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 ** If x > 0 and y == 0 then the result is 1.
 ** Otherwise:
 *** Let `out_ref` be the result calculated using fp64_t arithmetic.
-*** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, 2 * (1+abs(log(abs)*y)), 0, 1)`.
+*** Note (informational): The error bound is derived from the error bound for the exp and log operators to allow implementation of pow as `exp(y * log(x))` for positive values of `x` and `y`.
+*** Let `exp_err_base = is_same<in_out_t, fp32_t><> ? 3 : 1`.
+*** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, exp_err_base + 7.5 * abs(log(abs(x))*y), 0, 1)`.
 *** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
 include::{generated}/operators/POW.adoc[]
