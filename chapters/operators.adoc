@@ -43,11 +43,13 @@ For any arguments in the table, the profiles under which it must be constant are
 
 A TOSA graph is a collection of TOSA operators where:
 
-* The output of an operator in the graph may be connected to one or more inputs of other operators in the graph
-* When an output is connected to an input the tensor list shapes must match
-* The attributes of the operators are defined and considered part of the graph
-* The attributes must be in the valid range permitted for the operator
-* The tensor dimensions must be in the valid range permitted for the operator
+* The output of an operator in the graph may be connected to one or more inputs of other operators in the graph.
+* When an output is connected to an input the tensor list shapes must match.
+* The attributes of the operators are defined and considered part of the graph.
+* The attributes must be in the valid range permitted for the operator.
+* The tensor dimensions must be in the valid range permitted for the operator.
+* The inputs to a graph are a list of tensors, and may not include any elements of type shape_t.
+* The outputs of a graph are a list of tensors, and may not include any elements of type shape_t.
 
 Some operators, such as control flow operators, take a graph of other operators as an attribute. The type `tosa_graph_t` will denote a graph of operators and the following functions define the tensor shape list for the graph input and outputs:
 
