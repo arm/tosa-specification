@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2021-2024 ARM Limited
+// (C) COPYRIGHT 2021-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -132,7 +132,7 @@ include::{pseudocode}/library/tensor_write.tosac[lines=10..-1]
 
 variable_tensor_allocate allocates the mutable persistent memory block for storing variable tensors.
 The shape argument contains the shape of the allocated memory block for the variable_tensor.
-The uid argument is a globally unique identifier for variable tensors.
+The 'name' argument is a globally unique identifier for variable tensors.
 
 [source,c++]
 ----
@@ -142,7 +142,7 @@ include::{pseudocode}/library/variable_tensor_allocate.tosac[lines=10..-1]
 ==== Variable Tensor Lookup
 
 variable_tensor_lookup checks whether a variable tensor has been allocated or not.
-The uid argument is a globally unique identifier for variable tensors.
+The 'name' argument is a globally unique identifier for variable tensors.
 
 [source,c++]
 ----
