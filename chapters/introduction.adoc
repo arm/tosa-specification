@@ -657,6 +657,18 @@ void generate_lookup_table(int16_t *table, int32_t (*reference)(int32_t))
 }
 ----
 
+=== Reporting Errors
+
+If you find any errors in this document, please feel free to report them by sending an errata entry.
+To propose new features or text in the specification, please refer to the TOSA contribution process, including the contribution agreement: https://www.mlplatform.org/tosa/contributing_spec.html[Specification Contributions]
+To submit an erratum, kindly include the following information:
+
+. Section or Location: The section, chapter, or specific location where the error appears.
+. Description of the Error: A brief explanation of the issue you found (e.g., typo, formatting problem, inaccuracy, unclear wording).
+. Corrected Text: The corrected or suggested clarified text (if applicable).
+
+Please send this information via email to: tosa.errata@arm.com.
+
 === Other Publications
 
 The following publications are referred to in this specification, or provide more information:
