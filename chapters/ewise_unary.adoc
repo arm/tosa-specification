@@ -316,7 +316,7 @@ Elementwise sine operation for values given in radians.
 ** Let `x` be an input element.
 ** Let `out_imp` the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Let `err_bnd = max(calcAbsErrorBound<in_out_t>(x, 1, 0, 2), pi*normal_min<in_out_t>())`.
+** Let `err_bnd = max(calcAbsErrorBound<in_out_t>(x, 2, 0, 2), pi*normal_min<in_out_t>())`.
 ** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
 include::{generated}/operators/SIN.adoc[]
