@@ -191,7 +191,8 @@ Elementwise natural logarithm operation
 * The following may be used to validate the result:
 ** Let `out_imp` the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 5)` must be true.
+** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, 5, 0.5, 1)`.
+** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
 include::{generated}/operators/LOG.adoc[]
 
