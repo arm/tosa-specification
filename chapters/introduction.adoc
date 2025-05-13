@@ -103,6 +103,7 @@ If stored in a 32-bit value, the remaining bits are reserved for future use.
 ==== Backwards Compatibility
 
 TOSA graphs created with previous minor versions within a major version must continue to work.
+
 The following portions of the specification and implementation will not change within a major version:
 
 * Operator Names
@@ -111,7 +112,6 @@ The following portions of the specification and implementation will not change w
 * Functionality of the pseudocode for each operator
 * Level definitions and checks
 * Removal of rows in the Supported Data Type tables
-* Conformance test definitions
 * Enumerated types and values
 
 Changes to the following do not break compatibility:
@@ -125,6 +125,9 @@ Changes to the following do not break compatibility:
 * Additions of new rows to the Supported Data Type tables
 
 Minor versions are allowed to add new operators or other functionality as long as the above guarantees hold.
+
+In this version of TOSA, the precision requirements are subject to change while additional implementations are tested.
+When multiple implementations are shown to meet the precision requirements, those requirements will be guaranteed not to change within a major version.
 
 In addition, new extensions may be added to the specification between TOSA releases.
 They may not change anything that would break backward compatibility according to the above definitions.
