@@ -6,7 +6,7 @@ This Licence is a legal agreement between you and Arm Limited (“Arm”) for th
 
 “Subsidiary” means any company the majority of whose voting shares is now or hereafter owner or controlled, directly or indirectly, by you. A company shall be a Subsidiary only for the period during which such control exists.
 
-This Specification is NON-CONFIDENTIAL and any use by you and your Subsidiaries (“Licensee”) is subject to the terms of this Licence between you and Arm.
+This Specification is NON-CONFIDENTIAL and any use by you and your Subsidiaries (“Licensee”) is subject to the terms of this Licence between you and Arm and nothing in this License shall restrict you from further disseminating this Specification. You shall provide a copy of this License upon disseminating the Arm Specification to a third party.
 
 Subject to the terms and conditions of this Licence, Arm hereby grants to Licensee under the intellectual property in the Specification owned or controlled by Arm, a perpetual, a non-exclusive, non-transferable, non-sub-licensable, royalty-free, worldwide licence to:
 
