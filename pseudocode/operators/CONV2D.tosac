@@ -1,14 +1,14 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-ERROR_IF(!is_same<in_t,i8_t>() && input_zp != 0); // Zero point only for int8_t
-ERROR_IF(!is_same<weight_t,int8_t>() && weight_zp != 0);
+ERROR_IF(!is_same<in_t,i8_t>() && input_zp != 0); // Zero point only allowed for i8_t
+ERROR_IF(!is_same<weight_t,i8_t>() && weight_zp != 0); // Zero point only allowed for i8_t
 ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
 ERROR_IF(stride_y < 1 || stride_x < 1);
 ERROR_IF(dilation_y < 1 || dilation_x < 1);

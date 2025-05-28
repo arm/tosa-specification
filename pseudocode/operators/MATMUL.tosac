@@ -1,14 +1,14 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-ERROR_IF(!is_same<A_t,i8_t>() && A_zp != 0); // Zero point only for int8_t
-ERROR_IF(!is_same<B_t,i8_t>() && B_zp != 0); // Zero point only for int8_t
+ERROR_IF(!is_same<A_t,i8_t>() && A_zp != 0); // Zero point only allowed for i8_t
+ERROR_IF(!is_same<B_t,i8_t>() && B_zp != 0); // Zero point only allowed for i8_t
 for_each(0 <= n < N, 0 <= h < H, 0 <= w < W) {
     out_t acc = 0;
     for_each(0 <= c < C) {
