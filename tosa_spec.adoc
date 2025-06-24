@@ -31,3 +31,5 @@ include::chapters/appendix_a.adoc[]
 include::chapters/appendix_b.adoc[]
 
 include::chapters/appendix_c.adoc[]
+
+include::chapters/changes.adoc[]

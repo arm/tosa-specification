@@ -1,0 +1,15 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2025 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+== Appendix D
+
+=== Changes to the TOSA specification between version 1.0 and version 1.1
+
+* Allow mixed fp8e4m3 * fp8e5m2 operation for the MATMUL operator.
+* Add support for fp32 accumulators with the fp8 input types for the MATMUL operator.
