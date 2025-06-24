@@ -31,7 +31,7 @@ for_each_data_position(left_index in left_shape) {
             in_t value = tensor_read<in_t>(input, shape1, index);
             in_t result = apply_max_s<in_t>(value, max_value, nan_mode);
             if (result != max_value) {
-                if (!(isNaN(result) && isNaN(max_value))) {
+                if (!(is_a_NaN (result) && is_a_NaN (max_value))) {
                     max_value = result;
                     max_index = i;
                 }

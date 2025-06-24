@@ -14,7 +14,7 @@ for_each_data_position(index in shape) {
     in_t value1 = tensor_read<in_t>(input1, shape1, index1);
     in_t value2 = tensor_read<in_t>(input2, shape2, index2);
     out_t result;
-    if (isNaN(value1) || isNaN(value2))
+    if (is_a_NaN(value1) || is_a_NaN(value2))
         result = false;
     else
         result = (value1 > value2) ? true : false;

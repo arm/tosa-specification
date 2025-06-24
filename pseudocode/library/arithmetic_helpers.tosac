@@ -60,19 +60,19 @@ in_t apply_logical_rshift<in_t>(in_t a, in_t b) {
 }
 
 in_t compare_nan<in_t>(in_t a, in_t b, nan_propagation_t nan_mode) {
-    REQUIRE(isNaN(a) || isNaN(b));
+    REQUIRE(is_a_NaN(a) || is_a_NaN(b));
 
     if (nan_mode == PROPAGATE) {
           return NaN;
     }
 
     // Non NaN Propagation
-    return isNaN(a) ? b : a;
+    return is_a_NaN(a) ? b : a;
 }
 
 in_t apply_max_s<in_t>(in_t a, in_t b, nan_propagation_t nan_mode=PROPAGATE) {
     if (is_floating_point<in_t>()) {
-        if (isNaN(a) || isNaN(b)) {
+        if (is_a_NaN(a) || is_a_NaN(b)) {
             return compare_nan(a, b, nan_mode);
         }
         if (a >= b) return a; else return b;
@@ -87,7 +87,7 @@ in_t apply_max_u<in_t>(in_t a, in_t b) {
 
 in_t apply_min_s<in_t>(in_t a, in_t b, nan_propagation_t nan_mode=PROPAGATE) {
     if (is_floating_point<in_t>()) {
-        if (isNaN(a) || isNaN(b)) {
+        if (is_a_NaN(a) || is_a_NaN(b)) {
             return compare_nan(a, b, nan_mode);
         }
         if (a < b) return a; else return b;
@@ -103,7 +103,7 @@ in_t apply_min_u<in_t>(in_t a, in_t b) {
 in_t apply_clip_s<in_t>(in_t value, in_t min_val, in_t max_val, nan_propagation_t nan_mode=PROPAGATE) {
     if (is_floating_point<in_t>()) {
         REQUIRE(min_val <= max_val);
-        REQUIRE(!isNaN(min_val) && !isNaN(max_val));
+        REQUIRE(!is_a_NaN(min_val) && !is_a_NaN(max_val));
     }
     else {
         REQUIRE(sign_extend<int64_t>(min_val) <= sign_extend<int64_t>(max_val));
