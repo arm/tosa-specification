@@ -13,9 +13,9 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
     T<weight_t> weight,  // weight tensor
     T<out_t> bias        // bias tensor
 ) {
-    T<in_t>     input_abs  = max(abs(input),  normal_min<in_t>()); // Element-wise
-    T<weight_t> weight_abs = max(abs(weight), normal_min<in_t>()); // Element-wise
-    T<out_t>    bias_abs   = max(abs(bias),   normal_min<in_t>()); // Element-wise
+    T<in_t>     input_abs  = apply_max_s<in_t>(abs(input),      normal_min<in_t>()); // Element-wise
+    T<weight_t> weight_abs = apply_max_s<weight_t>(abs(weight), normal_min<in_t>()); // Element-wise
+    T<out_t>    bias_abs   = apply_max_s<out_t>(abs(bias),      normal_min<in_t>()); // Element-wise
     if (!local_bound) {
         in_t input_abs_max = max_value(input_abs);  // maximum over all elements
         for_each_data_position(index in shape(input_abs)) {
