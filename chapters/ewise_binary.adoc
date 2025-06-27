@@ -317,9 +317,8 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 *** Note (informational): the error bound is derived from the error bound for the `EXP`, `MUL` and `LOG` operators to allow implementation of `POW` as `exp(y * log(x)))` for positive values of `x`.
 *** Let `err_base = is_same<T, fp32_t> ? 3 : 1`.
 *** Let `mul_err = calcAbsErrorBound<in_out_t>(y * log(x), 5.5, abs(0.55 * y), 1)`.
-*** Let `exp_err = calcAbsErrorBound<in_out_t>(err_base + 2 * abs(y * log(x) + mul_err), 1, 0, 1)`.
-*** Let `total_err_factor = expm1(mul_err) + exp_err`.
-*** Let `err_bnd = out_ref * total_err_factor`.
+*** Let `exp_err = calcAbsErrorBound<in_out_t>(out_ref, err_base + 2 * abs(y * log(x) + mul_err), 0, 1)`.
+*** Let `err_bnd = out_ref * expm1(mul_err) + exp_err`.
 *** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
 include::{generated}/operators/POW.adoc[]
