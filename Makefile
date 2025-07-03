@@ -30,6 +30,10 @@ SPECXML := tosa.xml
 SPECSCHEMA := tosa.xsd
 GENSCRIPTS := tools/tosa.py tools/genspec.py
 
+# This sets the spec date to the date of the most recent change in the tree
+SOURCE_DATE_EPOCH := $(shell git log -1 --pretty=%ct)
+export SOURCE_DATE_EPOCH
+
 GEN := $(GENDIR)/gen.stamp
 
 .DELETE_ON_ERROR:
