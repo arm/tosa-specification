@@ -600,25 +600,25 @@
         <typesupport mode="fp8e4m3xfp8e4m3 with fp16 accumulate" A_t="fp8e4m3_t" B_t="fp8e4m3_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e4m3xfp8e4m3 with fp32 accumulate" A_t="fp8e4m3_t" B_t="fp8e4m3_t" out_t="fp32_t" version_added="1.0">
+        <typesupport mode="fp8e4m3xfp8e4m3 with fp32 accumulate" A_t="fp8e4m3_t" B_t="fp8e4m3_t" out_t="fp32_t" version_added="1.1">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
         <typesupport mode="fp8e5m2xfp8e5m2 with fp16 accumulate" A_t="fp8e5m2_t" B_t="fp8e5m2_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp8e5m2xfp8e5m2 with fp32 accumulate" A_t="fp8e5m2_t" B_t="fp8e5m2_t" out_t="fp32_t" version_added="1.0">
+        <typesupport mode="fp8e5m2xfp8e5m2 with fp32 accumulate" A_t="fp8e5m2_t" B_t="fp8e5m2_t" out_t="fp32_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp8e4m3xfp8e5m2 with fp16 accumulate" A_t="fp8e4m3_t" B_t="fp8e5m2_t" out_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp8e4m3xfp8e5m2 with fp16 accumulate" A_t="fp8e4m3_t" B_t="fp8e5m2_t" out_t="fp16_t" version_added="1.1">
           <op_profile name="EXT-FP8E4M3" and_name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp8e4m3xfp8e5m2 with fp32 accumulate" A_t="fp8e4m3_t" B_t="fp8e5m2_t" out_t="fp32_t" version_added="1.0">
+        <typesupport mode="fp8e4m3xfp8e5m2 with fp32 accumulate" A_t="fp8e4m3_t" B_t="fp8e5m2_t" out_t="fp32_t" version_added="1.1">
           <op_profile name="EXT-FP8E4M3" and_name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp8e5m2xfp8e4m3 with fp16 accumulate" A_t="fp8e5m2_t" B_t="fp8e4m3_t" out_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp8e5m2xfp8e4m3 with fp16 accumulate" A_t="fp8e5m2_t" B_t="fp8e4m3_t" out_t="fp16_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2" and_name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2xfp8e4m3 with fp32 accumulate" A_t="fp8e5m2_t" B_t="fp8e4m3_t" out_t="fp32_t" version_added="1.0">
+        <typesupport mode="fp8e5m2xfp8e4m3 with fp32 accumulate" A_t="fp8e5m2_t" B_t="fp8e4m3_t" out_t="fp32_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2" and_name="EXT-FP8E4M3"/>
         </typesupport>
         <typesupport mode="fp16xfp16 with fp16 accumulate" A_t="fp16_t" B_t="fp16_t" out_t="fp16_t" version_added="1.0">
