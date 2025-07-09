@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2024, ARM Limited.
+# Copyright (c) 2024-2025, ARM Limited.
 # SPDX-License-Identifier: Apache-2.0
 import re
 
@@ -153,8 +153,12 @@ def verify_condition_if_present(x: str) -> None:
 
 """
 The format of operation look like:
-    "tosa.add",{{{Profile::pro_int,Profile::pro_fp},{{i32T,i32T,i32T}}},\
-    {{Profile::pro_fp},{{fp16T,fp16T,fp16T},{fp32T,fp32T,fp32T}}}}
+    "tosa.add", {
+        {{Profile::pro_int,Profile::pro_fp}, {
+            {{i32T,i32T,i32T}, SpecificationVersion::V_1_0}}},
+        {{Profile::pro_fp}, {
+            {{fp16T,fp16T,fp16T}, SpecificationVersion::V_1_0},
+            {{fp32T,fp32T,fp32T}, SpecificationVersion::V_1_0}}}}
 """
 
 
@@ -167,15 +171,21 @@ def verify_operation_compliance_syntax(op) -> None:
 
     """
     Capture all compliance tuples associated with the current operation.
-        e.g. ['{{Profile::pro_int,Profile::pro_fp},{{i32T,i32T,i32T}}},
-               {{Profile::pro_fp},{{fp16T,fp16T,fp16T},{fp32T,fp32T,fp32T}}']
+        e.g. ['{{Profile::pro_int,Profile::pro_fp},
+                {{{i32T,i32T,i32T}, SpecificationVersion::V_1_0}}},
+               {{Profile::pro_fp},
+                {{{fp16T,fp16T,fp16T}, SpecificationVersion::V_1_0},
+                {{fp32T,fp32T,fp32T}, SpecificationVersion::V_1_0}}}']
     """
     comps = capture_data_between_curly_brackets(str(op))
 
     """
     Capture again to make every compliance separate from each other.
-        e.g. ['{Profile::pro_int,Profile::pro_fp},{{i32T,i32T,i32T}}',
-              '{Profile::pro_fp},{{fp16T,fp16T,fp16T},{fp32T,fp32T,fp32T}}']
+        e.g. ['{Profile::pro_int,Profile::pro_fp},
+                {{{i32T,i32T,i32T}, SpecificationVersion::V_1_0}}',
+              '{{Profile::pro_fp},
+                {{{fp16T,fp16T,fp16T}, SpecificationVersion::V_1_0},
+                {{fp32T,fp32T,fp32T}, SpecificationVersion::V_1_0}}}']
     """
     comps = capture_data_between_curly_brackets(str(comps))
 
@@ -190,11 +200,21 @@ def verify_operation_compliance_syntax(op) -> None:
                 raise RuntimeError(f"invalid profile name {prof}")
 
         """
-        Make every type set separate from each other.
-            {fp16T,fp16T,fp16T},{fp16T,fp32T,fp16T},{fp32T,fp32T,fp32T} ->
-            ['fp16T,fp16T,fp16T', 'fp16T,fp32T,fp16T', 'fp32T,fp32T,fp32T']
+        Make every type set separate from each other, without versioning.
+            {{fp16T,fp16T,fp16T}, SpecificationVersion::V_1_0},
+            {{fp16T,fp32T,fp16T}, SpecificationVersion::V_1_0},
+            {{fp32T,fp32T,fp32T}, SpecificationVersion::V_1_0}
+
+            becomes
+
+            ['fp16T,fp16T,fp16T',
+             'fp16T,fp32T,fp16T',
+             'fp32T,fp32T,fp32T']
         """
-        type_sets = capture_data_between_curly_brackets(str(profiles_and_type_sets[1]))
+        type_set_and_version = capture_data_between_curly_brackets(
+            str(profiles_and_type_sets[1])
+        )
+        type_sets = capture_data_between_curly_brackets(str(type_set_and_version))
 
         for types in type_sets:
             for ty in types.split(","):

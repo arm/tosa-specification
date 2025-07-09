@@ -75,6 +75,7 @@ def get_profile_compliance_info(operator: TOSAOperator, print_mode: str) -> set:
     for tysup in operator.typesupports:
         prof_set = set()
         tsmap = tysup.tymap
+        version_added = tysup.version_added
 
         for profs in tysup.profiles:
             profs = profs.split(" and ")
@@ -91,9 +92,9 @@ def get_profile_compliance_info(operator: TOSAOperator, print_mode: str) -> set:
 
         if prof_str in prof_info.keys():
             value = prof_info[prof_str]
-            value.append(tsmap)
+            value.append((tsmap, version_added))
         else:
-            prof_info[prof_str] = [tsmap]
+            prof_info[prof_str] = [(tsmap, version_added)]
 
     return prof_info
 
@@ -167,9 +168,9 @@ def print_profile(profiles: list) -> str:
 
 def print_argument_compliances(args: TOSAOperatorArgument, compliances: list) -> str:
     output_string = "{"
-    for compl in compliances:
+    for i, (compl, version_added) in enumerate(compliances):
         # Start of the argument set
-        output_string += "{"
+        output_string += "{{"
 
         for arg in args:
             sym_ty = arg.tensor_element_type
@@ -191,7 +192,13 @@ def print_argument_compliances(args: TOSAOperatorArgument, compliances: list) ->
 
         # End of the argument set
         output_string += "}"
-        if not compl == compliances[-1]:
+
+        # Add version added information
+        version_major, version_minor = version_added.split(".")
+        version_string = f"SpecificationVersion::V_{version_major}_{version_minor}"
+        output_string += f", {version_string}}}"
+
+        if i != len(compliances) - 1:
             output_string += ", "
 
     output_string += "}"
