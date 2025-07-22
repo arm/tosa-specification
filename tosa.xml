@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tosa SYSTEM "tosa.dtd">
 <tosa>
-  <version major="1" minor="0" patch="0" draft="false"/>
+  <version major="1" minor="0" patch="1" draft="false"/>
   <profiles>
     <profile profile="Integer" name="PRO-INT" status="Complete" description="Integer operations, primarily 8- and 32-bit values"/>
     <profile profile="Floating-Point" name="PRO-FP" status="Complete" description="FP16 and FP32 operations"/>
