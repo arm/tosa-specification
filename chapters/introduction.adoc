@@ -7,6 +7,15 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
+**Changes from TOSA 1.0.0**
+
+[cols="1,9"]
+|===
+|Revision|Fixes
+
+|1.0.1|Fixes for POW conformance and clarifies NaN propagation when doing the dot product conformance check.
+|===
+
 == Introduction
 
 === Overview
