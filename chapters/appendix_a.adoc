@@ -51,8 +51,6 @@ In the case of mixed input types, B is the largest value that is representable b
 | fp8e4m3             | fp32             | 448
 | fp8e5m2             | fp16             | (1<<8) - (1<<5)  = 224
 | fp8e5m2             | fp32             | 57344
-| fp8e4m3 and fp8e5m2 | fp16             | 224
-| fp8e4m3 and fp8e5m2 | fp32             | 448
 | fp8e4m3             | fp8e4m3          | 20
 | fp8e5m2             | fp8e5m2          | 224
 | fp16                | fp16             | (1<<8)  - (1/8)  = 255.875
