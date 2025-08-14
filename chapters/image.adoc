@@ -69,7 +69,7 @@ include::{generated}/operators/RESIZE.adoc[]
 |===
 |Mode|Description
 
-|NEAREST|Nearest Neighbor
+|NEAREST_NEIGHBOR|Nearest Neighbor
 |BILINEAR|Bilinear interpolation
 |===
 

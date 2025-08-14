@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -59,7 +59,7 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C) {
         acc += v10 * dy * (unit_x - dx);
         acc += v11 * dy * dx;
         tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc);
-    } else if (mode==NEAREST) {
+    } else if (mode==NEAREST_NEIGHBOR) {
         int32_t iy, ix;
         if (is_floating_point<resize_t>()) {
             iy = (dy >= 0.5) ? iy1 : iy0;
