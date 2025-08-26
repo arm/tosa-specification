@@ -538,6 +538,10 @@ The 2 factor allows for different rounding modes. +
 The second term in the maximum allows accumulating intermediates at lower precision. +
 If the operator does not use an accumulator type acc_t, the final comparison should be is_same<out_t,fp32_t>.
 
+|`(is_same<in_t,fp32_t>())`
+|`3 * 2 * ksb`
+|The additional factor of 3 allows the fp32 calculation to be implemented as multiple bf16 calculations with possible rounding error for each accumulation.
+
 |all other cases
 |`2 * ksb`
 |Allow one rounding error for each accumulation. The 2 factor allows for different rounding modes.
