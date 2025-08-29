@@ -165,11 +165,11 @@ class TOSASpecAsciidocGenerator:
         # Generate profile table
         with open(os.path.join(outdir, "profile_extensions.adoc"), "w") as f:
             f.write("|===\n")
-            f.write("|Name|Description|Allowed profiles|Specification Status\n\n")
+            f.write("|Name|Description|Required profiles|Specification Status\n\n")
             for profile_extension in self.spec.profile_extensions:
                 f.write(
                     f"|{profile_extension.name}|{profile_extension.description}"
-                    f"|{','.join(profile_extension.profiles)}"
+                    f"|{' or '.join(profile_extension.profiles)}"
                     f"|{profile_extension.status}\n"
                 )
             f.write("|===\n")
