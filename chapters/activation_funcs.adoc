@@ -98,6 +98,7 @@ include::{pseudocode}/operators/tables/SIGMOID.tosac[lines=10..-1]
 *Precision Requirements*
 
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Subnormal bf16_t, fp16_t, and fp32_t result values may be flushed to +0.
 * Infinity, NaN, and Zero behavior as defined in the following table.
 * Otherwise the following may be used to validate the result:
 ** Let `x` be an input element.
