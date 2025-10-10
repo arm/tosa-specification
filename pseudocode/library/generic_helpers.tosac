@@ -42,9 +42,6 @@ int32_t length(in_t input);
 // return rank of an input tensor
 int32_t rank(in_t input);
 
-// return the sum of values of an input list
-int32_t sum(in_t input[]);
-
 // returns value of pi
 float_t pi();
 
