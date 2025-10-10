@@ -143,11 +143,6 @@ int exponent_bias<in_t>() {
   }
 }
 
-// Returns a mask for the low N bits of a value
-uint32_t get_low_bitmask(int32_t bits) {
-  return (1 << bits) - 1;
-}
-
 fp64_t calcAbsErrorBound<in_t>(fp64_t bound_magnitude, fp64_t bounds_value,
                                fp64_t lower_bound, fp64_t normal_divisor) {
     fp64_t error_bound = 0.0;
