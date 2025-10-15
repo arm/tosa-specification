@@ -3217,7 +3217,7 @@ used.</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
           <argument category="input" name="input_scale" type="tensor_t" shape="in_scale_shape" tensor-element-type="scale_t">
-            <description>Input scale values tensor</description>
+            <description>Input scale values tensor with the same rank as input_data</description>
             <levellimit value="rank(input_scale)" limit="MAX_RANK"/>
             <rank min="1" max="MAX_RANK"/>
           </argument>

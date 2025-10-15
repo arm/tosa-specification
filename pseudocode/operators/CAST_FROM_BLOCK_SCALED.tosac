@@ -8,6 +8,12 @@
 // by a licensing agreement from ARM Limited.
 
 ERROR_IF(rank(shape) == 0 || shape[rank(shape)-1] % block_size != 0);
+ERROR_IF(rank(shape) != rank(in_scale_shape));
+
+for (int32_t axis_index = 0; axis_index < rank(shape) - 1; axis_index++) {
+    ERROR_IF(shape[axis_index] != in_scale_shape[axis_index]);
+}
+ERROR_IF(shape[rank(shape) - 1] != in_scale_shape[rank(shape) - 1] * block_size);
 
 for_each_data_position(index in shape) {
 
