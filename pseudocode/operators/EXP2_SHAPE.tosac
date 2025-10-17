@@ -1,0 +1,14 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2024-2025 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+for(int32_t index=0; index < length(input); index++) {
+    REQUIRE(input[index] >= 0);
+    REQUIRE(input[index] < MAX_LOG2_SIZE);
+    output[index] = (1 << input[index]);
+}

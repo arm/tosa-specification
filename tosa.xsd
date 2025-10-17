@@ -374,6 +374,7 @@
     <xs:attribute name="A_t" type="datatype"/>
     <xs:attribute name="B_t" type="datatype"/>
     <xs:attribute name="scale_t" type="datatype"/>
+    <xs:attribute name="shape_t" type="datatype"/>
   </xs:complexType>
 </xs:element>
 

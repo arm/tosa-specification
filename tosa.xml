@@ -50,6 +50,10 @@
     <profile_extension name="EXT-MXFP" description="Microscaling formats" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
+    <profile_extension name="EXT-SHAPE" description="Shape calcuation operators" status="Experimental">
+      <profile_supported>PRO-INT</profile_supported>
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
   </profile_extensions>
   <levels>
     <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256" max_tensor_list_size="256">No level</level>
@@ -3724,6 +3728,57 @@ used.</description>
     </operatorgroup>
     <operatorgroup name="shape">
       <operator>
+        <name>ADD_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 1</description>
+            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 2</description>
+            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>CONCAT_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input" type="shape_list_t" shape="-" tensor-element-type="-">
+            <description>List of input shape values</description>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
         <name>CONST_SHAPE</name>
         <arguments>
           <argument category="attribute" name="values" type="shape_t" shape="-" tensor-element-type="-">
@@ -3740,6 +3795,387 @@ used.</description>
         <typesupport mode="shape" version_added="1.0">
           <op_profile name="PRO-INT"/>
           <op_profile name="PRO-FP"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>DIM</name>
+        <arguments>
+          <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_t">
+            <description>Input tensor</description>
+            <levellimit value="length(shape)" limit="MAX_RANK"/>
+            <rank min="1" max="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
+            <description>Axis in range from 0 to rank(shape) - 1</description>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-" >
+            <description>Output shape type of size 1 giving the size of the shape for the given axis</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_t'/>
+        </types>
+        <typesupport mode="Boolean" in_t="bool_t" version_added="1.1">
+          <op_profile name="PRO-INT" and_name="EXT-SHAPE"/>
+          <op_profile name="PRO-FP" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="signed 8" in_t="i8_t" version_added="1.1">
+          <op_profile name="PRO-INT" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="signed 16" in_t="i16_t" version_added="1.1">
+          <op_profile name="PRO-INT" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="signed 32" in_t="i32_t" version_added="1.1">
+          <op_profile name="PRO-INT" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" version_added="1.1">
+          <op_profile name="EXT-FP8E5M2" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="fp16" in_t="fp16_t" version_added="1.1">
+          <op_profile name="PRO-FP" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="bf16" in_t="bf16_t" version_added="1.1">
+          <op_profile name="EXT-BF16" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="fp32" in_t="fp32_t" version_added="1.1">
+          <op_profile name="PRO-FP" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="fp6e3m2" in_t="fp6e3m2_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="fp6e2m3" in_t="fp6e2m3_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="fp4e2m1" in_t="fp4e2m1_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="mxint8" in_t="mxint8_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="fp8ue8m0" in_t="fp8ue8m0_t" version_added="1.1">
+          <op_profile name="EXT-MXFP" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="i64" in_t="i64_t" version_added="1.1">
+          <op_profile name="EXT-INT64" and_name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>DIV_CEIL_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input shape</description>
+            <levellimit value="length(input)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input shape</description>
+            <levellimit value="length(input)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>DIV_FLOOR_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input shape</description>
+            <levellimit value="length(input)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input shape</description>
+            <levellimit value="length(input)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>EXP2_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input shape</description>
+            <levellimit value="length(input)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>LOG2_CEIL_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input shape</description>
+            <levellimit value="length(input)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>LOG2_FLOOR_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input shape</description>
+            <levellimit value="length(input)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>MAX_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 1</description>
+            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 2</description>
+            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>MIN_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 1</description>
+            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 2</description>
+            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>MOD_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 1</description>
+            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 2</description>
+            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>MUL_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 1</description>
+            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 2</description>
+            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>SLICE_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input shape</description>
+            <levellimit value="length(input)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="input" name="start" type="i32_t" shape="-" tensor-element-type="-">
+            <description>First location within input to include</description>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="input" name="size" type="i32_t" shape="-" tensor-element-type="-">
+            <description>Number of dimensions from input to include in the output</description>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
+        <name>SUB_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 1</description>
+            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 2</description>
+            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Output shape</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
         </typesupport>
       </operator>
     </operatorgroup>

@@ -13,6 +13,28 @@ The shape operators are operators which describe the shapes of parameters and th
 
 Having separate shape operations allows easier tracking of shape propagation than would be possible by using the existing TOSA operators.
 
+==== ADD_SHAPE
+
+Elementwise addition of input1 and input2. Size of shapes must match.
+
+include::{generated}/operators/ADD_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/ADD_SHAPE.tosac[lines=10..-1]
+----
+
+==== CONCAT_SHAPE
+
+Concatenates a list of shape_t to create a new shape_t with length the sum of lengths of all shape_t in input1.
+
+include::{generated}/operators/CONCAT_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/CONCAT_SHAPE.tosac[lines=10..-1]
+----
+
 ==== CONST_SHAPE
 
 A node containing a constant shape.
@@ -22,4 +44,140 @@ include::{generated}/operators/CONST_SHAPE.adoc[]
 [source,c++]
 ----
 include::{pseudocode}/operators/CONST_SHAPE.tosac[lines=10..-1]
+----
+
+==== DIM
+
+Returns a length 1 shape_t of the size of the input tensor for the given axis.
+
+include::{generated}/operators/DIM.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/DIM.tosac[lines=10..-1]
+----
+
+==== DIV_CEIL_SHAPE
+
+Elementwise divide of input1 by input2.
+The result of the divide is rounded up.
+
+include::{generated}/operators/DIV_CEIL_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/DIV_CEIL_SHAPE.tosac[lines=10..-1]
+----
+
+==== DIV_FLOOR_SHAPE
+
+Elementwise integer divide of input1 by input2.
+The result of the divide is rounded down.
+
+include::{generated}/operators/DIV_FLOOR_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/DIV_FLOOR_SHAPE.tosac[lines=10..-1]
+----
+
+==== EXP2_SHAPE
+
+Computation of raising two to the power of each element in input.
+
+include::{generated}/operators/EXP2_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/EXP2_SHAPE.tosac[lines=10..-1]
+----
+
+==== LOG2_CEIL_SHAPE
+
+Computation of the base two logarithm of each element in input.
+Result is rounded up.
+
+include::{generated}/operators/LOG2_CEIL_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/LOG2_CEIL_SHAPE.tosac[lines=10..-1]
+----
+
+==== LOG2_FLOOR_SHAPE
+
+Computation of the base two logarithm of each element in input.
+Result is rounded down.
+
+include::{generated}/operators/LOG2_CEIL_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/LOG2_CEIL_SHAPE.tosac[lines=10..-1]
+----
+
+==== MAX_SHAPE
+
+Elementwise maximum of input1 and input2.
+
+include::{generated}/operators/MAX_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/MAX_SHAPE.tosac[lines=10..-1]
+----
+
+==== MIN_SHAPE
+
+Elementwise minimum of input1 and input2.
+
+include::{generated}/operators/MIN_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/MIN_SHAPE.tosac[lines=10..-1]
+----
+
+==== MOD_SHAPE
+
+Elementwise modulo of input1 divided by input2.
+
+include::{generated}/operators/MOD_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/MOD_SHAPE.tosac[lines=10..-1]
+----
+
+==== MUL_SHAPE
+
+Elementwise multiplication of input1 and input2.
+
+include::{generated}/operators/MUL_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/MUL_SHAPE.tosac[lines=10..-1]
+----
+
+==== SLICE_SHAPE
+
+Extract a shape of size from input.
+
+include::{generated}/operators/SLICE_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/SLICE_SHAPE.tosac[lines=10..-1]
+----
+
+==== SUB_SHAPE
+
+Elementwise subtraction of input1 and input2.
+
+include::{generated}/operators/SUB_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/SUB_SHAPE.tosac[lines=10..-1]
 ----

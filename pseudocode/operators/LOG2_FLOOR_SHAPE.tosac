@@ -1,0 +1,20 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2025 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(length(input1) != length(input2));
+
+for(int32_t index=0; index < length(input1); index++) {
+    tensor_size_t log_val = 0;
+    tensor_size_t in = input[index];
+    REQUIRE(in >= 1);
+    while (in >>= 1) {
+        log_val++;
+    }
+    output[index] = log_val;
+}
