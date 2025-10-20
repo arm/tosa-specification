@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -63,15 +63,16 @@ out_t zero_extend<out_t>(in_t input);
 out_t truncate(in_t input);
 
 scale_t calc_block_scale<in_t, scale_t, out_t>(in_t max_abs) {
-  scale_t scale;
   if (max_abs == 0) {
     return normal_min<scale_t>();
   } else if (is_a_NaN(max_abs) || is_an_Inf(max_abs)) {
     return NaN;
   }
 
-  int scale_exp = is_same<out_t, fp8e4m3_t>() ? ceil(log2(max_abs / normal_max<out_t>())) :
-                                     floor(log2(max_abs / normal_max<out_t>())) + 1;
-  scale = apply_clip_s<scale_t>(exp2(scale_exp), normal_min<scale_t>(), normal_max<scale_t>());
+  in_t out_max = static_cast<in_t>(normal_max<out_t>());
+  fp64_t scale_exp = is_same<out_t, fp8e4m3_t>() ?
+      ceil(log2(max_abs / out_max)) :
+      floor(log2(max_abs / out_max)) + 1;
+  scale_t scale = apply_clip_s<scale_t>(exp2(scale_exp), normal_min<scale_t>(), normal_max<scale_t>());
   return scale;
 }
