@@ -139,8 +139,12 @@ in_t apply_sqrt<in_t>(in_t input);
 
 in_t apply_sub_s<in_t>(in_t a, in_t b) {
     if (is_floating_point<in_t>()) return a - b;
-    int64_t c = sign_extend<int64_t>(a) - sign_extend<int64_t>(b);
-    REQUIRE(c >= minimum_s<in_t>() && c <= maximum_s<in_t>());
+
+    int64_t a_i64 = sign_extend<int64_t>(a);
+    int64_t b_i64 = sign_extend<int64_t>(b);
+    REQUIRE(!(b_i64 > 0 && a_i64 < std::numeric_limits<int_t>::min() + b_i64));
+    REQUIRE(!(b_i64 < 0 && a_i64 > std::numeric_limits<int_t>::max() + b_i64));
+    int64_t c = a_i64 - b_i64;
     return static_cast<in_t>(c);
 }
 
