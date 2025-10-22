@@ -28,7 +28,13 @@
     <xs:enumeration value="EXT-DYNAMIC"/>
     <xs:enumeration value="EXT-DOUBLEROUND"/>
     <xs:enumeration value="EXT-INEXACTROUND"/>
-    <xs:enumeration value="EXT-MXFP"/>
+    <xs:enumeration value="EXT-MX-COMMON"/>
+    <xs:enumeration value="EXT-MX-FP4E2M1"/>
+    <xs:enumeration value="EXT-MX-FP6E2M3"/>
+    <xs:enumeration value="EXT-MX-FP6E3M2"/>
+    <xs:enumeration value="EXT-MX-FP8E4M3"/>
+    <xs:enumeration value="EXT-MX-FP8E5M2"/>
+    <xs:enumeration value="EXT-MX-INT8"/>
     <xs:enumeration value="EXT-MXFP-CONV"/>
   </xs:restriction>
 </xs:simpleType>

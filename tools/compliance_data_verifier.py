@@ -106,7 +106,13 @@ profile_list = [
     "Extension::fft",
     "Extension::variable",
     "Extension::shape",
-    "Extension::mxfp",
+    "Extension::mxfp_common",
+    "Extension::mx_fp4e2m1",
+    "Extension::mx_fp6e2m3",
+    "Extension::mx_fp6e3m2",
+    "Extension::mx_fp8e4m3",
+    "Extension::mx_fp8e5m2",
+    "Extension::mx_int8",
     "Extension::mxfp_conv",
 ]
 
