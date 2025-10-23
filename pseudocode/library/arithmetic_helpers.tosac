@@ -31,7 +31,14 @@ in_t apply_arith_rshift<in_t>(in_t a, in_t b) {
 }
 
 in_t apply_intdiv_s<in_t>(in_t a, in_t b) {
-    int64_t c = sign_extend<int64_t>(a) / sign_extend<int64_t>(b);
+    int64_t a_i64 = sign_extend<int64_t>(a);
+    int64_t b_i64 = sign_extend<int64_t>(b);
+    REQUIRE(b_i64 != 0)
+    REQUIRE(!(a_i64 == std::numeric_limits<int64_t>::min() && b_i64 == -1));
+
+    //rounding towards zero
+    int64_t c = a_i64 / b_i64;
+
     REQUIRE(c >= minimum_s<in_t>() && c <= maximum_s<in_t>());
     return static_cast<in_t>(c);
 }
