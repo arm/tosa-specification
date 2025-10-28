@@ -27,7 +27,8 @@ The following rules apply to floating-point inputs:
 * The following may be used to validate the result:
 ** Let `out_imp` be the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 0.5)` must be true.
+** Let `ulp_val = is_same<in_t, bf16_t> ? 1.0, 0.5`.
+** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, ulp_val)` must be true.
 
 include::{generated}/operators/ADD.adoc[]
 
@@ -285,7 +286,8 @@ The following rules apply to floating-point inputs:
 * The following may be used to validate the result:
 ** Let `out_imp` be the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 0.5)` must be true.
+** Let `ulp_val = is_same<in_t, bf16_t> ? 1.0, 0.5`.
+** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, ulp_val)` must be true.
 
 include::{generated}/operators/MUL.adoc[]
 
@@ -345,7 +347,8 @@ The following rules apply to floating-point inputs:
 * The following may be used to validate the result:
 ** Let `out_imp` the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 0.5)` must be true.
+** Let `ulp_val = is_same<in_t, bf16_t> ? 1.0, 0.5`.
+** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, ulp_val)` must be true.
 
 include::{generated}/operators/SUB.adoc[]
 
