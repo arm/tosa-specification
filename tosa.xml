@@ -3222,7 +3222,7 @@ used.</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="block_size" type="block_size_t" shape="-" tensor-element-type="-">
-            <description>block_size</description>
+            <description>Block size for input_data tensor</description>
           </argument>
           <argument category="output" name="output_data" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output data values tensor</description>
@@ -3280,7 +3280,7 @@ used.</description>
             <rank min="1" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="block_size" type="block_size_t" shape="-" tensor-element-type="-">
-            <description>block_size</description>
+            <description>Block size for output_data tensor</description>
           </argument>
           <argument category="output" name="output_data" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output data values tensor</description>
