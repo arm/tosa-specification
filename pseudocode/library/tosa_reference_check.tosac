@@ -8,13 +8,16 @@
 // by a licensing agreement from ARM Limited.
 
 bool_t tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num_ulp) {
-  fp64_t err_bnd = 0.0;
-  if (is_normal_fp64(ref_value) && abs(ref_value) != 0) {
+  fp64_t val_ulp = 0.0;
+  if (is_same<in_t, mxint8_t>()) {
+    val_ulp = 1 / 64.0;
+  } else if (is_normal_fp64(ref_value) && abs(ref_value) != 0) {
     int ref_exp = ilog2(abs(ref_value));
     fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<in_t>());
-    fp64_t val_ulp  = ref_pow2 * exp2(-normal_frac<in_t>());
-    err_bnd = val_ulp * num_ulp;
+    val_ulp  = ref_pow2 * exp2(-normal_frac<in_t>());
   }
+
+  fp64_t err_bnd = val_ulp * num_ulp;
   return tosa_reference_check_fp_bnd<in_t>(test_value, ref_value, err_bnd);
 }
 
