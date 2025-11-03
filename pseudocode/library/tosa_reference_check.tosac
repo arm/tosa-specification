@@ -66,10 +66,13 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
   if (!is_finite(err_bnd)) {
     return true;
   }
+
+  fp64_t test_value64 = static_cast<fp64_t>(test_value);
+
   REQUIRE(err_bnd >= 0.0);
   if (ref_value < 0.0) {
     ref_value  = -ref_value;
-    test_value = -test_value;
+    test_value64 = -test_value64;
   }
 
   fp64_t ref_max = ref_value + err_bnd;
@@ -101,6 +104,5 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
 
   // Overflow/subnormals have been handled, can do a standard check
   // at this point.
-  return (static_cast<fp64_t>(test_value) >= ref_min &&
-          static_cast<fp64_t>(test_value) <= ref_max);
+  return (test_value64 >= ref_min && test_value64 <= ref_max);
 }
