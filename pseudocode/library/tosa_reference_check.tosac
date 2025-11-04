@@ -59,8 +59,7 @@ bool_t tosa_reference_check_scale<scale_t, out_t>(fp64_t test_scale, fp64_t test
 
 bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64_t err_bnd) {
   if (is_a_NaN(ref_value)) {
-    if (is_same<in_t, mxint8_t>()) {
-      // mxint8_t does not have a NaN representation. Allow any result.
+    if (!has_NaN<in_t>()) {
       return true;
     }
     // If the reference value is a NaN, the test value must also be any NaN.
@@ -81,9 +80,7 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
   fp64_t ref_max = ref_value + err_bnd;
   fp64_t ref_min = ref_value - err_bnd;
 
-  if (is_same<in_t, mxint8_t>()) {
-    // mxint8_t does not have infinity, clamp to the largest valid value.
-
+  if (!has_Inf<in_t>() && !has_NaN<in_t>()) {
     if (ref_max > normal_max<in_t>()) ref_max = normal_max<in_t>();
     if (ref_min > normal_max<in_t>()) ref_min = normal_max<in_t>();
     if (ref_min < -normal_max<in_t>()) ref_min = -normal_max<in_t>();
@@ -94,11 +91,11 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
   }
 
   if (is_same<in_t,bf16_t>() || is_same<in_t,fp16_t>() || is_same<in_t,fp32_t>()) {
-    // Allow subnormal values to be flushed to zero for non-fp8
+    // Allow subnormal values to be flushed to zero for these types
     if (test_value == 0) return (ref_min < normal_min<in_t>());
   }
 
-  if (is_same<in_t,fp8e4m3_t>() && is_a_NaN(test_value)) {
+  if (is_a_NaN(test_value) && !has_Inf<in_t>()) {
     // The case where ref is NaN is handled at the beginning of the function
     // The following check is enough because `abs(ref_max) >= abs(ref_min)` and
     // `ref_max >= 0`.

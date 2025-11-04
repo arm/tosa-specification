@@ -15,6 +15,26 @@ bool_t is_floating_point<type>() {
     return false;
 }
 
+bool_t has_Inf<in_t>() {
+  if (is_same<in_t, fp8e4m3_t>() || is_same<in_t, fp6e2m3_t>() || is_same<in_t, fp6e3m2_t>() || is_same<in_t, fp4e2m1_t>() || is_same<in_t, mxint8_t>()) {
+    return false;
+  }
+  if (is_floating_point<in_t>()) {
+    return true;
+  }
+  return false;
+}
+
+bool_t has_NaN<in_t>() {
+  if (is_same<in_t, fp6e2m3_t>() || is_same<in_t, fp6e3m2_t>() || is_same<in_t, fp4e2m1_t>() || is_same<in_t, mxint8_t>()) {
+    return false;
+  }
+  if (is_floating_point<in_t>()) {
+    return true;
+  }
+  return false;
+}
+
 int32_t idiv(int32_t input1, int32_t input2) {
     return input1 / input2; // Integer divide that truncates towards zero
 }
