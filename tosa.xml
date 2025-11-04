@@ -3189,24 +3189,6 @@ used.</description>
         <typesupport mode="fp32 to fp16" in_t="fp32_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="fp4e2m1 to bf16" in_t="fp4e2m1_t" out_t="bf16_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="fp6e3m2 to bf16" in_t="fp6e3m2_t" out_t="bf16_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="fp6e2m3 to bf16" in_t="fp6e2m3_t" out_t="bf16_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="bf16 to fp4e2m1" in_t="bf16_t" out_t="fp4e2m1_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="bf16 to fp6e3m2" in_t="bf16_t" out_t="fp6e3m2_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="bf16 to fp6e2m3" in_t="bf16_t" out_t="fp6e2m3_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
-        </typesupport>
       </operator>
       <operator>
         <name>CAST_FROM_BLOCK_SCALED</name>
