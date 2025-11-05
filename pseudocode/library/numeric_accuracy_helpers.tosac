@@ -73,6 +73,14 @@ fp64_t normal_max<in_t>() {
   }
 }
 
+fp64_t normal_lowest<in_t>() {
+  if (is_same<in_t,mxint8_t>()) {
+    return -2.0;
+  } else {
+    return -normal_max<in_t>();
+  }
+}
+
 // Number of fractional (mantissa bits)
 int normal_frac<in_t>() {
   if (is_same<in_t,fp32_t>()) {
