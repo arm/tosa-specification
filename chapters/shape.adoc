@@ -24,6 +24,18 @@ include::{generated}/operators/ADD_SHAPE.adoc[]
 include::{pseudocode}/operators/ADD_SHAPE.tosac[lines=10..-1]
 ----
 
+==== ASSERT_EQUAL_SHAPE
+
+Verify that two shapes are equal.
+If allow_broadcast is set, shapes which are broadcast compatible based on the <<Broadcasting>> rules are allowed.
+
+include::{generated}/operators/ASSERT_EQUAL_SHAPE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/ASSERT_EQUAL_SHAPE.tosac[lines=10..-1]
+----
+
 ==== CONCAT_SHAPE
 
 Concatenates a list of shape_t to create a new shape_t with length the sum of lengths of all shape_t in input1.
