@@ -597,6 +597,9 @@ The components of a `shape_t` are of type `tensor_size_t`.
 This type must be able to hold integers in the range [`-(1 << MAX_LOG2_SIZE)` .. `(1 << MAX_LOG2_SIZE) - 1`] where `MAX_LOG2_SIZE` is defined in <<Levels>>.
 The `shape_t` for a zero-dimensional tensor is the empty list.
 
+`shape_list_t` represents a list of shape_t values.
+Every shape_t in a shape_list_t must represent a tensor of equal rank.
+
 For each tensor, the number of tensor elements multiplied by the element size in
 bytes (which is taken to be 1 for elements smaller than a 8-bit) must be
 representable as a `tensor_size_t`.
