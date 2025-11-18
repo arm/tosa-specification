@@ -71,6 +71,9 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
 
   fp64_t test_value64 = static_cast<fp64_t>(test_value);
 
+  fp64_t ref_high_cap = ref_value < 0.0 ? -normal_lowest<in_t>() : normal_max<in_t>();
+  fp64_t ref_low_cap = ref_value < 0.0 ? -normal_max<in_t>() : normal_lowest<in_t>() ;
+
   REQUIRE(err_bnd >= 0.0);
   if (ref_value < 0.0) {
     ref_value  = -ref_value;
@@ -81,13 +84,13 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
   fp64_t ref_min = ref_value - err_bnd;
 
   if (!has_Inf<in_t>() && !has_NaN<in_t>()) {
-    if (ref_max > normal_max<in_t>()) ref_max = normal_max<in_t>();
-    if (ref_min > normal_max<in_t>()) ref_min = normal_max<in_t>();
-    if (ref_min < -normal_max<in_t>()) ref_min = -normal_max<in_t>();
+    if (ref_max > ref_high_cap) ref_max = ref_high_cap;
+    if (ref_min > ref_high_cap) ref_min = ref_high_cap;
+    if (ref_min < ref_low_cap) ref_min = ref_low_cap;
   } else {
-    if (ref_max > normal_max<in_t>()) ref_max = infinity;
-    if (ref_min > normal_max<in_t>()) ref_min = infinity;
-    if (ref_min < -normal_max<in_t>()) ref_min = -infinity;
+    if (ref_max > ref_high_cap) ref_max = infinity;
+    if (ref_min > ref_high_cap) ref_min = infinity;
+    if (ref_min < ref_low_cap) ref_min = -infinity;
   }
 
   if (is_same<in_t,bf16_t>() || is_same<in_t,fp16_t>() || is_same<in_t,fp32_t>()) {
