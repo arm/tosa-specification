@@ -81,6 +81,26 @@ include::{generated}/operators/CONV2D.adoc[]
 include::{pseudocode}/operators/CONV2D.tosac[lines=10..-1]
 ----
 
+==== CONV2D_BLOCK_SCALED
+
+Performs a 2D convolution over the given input data and scales, using the weight data and scales.
+Implementations may choose to skip calculation of multiplies in the padding area.
+
+*Precision Requirements*
+
+The following rules apply:
+
+* Each output can be expressed as a dot product of two input vectors.
+* The dot product must meet the <<Dot product accuracy requirements>>.
+* When generating the data sets for the Dot product accuracy requirements, the data should be generated as fp32 and converted to a scale/value tensor pair using the scale calculation defined in CAST_TO_BLOCK_SCALED.
+
+include::{generated}/operators/CONV2D_BLOCK_SCALED.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/CONV2D_BLOCK_SCALED.tosac[lines=10..-1]
+----
+
 ==== CONV3D
 
 Performs a 3D convolution over the given input tensor.

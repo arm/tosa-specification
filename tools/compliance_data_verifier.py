@@ -91,6 +91,7 @@ op_list = [
     "cast_to_block_scaled",
     "cast_from_block_scaled",
     "matmul_t_block_scaled",
+    "conv2d_block_scaled",
 ]
 
 profile_list = [
@@ -106,6 +107,7 @@ profile_list = [
     "Extension::variable",
     "Extension::shape",
     "Extension::mxfp",
+    "Extension::mxfp_conv",
 ]
 
 type_list = [
