@@ -3782,6 +3782,36 @@ used.</description>
         </typesupport>
       </operator>
       <operator>
+        <name>ASSERT_EQUAL_SHAPE</name>
+        <arguments>
+          <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 1</description>
+            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
+            <description>Input 2</description>
+            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="attribute" name="allow_broadcast" type="bool_t" shape="-" tensor-element-type="-">
+            <description>Allow equality based on broadcast rules</description>
+          </argument>
+        </arguments>
+        <types>
+          <type name='shape_t' />
+        </types>
+        <typesupport mode="shape" shape_t="tensor_size_t"  version_added="1.1">
+          <op_profile name="EXT-SHAPE"/>
+        </typesupport>
+      </operator>
+      <operator>
         <name>CONCAT_SHAPE</name>
         <arguments>
           <argument category="input" name="input" type="shape_list_t" shape="-" tensor-element-type="-">
