@@ -7,9 +7,7 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-ERROR_IF(length(input1) != length(input2));
-
-for(int32_t index=0; index < length(input1); index++) {
+for(int32_t index=0; index < length(input); index++) {
     tensor_size_t log_val = 0;
     tensor_size_t in = input[index];
     REQUIRE(in >= 1);
