@@ -3201,7 +3201,14 @@ used.</description>
         <typesupport mode="fp32" in_out_t="fp32_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-
+        <typesupport mode="Boolean" in_out_t="bool_t" index_t="i32_t" version_added="1.1">
+          <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-FP"/>
+        </typesupport>
+        <typesupport mode="Boolean" in_out_t="bool_t" index_t="i64_t" version_added="1.1">
+          <op_profile name="PRO-INT" and_name="EXT-INT64"/>
+          <op_profile name="PRO-FP" and_name="EXT-INT64"/>
+        </typesupport>
       </operator>
       <operator>
         <name>SCATTER</name>
@@ -3276,6 +3283,14 @@ used.</description>
           <op_profile name="EXT-BF16" and_name="EXT-INT64"/>
         </typesupport>
         <typesupport mode="fp32" in_out_t="fp32_t" index_t="i64_t" version_added="1.1">
+          <op_profile name="PRO-FP" and_name="EXT-INT64"/>
+        </typesupport>
+        <typesupport mode="Boolean" in_out_t="bool_t" index_t="i32_t" version_added="1.1">
+          <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-FP"/>
+        </typesupport>
+        <typesupport mode="Boolean" in_out_t="bool_t" index_t="i64_t" version_added="1.1">
+          <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
       </operator>
@@ -3386,6 +3401,12 @@ used.</description>
         <typesupport mode="bool to signed 32" in_t="bool_t" out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="bool to signed 64" in_t="bool_t" out_t="i64_t" version_added="1.1">
+          <op_profile name="EXT-INT64"/>
+        </typesupport>
+        <typesupport mode="bool to fp32" in_t="bool_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 8 to bool" in_t="i8_t" out_t="bool_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
@@ -3424,6 +3445,9 @@ used.</description>
         </typesupport>
         <typesupport mode="signed 32 to bool" in_t="i32_t" out_t="bool_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 64 to bool" in_t="i64_t" out_t="bool_t" version_added="1.1">
+          <op_profile name="EXT-INT64"/>
         </typesupport>
         <typesupport mode="signed 32 to signed 8" in_t="i32_t" out_t="i8_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
@@ -3519,6 +3543,9 @@ used.</description>
           <op_profile name="EXT-BF16"/>
         </typesupport>
         <typesupport mode="fp32 to fp16" in_t="fp32_t" out_t="fp16_t" version_added="1.0">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
+        <typesupport mode="fp32 to bool" in_t="fp32_t" out_t="bool_t" version_added="1.1">
           <op_profile name="PRO-FP"/>
         </typesupport>
       </operator>
