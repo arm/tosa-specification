@@ -9,4 +9,5 @@
 
 ERROR_IF(axis >= rank(shape));
 ERROR_IF(axis < 0);
+REQUIRE(shape[axis] > 0);
 output[0] = shape_dim(shape, axis);
