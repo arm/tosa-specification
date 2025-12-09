@@ -59,6 +59,30 @@ include::{generated}/operators/AVG_POOL2D.adoc[]
 include::{pseudocode}/operators/AVG_POOL2D.tosac[lines=10..-1]
 ----
 
+==== AVG_POOL2D_ADAPTIVE
+
+This performs an average pooling over the given input tensor.
+A sliding window of size given by <kernel size> is passed over the input tensor, with the mean value being placed in the output tensor.
+When calculating the average, only the number of valid input tensor values, but not padding, are used to calculate the divisor.
+Compared to AVG_POOL2D, AVG_POOL2D_ADAPTIVE has the kernel, stride, pad arguments as inputs rather than attributes.
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+For floating-point values, the following rules apply:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Outputs can be expressed as a dot product of an input vector with a vector with elements 1/KS where KS is the kernel size.
+* This dot product must meet the <<Dot product accuracy requirements>>.
+
+include::{generated}/operators/AVG_POOL2D_ADAPTIVE.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/AVG_POOL2D.tosac[lines=10..-1]
+----
+
 ==== CONV2D
 
 Performs a 2D convolution over the given tensor input, using the weight tensor.
@@ -231,6 +255,38 @@ Otherwise the result is the maximum non-NaN value in the window.
 * If the result is a subnormal value for bf16_t, fp16_t, or fp32_t, the result may be a zero of either sign.
 
 include::{generated}/operators/MAX_POOL2D.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/MAX_POOL2D.tosac[lines=10..-1]
+----
+
+==== MAX_POOL2D_ADAPTIVE
+
+This performs a max pooling over the given input tensor.
+A sliding window of size given by <kernel size> is passed over the input tensor, with the maximum value being placed in the output tensor.
+Compared to MAX_POOL2D, MAX_POOL2D_ADAPTIVE has the kernel, stride, pad arguments as inputs rather than attributes.
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+NaN propagation mode only affects floating-point types.
+It indicates either propagating or ignoring NaN.
+
+The following rules apply to floating-point inputs:
+
+* Comparison rules:
+** The sign of a zero is ignored.
+** Infinities of the same sign compare as equal.
+** In the NaN propagating mode, if any input in the window is a NaN then the result must be NaN.
+** In the NaN ignoring mode, if all inputs in the window are NaN, the result is NaN.
+Otherwise the result is the maximum non-NaN value in the window.
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* If a floating-point result is zero, then the result must be either +0.0 or -0.0 but either sign is permitted.
+* If the result is a subnormal value for bf16_t, fp16_t, or fp32_t, the result may be a zero of either sign.
+
+include::{generated}/operators/MAX_POOL2D_ADAPTIVE.adoc[]
 
 [source,c++]
 ----
