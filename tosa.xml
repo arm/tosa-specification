@@ -3816,6 +3816,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input" type="shape_list_t" shape="-" tensor-element-type="-">
             <description>List of input shape values</description>
+            <levellimit value="length(input)" limit="MAX_TENSOR_LIST_SIZE"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -3823,6 +3824,7 @@ used.</description>
           </argument>
           <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
             <description>Output shape</description>
+            <levellimit value="length(output)" limit="MAX_RANK"/>
           </argument>
         </arguments>
         <types>
