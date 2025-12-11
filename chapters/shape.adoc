@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2024 ARM Limited
+// (C) COPYRIGHT 2024-2025 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -38,7 +38,7 @@ include::{pseudocode}/operators/ASSERT_EQUAL_SHAPE.tosac[lines=10..-1]
 
 ==== CONCAT_SHAPE
 
-Concatenates a list of shape_t to create a new shape_t with length the sum of lengths of all shape_t in input1.
+Concatenates a list of shape_t to create a new shape_t with length the sum of lengths of all shape_t in input.
 
 include::{generated}/operators/CONCAT_SHAPE.adoc[]
 

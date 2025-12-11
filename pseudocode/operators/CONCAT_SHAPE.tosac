@@ -7,12 +7,12 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-ERROR_IF(length(output) != sum(length(input1[k]) for all k));
+ERROR_IF(length(output) != sum(length(input[k]) for all k));
 
 tensor_size_t index = 0;
-for (int32_t i=0; i < length(input1); i++) {
-    for (int32_t j=0; j < length(input1[i]); j++) {
-        output[index] = input1[i][j];
+for (int32_t i=0; i < length(input); i++) {
+    for (int32_t j=0; j < length(input[i]); j++) {
+        output[index] = input[i][j];
         index++;
     }
 }
