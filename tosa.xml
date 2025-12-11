@@ -2689,7 +2689,7 @@
         <arguments>
           <argument category="input" name="input1" type="tensor_list_t" shape="shapes1" tensor-element-type="in_out_t">
             <description>List of input tensors. All inputs must have the same rank and data type</description>
-            <levellimit value="tensor_list_shape(input1)" limit="MAX_TENSOR_LIST_SIZE"/>
+            <levellimit value="length(tensor_list_shape(input1))" limit="MAX_TENSOR_LIST_SIZE"/>
             <rank min="1" max="MAX_RANK"/>
           </argument>
           <argument category="attribute" name="axis" type="i32_t" shape="-" tensor-element-type="-">
@@ -3869,7 +3869,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of input tensors</description>
-            <levellimit value="tensor_list_shape(input_list)" limit="MAX_TENSOR_LIST_SIZE"/>
+            <levellimit value="length(tensor_list_shape(input_list))" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
           <argument category="attribute" name="operator_name" type="String" shape="-" tensor-element-type="-">
             <description>String which tells the backend which custom operator is being called</description>
@@ -3884,7 +3884,7 @@ used.</description>
           </argument>
           <argument category="output" name="output_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of output tensors</description>
-            <levellimit value="tensor_list_shape(output_list)" limit="MAX_TENSOR_LIST_SIZE"/>
+            <levellimit value="length(tensor_list_shape(output_list))" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
         </arguments>
         <typesupport mode="All" version_added="1.0">
@@ -3904,7 +3904,7 @@ used.</description>
           </argument>
           <argument category="input" name="input_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of input tensors</description>
-            <levellimit value="tensor_list_shape(input_list)" limit="MAX_TENSOR_LIST_SIZE"/>
+            <levellimit value="length(tensor_list_shape(input_list))" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
           <argument category="attribute" name="then_graph" type="tosa_graph_t" shape="-" tensor-element-type="-">
             <description>TOSA graph to execute if condition is true</description>
@@ -3914,7 +3914,7 @@ used.</description>
           </argument>
           <argument category="output" name="output_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of output tensors</description>
-            <levellimit value="tensor_list_shape(output_list)" limit="MAX_TENSOR_LIST_SIZE"/>
+            <levellimit value="length(tensor_list_shape(output_list))" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
         </arguments>
         <typesupport mode="All" version_added="1.0">
@@ -3926,7 +3926,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of input tensors</description>
-            <levellimit value="tensor_list_shape(input_list)" limit="MAX_TENSOR_LIST_SIZE"/>
+            <levellimit value="length(tensor_list_shape(input_list))" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
           <argument category="attribute" name="cond_graph" type="tosa_graph_t" shape="-" tensor-element-type="-">
             <description>TOSA graph to evaluate the condition</description>
@@ -3936,7 +3936,7 @@ used.</description>
           </argument>
           <argument category="output" name="output_list" type="tensor_list_t" shape="-" tensor-element-type="-">
             <description>List of output tensors</description>
-            <levellimit value="tensor_list_shape(output_list)" limit="MAX_TENSOR_LIST_SIZE"/>
+            <levellimit value="length(tensor_list_shape(output_list))" limit="MAX_TENSOR_LIST_SIZE"/>
           </argument>
         </arguments>
         <typesupport mode="All" version_added="1.0">
