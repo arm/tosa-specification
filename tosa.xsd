@@ -29,6 +29,7 @@
     <xs:enumeration value="EXT-DOUBLEROUND"/>
     <xs:enumeration value="EXT-INEXACTROUND"/>
     <xs:enumeration value="EXT-MXFP"/>
+    <xs:enumeration value="EXT-MXFP-CONV"/>
   </xs:restriction>
 </xs:simpleType>
 

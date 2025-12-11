@@ -19,6 +19,7 @@ validation_term_mapping_profile = {
     "EXT-SHAPE": "Extension::shape",
     "EXT-VARIABLE": "Extension::variable",
     "EXT-MXFP": "Extension::mxfp",
+    "EXT-MXFP-CONV": "Extension::mxfp_conv",
 }
 
 validation_term_mapping_type = {

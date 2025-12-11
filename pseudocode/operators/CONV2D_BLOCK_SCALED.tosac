@@ -1,0 +1,58 @@
+//
+// This proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2020-2025 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(pad_top < 0 || pad_bottom < 0 || pad_left < 0 || pad_right < 0);
+ERROR_IF(stride_y < 1 || stride_x < 1);
+ERROR_IF(dilation_y < 1 || dilation_x < 1);
+ERROR_IF(OH != idiv_check(IH - 1 + pad_top + pad_bottom - (KH - 1) * dilation_y, stride_y) + 1);
+ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x, stride_x) + 1);
+ERROR_IF(BC != OC && BC != 1);
+ERROR_IF(IC % block_size != 0);
+
+for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= oc < OC) {
+    out_t acc = 0;
+    tensor_size_t iy = oy * stride_y - pad_top;
+    tensor_size_t ix = ox * stride_x - pad_left;
+    for_each(0 <= ky < KH, 0 <= kx < KW) {
+        tensor_size_t y = iy + ky * dilation_y;
+        tensor_size_t x = ix + kx * dilation_x;
+        out_t value = 0;
+
+        for_each(0 <= b < IC / block_size) {
+            out_t block_acc = 0;
+
+            // Read the scales for this block
+            out_t scale_input = static_cast<out_t>(tensor_read<scale_t>(input_scale, [N,IH,IW,IC/block_size], [n,iy,ix,b]));
+            out_t scale_weight = static_cast<out_t>(tensor_read<scale_t>(weight_scale, [OC,KH,KW,IC/block_size], [oc,ky,kx,b]));
+
+            for_each(0 <= i < block_size) {
+                if (0 <= y < IH && 0 <= x < IW) {
+                    value  = static_cast<out_t>(tensor_read<in_t>(input_data,
+                                                                [N,IH,IW,IC],
+                                                                [n,y,x,(b*block_size)+i]));
+                }
+                if ((0 <= y < IH && 0 <= x < IW) || tosa_extra_multiplies) {
+                    out_t weight_el = static_cast<out_t>(tensor_read<weight_t>(weight_data,
+                                                                            [OC,KH,KW,IC],
+                                                                            [oc,ky,kx,(b*block_size)+i]));
+                    block_acc = apply_add_s<out_t>(block_acc, apply_mul_s<out_t>(value, weight_el));
+                }
+            }
+
+            // Scale the block accumulator by the product of the scales
+            block_acc = apply_mul_s<out_t>(block_acc, apply_mul_s<out_t>(scale_input, scale_weight));
+
+            // Add the scaled block accumulator to the accumulator for this output
+            acc = apply_add_s<out_t>(acc, block_acc);
+        }
+    }
+    out_t bias_value = tensor_read<out_t>(bias, [BC], (BC == 1) ? [0] : [oc]);
+    acc = apply_add_s<out_t>(acc, bias_value);
+    tensor_write<out_t>(output, [N,OH,OW,OC], [n,oy,ox,oc], acc);
+}
