@@ -8,6 +8,7 @@ import regex
 op_list = [
     "argmax",
     "avg_pool2d",
+    "avg_pool2d_adaptive",
     "conv2d",
     "conv3d",
     "depthwise_conv2d",
@@ -15,6 +16,7 @@ op_list = [
     "fully_connected",
     "matmul",
     "max_pool2d",
+    "max_pool2d_adaptive",
     "rfft2d",
     "transpose_conv2d",
     "clamp",
