@@ -18,7 +18,13 @@ validation_term_mapping_profile = {
     "EXT-FFT": "Extension::fft",
     "EXT-SHAPE": "Extension::shape",
     "EXT-VARIABLE": "Extension::variable",
-    "EXT-MXFP": "Extension::mxfp",
+    "EXT-MX-COMMON": "Extension::mxfp_common",
+    "EXT-MX-FP4E2M1": "Extension::mx_fp4e2m1",
+    "EXT-MX-FP6E2M3": "Extension::mx_fp6e2m3",
+    "EXT-MX-FP6E3M2": "Extension::mx_fp6e3m2",
+    "EXT-MX-FP8E4M3": "Extension::mx_fp8e4m3",
+    "EXT-MX-FP8E5M2": "Extension::mx_fp8e5m2",
+    "EXT-MX-INT8": "Extension::mx_int8",
     "EXT-MXFP-CONV": "Extension::mxfp_conv",
 }
 

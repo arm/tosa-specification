@@ -191,13 +191,14 @@ class TOSASpec:
         tsp_name = op_profile.get("name")
         and_name = op_profile.get("and_name")
         and_name2 = op_profile.get("and_name2")
-        if and_name is not None:
+        if and_name2 is not None:
+            tsp_name = " and ".join(sorted([tsp_name, and_name, and_name2]))
+        elif and_name is not None:
             if and_name < tsp_name:
                 tsp_name = f"{and_name} and {tsp_name}"
             else:
                 tsp_name = f"{tsp_name} and {and_name}"
-        if and_name2 is not None:
-            tsp_name = " and ".join(sorted([tsp_name, and_name, and_name2]))
+
         return tsp_name
 
     def __load_operator(self, op):

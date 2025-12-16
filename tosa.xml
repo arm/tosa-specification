@@ -47,7 +47,25 @@
     <profile_extension name="EXT-INEXACTROUND" description="Adds inexact rounding support to the RESCALE operator" status="Experimental">
       <profile_supported>PRO-INT</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-MXFP" description="Microscaling formats" status="Experimental">
+    <profile_extension name="EXT-MX-COMMON" description="Base for MXFP microscaling formats" status="Experimental">
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-MX-FP4E2M1" description="Microscaling format FP4E2M1" status="Experimental">
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-MX-FP6E2M3" description="Microscaling format FP6E2M3" status="Experimental">
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-MX-FP6E3M2" description="Microscaling format FP6E3M2" status="Experimental">
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-MX-FP8E4M3" description="Microscaling format FP8E4M3" status="Experimental">
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-MX-FP8E5M2" description="Microscaling format FP8E5M2" status="Experimental">
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-MX-INT8" description="Microscaling format INT8" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
     <profile_extension name="EXT-SHAPE" description="Shape calcuation operators" status="Experimental">
@@ -513,19 +531,19 @@
           <type name='out_t' />
         </types>
         <typesupport mode="fp4e2m1 with fp8ue8m0 scale factor" in_t="fp4e2m1_t" scale_t="fp8ue8m0_t" weight_t="fp4e2m1_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP-CONV"/>
+          <op_profile name="EXT-MXFP-CONV" and_name="EXT-MX-FP4E2M1" and_name2="EXT-MX-COMMON"/>
         </typesupport>
         <typesupport mode="fp6e2m3 with fp8ue8m0 scale factor" in_t="fp6e2m3_t" scale_t="fp8ue8m0_t" weight_t="fp6e2m3_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP-CONV"/>
+          <op_profile name="EXT-MXFP-CONV" and_name="EXT-MX-FP6E2M3" and_name2="EXT-MX-COMMON"/>
         </typesupport>
         <typesupport mode="fp6e3m2 with fp8ue8m0 scale factor" in_t="fp6e3m2_t" scale_t="fp8ue8m0_t" weight_t="fp6e3m2_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP-CONV"/>
+          <op_profile name="EXT-MXFP-CONV" and_name="EXT-MX-FP6E3M2" and_name2="EXT-MX-COMMON"/>
         </typesupport>
         <typesupport mode="fp8e4m3 with fp8ue8m0 scale factor" in_t="fp8e4m3_t" scale_t="fp8ue8m0_t" weight_t="fp8e4m3_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP-CONV"/>
+          <op_profile name="EXT-MXFP-CONV" and_name="EXT-MX-FP8E4M3" and_name2="EXT-MX-COMMON"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with fp8ue8m0 scale factor" in_t="fp8e5m2_t" scale_t="fp8ue8m0_t" weight_t="fp8e5m2_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP-CONV"/>
+          <op_profile name="EXT-MXFP-CONV" and_name="EXT-MX-FP8E5M2" and_name2="EXT-MX-COMMON"/>
         </typesupport>
       </operator>
       <operator>
@@ -917,22 +935,22 @@
           <type name='out_t' />
         </types>
         <typesupport mode="Scaled fp4e2m1 with fp8ue8m0 scale and fp32 accumulate" A_t="fp4e2m1_t" B_t="fp4e2m1_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP4E2M1"/>
         </typesupport>
         <typesupport mode="Scaled fp6e2m3 with fp8ue8m0 scale and fp32 accumulate" A_t="fp6e2m3_t" B_t="fp6e2m3_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E2M3"/>
         </typesupport>
         <typesupport mode="Scaled fp6e3m2 with fp8ue8m0 scale and fp32 accumulate" A_t="fp6e3m2_t" B_t="fp6e3m2_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E3M2"/>
         </typesupport>
         <typesupport mode="Scaled fp8e4m3 with fp8ue8m0 scale and fp32 accumulate" A_t="fp8e4m3_t" B_t="fp8e4m3_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E4M3"/>
         </typesupport>
         <typesupport mode="Scaled fp8e5m2 with fp8ue8m0 scale and fp32 accumulate" A_t="fp8e5m2_t" B_t="fp8e5m2_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E5M2"/>
         </typesupport>
         <typesupport mode="Scaled mxint8 with fp8ue8m0 scale and fp32 accumulate" A_t="mxint8_t" B_t="mxint8_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-INT8"/>
         </typesupport>
       </operator>
       <operator>
@@ -3522,40 +3540,40 @@ used.</description>
           <type name='out_t'/>
         </types>
         <typesupport mode="fp4e2m1 with fp8ue8m0 scale to bf16" in_t="fp4e2m1_t" scale_t="fp8ue8m0_t" out_t="bf16_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP4E2M1" and_name2="EXT-BF16"/>
         </typesupport>
         <typesupport mode="fp6e2m3 with fp8ue8m0 scale to bf16" in_t="fp6e2m3_t" scale_t="fp8ue8m0_t" out_t="bf16_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E2M3" and_name2="EXT-BF16"/>
         </typesupport>
         <typesupport mode="fp6e3m2 with fp8ue8m0 scale to bf16" in_t="fp6e3m2_t" scale_t="fp8ue8m0_t" out_t="bf16_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E3M2" and_name2="EXT-BF16"/>
         </typesupport>
         <typesupport mode="fp8e4m3 with fp8ue8m0 scale to bf16" in_t="fp8e4m3_t" scale_t="fp8ue8m0_t" out_t="bf16_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E4M3" and_name2="EXT-BF16"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with fp8ue8m0 scale to bf16" in_t="fp8e5m2_t" scale_t="fp8ue8m0_t" out_t="bf16_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E5M2" and_name2="EXT-BF16"/>
         </typesupport>
         <typesupport mode="mxint8 with fp8ue8m0 scale to bf16" in_t="mxint8_t" scale_t="fp8ue8m0_t" out_t="bf16_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-INT8" and_name2="EXT-BF16"/>
         </typesupport>
         <typesupport mode="fp4e2m1 with fp8ue8m0 scale to fp32" in_t="fp4e2m1_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" />
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP4E2M1" />
         </typesupport>
         <typesupport mode="fp6e2m3 with fp8ue8m0 scale to fp32" in_t="fp6e2m3_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E2M3"/>
         </typesupport>
         <typesupport mode="fp6e3m2 with fp8ue8m0 scale to fp32" in_t="fp6e3m2_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E3M2"/>
         </typesupport>
         <typesupport mode="fp8e4m3 with fp8ue8m0 scale to fp32" in_t="fp8e4m3_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E4M3"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with fp8ue8m0 scale to fp32" in_t="fp8e5m2_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E5M2"/>
         </typesupport>
         <typesupport mode="mxint8 with fp8ue8m0 scale to fp32" in_t="mxint8_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-INT8"/>
         </typesupport>
       </operator>
       <operator>
@@ -3584,40 +3602,40 @@ used.</description>
           <type name='out_t'/>
         </types>
         <typesupport mode="bf16 to fp4e2m1 with fp8ue8m0 scale" in_t="bf16_t" scale_t="fp8ue8m0_t" out_t="fp4e2m1_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP4E2M1"/>
         </typesupport>
         <typesupport mode="bf16 to fp6e2m3 with fp8ue8m0 scale" in_t="bf16_t" scale_t="fp8ue8m0_t" out_t="fp6e2m3_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E2M3" and_name2="EXT-BF16"/>
         </typesupport>
         <typesupport mode="bf16 to fp6e3m2 with fp8ue8m0 scale" in_t="bf16_t" scale_t="fp8ue8m0_t" out_t="fp6e3m2_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E3M2" and_name2="EXT-BF16"/>
         </typesupport>
         <typesupport mode="bf16 to fp8e4m3 with fp8ue8m0 scale" in_t="bf16_t" scale_t="fp8ue8m0_t" out_t="fp8e4m3_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E4M3" and_name2="EXT-BF16"/>
         </typesupport>
         <typesupport mode="bf16 to fp8e5m2 with fp8ue8m0 scale" in_t="bf16_t" scale_t="fp8ue8m0_t" out_t="fp8e5m2_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E5M2" and_name2="EXT-BF16"/>
         </typesupport>
         <typesupport mode="bf16 to mxint8 with fp8ue8m0 scale" in_t="bf16_t" scale_t="fp8ue8m0_t" out_t="mxint8_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-BF16"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-INT8" and_name2="EXT-BF16"/>
         </typesupport>
         <typesupport mode="fp32 to fp4e2m1 with fp8ue8m0 scale" in_t="fp32_t" scale_t="fp8ue8m0_t" out_t="fp4e2m1_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP4E2M1"/>
         </typesupport>
         <typesupport mode="fp32 to fp6e2m3 with fp8ue8m0 scale" in_t="fp32_t" scale_t="fp8ue8m0_t" out_t="fp6e2m3_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E2M3"/>
         </typesupport>
         <typesupport mode="fp32 to fp6e3m2 with fp8ue8m0 scale" in_t="fp32_t" scale_t="fp8ue8m0_t" out_t="fp6e3m2_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E3M2"/>
         </typesupport>
         <typesupport mode="fp32 to fp8e4m3 with fp8ue8m0 scale" in_t="fp32_t" scale_t="fp8ue8m0_t" out_t="fp8e4m3_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E4M3"/>
         </typesupport>
         <typesupport mode="fp32 to fp8e5m2 with fp8ue8m0 scale" in_t="fp32_t" scale_t="fp8ue8m0_t" out_t="fp8e5m2_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E5M2"/>
         </typesupport>
         <typesupport mode="fp32 to mxint8 with fp8ue8m0 scale" in_t="fp32_t" scale_t="fp8ue8m0_t" out_t="mxint8_t" version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-INT8"/>
         </typesupport>
       </operator>
       <operator>
@@ -3791,19 +3809,19 @@ used.</description>
           <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="fp8ue8m0" out_t="fp8ue8m0_t"  version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-COMMON"/>
         </typesupport>
         <typesupport mode="fp6e3m2" out_t="fp6e3m2_t"  version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-FP6E3M2"/>
         </typesupport>
         <typesupport mode="fp6e2m3" out_t="fp6e2m3_t"  version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-FP6E2M3"/>
         </typesupport>
         <typesupport mode="fp4e2m1" out_t="fp4e2m1_t"  version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-FP4E2M1"/>
         </typesupport>
         <typesupport mode="mxint8" out_t="mxint8_t"  version_added="1.1">
-          <op_profile name="EXT-MXFP"/>
+          <op_profile name="EXT-MX-INT8"/>
         </typesupport>
       </operator>
       <operator>
@@ -4179,19 +4197,19 @@ used.</description>
           <op_profile name="PRO-FP" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="fp6e3m2" in_t="fp6e3m2_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-SHAPE"/>
+          <op_profile name="EXT-MX-FP6E3M2" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="fp6e2m3" in_t="fp6e2m3_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-SHAPE"/>
+          <op_profile name="EXT-MX-FP6E2M3" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="fp4e2m1" in_t="fp4e2m1_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-SHAPE"/>
+          <op_profile name="EXT-MX-FP4E2M1" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="mxint8" in_t="mxint8_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-SHAPE"/>
+          <op_profile name="EXT-MX-INT8" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="fp8ue8m0" in_t="fp8ue8m0_t" version_added="1.1">
-          <op_profile name="EXT-MXFP" and_name="EXT-SHAPE"/>
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="i64" in_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64" and_name="EXT-SHAPE"/>
@@ -4546,7 +4564,7 @@ used.</description>
  </enum>
 
 <enum name="block_size_t" description="Block size for the block_scaled formats">
-  <enumval value="32" name="BLOCK_SIZE_32" description="Block size of 32" extension="EXT-MXFP"/>
+  <enumval value="32" name="BLOCK_SIZE_32" description="Block size of 32" extension="EXT-MX-COMMON"/>
 </enum>
 
 </tosa>
