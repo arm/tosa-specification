@@ -7,10 +7,13 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-ERROR_IF(size <= 0);
-ERROR_IF(start < 0);
-ERROR_IF(start + size > length(input))
+int32_t size_value = static_cast<int32_t>(tensor_read<i32_t>(size, [1], [0]));
+int32_t start_value = static_cast<int32_t>(tensor_read<i32_t>(start, [1], [0]));
 
-for(int32_t index=0; index < size; index++) {
-    output[index] = input[index + start];
+ERROR_IF(size_value <= 0);
+ERROR_IF(start_value < 0);
+ERROR_IF(start_value + size_value > length(input))
+
+for(int32_t index=0; index < size_value; index++) {
+    output[index] = input[index + start_value];
 }
