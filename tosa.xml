@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This proprietary software may be used only as
+  authorised by a licensing agreement from ARM Limited
+  (C) COPYRIGHT 2022-2026 ARM Limited
+  ALL RIGHTS RESERVED
+  The entire notice above must be reproduced on all authorised
+  copies and copies may only be made to the extent permitted
+  by a licensing agreement from ARM Limited.
+-->
 <!DOCTYPE tosa SYSTEM "tosa.dtd">
 <tosa>
   <version major="1" minor="1" patch="0" draft="true"/>
@@ -77,8 +86,8 @@
     </profile_extension>
   </profile_extensions>
   <levels>
-    <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256" max_tensor_list_size="256">No level</level>
-    <level name="8K"   max_rank="6"  max_kernel="8192"       max_stride="8192"       max_scale="256"   max_log2_size="31" max_nesting="6" max_tensor_list_size="64">Level 8K</level>
+    <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256" max_tensor_list_size="256" max_shape_len="64">No level</level>
+    <level name="8K"   max_rank="6"  max_kernel="8192"       max_stride="8192"       max_scale="256"   max_log2_size="31" max_nesting="6" max_tensor_list_size="64"   max_shape_len="16">Level 8K</level>
   </levels>
   <operators>
     <operatorgroup name="tensor">
@@ -4051,7 +4060,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 1</description>
-            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <levellimit value="length(input1)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4059,7 +4068,7 @@ used.</description>
           </argument>
           <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 2</description>
-            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <levellimit value="length(input2)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4081,7 +4090,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 1</description>
-            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <levellimit value="length(input1)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4089,7 +4098,7 @@ used.</description>
           </argument>
           <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 2</description>
-            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <levellimit value="length(input2)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4119,7 +4128,7 @@ used.</description>
           </argument>
           <argument category="output" name="output" type="shape_t" shape="-" tensor-element-type="-">
             <description>Output shape</description>
-            <levellimit value="length(output)" limit="MAX_RANK"/>
+            <levellimit value="length(output)" limit="MAX_SHAPE_LEN"/>
           </argument>
         </arguments>
         <types>
@@ -4222,7 +4231,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input shape</description>
-            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <levellimit value="length(input1)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4230,7 +4239,7 @@ used.</description>
           </argument>
           <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input shape</description>
-            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <levellimit value="length(input2)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4252,7 +4261,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input shape</description>
-            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <levellimit value="length(input1)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4260,7 +4269,7 @@ used.</description>
           </argument>
           <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input shape</description>
-            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <levellimit value="length(input2)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4282,7 +4291,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input shape</description>
-            <levellimit value="length(input)" limit="MAX_RANK"/>
+            <levellimit value="length(input)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4304,7 +4313,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input shape</description>
-            <levellimit value="length(input)" limit="MAX_RANK"/>
+            <levellimit value="length(input)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4326,7 +4335,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input shape</description>
-            <levellimit value="length(input)" limit="MAX_RANK"/>
+            <levellimit value="length(input)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4348,7 +4357,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 1</description>
-            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <levellimit value="length(input1)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4356,7 +4365,7 @@ used.</description>
           </argument>
           <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 2</description>
-            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <levellimit value="length(input2)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4378,7 +4387,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 1</description>
-            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <levellimit value="length(input1)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4386,7 +4395,7 @@ used.</description>
           </argument>
           <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 2</description>
-            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <levellimit value="length(input2)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4408,7 +4417,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 1</description>
-            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <levellimit value="length(input1)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4416,7 +4425,7 @@ used.</description>
           </argument>
           <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 2</description>
-            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <levellimit value="length(input2)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4438,7 +4447,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 1</description>
-            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <levellimit value="length(input1)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4446,7 +4455,7 @@ used.</description>
           </argument>
           <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 2</description>
-            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <levellimit value="length(input2)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4468,7 +4477,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input shape</description>
-            <levellimit value="length(input)" limit="MAX_RANK"/>
+            <levellimit value="length(input)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4506,7 +4515,7 @@ used.</description>
         <arguments>
           <argument category="input" name="input1" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 1</description>
-            <levellimit value="length(input1)" limit="MAX_RANK"/>
+            <levellimit value="length(input1)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>
@@ -4514,7 +4523,7 @@ used.</description>
           </argument>
           <argument category="input" name="input2" type="shape_t" shape="-" tensor-element-type="-">
             <description>Input 2</description>
-            <levellimit value="length(input2)" limit="MAX_RANK"/>
+            <levellimit value="length(input2)" limit="MAX_SHAPE_LEN"/>
             <ctc>
               <op_profile name="PRO-INT"/>
               <op_profile name="PRO-FP"/>

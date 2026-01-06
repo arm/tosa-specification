@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2023, ARM Limited.
+# Copyright (c) 2023,2026, ARM Limited.
 # SPDX-License-Identifier: Apache-2.0
 import re
 import xml.etree.ElementTree as ET
@@ -177,6 +177,7 @@ class TOSASpec:
             "MAX_LOG2_SIZE": level.get("max_log2_size"),
             "MAX_NESTING": level.get("max_nesting"),
             "MAX_TENSOR_LIST_SIZE": level.get("max_tensor_list_size"),
+            "MAX_SHAPE_LEN": level.get("max_shape_len"),
         }
         return TOSALevel(name, desc, maximums)
 

@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This proprietary software may be used only as
+  authorised by a licensing agreement from ARM Limited
+  (C) COPYRIGHT 2024,2026 ARM Limited
+  ALL RIGHTS RESERVED
+  The entire notice above must be reproduced on all authorised
+  copies and copies may only be made to the extent permitted
+  by a licensing agreement from ARM Limited.
+-->
 <!DOCTYPE tosa SYSTEM "tosa.dtd">
 <tosa>
   <version major="999" minor="888" patch="777" draft="true"/>
@@ -7,7 +16,7 @@
     <profile profile="Floating-Point" name="PRO-FP" status="Complete" description="FP16 and FP32 operations"/>
   </profiles>
   <levels>
-    <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256" max_tensor_list_size="256">No level</level>
+    <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256" max_tensor_list_size="256" max_shape_len="64">No level</level>
   </levels>
   <operators>
     <operatorgroup name="warnings">
