@@ -1,4 +1,13 @@
 <?xml version="1.0"?>
+<!--
+  This proprietary software may be used only as
+  authorised by a licensing agreement from ARM Limited
+  (C) COPYRIGHT 2022-2026 ARM Limited
+  ALL RIGHTS RESERVED
+  The entire notice above must be reproduced on all authorised
+  copies and copies may only be made to the extent permitted
+  by a licensing agreement from ARM Limited.
+-->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
 <!-- Type definitions -->
@@ -55,6 +64,7 @@
     <xs:enumeration value="MAX_LOG2_SIZE"/>
     <xs:enumeration value="MAX_NESTING"/>
     <xs:enumeration value="MAX_TENSOR_LIST_SIZE"/>
+    <xs:enumeration value="MAX_SHAPE_LEN"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -194,6 +204,7 @@
         <xs:attribute name="max_log2_size" type="xs:int" use="required"/>
         <xs:attribute name="max_nesting" type="xs:int" use="required"/>
         <xs:attribute name="max_tensor_list_size" type="xs:int" use="required"/>
+        <xs:attribute name="max_shape_len" type="xs:int" use="required"/>
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
