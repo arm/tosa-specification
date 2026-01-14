@@ -1,16 +1,18 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2024-2025 ARM Limited
+// (C) COPYRIGHT 2024-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
+ERROR_IF(input == []); // There must be at least one input in the input list
 ERROR_IF(length(output) != sum(length(input[k]) for all k));
 
 tensor_size_t index = 0;
 for (int32_t i=0; i < length(input); i++) {
+    ERROR_IF(input[i] == []); // Disallow shapes representing a zero-dimensional tensor
     for (int32_t j=0; j < length(input[i]); j++) {
         output[index] = input[i][j];
         index++;
