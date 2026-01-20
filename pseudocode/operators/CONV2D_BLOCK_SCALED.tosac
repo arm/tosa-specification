@@ -28,7 +28,8 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= oc < OC) {
             out_t block_acc = 0;
 
             // Read the scales for this block
-            out_t scale_input = static_cast<out_t>(tensor_read<scale_t>(input_scale, [N,IH,IW,IC/block_size], [n,iy,ix,b]));
+            out_t scale_input = (0 <= y < IH && 0 <= x < IW) ?
+                static_cast<out_t>(tensor_read<scale_t>(input_scale, [N,IH,IW,IC/block_size], [n,y,x,b])) : 1;
             out_t scale_weight = static_cast<out_t>(tensor_read<scale_t>(weight_scale, [OC,KH,KW,IC/block_size], [oc,ky,kx,b]));
 
             for_each(0 <= i < block_size) {
