@@ -281,7 +281,7 @@
               <op_profile name="EXT-DYNAMIC"/>
             </ctc_remove>
           </argument>
-          <argument category="input" name="kernel" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
+          <argument category="input" name="kernel" type="shape_t" shape="[2]" tensor-element-type="-">
             <description>[kernel_y, kernel_x]</description>
             <levellimit value="kernel_y" limit="MAX_KERNEL"/>
             <levellimit value="kernel_x" limit="MAX_KERNEL"/>
@@ -294,7 +294,7 @@
               <op_profile name="EXT-DYNAMIC"/>
             </ctc_remove>
           </argument>
-          <argument category="input" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
+          <argument category="input" name="stride" type="shape_t" shape="[2]" tensor-element-type="-">
             <description>[stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
@@ -307,7 +307,7 @@
               <op_profile name="EXT-DYNAMIC"/>
             </ctc_remove>
           </argument>
-          <argument category="input" name="pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
+          <argument category="input" name="pad" type="shape_t" shape="[4]" tensor-element-type="-">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_top"    limit="MAX_KERNEL"/>
             <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
@@ -1032,7 +1032,7 @@
             <description>Input tensor 4D</description>
             <rank min="4" max="4"/>
           </argument>
-          <argument category="input" name="kernel" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
+          <argument category="input" name="kernel" type="shape_t" shape="[2]" tensor-element-type="-">
             <description>[kernel_y, kernel_x]</description>
             <levellimit value="kernel_y" limit="MAX_KERNEL"/>
             <levellimit value="kernel_x" limit="MAX_KERNEL"/>
@@ -1045,7 +1045,7 @@
               <op_profile name="EXT-DYNAMIC"/>
             </ctc_remove>
           </argument>
-          <argument category="input" name="stride" type="tensor_t" shape="[2]" tensor-element-type="i32_t">
+          <argument category="input" name="stride" type="shape_t" shape="[2]" tensor-element-type="-">
             <description>[stride_y, stride_x]</description>
             <levellimit value="stride_y" limit="MAX_STRIDE"/>
             <levellimit value="stride_x" limit="MAX_STRIDE"/>
@@ -1058,7 +1058,7 @@
               <op_profile name="EXT-DYNAMIC"/>
             </ctc_remove>
           </argument>
-          <argument category="input" name="pad" type="tensor_t" shape="[4]" tensor-element-type="i32_t">
+          <argument category="input" name="pad" type="shape_t" shape="[4]" tensor-element-type="-">
             <description>[pad_top, pad_bottom, pad_left, pad_right]</description>
             <levellimit value="pad_top"    limit="MAX_KERNEL"/>
             <levellimit value="pad_bottom" limit="MAX_KERNEL"/>
