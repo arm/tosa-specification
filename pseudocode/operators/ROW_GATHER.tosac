@@ -1,0 +1,42 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2026 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+ERROR_IF(C % block_size != 0);
+
+int32_t values_len = length(tensor_list_shape(values));
+
+ERROR_IF(values_len != 1 && values_len != 2);
+
+// Non-block-scaled must use block_size=1
+ERROR_IF((values_len == 1) && (block_size != 1));
+
+// block-scaled must NOT use block_size=1
+ERROR_IF((values_len == 2) && (block_size == 1));
+
+for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
+    index_t k = tensor_read<index_t>(indices, [N, W], [n, w]);
+    REQUIRE(0 <= k && (k+row_count) < K);
+
+    for(0 <= r < row_count) {
+      in_out_t value = tensor_read<in_out_t>(values[0], [N, K, C], [n, k+r, c]);
+      tensor_write<in_out_t>(output[0], [N, W*row_count, C], [n, w*row_count + r, c], value);
+    }
+}
+
+if(values_len == 2) {
+    for_each(0 <= n < N, 0 <= w < W, 0 <= c < C/block_size) {
+        index_t k = tensor_read<index_t>(indices, [N, W], [n, w]);
+        REQUIRE(0 <= k && (k+row_count) < K);
+
+        for(0 <= r < row_count) {
+            scale_t value = tensor_read<scale_t>(values[1], [N, K, C/block_size], [n, k+r, c]);
+            tensor_write<scale_t>(output[1], [N, W*row_count, C/block_size], [n, w*row_count + r, c], value);
+        }
+    }
+}

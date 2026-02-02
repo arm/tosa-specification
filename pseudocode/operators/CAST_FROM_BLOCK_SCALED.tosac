@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2025 ARM Limited
+// (C) COPYRIGHT 2025, 2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -9,6 +9,8 @@
 
 ERROR_IF(rank(shape) == 0 || shape[rank(shape)-1] % block_size != 0);
 ERROR_IF(rank(shape) != rank(in_scale_shape));
+
+ERROR_IF(block_size == 1);
 
 for (int32_t axis_index = 0; axis_index < rank(shape) - 1; axis_index++) {
     ERROR_IF(shape[axis_index] != in_scale_shape[axis_index]);

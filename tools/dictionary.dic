@@ -27,6 +27,7 @@ Elementwise
 elementwise
 ERF
 erf
+enum
 FFT
 fft
 fp

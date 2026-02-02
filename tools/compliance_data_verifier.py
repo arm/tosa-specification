@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2024-2025, ARM Limited.
+# Copyright (c) 2024-2026, ARM Limited.
 # SPDX-License-Identifier: Apache-2.0
 import re
 
@@ -71,6 +71,7 @@ op_list = [
     "tile",
     "transpose",
     "gather",
+    "row_gather",
     "scatter",
     "resize",
     "cast",
