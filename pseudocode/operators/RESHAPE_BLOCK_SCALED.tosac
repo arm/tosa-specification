@@ -1,0 +1,67 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2026 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+int32_t input_len = length(tensor_list_shape(input));
+int32_t output_len = length(tensor_list_shape(output));
+
+ERROR_IF(input_len != 1 && input_len != 2);
+ERROR_IF(output_len != input_len);
+
+// Non-block-scaled must use block_size=1
+ERROR_IF((input_len == 1) && (block_size != 1));
+// block-scaled must NOT use block_size=1
+ERROR_IF((input_len == 2) && (block_size == 1));
+
+// Value count must stay the same
+ERROR_IF(tensor_size(value1_shape) != tensor_size(new_value_shape));
+
+if (2 == input_len) {
+    // Rank-0 not allowed for block-scaling
+    ERROR_IF(rank(value1_shape) == 0 || rank(new_value_shape) == 0);
+
+    // Rank of both inputs must be the same
+    ERROR_IF(rank(value1_shape) != rank(scale1_shape));
+
+    // Get last dimension in each value shape
+    shape_t value1_shape_last = value1_shape[-1];
+    shape_t new_value_shape_last = new_value_shape[-1];
+
+    // Last dimension of values must be a multiple of block_size
+    ERROR_IF((value1_shape_last % block_size) != 0);
+    ERROR_IF((new_value_shape_last % block_size) != 0);
+
+    // Last dimension of scale must be block_size multiple of last dimension of values
+    ERROR_IF(scale1_shape[-1] != (value1_shape_last / block_size));
+
+    // Calculate new scale output shape
+    shape_t new_scale_shape = new_value_shape;
+    new_scale_shape[-1] = apply_intdiv_s(new_value_shape_last, block_size);
+
+    // Scale count must stay the same
+    ERROR_IF(tensor_size(scale1_shape) != tensor_size(new_scale_shape));
+}
+
+
+for(0 <= i < input_len) {
+
+    shape_t in_shape = (0 == i) ? value1_shape : scale1_shape;
+    shape_t out_shape = (0 == i) ? new_value_shape : new_scale_shape;
+    using in_dtype = (0 == i) ? in_out_t : scale_t;
+
+    for_each_data_position(index in out_shape) {
+        // Calculate flattened index for the output location (index)
+        tensor_size_t offset = tensor_index_to_offset(out_shape, index);
+        // Now convert to the location in the input
+        shape_t tmp_index = tensor_offset_to_index(in_shape, offset);
+
+        // Now read/write the value
+        in_dtype val = tensor_read<in_dtype>(input[i], in_shape, tmp_index);
+        tensor_write<in_dtype>(output[i], out_shape, index, val);
+    }
+}

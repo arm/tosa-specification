@@ -66,6 +66,7 @@ op_list = [
     "concat",
     "pad",
     "reshape",
+    "reshape_block_scaled",
     "reverse",
     "slice",
     "tile",
