@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2024,2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -33,11 +33,11 @@ for_each_data_position(left_index in left_shape) {
             if (result != max_value) {
                 if (!(is_a_NaN (result) && is_a_NaN (max_value))) {
                     max_value = result;
+                    REQUIRE(i <= maximum<out_t>());
                     max_index = i;
                 }
             }
         }
-        REQUIRE(max_index <= maximum<out_t>());
         shape_t index = flatten(left_index, right_index);
         tensor_write<out_t>(output, shape, index, max_index);
     }
