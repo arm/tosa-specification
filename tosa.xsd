@@ -163,6 +163,10 @@
   <xs:union memberTypes="datatype typename enumtypename"/>
 </xs:simpleType>
 
+<xs:simpleType name="argument-tensor-element-scale-type">
+  <xs:union memberTypes="datatype typename enumtypename"/>
+</xs:simpleType>
+
 <!-- Element definitions -->
 
 <!-- Defines what profiles this argument is CTC for-->
@@ -344,6 +348,7 @@
     <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="type" type="argument-type" use="required"/>
     <xs:attribute name="tensor-element-type" type="argument-tensor-element-type" use="required"/>
+    <xs:attribute name="tensor-element-scale-type" type="argument-tensor-element-scale-type"/>
     <xs:attribute name="shape" type="xs:string" use="required"/>
     <xs:attribute name="optional" type="xs:boolean"/>
   </xs:complexType>

@@ -1,13 +1,14 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2025 ARM Limited
+// (C) COPYRIGHT 2025, 2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
 ERROR_IF(C % block_size != 0);
+ERROR_IF(block_size == 1);
 
 // The B matrix may be broadcast, but only if the D size is one.
 ERROR_IF(D != N && D != 1);

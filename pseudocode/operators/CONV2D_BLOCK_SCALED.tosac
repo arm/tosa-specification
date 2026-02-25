@@ -1,7 +1,7 @@
 //
 // This proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2025 ARM Limited
+// (C) COPYRIGHT 2020-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -14,6 +14,7 @@ ERROR_IF(OH != idiv_check(IH - 1 + pad_top + pad_bottom - (KH - 1) * dilation_y,
 ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x, stride_x) + 1);
 ERROR_IF(BC != OC && BC != 1);
 ERROR_IF(IC % block_size != 0);
+ERROR_IF(block_size == 1);
 
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= oc < OC) {
     out_t acc = 0;

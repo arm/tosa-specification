@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2024, 2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -23,6 +23,31 @@ include::{generated}/operators/GATHER.adoc[]
 [source,c++]
 ----
 include::{pseudocode}/operators/GATHER.tosac[lines=10..-1]
+----
+
+==== ROW_GATHER
+
+Generate a tensor-list which contains a data tensor and an optional scale tensor based on the input indices and row_count.
+The number of consecutive rows gathered for each index is specified in row_count.
+The values tensor-list must have a mandatory first element and an optional second element.
+N is the number of batches, W is the number of indices in each batch.
+K is the total number of rows and therefore the range of each index and C is the number of data channels for each index.
+
+* If values contains non-block-scaled data, then, this tensor-list must contain 1 element of shape [N, K, C].
+** The attribute block_size must equal BLOCK_SIZE_1.
+* If values contains block-scaled data types, then, this tensor-list must contain 2 elements.
+** The first element must be a tensor containing block-scaled data of shape [N, K, C] and the second element must be a tensor containing scales of shape [N, K, C / block_size].
+** block_size must be chosen from enum block_size_t.
+
+*Precision Requirements*
+
+Results must be exact.
+
+include::{generated}/operators/ROW_GATHER.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/ROW_GATHER.tosac[lines=10..-1]
 ----
 
 ==== SCATTER

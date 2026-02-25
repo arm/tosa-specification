@@ -72,6 +72,7 @@ class TOSAOperatorArgument:
         categories,
         ty,
         elty,
+        slty,
         shape,
         levellimits,
         rank,
@@ -85,6 +86,7 @@ class TOSAOperatorArgument:
         self.categories = categories
         self.type = ty
         self.tensor_element_type = elty
+        self.tensor_element_scale_type = slty
         self.shape = shape
         self.levellimits = levellimits
         self.rank = rank
@@ -240,6 +242,7 @@ class TOSASpec:
         argcats = []
         argtype = arg.get("type")
         argtelty = arg.get("tensor-element-type")
+        argtslty = arg.get("tensor-element-scale-type", "-")
         shape = arg.get("shape")
         levellimits = []
         rank = []
@@ -301,6 +304,7 @@ class TOSASpec:
             argcats,
             argtype,
             argtelty,
+            argtslty,
             shape,
             levellimits,
             rank,
