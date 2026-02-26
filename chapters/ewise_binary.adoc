@@ -311,7 +311,7 @@ Axis of size 1 will be broadcast, as necessary. Rank of input tensors must match
 ** If x or y is an infinity, the result is undefined.
 ** If x or y is a NaN, the result is undefined.
 ** If x < 0, the result is undefined.
-** If x == 0 and y <= 0, the result is undefined.
+** If x == 0 and y \<= 0, the result is undefined.
 ** If x == 0 and y > 0 then the result is 0.
 ** If x > 0 and y == 0 then the result is 1.
 ** Otherwise:
