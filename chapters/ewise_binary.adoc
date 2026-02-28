@@ -218,7 +218,7 @@ It indicates either propagating or ignoring NaN.
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
-** The sign of a zero is ignored.
+** The sign of a zero may be ignored.
 ** Infinities of the same sign compare as equal.
 ** In the NaN propagating mode, if either input value is a NaN, the result is NaN.
 ** In the NaN ignoring mode, if either input value is a NaN, the result is the non-NaN element.
@@ -250,7 +250,7 @@ It indicates either propagating or ignoring NaN.
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
-** The sign of a zero is ignored.
+** The sign of a zero may be ignored.
 ** Infinities of the same sign compare as equal.
 ** In the NaN propagating mode, if either input value is a NaN, the result is NaN.
 ** In the NaN ignoring mode, if either input value is a NaN, the result is the non-NaN element.

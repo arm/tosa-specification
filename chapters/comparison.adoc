@@ -20,7 +20,7 @@ Integer results must be exact.
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
-** The sign of a zero is ignored.
+** The sign of a zero may be ignored.
 ** Infinities of the same sign compare as equal.
 ** If either or both input values are a NaN, the result is false.
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
@@ -43,7 +43,7 @@ Integer results must be exact.
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
-** The sign of a zero is ignored.
+** The sign of a zero may be ignored.
 ** Infinities of the same sign compare as equal.
 ** If either or both input values are a NaN, the result is false.
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
@@ -66,7 +66,7 @@ Integer results must be exact.
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
-** The sign of a zero is ignored.
+** The sign of a zero may be ignored.
 ** Infinities of the same sign compare as equal.
 ** If either or both input values are a NaN, the result is false.
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
