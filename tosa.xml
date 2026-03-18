@@ -2896,6 +2896,90 @@
         </typesupport>
       </operator>
       <operator>
+        <name>RESHAPE_BLOCK_SCALED</name>
+        <arguments>
+          <argument category="input" name="input" type="tensor_list_t" shape="(value_shape1, scale_shape1)" tensor-element-type="in_out_t" tensor-element-scale-type="scale_t">
+            <description>Input tensor list with mandatory first element of values and an optional second element of scales.</description>
+            <levellimit value="rank(value_shape1)" limit="MAX_RANK"/>
+            <levellimit value="rank(scale_shape1)" limit="MAX_RANK"/>
+            <rank min="0" max="MAX_RANK"/>
+          </argument>
+          <argument category="input" name="new_value_shape" type="shape_t" shape="[rank(new_value_shape)]" tensor-element-type="-">
+            <description>shape_t giving the new shape.</description>
+            <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
+          </argument>
+          <argument category="attribute" name="block_size" type="block_size_t" shape="-" tensor-element-type="-">
+            <description>Block size for input[0] tensor</description>
+          </argument>
+          <argument category="output" name="output" type="tensor_list_t" shape="(value_shape2, scale_shape2)" tensor-element-type="in_out_t" tensor-element-scale-type="scale_t">
+            <description>Output tensor list of same type, size as the input tensor list.</description>
+            <levellimit value="rank(value_shape2)" limit="MAX_RANK"/>
+            <levellimit value="rank(scale_shape2)" limit="MAX_RANK"/>
+            <rank min="0" max="MAX_RANK"/>
+          </argument>
+        </arguments>
+        <types>
+          <type name='in_out_t'/>
+          <type name='scale_t'/>
+        </types>
+        <typesupport mode="Boolean" in_out_t="bool_t" scale_t="-" version_added="1.1">
+          <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-FP"/>
+        </typesupport>
+        <typesupport mode="signed 8" in_out_t="i8_t" scale_t="-" version_added="1.1">
+          <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 16" in_out_t="i16_t" scale_t="-" version_added="1.1">
+          <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 32" in_out_t="i32_t" scale_t="-" version_added="1.1">
+          <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 64" in_out_t="i64_t" scale_t="-" version_added="1.1">
+          <op_profile name="EXT-INT64"/>
+        </typesupport>
+        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" scale_t="-" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" scale_t="-" version_added="1.1">
+          <op_profile name="EXT-FP8E5M2"/>
+        </typesupport>
+        <typesupport mode="fp16" in_out_t="fp16_t" scale_t="-" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
+        <typesupport mode="bf16" in_out_t="bf16_t" scale_t="-" version_added="1.1">
+          <op_profile name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="fp32" in_out_t="fp32_t" scale_t="-" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
+        <typesupport mode="fp4e2m1 with fp8ue8m0 scale factor" in_out_t="fp4e2m1_t" scale_t="fp8ue8m0_t" version_added="1.1">
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP4E2M1"/>
+        </typesupport>
+        <typesupport mode="fp6e2m3 with fp8ue8m0 scale factor" in_out_t="fp6e2m3_t" scale_t="fp8ue8m0_t" version_added="1.1">
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E2M3"/>
+        </typesupport>
+        <typesupport mode="fp6e3m2 with fp8ue8m0 scale factor" in_out_t="fp6e3m2_t" scale_t="fp8ue8m0_t" version_added="1.1">
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E3M2"/>
+        </typesupport>
+        <typesupport mode="fp8e4m3 with fp8ue8m0 scale factor" in_out_t="fp8e4m3_t" scale_t="fp8ue8m0_t" version_added="1.1">
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E4M3"/>
+        </typesupport>
+        <typesupport mode="fp8e5m2 with fp8ue8m0 scale factor" in_out_t="fp8e5m2_t" scale_t="fp8ue8m0_t" version_added="1.1">
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E5M2"/>
+        </typesupport>
+        <typesupport mode="mxint8 with fp8ue8m0 scale factor" in_out_t="mxint8_t" scale_t="fp8ue8m0_t" version_added="1.1">
+          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-INT8"/>
+        </typesupport>
+      </operator>
+      <operator>
         <name>REVERSE</name>
         <arguments>
           <argument category="input" name="input1" type="tensor_t" shape="shape" tensor-element-type="in_out_t">

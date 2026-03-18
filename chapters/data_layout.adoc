@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2024, 2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -54,6 +54,24 @@ include::{generated}/operators/RESHAPE.adoc[]
 [source,c++]
 ----
 include::{pseudocode}/operators/RESHAPE.tosac[lines=10..-1]
+----
+
+==== RESHAPE_BLOCK_SCALED
+
+Returns a tensor-list with the same type/values as the input, with a new shape specified by the shape argument.
+Reshape may operate on block-scaled or non-block-scaled tensors of any rank.
+No data conversion happens during a reshape operation.
+Reshape must retain the relationship between values and their scale in a block for block-scaled content.
+
+*Precision Requirements*
+
+Results must be exact.
+
+include::{generated}/operators/RESHAPE_BLOCK_SCALED.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/RESHAPE_BLOCK_SCALED.tosac[lines=10..-1]
 ----
 
 ==== REVERSE
