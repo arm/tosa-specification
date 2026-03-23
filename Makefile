@@ -1,7 +1,7 @@
 #
 # This confidential and proprietary software may be used only as
 # authorised by a licensing agreement from ARM Limited
-# (C) COPYRIGHT 2020-2024 ARM Limited
+# (C) COPYRIGHT 2020-2024,2026 ARM Limited
 # ALL RIGHTS RESERVED
 # The entire notice above must be reproduced on all authorised
 # copies and copies may only be made to the extent permitted
@@ -81,8 +81,7 @@ out/lint.txt: $(SPECXML) $(SPECSCHEMA)
 $(GEN): $(SPECXML) $(GENSCRIPTS)
 	mkdir -p $(GENDIR)
 	tools/genspec.py --xml $(SPECXML) --outdir $(GENDIR) --profile
-	python3 tools/compliance_data_verifier.py --input $(GENDIR)/compliance.profile.meta
-	python3 tools/compliance_data_verifier.py --input $(GENDIR)/compliance.extension.meta
+	python3 tools/compliance_data_verifier.py --input $(GENDIR)/compliance.meta
 	@touch $@
 
 $(HTMLDIR)/tosa_spec.html: $(SPECSRC) $(SPECFILES) $(GEN) $(PSEUDOCODEFILES)

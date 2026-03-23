@@ -310,15 +310,14 @@ def export_operator(operator: TOSAOperator, file, print_mode: str) -> None:
 
 
 def print_profiles_extensions(spec, outdir):
-    with open(os.path.join(outdir, "compliance.profile.meta"), "w") as f:
-        f.write("const OperationProfileComplianceMap profileComplianceMap = {\n")
+    with open(os.path.join(outdir, "compliance.meta"), "w") as f:
+        f.write("profileComplianceMap = {\n")
         for group in spec.operatorgroups:
             for op in group.operators:
                 export_operator(op, f, "Profile")
         f.write("};\n\n")
 
-    with open(os.path.join(outdir, "compliance.extension.meta"), "w") as f:
-        f.write("const OperationExtensionComplianceMap extensionComplianceMap = {\n")
+        f.write("extensionComplianceMap = {\n")
         for group in spec.operatorgroups:
             for op in group.operators:
                 export_operator(op, f, "Extension")
