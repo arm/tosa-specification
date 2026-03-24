@@ -53,7 +53,7 @@ It indicates either propagating or ignoring NaN.
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
-** The sign of a zero is ignored.
+** The sign of a zero may be ignored.
 ** Infinities of the same sign compare as equal.
 ** In the NaN propagating mode, if any input value along the reduction axis is a NaN, the result is NaN.
 ** In the NaN ignoring mode, if all input values along the reduction axis are NaN, the result is NaN.
@@ -84,7 +84,7 @@ It indicates either propagating or ignoring NaN.
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
-** The sign of a zero is ignored.
+** The sign of a zero may be ignored.
 ** Infinities of the same sign compare as equal.
 ** In the NaN propagating mode, if any input value along the reduction axis is a NaN, the result is NaN.
 ** In the NaN ignoring mode, if all input values along the reduction axis are NaN, the result is NaN.

@@ -25,7 +25,7 @@ For floating-point input, the following rules apply:
 
 * In the NaN propagating mode, NaN values always compare as greater than non-NaN values.
 * In the NaN ignoring mode, NaN values always compare as less than non-NaN values.
-* The sign of zero is ignored when comparing values.
+* The sign of a zero may be ignored when comparing values.
 * Infinities of the same sign compare as equal.
 * All NaN values compare as equal to other NaN values.
 
@@ -265,7 +265,7 @@ It indicates either propagating or ignoring NaN.
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
-** The sign of a zero is ignored.
+** The sign of a zero may be ignored.
 ** Infinities of the same sign compare as equal.
 ** In the NaN propagating mode, if any input in the window is a NaN then the result must be NaN.
 ** In the NaN ignoring mode, if all inputs in the window are NaN, the result is NaN.
@@ -297,7 +297,7 @@ It indicates either propagating or ignoring NaN.
 The following rules apply to floating-point inputs:
 
 * Comparison rules:
-** The sign of a zero is ignored.
+** The sign of a zero may be ignored.
 ** Infinities of the same sign compare as equal.
 ** In the NaN propagating mode, if any input in the window is a NaN then the result must be NaN.
 ** In the NaN ignoring mode, if all inputs in the window are NaN, the result is NaN.
