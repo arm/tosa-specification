@@ -19,38 +19,38 @@ ERROR_IF((input_len == 1) && (block_size != 1));
 ERROR_IF((input_len == 2) && (block_size == 1));
 
 // Value count must stay the same
-ERROR_IF(tensor_size(value1_shape) != tensor_size(new_value_shape));
+ERROR_IF(tensor_size(value_shape1) != tensor_size(new_value_shape));
 
 if (2 == input_len) {
     // Rank-0 not allowed for block-scaling
-    ERROR_IF(rank(value1_shape) == 0 || rank(new_value_shape) == 0);
+    ERROR_IF(rank(value_shape1) == 0 || rank(new_value_shape) == 0);
 
     // Rank of both inputs must be the same
-    ERROR_IF(rank(value1_shape) != rank(scale1_shape));
+    ERROR_IF(rank(value_shape1) != rank(scale_shape1));
 
     // Get last dimension in each value shape
-    shape_t value1_shape_last = value1_shape[-1];
+    shape_t value_shape1_last = value_shape1[-1];
     shape_t new_value_shape_last = new_value_shape[-1];
 
     // Last dimension of values must be a multiple of block_size
-    ERROR_IF((value1_shape_last % block_size) != 0);
+    ERROR_IF((value_shape1_last % block_size) != 0);
     ERROR_IF((new_value_shape_last % block_size) != 0);
 
     // Last dimension of scale must be block_size multiple of last dimension of values
-    ERROR_IF(scale1_shape[-1] != (value1_shape_last / block_size));
+    ERROR_IF(scale_shape1[-1] != (value_shape1_last / block_size));
 
     // Calculate new scale output shape
     shape_t new_scale_shape = new_value_shape;
     new_scale_shape[-1] = apply_intdiv_s(new_value_shape_last, block_size);
 
     // Scale count must stay the same
-    ERROR_IF(tensor_size(scale1_shape) != tensor_size(new_scale_shape));
+    ERROR_IF(tensor_size(scale_shape1) != tensor_size(new_scale_shape));
 }
 
 
 for(0 <= i < input_len) {
 
-    shape_t in_shape = (0 == i) ? value1_shape : scale1_shape;
+    shape_t in_shape = (0 == i) ? value_shape1 : scale_shape1;
     shape_t out_shape = (0 == i) ? new_value_shape : new_scale_shape;
     using in_dtype = (0 == i) ? in_out_t : scale_t;
 
