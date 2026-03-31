@@ -3307,7 +3307,7 @@ used.</description>
         </typesupport>
       </operator>
       <operator>
-        <name>ROW_GATHER</name>
+        <name>ROW_GATHER_BLOCK_SCALED</name>
         <arguments>
           <argument category="input" name="values" type="tensor_list_t" shape="shape" tensor-element-type="in_out_t" tensor-element-scale-type="scale_t">
             <description>A tensor_list_t with a mandatory first element of shape [N,K,C] and an optional second element of shape [N,K,C/block_size]</description>
