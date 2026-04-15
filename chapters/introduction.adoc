@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2025 ARM Limited
+// (C) COPYRIGHT 2020-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -361,7 +361,7 @@ The conformance tests are not exhaustive, so an implementation that passes the c
 
 The <<Operator Graphs>> section of this specification defines a TOSA graph and the behavior defined for a TOSA graph.
 This behavior is captured in the pseudocode function tosa_execute_graph().
-For a given input graph (with attributes) and input tensors there are three possible tosa_graph_result values after executing the graph:
+For a given input graph (with attributes) and input tensors there are three possible graph_result values after executing the graph:
 
 * tosa_unpredictable: The result of the graph on the given inputs cannot be relied upon.
 * tosa_error: The graph does not meet the specification and is recognised as an illegal graph.
@@ -369,7 +369,7 @@ For a given input graph (with attributes) and input tensors there are three poss
 
 An implementation must behave as follows given the above tosa_graph result values:
 
-* For tosa_unpredictable, the implementation can return whatever result it chooses (including error)
+* For tosa_unpredictable, the implementation can return whatever result it chooses (including error), but must not write outside the bounds of any tensors involved in execution.
 * For tosa_error, the implementation must return an error result (and there is no requirement on how much of the graph is executed, if any).
 * For tosa_valid, the implementation must execute the entire graph without error and return the result defined by this specification.
 
@@ -377,23 +377,24 @@ In terms of pseudocode, if *graph* is a TOSA graph consisting of TOSA operators 
 
 [source,c++]
 ----
-// Global result status value
-// Will be updated by REQUIRE and ERROR_IF statements when evaluating the TOSA graph
-tosa_result_t tosa_graph_result;
 // Tracks the nesting depth of TOSA operators to allow a limit on nesting depth to be checked.
 int32_t tosa_nesting_depth;
 
 bool_t tosa_test_compliance(tosa_graph_t graph, tensor_list_t input_list, tosa_level_t level) {
     shape_list_t output_list_spec = tosa_allocate_list(tosa_output_shape(graph));
     shape_list_t output_list_test = tosa_allocate_list(tosa_output_shape(graph));
-    tosa_graph_result = tosa_valid;    // result starts as valid
     tosa_nesting_depth = 0;            // if/while nesting level
-    tosa_execute_graph(graph, input_list, output_list_spec, level);
-    if (tosa_graph_result == tosa_unpredictable) {
+
+    // Result status value
+    // REQUIRE and ERROR_IF statements update the graph result value
+    tosa_result_t graph_result = tosa_valid;
+
+    graph_result = tosa_execute_graph(graph, input_list, output_list_spec, level, graph_result);
+    if (graph_result == tosa_unpredictable) {
         return true;    // No requirement to match an unpredictable result
     }
     result_test = execute_implementation_under_test(graph, input_list, output_list_test);
-    if (tosa_graph_result == tosa_error) {
+    if (graph_result == tosa_error) {
         return result_test == tosa_error;   // result must be an error
     }
     if (exact_tensor_match(output_list_spec, output_list_test)) {

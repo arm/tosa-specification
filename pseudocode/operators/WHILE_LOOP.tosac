@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2024,2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -23,11 +23,11 @@ tensor_list_t list[];    // array of tensor lists indexed by iteration
 bool_t *condition[];     // array of condition tensors indexed by iteration
 list[i] = input_list;    // copy input data as list[0]
 tosa_nesting_depth++;
-tosa_execute_graph(cond_graph, list[i], [ condition[i] ]);   // initial condition
+graph_result = tosa_execute_graph(cond_graph, list[i], [ condition[i] ], level, graph_result);   // initial condition
 while (condition[i][0]) {
-    tosa_execute_graph(body_graph, list[i], list[i+1]);
+    graph_result = tosa_execute_graph(body_graph, list[i], list[i+1], level, graph_result);
     i = i+1;
-    tosa_execute_graph(cond_graph, list[i], [ condition[i] ]);
+    graph_result = tosa_execute_graph(cond_graph, list[i], [ condition[i] ], level, graph_result);
 }
 tosa_nesting_depth--;
 output_list = list[i];
