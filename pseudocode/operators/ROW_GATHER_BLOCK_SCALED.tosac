@@ -19,9 +19,11 @@ ERROR_IF((values_len == 1) && (block_size != 1));
 // block-scaled must NOT use block_size=1
 ERROR_IF((values_len == 2) && (block_size == 1));
 
+ERROR_IF(row_count < 1);
+
 for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
     index_t k = tensor_read<index_t>(indices, [N, W], [n, w]);
-    REQUIRE(0 <= k && (k+row_count) < K);
+    REQUIRE(0 <= k && (k+row_count) <= K);
 
     for(0 <= r < row_count) {
       in_out_t value = tensor_read<in_out_t>(values[0], [N, K, C], [n, k+r, c]);
@@ -32,7 +34,7 @@ for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
 if(values_len == 2) {
     for_each(0 <= n < N, 0 <= w < W, 0 <= c < C/block_size) {
         index_t k = tensor_read<index_t>(indices, [N, W], [n, w]);
-        REQUIRE(0 <= k && (k+row_count) < K);
+        REQUIRE(0 <= k && (k+row_count) <= K);
 
         for(0 <= r < row_count) {
             scale_t value = tensor_read<scale_t>(values[1], [N, K, C/block_size], [n, k+r, c]);
