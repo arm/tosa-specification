@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2021,2024 ARM Limited
+// (C) COPYRIGHT 2020-2021,2024,2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -25,6 +25,7 @@ Arguments belong to one of three categories: Input, Output, or Attribute. The ca
 * An Input argument must be a tensor or a list of tensors used to provide the data read by the operation.
 * An Attribute argument is constant, its value is always known at compilation time.
 * An Output argument must be a tensor or a list of tensors into which the data produced by the operation is written.
+** The shape of each output argument must be derivable from operator input arguments and attributes so that the required output storage is known before execution.
 
 Profiles may restrict a set of inputs and/or outputs to be known (constant) at compile time.
 Compile time is defined as the time at which TOSA operators are converted to implementation specific commands prior to execution.
@@ -74,7 +75,7 @@ implementation-defined order that must be a topological ordering of the TOSA gra
 
 [source,c++]
 ----
-tosa_execute_graph(tosa_context_t context, tosa_graph_t graph, tensor_list_t input_list, tensor_list_t output_list, tosa_level_t level) {
+tosa_result_t tosa_execute_graph(tosa_context_t context, tosa_graph_t graph, tensor_list_t input_list, tensor_list_t output_list, tosa_level_t level, tosa_result_t graph_result) {
     ERROR_IF(tensor_list_shape(input_list) != tosa_input_shape(graph));
     ERROR_IF(tensor_list_shape(output_list) != tosa_output_shape(graph));
 
@@ -93,8 +94,10 @@ tosa_execute_graph(tosa_context_t context, tosa_graph_t graph, tensor_list_t inp
         ERROR_IF(operator output tensors do not meet requirement of operator Arguments outputs)
         ERROR_IF(operator data types do not meet requirement of operator Supported Data Types)
         // Execute the operator as defined by the operation function pseduo-code
-        tosa_execute_operator(context, operator, level);
+        graph_result = tosa_execute_operator(context, operator, level, graph_result);
     }
+
+    return graph_result;
 }
 ----
 

@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2021-2025 ARM Limited
+// (C) COPYRIGHT 2021-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -59,7 +59,7 @@ The following functions are used to define the valid conditions for TOSA operato
 
 The REQUIRE function defines the conditions required by the TOSA operator.
 If the conditions are not met then the result of the TOSA graph is marked as unpredictable.
-Once the tosa_graph_result is set to tosa_unpredictable, the whole graph is considered unpredictable.
+Once the graph_result is set to tosa_unpredictable, the whole graph is considered unpredictable.
 
 The ERROR_IF function defines a condition that must set an error if the condition holds and the graph is not unpredictable.
 Note that if a graph contains both unpredictable and error statements then result of tosa_execute_graph() is tosa_unpredictable.
@@ -74,25 +74,36 @@ This condition is captured in the ERROR_IF function.
 
 [source,c++]
 ----
-void REQUIRE(condition) {
+define REQUIRE(condition) \
+    graph_result = REQUIRE_IMPL(condition, graph_result);
+
+tosa_result_t REQUIRE_IMPL(condition, tosa_result_t graph_result) {
     // Unpredictable overrides any previous result
     if (!(condition)) {
-        tosa_graph_result = tosa_unpredictable;
+        graph_result = tosa_unpredictable;
     }
+    return graph_result;
 }
 
-void ERROR_IF(condition) {
+define ERROR_IF(condition) \
+    graph_result = ERROR_IF_IMPL(condition, graph_result);
+
+tosa_result_t ERROR_IF_IMPL(condition, tosa_result_t graph_result) {
     // Error encodes a predictable error state and so is not registered
     // if the graph is marked as unpredictable.
-    if (tosa_graph_result != tosa_unpredictable && condition) {
-        tosa_graph_result = tosa_error;
+    if (graph_result != tosa_unpredictable && condition) {
+        graph_result = tosa_error;
     }
+    return graph_result;
 }
 
-void LEVEL_CHECK(condition) {
+define LEVEL_CHECK(condition) \
+    graph_result = LEVEL_CHECK_IMPL(condition, graph_result);
+
+tosa_result_t LEVEL_CHECK_IMPL(condition, tosa_result_t graph_result) {
     // If a level is specified and the level condition fails then
     // the result is unpredictable.
-    REQUIRE(condition);
+    return REQUIRE_IMPL(condition, graph_result);
 }
 ----
 
