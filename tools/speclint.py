@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2023-2024, ARM Limited.
+# Copyright (c) 2023-2026, ARM Limited.
 # SPDX-License-Identifier: Apache-2.0
 import tosa
 
@@ -49,11 +49,12 @@ class TOSASpecLinter:
     def lint_typesupport(self, typesupport, op):
         # Check that all types are defined for each typesupport
         # and that there are no extras
-        for t in typesupport.tymap:
-            if typesupport.tymap[t] is None:
-                self.WARN(
-                    f"Operator {op.name} mode {typesupport.mode} type {t} not found"
-                )
+        for tytuple in typesupport.generated_tuples:
+            for t in tytuple:
+                if tytuple[t] is None:
+                    self.WARN(
+                        f"Operator {op.name} mode {typesupport.mode} type {t} not found"
+                    )
         known_keys = ["mode", "version_added"]
         for k in typesupport.tskeys:
             if k not in known_keys and k not in op.types:

@@ -376,6 +376,15 @@ Signed zero must be supported.
 | -2
 | +1 + 63/64
 | 8-bit integer format with an implicit 1/64 scale defined by <<OCP-MX,OCP-MX>>. +
+
+|block_scale_t<block_size_t block_size, scale_t, value_t>.
+|-
+|-
+| Block scaled type. +
+This does not specify an implementation type. +
+A tensor of this type is a tensor which has block-scaled quantization applied. +
+The type is made up of 3 components: block_size_t, scale_t, value_t. +
+Each of these types will be made evident in an Operator where they are used.
 |===
 
 Note: In this specification, minimum<type> and maximum<type> will denote the minimum and maximum values of the data as stored in memory (ignoring the zero point).
@@ -384,6 +393,105 @@ The minimum and maximum values for each type are given in the preceding table.
 Note: Integer number formats smaller than 8 bits may be used provided that the numerical result is the same as using a sequence of 8-bit TOSA operations.
 For example, the result of a convolution with low precision data must equal that of running the convolution at 8 bits and then clipping the result to the permitted output range.
 This ensures that an Integer profile TOSA implementation can calculate the same result.
+
+.Supported Number Format Sets
+[cols="1,2,2,2,3,5"]
+|===
+|Set|Template|Allowed block_size_t|Allowed scale_t|Allowed value_t|Resulting block scaled data types
+
+|bs32_fp8ue8m0_set_t
+|`block_scale_t<block_size_t block_size, scale_t, value_t>`
+|`BLOCK_SIZE_32`
+|`fp8ue8m0_t`
+|`fp8e4m3_t`, `fp8e5m2_t`, `fp6e3m2_t`, `fp6e2m3_t`, `fp4e2m1_t`, `mxint8_t`
+|A new data type is formed by instantiating the template with an allowed choice of `block_size_t`, `scale_t`, and `value_t`. +
+The resulting data type is named `bs<block size>_<scale type>_<value type>_t` where block size is the integer block size, scale type is scale_t without the _t suffix, and value type is the value_t without the _t suffix. +
+The set of allowed block scaled data types is: +
+`bs32_fp8ue8m0_fp8e4m3_t`, +
+`bs32_fp8ue8m0_fp8e5m2_t`, +
+`bs32_fp8ue8m0_fp6e3m2_t`, +
+`bs32_fp8ue8m0_fp6e2m3_t`, +
+`bs32_fp8ue8m0_fp4e2m1_t`, +
+`bs32_fp8ue8m0_mxint8_t`.
+|===
+
+==== Extension Data Type Mapping
+
+`DEDUCE-EXT` is a marker used in Supported Data Types tables when the required
+extension set is deduced from the concrete input and output data types.
+The following table lists data types introduced by TOSA extensions and the
+extension set deduced for each data type.
+
+.Extension Data Type Mapping
+[width=99]
+|===
+|Data type |Deduced extension(s)
+
+|i64_t
+|EXT-INT64
+
+|i16_t
+|EXT-INT16
+
+|i4_t
+|EXT-INT4
+
+|bf16_t
+|EXT-BF16
+
+|fp8e4m3_t
+|EXT-FP8E4M3
+
+|fp8e5m2_t
+|EXT-FP8E5M2
+
+|fp8ue8m0_t
+|EXT-MX-COMMON
+
+|fp4e2m1_t
+|EXT-MX-FP4E2M1
+
+|fp6e2m3_t
+|EXT-MX-FP6E2M3
+
+|fp6e3m2_t
+|EXT-MX-FP6E3M2
+
+|mxint8_t
+|EXT-MX-INT8
+|===
+
+The following table lists the composite block-scaled data types derived from the supported number format sets.
+
+.Composite Block-Scaled Type Mapping
+[width=99]
+|===
+|Composite data type |Template instantiation |Deduced extension(s)
+
+|bs32_fp8ue8m0_fp8e4m3_t
+|`block_scale_t<BLOCK_SIZE_32, fp8ue8m0_t, fp8e4m3_t>`
+|EXT-MX-COMMON and EXT-MX-FP8E4M3
+
+|bs32_fp8ue8m0_fp8e5m2_t
+|`block_scale_t<BLOCK_SIZE_32, fp8ue8m0_t, fp8e5m2_t>`
+|EXT-MX-COMMON and EXT-MX-FP8E5M2
+
+|bs32_fp8ue8m0_fp6e3m2_t
+|`block_scale_t<BLOCK_SIZE_32, fp8ue8m0_t, fp6e3m2_t>`
+|EXT-MX-COMMON and EXT-MX-FP6E3M2
+
+|bs32_fp8ue8m0_fp6e2m3_t
+|`block_scale_t<BLOCK_SIZE_32, fp8ue8m0_t, fp6e2m3_t>`
+|EXT-MX-COMMON and EXT-MX-FP6E2M3
+
+|bs32_fp8ue8m0_fp4e2m1_t
+|`block_scale_t<BLOCK_SIZE_32, fp8ue8m0_t, fp4e2m1_t>`
+|EXT-MX-COMMON and EXT-MX-FP4E2M1
+
+|bs32_fp8ue8m0_mxint8_t
+|`block_scale_t<BLOCK_SIZE_32, fp8ue8m0_t, mxint8_t>`
+|EXT-MX-COMMON and EXT-MX-INT8
+|===
 
 === Compliance
 

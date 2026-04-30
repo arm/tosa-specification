@@ -911,6 +911,79 @@
         </typesupport>
       </operator>
       <operator>
+        <name>MATMUL_T</name>
+        <arguments>
+          <argument category="input" name="A" type="tensor_t" shape="[N,H,C]" tensor-element-type="A_t">
+            <description>Input tensor A, N matrices of size HxC</description>
+            <rank min="3" max="3"/>
+          </argument>
+          <argument category="input" name="B" type="tensor_t" shape="[D,W,C]" tensor-element-type="B_t">
+            <description>Input tensor B, D matrices of size WxC. D must be either 1 or N. If D is 1, B is broadcast.</description>
+            <rank min="3" max="3"/>
+          </argument>
+          <argument category="input" name="A_zp" type="tensor_t" shape="[1]" tensor-element-type="i8_t">
+            <description>Input tensor A zero point. Must be zero unless A_t is i8_t.</description>
+            <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
+          </argument>
+          <argument category="input" name="B_zp" type="tensor_t" shape="[1]" tensor-element-type="i8_t">
+            <description>Input tensor B zero point. Must be zero unless B_t is i8_t.</description>
+            <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+            <ctc_remove>
+              <op_profile name="EXT-DYNAMIC"/>
+            </ctc_remove>
+          </argument>
+          <argument category="output" name="output" type="tensor_t" shape="[N,H,W]" tensor-element-type="out_t">
+            <description>Output tensor, N matrices of size HxW</description>
+            <rank min="3" max="3"/>
+          </argument>
+        </arguments>
+        <types>
+          <type name='A_t' />
+          <type name='B_t' />
+          <type name='out_t' />
+        </types>
+        <typesupport mode="signed 8x8 with int32 accumulate" A_t="i8_t" B_t="i8_t" out_t="i32_t" version_added="1.1">
+          <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 16x16 with int48 accumulate" A_t="i16_t" B_t="i16_t" out_t="i48_t" version_added="1.1">
+          <op_profile name="EXT-INT16"/>
+        </typesupport>
+        <typesupport mode="Mixed precision fp with fp16 accumulate" out_t="fp16_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S1_IN" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_bind type="A_t" set="S1_IN"/>
+          <type_bind type="B_t" set="S1_IN"/>
+        </typesupport>
+        <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S2_IN" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
+          <type_bind type="A_t" set="S2_IN"/>
+          <type_bind type="B_t" set="S2_IN"/>
+        </typesupport>
+        <typesupport mode="fp16xfp16 with fp16/fp32 accumulate" A_t="fp16_t" B_t="fp16_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+          <type_set name="S_FP16_OUT" values="fp16_t fp32_t"/>
+          <type_bind type="out_t" set="S_FP16_OUT"/>
+        </typesupport>
+        <typesupport mode="bf16xbf16 with fp32 accumulate" A_t="bf16_t" B_t="bf16_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-BF16"/>
+        </typesupport>
+        <typesupport mode="fp32xfp32 with fp32 accumulate" A_t="fp32_t" B_t="fp32_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
+      </operator>
+      <operator>
         <name>MATMUL_T_BLOCK_SCALED</name>
         <arguments>
           <argument category="input" name="A_data" type="tensor_t" shape="[N,H,C]" tensor-element-type="A_t">

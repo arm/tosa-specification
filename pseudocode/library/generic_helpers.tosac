@@ -97,3 +97,19 @@ bool_t is_an_Inf(in_t value);
 
 // return true if value is a normal fp64 value (Not zero, subnormal, infinite or NaN)
 bool_t is_normal_fp64(fp64_t value);
+
+// Return if type has a member scale_t
+bool_t has_scale_t<in_t>();
+
+// Return if type has a member value_t
+bool_t has_value_t<in_t>();
+
+// Return true if this is valid construction of a block scaled tensor
+// Valid types are listed in an Operator's "Supported Data Types" section.
+bool_t is_valid_block_scale<in_t>();
+
+// Return true if a type is the logical type block_scale_t
+bool_t is_block_scale<in_t>() {
+    return ((has_value_t<in_t>() && has_scale_t<in_t>()) // must have members scale_t and value_t
+    && is_valid_block_scale<in_t>()) // must be a valid block scaled tensor type as allowed by the spec
+}
