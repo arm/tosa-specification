@@ -53,6 +53,53 @@ else {
 }
 ----
 
+=== for_data_positions
+
+The TOSA pseudocode uses the `for_data_positions` to execute a body over data positions.
+It will start from the first position in the shape and advance `step` distance each iteration until iterating index remains valid.
+If the shape is empty, the body is executed a single time with the index being the empty list
+
+[source,c++]
+----
+// shape must be of type shape_t
+for_data_positions(index in shape; step = s) {
+    // body statements
+}
+----
+
+is executed as
+
+[source,c++]
+----
+if (shape == []) {
+    // Execute body statements with index == []
+}
+else {
+    // Execute body statements with index, starting from the first position and
+    // advancing `step` positions in each iteration,
+    // until the iterating index remains valid.
+}
+----
+
+=== next(iterator, d)
+
+The TOSA pseudocode uses the `next` to access an iterator over `d` distance from current position.
+
+[source,c++]
+----
+// d must be a distance applicable on iterator
+next(iterator, d)
+----
+
+is executed as
+
+[source,c++]
+----
+next(iterator, d) {
+    // Return (iterator + d)
+}
+----
+
 === Operator Validation Helpers
 
 The following functions are used to define the valid conditions for TOSA operators.

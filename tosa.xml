@@ -3713,161 +3713,110 @@ used.</description>
           <type name='in_t'/>
           <type name='out_t'/>
         </types>
-        <typesupport mode="bool to signed 8" in_t="bool_t" out_t="i8_t" version_added="1.0">
+        <typesupport mode="bool to signed" in_t="bool_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
+          <type_set name="S_CAST_SIGNED" values="i8_t i16_t i32_t"/>
+          <type_bind type="out_t" set="S_CAST_SIGNED"/>
         </typesupport>
-        <typesupport mode="bool to signed 16" in_t="bool_t" out_t="i16_t" version_added="1.0">
-          <op_profile name="PRO-INT"/>
-        </typesupport>
-        <typesupport mode="bool to signed 32" in_t="bool_t" out_t="i32_t" version_added="1.0">
-          <op_profile name="PRO-INT"/>
-        </typesupport>
-        <typesupport mode="bool to signed 64" in_t="bool_t" out_t="i64_t" version_added="1.1">
+        <typesupport mode="to signed 64" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
+          <type_set name="S_CAST_BOOL_I32" values="bool_t i32_t"/>
+          <type_bind type="in_t" set="S_CAST_BOOL_I32"/>
         </typesupport>
         <typesupport mode="bool to fp32" in_t="bool_t" out_t="fp32_t" version_added="1.1">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="signed 8 to bool" in_t="i8_t" out_t="bool_t" version_added="1.0">
+
+        <typesupport mode="signed to bool" out_t="bool_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
+          <type_set name="S_CAST_SIGNED" values="i8_t i16_t i32_t"/>
+          <type_bind type="in_t" set="S_CAST_SIGNED"/>
         </typesupport>
-        <typesupport mode="signed 8 to signed 16" in_t="i8_t" out_t="i16_t" version_added="1.0">
-          <op_profile name="PRO-INT"/>
-        </typesupport>
-        <typesupport mode="signed 8 to signed 32" in_t="i8_t" out_t="i32_t" version_added="1.0">
-          <op_profile name="PRO-INT"/>
-        </typesupport>
-        <typesupport mode="signed 8 to fp16" in_t="i8_t" out_t="fp16_t" version_added="1.0">
-          <op_profile name="PRO-FP"/>
-        </typesupport>
-        <typesupport mode="signed 8 to bf16" in_t="i8_t" out_t="bf16_t" version_added="1.0">
-          <op_profile name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="signed 8 to fp32" in_t="i8_t" out_t="fp32_t" version_added="1.0">
-          <op_profile name="PRO-FP"/>
-        </typesupport>
-        <typesupport mode="signed 16 to bool" in_t="i16_t" out_t="bool_t" version_added="1.0">
-          <op_profile name="PRO-INT"/>
-        </typesupport>
-        <typesupport mode="signed 16 to signed 8" in_t="i16_t" out_t="i8_t" version_added="1.0">
-          <op_profile name="PRO-INT"/>
-        </typesupport>
-        <typesupport mode="signed 16 to signed 32" in_t="i16_t" out_t="i32_t" version_added="1.0">
-          <op_profile name="PRO-INT"/>
-        </typesupport>
-        <typesupport mode="signed 16 to fp16" in_t="i16_t" out_t="fp16_t" version_added="1.0">
-          <op_profile name="PRO-FP"/>
-        </typesupport>
-        <typesupport mode="signed 16 to bf16" in_t="i16_t" out_t="bf16_t" version_added="1.0">
-          <op_profile name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="signed 16 to fp32" in_t="i16_t" out_t="fp32_t" version_added="1.0">
-          <op_profile name="PRO-FP"/>
-        </typesupport>
-        <typesupport mode="signed 32 to bool" in_t="i32_t" out_t="bool_t" version_added="1.0">
-          <op_profile name="PRO-INT"/>
-        </typesupport>
-        <typesupport mode="signed 64 to bool" in_t="i64_t" out_t="bool_t" version_added="1.1">
+        <typesupport mode="signed 64 to bool/i32" in_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
+          <type_set name="S_CAST_BOOL_I32" values="bool_t i32_t"/>
+          <type_bind type="out_t" set="S_CAST_BOOL_I32"/>
         </typesupport>
-        <typesupport mode="signed 32 to signed 8" in_t="i32_t" out_t="i8_t" version_added="1.0">
+
+        <typesupport mode="signed 8 to signed wider" in_t="i8_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
+          <type_set name="S_CAST_I16_I32" values="i16_t i32_t"/>
+          <type_bind type="out_t" set="S_CAST_I16_I32"/>
         </typesupport>
-        <typesupport mode="signed 32 to signed 16" in_t="i32_t" out_t="i16_t" version_added="1.0">
+        <typesupport mode="signed 16 to signed 8/32" in_t="i16_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
+          <type_set name="S_CAST_I8_I32" values="i8_t i32_t"/>
+          <type_bind type="out_t" set="S_CAST_I8_I32"/>
         </typesupport>
-        <typesupport mode="signed 32 to signed 64" in_t="i32_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-INT64"/>
+        <typesupport mode="signed 32 to signed narrower" in_t="i32_t" version_added="1.0">
+          <op_profile name="PRO-INT"/>
+          <type_set name="S_CAST_I8_I16" values="i8_t i16_t"/>
+          <type_bind type="out_t" set="S_CAST_I8_I16"/>
         </typesupport>
-        <typesupport mode="signed 64 to signed 32" in_t="i64_t" out_t="i32_t" version_added="1.1">
-          <op_profile name="EXT-INT64"/>
-        </typesupport>
-        <typesupport mode="signed 32 to fp16" in_t="i32_t" out_t="fp16_t" version_added="1.0">
+
+        <typesupport mode="signed to fp16/fp32" version_added="1.0">
           <op_profile name="PRO-FP"/>
+          <type_set name="S_CAST_SIGNED" values="i8_t i16_t i32_t"/>
+          <type_set name="S_CAST_FP16_FP32" values="fp16_t fp32_t"/>
+          <type_bind type="in_t" set="S_CAST_SIGNED"/>
+          <type_bind type="out_t" set="S_CAST_FP16_FP32"/>
         </typesupport>
-        <typesupport mode="signed 32 to bf16" in_t="i32_t" out_t="bf16_t" version_added="1.0">
-          <op_profile name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="signed 32 to fp32" in_t="i32_t" out_t="fp32_t" version_added="1.0">
+        <typesupport mode="fp16/fp32 to signed" version_added="1.0">
           <op_profile name="PRO-FP"/>
-        </typesupport>
-        <typesupport mode="bf16 to signed 8" in_t="bf16_t" out_t="i8_t" version_added="1.0">
-          <op_profile name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="bf16 to signed 16" in_t="bf16_t" out_t="i16_t" version_added="1.0">
-          <op_profile name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="bf16 to signed 32" in_t="bf16_t" out_t="i32_t" version_added="1.0">
-          <op_profile name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="bf16 to fp8e4m3" in_t="bf16_t" out_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-BF16" and_name="EXT-FP8E4M3"/>
-        </typesupport>
-        <typesupport mode="bf16 to fp8e5m2" in_t="bf16_t" out_t="fp8e5m2_t" version_added="1.0">
-          <op_profile name="EXT-BF16" and_name="EXT-FP8E5M2"/>
-        </typesupport>
-        <typesupport mode="bf16 to fp32" in_t="bf16_t" out_t="fp32_t" version_added="1.0">
-          <op_profile name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="fp8e4m3 to fp16" in_t="fp8e4m3_t" out_t="fp16_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
-        </typesupport>
-        <typesupport mode="fp8e4m3 to bf16" in_t="fp8e4m3_t" out_t="bf16_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3" and_name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="fp8e4m3 to fp32" in_t="fp8e4m3_t" out_t="fp32_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
-        </typesupport>
-        <typesupport mode="fp8e5m2 to fp16" in_t="fp8e5m2_t" out_t="fp16_t" version_added="1.0">
-          <op_profile name="EXT-FP8E5M2"/>
-        </typesupport>
-        <typesupport mode="fp8e5m2 to bf16" in_t="fp8e5m2_t" out_t="bf16_t" version_added="1.0">
-          <op_profile name="EXT-FP8E5M2" and_name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="fp8e5m2 to fp32" in_t="fp8e5m2_t" out_t="fp32_t" version_added="1.0">
-          <op_profile name="EXT-FP8E5M2"/>
-        </typesupport>
-        <typesupport mode="fp16 to signed 8" in_t="fp16_t" out_t="i8_t" version_added="1.0">
-          <op_profile name="PRO-FP"/>
-        </typesupport>
-        <typesupport mode="fp16 to signed 16" in_t="fp16_t" out_t="i16_t" version_added="1.0">
-          <op_profile name="PRO-FP"/>
-        </typesupport>
-        <typesupport mode="fp16 to signed 32" in_t="fp16_t" out_t="i32_t" version_added="1.0">
-          <op_profile name="PRO-FP"/>
-        </typesupport>
-        <typesupport mode="fp16 to fp8e4m3" in_t="fp16_t" out_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
-        </typesupport>
-        <typesupport mode="fp16 to fp8e5m2" in_t="fp16_t" out_t="fp8e5m2_t" version_added="1.0">
-          <op_profile name="EXT-FP8E5M2"/>
+          <type_set name="S_CAST_FP16_FP32" values="fp16_t fp32_t"/>
+          <type_set name="S_CAST_SIGNED" values="i8_t i16_t i32_t"/>
+          <type_bind type="in_t" set="S_CAST_FP16_FP32"/>
+          <type_bind type="out_t" set="S_CAST_SIGNED"/>
         </typesupport>
         <typesupport mode="fp16 to fp32" in_t="fp16_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
-        </typesupport>
-        <typesupport mode="fp32 to signed 8" in_t="fp32_t" out_t="i8_t" version_added="1.0">
-          <op_profile name="PRO-FP"/>
-        </typesupport>
-        <typesupport mode="fp32 to signed 16" in_t="fp32_t" out_t="i16_t" version_added="1.0">
-          <op_profile name="PRO-FP"/>
-        </typesupport>
-        <typesupport mode="fp32 to signed 32" in_t="fp32_t" out_t="i32_t" version_added="1.0">
-          <op_profile name="PRO-FP"/>
-        </typesupport>
-        <typesupport mode="fp32 to fp8e4m3" in_t="fp32_t" out_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
-        </typesupport>
-        <typesupport mode="fp32 to fp8e5m2" in_t="fp32_t" out_t="fp8e5m2_t" version_added="1.0">
-          <op_profile name="EXT-FP8E5M2"/>
-        </typesupport>
-        <typesupport mode="fp32 to bf16" in_t="fp32_t" out_t="bf16_t" version_added="1.0">
-          <op_profile name="EXT-BF16"/>
         </typesupport>
         <typesupport mode="fp32 to fp16" in_t="fp32_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="fp32 to bool" in_t="fp32_t" out_t="bool_t" version_added="1.1">
           <op_profile name="PRO-FP"/>
+        </typesupport>
+
+        <typesupport mode="to bf16" out_t="bf16_t" version_added="1.0">
+          <op_profile name="EXT-BF16"/>
+          <type_set name="S_CAST_SIGNED_FP32" values="i8_t i16_t i32_t fp32_t"/>
+          <type_bind type="in_t" set="S_CAST_SIGNED_FP32"/>
+        </typesupport>
+        <typesupport mode="bf16 to signed/fp32" in_t="bf16_t" version_added="1.0">
+          <op_profile name="EXT-BF16"/>
+          <type_set name="S_CAST_SIGNED_FP32" values="i8_t i16_t i32_t fp32_t"/>
+          <type_bind type="out_t" set="S_CAST_SIGNED_FP32"/>
+        </typesupport>
+
+        <typesupport mode="fp to fp8" version_added="1.0">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S_CAST_FP_TO_FP8_IN" values="bf16_t fp16_t fp32_t"/>
+          <type_set name="S_CAST_FP8" values="fp8e4m3_t fp8e5m2_t"/>
+          <type_bind type="in_t" set="S_CAST_FP_TO_FP8_IN"/>
+          <type_bind type="out_t" set="S_CAST_FP8"/>
+        </typesupport>
+        <typesupport mode="fp8 to fp" version_added="1.0">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S_CAST_FP8" values="fp8e4m3_t fp8e5m2_t"/>
+          <type_set name="S_CAST_FP_FROM_FP8_OUT" values="bf16_t fp16_t fp32_t"/>
+          <type_bind type="in_t" set="S_CAST_FP8"/>
+          <type_bind type="out_t" set="S_CAST_FP_FROM_FP8_OUT"/>
+        </typesupport>
+
+        <typesupport mode="fp to MX" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S_CAST_FP_TO_MX_IN" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t"/>
+          <type_set name="S_CAST_FP_TO_MX_OUT" values="bs32_fp8ue8m0_set_t"/>
+          <type_bind type="in_t" set="S_CAST_FP_TO_MX_IN"/>
+          <type_bind type="out_t" set="S_CAST_FP_TO_MX_OUT"/>
+        </typesupport>
+        <typesupport mode="MX to fp" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S_CAST_MX_TO_FP_IN" values="bs32_fp8ue8m0_set_t"/>
+          <type_set name="S_CAST_MX_TO_FP_OUT" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t"/>
+          <type_bind type="in_t" set="S_CAST_MX_TO_FP_IN"/>
+          <type_bind type="out_t" set="S_CAST_MX_TO_FP_OUT"/>
         </typesupport>
       </operator>
       <operator>

@@ -83,3 +83,18 @@ size_t get_innermost_block_size<in_t>() {
 
     // Return block size for innermost dimension
 }
+
+// block access helpers
+get_scale_t<block_scale_t<>>(); // scale_t
+get_value_t<block_scale_t<>>(); // value_t
+
+in_t access_elem_type<in_t>() {
+    ERROR_IF(is_same<in_t, block_scale_t<>>());
+
+    // Return in_t
+}
+
+fp32_t access_elem_type<block_scale_t<>>() {
+    // Implementation defined
+    // Return scaled value as fp32_t
+}

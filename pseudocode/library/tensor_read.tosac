@@ -28,7 +28,7 @@ out_t tensor_read<in_t, out_t>(in_t *address, shape_t shape, shape_t index) {
     using value_t = get_value_t<in_t>();
     using scale_t = get_scale_t<in_t>();
 
-    // NOTE: The following gives a layout of scales following values in a block-scaled tensor.
+    // BLOCK_SCALED_LAYOUT: The following gives a layout of scales following values in a block-scaled tensor.
     // This is not normative of a specific memory storage layout.
     // An implementation is free to use a layout of its choice.
     // However, an implementation must maintain the functional behaviour.
@@ -39,4 +39,12 @@ out_t tensor_read<in_t, out_t>(in_t *address, shape_t shape, shape_t index) {
     out_t scale = static_cast<out_t>(tensor_read<scale_t>(scale_address, scale_shape, scale_index));
 
     return apply_mul_s<out_t>(scale, value);
+}
+
+in_t[] tensor_read_range<in_t, size_t sz>(in_t* address, shape_t shape, shape_t index) {
+    in_t values[sz];
+    for_each(0 <= i < sz) {
+        values[i] = tensor_read<in_t>(address, shape, next(index, i));
+    }
+    return values;
 }
