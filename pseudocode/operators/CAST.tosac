@@ -28,7 +28,7 @@ if (is_block_scale<out_t>()) {
         for_each(0 <= i < bs) {
             value_t value = round_to_nearest_float<in_t, value_t>(values[i] / scale);
 
-            tensor_write<bs, scale_t, value_t>(output, shape, next(index, i), value, scale);
+            tensor_write_value_scale<bs, scale_t, value_t>(output, shape, next(index, i), value, scale);
         }
     }
 } else {

@@ -405,6 +405,7 @@
   <xs:complexType>
     <xs:attribute name="type" type="typename" use="required"/>
     <xs:attribute name="set" type="xs:string" use="required"/>
+    <xs:attribute name="same_as" type="typename"/>
   </xs:complexType>
 </xs:element>
 
@@ -421,6 +422,9 @@ If a symbolic datatype is expanded through a named type set, it must appear
 only as a <type_bind> target, with values supplied by <type_set>. The same
 symbolic datatype must _not_ also be set explicitly as a <typesupport>
 attribute such as A_t="...".
+If same_as is used on a <type_bind>, the symbolic datatype is tied to the
+same concrete value chosen for the referenced symbolic datatype. Both symbolic
+datatypes must bind to the same <type_set>.
 Non-symbolic datatype(s) must appear as attribute in <typesupport>.
 -->
 

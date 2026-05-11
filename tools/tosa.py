@@ -145,6 +145,7 @@ class TOSAOperatorDataTypeSupport:
         tskeys,
         type_sets=None,
         type_bindings=None,
+        type_binding_same_as=None,
     ):
         if len(generated_tuples) == 0:
             raise RuntimeError(f"Typesupport {mode} has no generated tuples")
@@ -162,6 +163,7 @@ class TOSAOperatorDataTypeSupport:
         self.tskeys = tskeys
         self.type_sets = list(type_sets or [])
         self.type_bindings = dict(type_bindings or {})
+        self.type_binding_same_as = dict(type_binding_same_as or {})
 
 
 class TOSAOperator:
@@ -291,11 +293,17 @@ class TOSASpec:
                 tsmap[ty] = tysup.get(ty)
             type_sets = self.__load_typesupport_sets(tysup, name, tsmode)
             expanded_type_sets = self.__expand_typesupport_sets(type_sets)
-            type_bindings = self.__load_typesupport_bindings(
+            type_bindings, type_binding_same_as = self.__load_typesupport_bindings(
                 tysup, name, tsmode, types, type_sets
             )
             generated_tuples = self.__expand_typesupport_tuples(
-                name, tsmode, types, tsmap, expanded_type_sets, type_bindings
+                name,
+                tsmode,
+                types,
+                tsmap,
+                expanded_type_sets,
+                type_bindings,
+                type_binding_same_as,
             )
             typesupports.append(
                 TOSAOperatorDataTypeSupport(
@@ -306,6 +314,7 @@ class TOSASpec:
                     tskeys,
                     type_sets,
                     type_bindings,
+                    type_binding_same_as,
                 )
             )
         return TOSAOperator(name, args, types, typesupports)
@@ -348,10 +357,12 @@ class TOSASpec:
     def __load_typesupport_bindings(self, tysup, op_name, mode, types, type_sets):
         # See EXPECT_TYPESUPPORT comment in tosa.xsd
         type_bindings = {}
+        type_binding_same_as = {}
         known_sets = {set_name for set_name, _ in type_sets}
         for type_bind in tysup.findall("type_bind"):
             ty_name = type_bind.get("type")
             set_name = type_bind.get("set")
+            same_as = type_bind.get("same_as")
             if ty_name not in types:
                 raise RuntimeError(
                     f"Operator {op_name} mode {mode} binds unknown type {ty_name}"
@@ -363,26 +374,69 @@ class TOSASpec:
             if set_name not in known_sets:
                 raise RuntimeError(
                     f"Operator {op_name} mode {mode} "
-                    "references unknown type set {set_name}"
+                    f"references unknown type set {set_name}"
                 )
             type_bindings[ty_name] = set_name
-        return type_bindings
+            if same_as is not None:
+                type_binding_same_as[ty_name] = same_as
+
+        for ty_name, same_as in type_binding_same_as.items():
+            if same_as not in types:
+                raise RuntimeError(
+                    f"Operator {op_name} mode {mode} ties {ty_name} "
+                    f"to unknown type {same_as}"
+                )
+            if same_as not in type_bindings:
+                raise RuntimeError(
+                    f"Operator {op_name} mode {mode} ties {ty_name} "
+                    f"to unbound type {same_as}"
+                )
+            if type_bindings[ty_name] != type_bindings[same_as]:
+                raise RuntimeError(
+                    f"Operator {op_name} mode {mode} ties {ty_name} "
+                    f"to {same_as} with a different type set"
+                )
+
+        for ty_name in type_binding_same_as:
+            seen = set()
+            current = ty_name
+            while current in type_binding_same_as:
+                if current in seen:
+                    raise RuntimeError(
+                        f"Operator {op_name} mode {mode} has a same_as cycle "
+                        f"starting at {ty_name}"
+                    )
+                seen.add(current)
+                current = type_binding_same_as[current]
+
+        return type_bindings, type_binding_same_as
 
     def __expand_typesupport_tuples(
-        self, op_name, mode, types, tsmap, type_sets, type_bindings
+        self,
+        op_name,
+        mode,
+        types,
+        tsmap,
+        type_sets,
+        type_bindings,
+        type_binding_same_as,
     ):
         for ty_name in type_bindings:
             if tsmap.get(ty_name) is not None:
                 raise RuntimeError(
                     f"Operator {op_name} mode {mode} "
-                    "binds {ty_name} and sets it explicitly"
+                    f"binds {ty_name} and sets it explicitly"
                 )
 
         if len(type_bindings) == 0:
             return [tsmap]
 
         type_sets_map = {set_name: values for set_name, values in type_sets}
-        bound_types = [ty_name for ty_name in types if ty_name in type_bindings]
+        bound_types = [
+            ty_name
+            for ty_name in types
+            if ty_name in type_bindings and ty_name not in type_binding_same_as
+        ]
         bound_value_lists = [
             type_sets_map[type_bindings[ty_name]] for ty_name in bound_types
         ]
@@ -392,6 +446,13 @@ class TOSASpec:
             expanded = dict(tsmap)
             for ty_name, value in zip(bound_types, bound_values):
                 expanded[ty_name] = value
+            for ty_name in types:
+                if ty_name not in type_binding_same_as:
+                    continue
+                same_as = ty_name
+                while same_as in type_binding_same_as:
+                    same_as = type_binding_same_as[same_as]
+                expanded[ty_name] = expanded[same_as]
             generated_tuples.append(expanded)
 
         return generated_tuples
