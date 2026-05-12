@@ -21,8 +21,8 @@
 ERROR_IF(D != N && D != 1);
 ERROR_IF(!is_same<A_t,i8_t>() && A_zp != 0);
 ERROR_IF(!is_same<B_t,i8_t>() && B_zp != 0);
-ERROR_IF(is_block_scale<A_t>() && C % A_t::block_size != 0);
-ERROR_IF(is_block_scale<B_t>() && C % B_t::block_size != 0);
+ERROR_IF(is_block_scale<A_t>() && C % get_innermost_block_size<A_t>() != 0);
+ERROR_IF(is_block_scale<B_t>() && C % get_innermost_block_size<B_t>() != 0);
 
 for_each(0 <= n < N, 0 <= h < H, 0 <= w < W) {
     out_t acc = 0;

@@ -377,13 +377,13 @@ Signed zero must be supported.
 | +1 + 63/64
 | 8-bit integer format with an implicit 1/64 scale defined by <<OCP-MX,OCP-MX>>. +
 
-|block_scale_t<block_size_t block_size, scale_t, value_t>.
+|block_scale_t<block_shape_t block_shape, scale_t, value_t>.
 |-
 |-
 | Block scaled type. +
 This does not specify an implementation type. +
 A tensor of this type is a tensor which has block-scaled quantization applied. +
-The type is made up of 3 components: block_size_t, scale_t, value_t. +
+The type is made up of 3 components: block_shape_t, scale_t, value_t. +
 Each of these types will be made evident in an Operator where they are used.
 |===
 
@@ -397,15 +397,15 @@ This ensures that an Integer profile TOSA implementation can calculate the same 
 .Supported Number Format Sets
 [cols="1,2,2,2,3,5"]
 |===
-|Set|Template|Allowed block_size_t|Allowed scale_t|Allowed value_t|Resulting block scaled data types
+|Set|Template|Allowed block_shape_t|Allowed scale_t|Allowed value_t|Resulting block scaled data types
 
 |bs32_fp8ue8m0_set_t
-|`block_scale_t<block_size_t block_size, scale_t, value_t>`
-|`BLOCK_SIZE_32`
+|`block_scale_t<block_shape_t block_shape, scale_t, value_t>`
+|`BLOCK_SHAPE_32`
 |`fp8ue8m0_t`
 |`fp8e4m3_t`, `fp8e5m2_t`, `fp6e3m2_t`, `fp6e2m3_t`, `fp4e2m1_t`, `mxint8_t`
-|A new data type is formed by instantiating the template with an allowed choice of `block_size_t`, `scale_t`, and `value_t`. +
-The resulting data type is named `bs<block size>_<scale type>_<value type>_t` where block size is the integer block size, scale type is scale_t without the _t suffix, and value type is the value_t without the _t suffix. +
+|A new data type is formed by instantiating the template with an allowed choice of `block_shape_t`, `scale_t`, and `value_t`. +
+The resulting data type is named `bs<block shape>_<scale type>_<value type>_t` where block shape indicates the size of innermost dimension(s), scale type is scale_t without the _t suffix, and value type is the value_t without the _t suffix. +
 The set of allowed block scaled data types is: +
 `bs32_fp8ue8m0_fp8e4m3_t`, +
 `bs32_fp8ue8m0_fp8e5m2_t`, +
@@ -469,27 +469,27 @@ The following table lists the composite block-scaled data types derived from the
 |Composite data type |Template instantiation |Deduced extension(s)
 
 |bs32_fp8ue8m0_fp8e4m3_t
-|`block_scale_t<BLOCK_SIZE_32, fp8ue8m0_t, fp8e4m3_t>`
+|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp8e4m3_t>`
 |EXT-MX-COMMON and EXT-MX-FP8E4M3
 
 |bs32_fp8ue8m0_fp8e5m2_t
-|`block_scale_t<BLOCK_SIZE_32, fp8ue8m0_t, fp8e5m2_t>`
+|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp8e5m2_t>`
 |EXT-MX-COMMON and EXT-MX-FP8E5M2
 
 |bs32_fp8ue8m0_fp6e3m2_t
-|`block_scale_t<BLOCK_SIZE_32, fp8ue8m0_t, fp6e3m2_t>`
+|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp6e3m2_t>`
 |EXT-MX-COMMON and EXT-MX-FP6E3M2
 
 |bs32_fp8ue8m0_fp6e2m3_t
-|`block_scale_t<BLOCK_SIZE_32, fp8ue8m0_t, fp6e2m3_t>`
+|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp6e2m3_t>`
 |EXT-MX-COMMON and EXT-MX-FP6E2M3
 
 |bs32_fp8ue8m0_fp4e2m1_t
-|`block_scale_t<BLOCK_SIZE_32, fp8ue8m0_t, fp4e2m1_t>`
+|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp4e2m1_t>`
 |EXT-MX-COMMON and EXT-MX-FP4E2M1
 
 |bs32_fp8ue8m0_mxint8_t
-|`block_scale_t<BLOCK_SIZE_32, fp8ue8m0_t, mxint8_t>`
+|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, mxint8_t>`
 |EXT-MX-COMMON and EXT-MX-INT8
 |===
 
@@ -616,8 +616,8 @@ The positions of `in[k]`, `w[k]`, `b` in the input, weight and bias tensors depe
 This may be, for example, a convolution.
 
 In a block-scaled dot product, each input and weight element `in[k]` and `w[k]` are scaled based on the corresponding scale values:
-`in[k] = in_data[k] * in_scale[k/block_size]`
-`w[k]  = w_data[k] * w_scale[k/block_size]`
+`in[k] = in_data[k] * in_scale[k/get_innermost_block_size<in_t>()]`
+`w[k]  = w_data[k] * w_scale[k/get_innermost_block_size<weight_t>()]`
 
 This section defines the accuracy required for these operations.
 In this section:

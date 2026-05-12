@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2024,2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -59,17 +59,27 @@ out_t bitcast<out_t>(in_t value)
 
 // Find the maximum absolute value for a block of the input tensor
 
-in_t tensor_block_maxabs(in_t *address, shape_t shape, shape_t index, i32_t block_size) {
+in_t tensor_block_maxabs(in_t *address, shape_t shape, shape_t index, i32_t innermost_block_size) {
     ERROR_IF(rank(shape) == 0);
-    ERROR_IF(shape[rank(shape)-1] % block_size != 0);
+    ERROR_IF(shape[rank(shape)-1] % innermost_block_size != 0);
     int r = rank(shape);
-    size_t min_i = floor(index[r - 1] / block_size) * block_size;
+    size_t min_i = floor(index[r - 1] / innermost_block_size) * innermost_block_size;
     in_t max_abs = 0;
-    for (size_t i = min_i; i < min_i + block_size; i++) {
+    for (size_t i = min_i; i < min_i + innermost_block_size; i++) {
         shape_t index_i = index;
         index_i[r - 1] = i;
         in_t v = tensor_read<in_t>(address, shape, index_i);
         max_abs = apply_max_s(max_abs, abs(v));
     }
     return max_abs;
+}
+
+// block read helpers
+get_scale_t<block_scale_t<>>(); // scale_t
+get_value_t<block_scale_t<>>(); // value_t
+
+size_t get_innermost_block_size<in_t>() {
+    REQUIRE(is_block_scale<in_t>());
+
+    // Return block size for innermost dimension
 }

@@ -17,13 +17,13 @@ out_t tensor_read<in_t, out_t>(in_t *address, shape_t shape, shape_t index) {
         return static_cast<out_t>(tensor_read<in_t>(address, shape, index));
     }
 
-    block_size_t block_size = get_block_size<in_t>();
+    size_t innermost_block_size = get_innermost_block_size<in_t>();
 
-    shape_t blk_shape = shape;
-    blk_shape[rank(shape) - 1] /= block_size;
+    shape_t scale_shape = shape;
+    scale_shape[rank(shape) - 1] /= innermost_block_size;
 
-    shape_t blk_index = index;
-    blk_index[rank(index) - 1] /= block_size;
+    shape_t scale_index = index;
+    scale_index[rank(index) - 1] /= innermost_block_size;
 
     using value_t = get_value_t<in_t>();
     using scale_t = get_scale_t<in_t>();
@@ -36,12 +36,7 @@ out_t tensor_read<in_t, out_t>(in_t *address, shape_t shape, shape_t index) {
     scale_t* scale_address = reinterpret_cast<scale_t*>(value_address + tensor_size(shape));
 
     out_t value = static_cast<out_t>(tensor_read<value_t>(value_address, shape, index));
-    out_t scale = static_cast<out_t>(tensor_read<scale_t>(scale_address, blk_shape, blk_index));
+    out_t scale = static_cast<out_t>(tensor_read<scale_t>(scale_address, scale_shape, scale_index));
 
     return apply_mul_s<out_t>(scale, value);
 }
-
-// block read helpers
-block_size_t get_block_size<block_scale_t<>>();
-get_scale_t<block_scale_t<>>(); // scale_t
-get_value_t<block_scale_t<>>(); // value_t
