@@ -3399,6 +3399,56 @@ used.</description>
         </typesupport>
       </operator>
       <operator>
+        <name>ROW_GATHER</name>
+        <arguments>
+          <argument category="input" name="values" type="tensor_t" shape="[N,K,C]" tensor-element-type="in_out_t">
+            <description>3D values tensor</description>
+            <rank min="3" max="3"/>
+          </argument>
+          <argument category="input" name="indices" type="tensor_t" shape="[N,W]" tensor-element-type="index_t">
+            <description>2D index tensor</description>
+            <rank min="2" max="2"/>
+          </argument>
+          <argument category="input" name="row_count" type="tensor_t" shape="[1]" tensor-element-type="i32_t">
+            <description>Number of consecutive rows to gather for each index</description>
+            <rank min="1" max="1"/>
+            <ctc>
+              <op_profile name="PRO-INT"/>
+              <op_profile name="PRO-FP"/>
+            </ctc>
+          </argument>
+          <argument category="output" name="output" type="tensor_t" shape="[N,W*row_count,C]" tensor-element-type="in_out_t">
+            <description>3D output tensor</description>
+            <rank min="3" max="3"/>
+          </argument>
+        </arguments>
+        <types>
+          <type name='index_t'/>
+          <type name='in_out_t'/>
+        </types>
+        <typesupport mode="Base INT" version_added="1.1">
+          <op_profile name="PRO-INT" and_name="DEDUCE-EXT"/>
+          <type_set name="S_INT" values="bool_t i8_t i16_t i32_t i64_t"/>
+          <type_set name="S_INDEX" values="i32_t i64_t"/>
+          <type_bind type="in_out_t" set="S_INT"/>
+          <type_bind type="index_t" set="S_INDEX"/>
+        </typesupport>
+        <typesupport mode="Base FP" version_added="1.1">
+          <op_profile name="PRO-FP" and_name="DEDUCE-EXT"/>
+          <type_set name="S_FP" values="bool_t i8_t i16_t i32_t i64_t fp16_t fp32_t"/>
+          <type_set name="S_INDEX" values="i32_t i64_t"/>
+          <type_bind type="in_out_t" set="S_FP"/>
+          <type_bind type="index_t" set="S_INDEX"/>
+        </typesupport>
+        <typesupport mode="Extension" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S_EXT" values="fp8e4m3_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S_INDEX" values="i32_t i64_t"/>
+          <type_bind type="in_out_t" set="S_EXT"/>
+          <type_bind type="index_t" set="S_INDEX"/>
+        </typesupport>
+      </operator>
+      <operator>
         <name>ROW_GATHER_BLOCK_SCALED</name>
         <arguments>
           <argument category="input" name="values" type="tensor_list_t" shape="shape" tensor-element-type="in_out_t" tensor-element-scale-type="scale_t">
