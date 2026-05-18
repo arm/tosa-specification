@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025, ARM Limited.
+# Copyright (c) 2024-2026, ARM Limited.
 # SPDX-License-Identifier: Apache-2.0
 import os
 
@@ -18,7 +18,7 @@ validation_term_mapping_profile = {
     "EXT-FFT": "Extension::fft",
     "EXT-SHAPE": "Extension::shape",
     "EXT-VARIABLE": "Extension::variable",
-    "EXT-MX-COMMON": "Extension::mxfp_common",
+    "EXT-MX-COMMON": "Extension::mx_common",
     "EXT-MX-FP4E2M1": "Extension::mx_fp4e2m1",
     "EXT-MX-FP6E2M3": "Extension::mx_fp6e2m3",
     "EXT-MX-FP6E3M2": "Extension::mx_fp6e3m2",
