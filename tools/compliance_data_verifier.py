@@ -94,6 +94,7 @@ op_list = [
     "sub_shape",
     "cast_to_block_scaled",
     "cast_from_block_scaled",
+    "matmul_t",
     "matmul_t_block_scaled",
     "conv2d_block_scaled",
 ]
@@ -138,6 +139,12 @@ type_list = [
     "fp6e2m3T",
     "fp4e2m1T",
     "mxint8T",
+    "bs32_fp8ue8m0_fp8e4m3T",
+    "bs32_fp8ue8m0_fp8e5m2T",
+    "bs32_fp8ue8m0_fp6e3m2T",
+    "bs32_fp8ue8m0_fp6e2m3T",
+    "bs32_fp8ue8m0_fp4e2m1T",
+    "bs32_fp8ue8m0_mxint8T",
 ]
 
 cond_list = [

@@ -1,8 +1,48 @@
 #!/usr/bin/env python3
 # Copyright (c) 2023,2026, ARM Limited.
 # SPDX-License-Identifier: Apache-2.0
+import itertools
 import re
 import xml.etree.ElementTree as ET
+
+
+TYPE_SET_VALUE_EXPANSIONS = {
+    "bs32_fp8ue8m0_set_t": (
+        "bs32_fp8ue8m0_fp8e4m3_t",
+        "bs32_fp8ue8m0_fp8e5m2_t",
+        "bs32_fp8ue8m0_fp6e3m2_t",
+        "bs32_fp8ue8m0_fp6e2m3_t",
+        "bs32_fp8ue8m0_fp4e2m1_t",
+        "bs32_fp8ue8m0_mxint8_t",
+    ),
+}
+
+DEDUCED_EXTENSION_TYPE_MAPPING = {
+    "i64_t": ["EXT-INT64"],
+    "i16_t": ["EXT-INT16"],
+    "i4_t": ["EXT-INT4"],
+    "bf16_t": ["EXT-BF16"],
+    "fp8e4m3_t": ["EXT-FP8E4M3"],
+    "fp8e5m2_t": ["EXT-FP8E5M2"],
+    "fp8ue8m0_t": ["EXT-MX-COMMON"],
+    "fp4e2m1_t": ["EXT-MX-FP4E2M1"],
+    "fp6e2m3_t": ["EXT-MX-FP6E2M3"],
+    "fp6e3m2_t": ["EXT-MX-FP6E3M2"],
+    "mxint8_t": ["EXT-MX-INT8"],
+    "bs32_fp8ue8m0_fp8e4m3_t": ["EXT-MX-COMMON", "EXT-MX-FP8E4M3"],
+    "bs32_fp8ue8m0_fp8e5m2_t": ["EXT-MX-COMMON", "EXT-MX-FP8E5M2"],
+    "bs32_fp8ue8m0_fp6e3m2_t": ["EXT-MX-COMMON", "EXT-MX-FP6E3M2"],
+    "bs32_fp8ue8m0_fp6e2m3_t": ["EXT-MX-COMMON", "EXT-MX-FP6E2M3"],
+    "bs32_fp8ue8m0_fp4e2m1_t": ["EXT-MX-COMMON", "EXT-MX-FP4E2M1"],
+    "bs32_fp8ue8m0_mxint8_t": ["EXT-MX-COMMON", "EXT-MX-INT8"],
+}
+
+
+def deduce_extensions(tsmap):
+    extensions = set()
+    for ty in tsmap.values():
+        extensions.update(DEDUCED_EXTENSION_TYPE_MAPPING.get(ty, []))
+    return extensions
 
 
 # possible shapes: shape1, [2], [N,H,W,C]
@@ -96,12 +136,32 @@ class TOSAOperatorArgument:
 
 
 class TOSAOperatorDataTypeSupport:
-    def __init__(self, mode, tymap, version_added, profiles, tskeys):
+    def __init__(
+        self,
+        mode,
+        generated_tuples,
+        version_added,
+        profiles,
+        tskeys,
+        type_sets=None,
+        type_bindings=None,
+    ):
+        if len(generated_tuples) == 0:
+            raise RuntimeError(f"Typesupport {mode} has no generated tuples")
         self.mode = mode
-        self.tymap = tymap
+        self.generated_tuples = [dict(tytuple) for tytuple in generated_tuples]
+        tuple_keys = set(self.generated_tuples[0].keys())
+        for tytuple in self.generated_tuples[1:]:
+            if set(tytuple.keys()) != tuple_keys:
+                raise RuntimeError(
+                    f"Typesupport {mode} has inconsistent generated tuple keys"
+                )
+        self.tymap = self.generated_tuples[0]  # For fixed type_support with no Sets
         self.profiles = profiles
         self.version_added = version_added
         self.tskeys = tskeys
+        self.type_sets = list(type_sets or [])
+        self.type_bindings = dict(type_bindings or {})
 
 
 class TOSAOperator:
@@ -229,12 +289,112 @@ class TOSASpec:
                 tsprofiles.append(tsp_name)
             for ty in types:
                 tsmap[ty] = tysup.get(ty)
+            type_sets = self.__load_typesupport_sets(tysup, name, tsmode)
+            expanded_type_sets = self.__expand_typesupport_sets(type_sets)
+            type_bindings = self.__load_typesupport_bindings(
+                tysup, name, tsmode, types, type_sets
+            )
+            generated_tuples = self.__expand_typesupport_tuples(
+                name, tsmode, types, tsmap, expanded_type_sets, type_bindings
+            )
             typesupports.append(
                 TOSAOperatorDataTypeSupport(
-                    tsmode, tsmap, version_added, tsprofiles, tskeys
+                    tsmode,
+                    generated_tuples,
+                    version_added,
+                    tsprofiles,
+                    tskeys,
+                    type_sets,
+                    type_bindings,
                 )
             )
         return TOSAOperator(name, args, types, typesupports)
+
+    def __load_typesupport_sets(self, tysup, op_name, mode):
+        type_sets = []
+        seen_names = set()
+        for type_set in tysup.findall("type_set"):
+            set_name = type_set.get("name")
+            if set_name in seen_names:
+                raise RuntimeError(
+                    f"Operator {op_name} mode {mode} repeats type set {set_name}"
+                )
+            values = type_set.get("values").split()
+            if len(values) == 0:
+                raise RuntimeError(
+                    f"Operator {op_name} mode {mode} has empty type set {set_name}"
+                )
+            type_sets.append((set_name, values))
+            seen_names.add(set_name)
+        return type_sets
+
+    def __expand_typesupport_sets(self, type_sets):
+        return [
+            (set_name, self.__expand_type_set_values(values))
+            for set_name, values in type_sets
+        ]
+
+    def __expand_type_set_values(self, values):
+        expanded = []
+        for value in values:
+            expanded.extend(TYPE_SET_VALUE_EXPANSIONS.get(value, (value,)))
+
+        deduplicated = []
+        for value in expanded:
+            if value not in deduplicated:
+                deduplicated.append(value)
+        return deduplicated
+
+    def __load_typesupport_bindings(self, tysup, op_name, mode, types, type_sets):
+        # See EXPECT_TYPESUPPORT comment in tosa.xsd
+        type_bindings = {}
+        known_sets = {set_name for set_name, _ in type_sets}
+        for type_bind in tysup.findall("type_bind"):
+            ty_name = type_bind.get("type")
+            set_name = type_bind.get("set")
+            if ty_name not in types:
+                raise RuntimeError(
+                    f"Operator {op_name} mode {mode} binds unknown type {ty_name}"
+                )
+            if ty_name in type_bindings:
+                raise RuntimeError(
+                    f"Operator {op_name} mode {mode} repeats binding for {ty_name}"
+                )
+            if set_name not in known_sets:
+                raise RuntimeError(
+                    f"Operator {op_name} mode {mode} "
+                    "references unknown type set {set_name}"
+                )
+            type_bindings[ty_name] = set_name
+        return type_bindings
+
+    def __expand_typesupport_tuples(
+        self, op_name, mode, types, tsmap, type_sets, type_bindings
+    ):
+        for ty_name in type_bindings:
+            if tsmap.get(ty_name) is not None:
+                raise RuntimeError(
+                    f"Operator {op_name} mode {mode} "
+                    "binds {ty_name} and sets it explicitly"
+                )
+
+        if len(type_bindings) == 0:
+            return [tsmap]
+
+        type_sets_map = {set_name: values for set_name, values in type_sets}
+        bound_types = [ty_name for ty_name in types if ty_name in type_bindings]
+        bound_value_lists = [
+            type_sets_map[type_bindings[ty_name]] for ty_name in bound_types
+        ]
+
+        generated_tuples = []
+        for bound_values in itertools.product(*bound_value_lists):
+            expanded = dict(tsmap)
+            for ty_name, value in zip(bound_types, bound_values):
+                expanded[ty_name] = value
+            generated_tuples.append(expanded)
+
+        return generated_tuples
 
     def __load_operator_argument(self, arg, op_name):
         name = arg.get("name")

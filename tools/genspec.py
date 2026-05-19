@@ -2,7 +2,6 @@
 # Copyright (c) 2023-2024, 2026, ARM Limited.
 # SPDX-License-Identifier: Apache-2.0
 import os
-import re
 from functools import cmp_to_key
 
 import compliance_data_exporter
@@ -25,6 +24,104 @@ def compare_profiles(a, b):
 class TOSASpecAsciidocGenerator:
     def __init__(self, spec):
         self.spec = spec
+
+    def render_type_set(self, values):
+        scalar_values = []
+        set_aliases = []
+        for value in values:
+            if value in tosa.TYPE_SET_VALUE_EXPANSIONS:
+                set_aliases.append(value)
+            else:
+                scalar_values.append(value)
+
+        terms = []
+        if scalar_values:
+            terms.append("{" + ", ".join(scalar_values) + "}")
+        terms.extend(set_aliases)
+        return " \N{UNION} ".join(terms)
+
+    def get_operator_type_sets(self, op):
+        definitions = {}
+        for tysup in op.typesupports:
+            for set_name, values in tysup.type_sets:
+                values_tuple = tuple(values)
+                if set_name in definitions and definitions[set_name] != values_tuple:
+                    raise RuntimeError(
+                        f"Operator {op.name} reuses type set {set_name}"
+                        " with different values"
+                    )
+                definitions[set_name] = values_tuple
+        return definitions
+
+    def format_extension_note(self, other_exts):
+        if len(other_exts) == 0:
+            return ""
+        if len(other_exts) > 1:
+            return f"If {' and '.join(other_exts)} are also supported"
+        return f"If {other_exts[0]} is also supported"
+
+    def get_input_type_bindings(self, op, tysup):
+        bindings = []
+        for ty in op.types:
+            if ty not in tysup.type_bindings:
+                continue
+            for arg in op.arguments:
+                if not any(cat.name == "input" for cat in arg.categories):
+                    continue
+                if ty in (arg.tensor_element_type, arg.tensor_element_scale_type):
+                    bindings.append(ty)
+                    break
+
+        # If type_sets gets used in attributes, output etc. in future
+        if len(bindings) == 0:
+            bindings = [ty for ty in op.types if ty in tysup.type_bindings]
+
+        return bindings
+
+    def format_typesupport_mode(self, op, tysup, tsmap):
+        bindings = self.get_input_type_bindings(op, tysup)
+        if len(bindings) == 0:
+            return tysup.mode
+
+        binding_text = ", ".join(f"{ty} = {tsmap[ty]}" for ty in bindings)
+        return f"{tysup.mode} ({binding_text})"
+
+    def get_profile_extension_rows(self, op, tysup, extension_name):
+        rows = set()
+        for profile in tysup.profiles:
+            profile_exts = profile.split(" and ")
+            if "DEDUCE-EXT" in profile_exts:
+                if extension_name == "DEDUCE-EXT":
+                    continue
+                for tsmap in tysup.generated_tuples:
+                    deduced_exts = tosa.deduce_extensions(tsmap)
+                    if extension_name in deduced_exts:
+                        other_exts = tuple(
+                            sorted(ext for ext in deduced_exts if ext != extension_name)
+                        )
+                        rows.add(
+                            (
+                                self.format_typesupport_mode(op, tysup, tsmap),
+                                other_exts,
+                            )
+                        )
+                continue
+
+            if extension_name in profile_exts:
+                other_exts = tuple(
+                    sorted(ext for ext in profile_exts if ext != extension_name)
+                )
+                if len(tysup.type_bindings) > 0:
+                    for tsmap in tysup.generated_tuples:
+                        rows.add(
+                            (
+                                self.format_typesupport_mode(op, tysup, tsmap),
+                                other_exts,
+                            )
+                        )
+                else:
+                    rows.add((tysup.mode, other_exts))
+        return sorted(rows)
 
     def generate_enum(self, enum, file):
         file.write(f"\n=== {enum.name}\n")
@@ -122,6 +219,17 @@ class TOSASpecAsciidocGenerator:
 
         if op.typesupports:
             file.write("\n*Supported Data Types:*\n\n")
+            type_sets = self.get_operator_type_sets(op)
+            if len(type_sets) > 0:
+                file.write(
+                    "Named type sets denote a Cartesian product. "
+                    "If multiple type columns reference named sets, any combination "
+                    "formed by choosing one value from each referenced set is valid."
+                    "\n\n"
+                )
+                file.write("*Type Sets:*\n\n")
+                for set_name, values in type_sets.items():
+                    file.write(f"`{set_name} = {self.render_type_set(values)}`\n\n")
             file.write("|===\n")
             header = "|Profile/Extension|Mode"
             for ty in op.types:
@@ -130,11 +238,23 @@ class TOSASpecAsciidocGenerator:
             file.write("\n\n")
             for tysup in sorted(op.typesupports, key=cmp_to_key(compare_profiles)):
                 profile = " or ".join(tysup.profiles) if tysup.profiles else "Any"
-                entry = f"|{profile}|{tysup.mode}"
-                for ty in op.types:
-                    entry += f"|{tysup.tymap[ty]}"
-                entry += "\n"
-                file.write(entry)
+                if len(tysup.type_sets) > 0:
+                    entry = f"|{profile}|{tysup.mode}"
+                    for ty in op.types:
+                        if ty in tysup.type_bindings:
+                            entry += f"|{tysup.type_bindings[ty]}"
+                        else:
+                            entry += f"|{tysup.tymap[ty]}"
+                    entry += "\n"
+                    file.write(entry)
+                    continue
+
+                for tsmap in tysup.generated_tuples:
+                    entry = f"|{profile}|{tysup.mode}"
+                    for ty in op.types:
+                        entry += f"|{tsmap[ty]}"
+                    entry += "\n"
+                    file.write(entry)
             file.write("|===\n")
         file.write("\n*Operation Function:*\n\n")
         leveltext = ""
@@ -234,6 +354,7 @@ class TOSASpecAsciidocGenerator:
                 f.write("|===\n")
 
             f.write("=== Profile Extensions\n")
+            f.write("For `DEDUCE-EXT`, see <<Extension Data Type Mapping>>.\n\n")
             for pext in self.spec.profile_extensions:
                 f.write(f"==== {pext.name} extension\n")
                 f.write(f"{pext.description}\n\n")
@@ -246,34 +367,15 @@ class TOSASpecAsciidocGenerator:
                 for op in sorted(all_operators, key=lambda o: o.name):
                     if op.typesupports:
                         for tysup in op.typesupports:
-                            for profile in tysup.profiles:
-                                if profile.find(pext.name) != -1:
-                                    note = ""
-                                    m = re.match(
-                                        r"([a-zA-Z0-9-]+) and ([a-zA-Z0-9-]+)"
-                                        "(?: and ([a-zA-Z0-9-]+))?",
-                                        profile,
-                                    )
-                                    if m:
-                                        other_exts = list(
-                                            e
-                                            for e in m.groups()
-                                            if e != pext.name and e is not None
-                                        )
-                                        if len(other_exts) > 1:
-                                            note = (
-                                                f"If {' and '.join(other_exts)}"
-                                                " are also supported"
-                                            )
-                                        else:
-                                            note = (
-                                                f"If {other_exts[0]} is also supported"
-                                            )
-                                    f.write(
-                                        f"|{op.name}|{tysup.mode}|"
-                                        f"{tysup.version_added}|{note}\n"
-                                    )
-                                    op_changed = True
+                            for mode, other_exts in self.get_profile_extension_rows(
+                                op, tysup, pext.name
+                            ):
+                                note = self.format_extension_note(other_exts)
+                                f.write(
+                                    f"|{op.name}|{mode}|"
+                                    f"{tysup.version_added}|{note}\n"
+                                )
+                                op_changed = True
                     for arg in op.arguments:
                         if pext.name in arg.ctc_remove:
                             op_changed = True

@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2023 ARM Limited
+// (C) COPYRIGHT 2023-2024,2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -243,6 +243,25 @@ for (0 <= n < N, 0 <= y < H, 0 <= c < C) {
 for (0 <= n < N, 0 <= c < C, 0 <= x < W) {
   B[n, c, x] = tosa_pro_fp_data(S, KS, 1, c, (n*C+c)*W+x);
 }
+----
+
+==== MATMUL_T
+
+The following generates input test data for test set S.
+For compliant implementation, the test must pass whenever the attributes satisfy:
+`N*H*W >= MIN_DOT_PRODUCTS`
+
+[source,c++]
+----
+KS = C;
+for (0 <= n < N, 0 <= y < H, 0 <= c < C) {
+  A[n, y, c] = tosa_pro_fp_data(S, KS, 0, c, (n*H+y)*C+c);
+}
+// CAST_TO_BLOCK_SCALED(A) if required
+for (0 <= d < D, 0 <= x < W, 0 <= c < C) {
+  B[d, x, c] = tosa_pro_fp_data(S, KS, 1, c, (d*W+x)*C+c);
+}
+// CAST_TO_BLOCK_SCALED(B) if required
 ----
 
 ==== MATMUL_T_BLOCK_SCALED

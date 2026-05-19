@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2025 ARM Limited
+// (C) COPYRIGHT 2020-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -231,7 +231,32 @@ include::{generated}/operators/MATMUL.adoc[]
 include::{pseudocode}/operators/MATMUL.tosac[lines=10..-1]
 ----
 
-==== MATMUL_T_BLOCK_SCALED
+==== MATMUL_T
+
+Performs two dimensional matrix multiplications.
+`A` matrix is of shape `N x H x C`.
+`B` matrix is of shape `D x W x C`.
+This is effectively a matrix multiply of `A` by the transposed `B` matrix.
+If the `D` dimension of input `B` is of size 1, the `B` matrix is broadcast.
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+For floating-point values, the following rules apply:
+
+* Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
+* Each output can be expressed as a dot product of two input vectors.
+* The dot product must meet the <<Dot product accuracy requirements>>.
+
+include::{generated}/operators/MATMUL_T.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/MATMUL_T.tosac[lines=10..-1]
+----
+
+==== MATMUL_T_BLOCK_SCALED (deprecated, removed in 1.1)
 
 Performs two dimensional matrix multiplications using block scaled tensors.
 The block dimension is always the the last dimension of the tensor, so the result is effectively a matrix multiply of A by the transposed B matrix.

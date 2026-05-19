@@ -1,7 +1,8 @@
-# Copyright (c) 2024-2025, ARM Limited.
+# Copyright (c) 2024-2026, ARM Limited.
 # SPDX-License-Identifier: Apache-2.0
 import os
 
+from tosa import deduce_extensions
 from tosa import TOSAOperator
 from tosa import TOSAOperatorArgument
 
@@ -46,6 +47,12 @@ validation_term_mapping_type = {
     "fp6e2m3_t": "fp6e2m3T",
     "fp4e2m1_t": "fp4e2m1T",
     "mxint8_t": "mxint8T",
+    "bs32_fp8ue8m0_fp8e4m3_t": "bs32_fp8ue8m0_fp8e4m3T",
+    "bs32_fp8ue8m0_fp8e5m2_t": "bs32_fp8ue8m0_fp8e5m2T",
+    "bs32_fp8ue8m0_fp6e3m2_t": "bs32_fp8ue8m0_fp6e3m2T",
+    "bs32_fp8ue8m0_fp6e2m3_t": "bs32_fp8ue8m0_fp6e2m3T",
+    "bs32_fp8ue8m0_fp4e2m1_t": "bs32_fp8ue8m0_fp4e2m1T",
+    "bs32_fp8ue8m0_mxint8_t": "bs32_fp8ue8m0_mxint8T",
 }
 
 
@@ -80,28 +87,37 @@ def get_profile_compliance_info(operator: TOSAOperator, print_mode: str) -> set:
     prof_info = {}
 
     for tysup in operator.typesupports:
-        prof_set = set()
-        tsmap = tysup.tymap
         version_added = tysup.version_added
+        base_prof_set = set()  # Should contain all extensions except DEDUCE-EXT
+        should_deduce = False
 
         for profs in tysup.profiles:
             profs = profs.split(" and ")
             for prof in profs:
+                if prof == "DEDUCE-EXT":
+                    should_deduce = True
+                    continue
                 if is_matched_print_mode(prof, print_mode):
-                    prof_set.add(prof)
+                    base_prof_set.add(prof)
 
-        if len(prof_set) == 0:
-            continue
+        for tsmap in tysup.generated_tuples:
+            prof_set = set(
+                base_prof_set
+            )  # Each tsmap can have its own deduced extensions
+            if should_deduce and print_mode == "Extension":
+                prof_set.update(deduce_extensions(tsmap))
 
-        prof_list = list(prof_set)
-        prof_list.sort()
-        prof_str = " ".join(prof_list)
+            if len(prof_set) == 0:
+                continue
 
-        if prof_str in prof_info.keys():
-            value = prof_info[prof_str]
-            value.append((tsmap, version_added))
-        else:
-            prof_info[prof_str] = [(tsmap, version_added)]
+            prof_list = list(prof_set)
+            prof_list.sort()
+            prof_str = " ".join(prof_list)
+
+            if prof_str in prof_info.keys():
+                prof_info[prof_str].append((tsmap, version_added))
+            else:
+                prof_info[prof_str] = [(tsmap, version_added)]
 
     return prof_info
 
