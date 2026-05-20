@@ -2849,6 +2849,11 @@
         <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
+        <typesupport mode="block scaled with fp8ue8m0 scale" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S_CONCAT_MX" values="bs32_fp8ue8m0_set_t"/>
+          <type_bind type="in_out_t" set="S_CONCAT_MX"/>
+        </typesupport>
       </operator>
       <operator>
         <name>PAD</name>
