@@ -4924,7 +4924,16 @@ used.</description>
     <enumval value="3" name="DOUBLE_ROUND" description="Perform double rounding." extension="EXT-DOUBLEROUND"/>
  </enum>
 
-<enum name="block_size_t" description="Block size for the block_scaled formats">
+<enum name="block_shape_t" description="Block shape for the block_scaled formats. The names follow the convention of BLOCK_SHAPE_M where M is the block size of the innermost dimension. Similarly, BLOCK_SHAPE_MxN indicates block size of N in the innermost dimension and block size of M in the next innermost dimension. As of now, only 1 dimension (innermost) is supported for block-scaling.">
+  <enumval value="32" name="BLOCK_SHAPE_32" description="Block shape with innermost dimension of size 32" extension="EXT-MX-COMMON"/>
+<!--
+    NOTE: While extending these enum, check if following need updating:
+    - All call-sites of `get_innermost_block_size<in_t>()`
+-->
+</enum>
+
+<!-- This enum is deprecated and will be removed for 1.1 -->
+<enum name="block_size_t" description="Block size for the block_scaled formats (deprecated and will be removed for 1.1)">
   <enumval value="32" name="BLOCK_SIZE_32" description="Block size of 32" extension="EXT-MX-COMMON"/>
   <enumval value="1" name="BLOCK_SIZE_1" description="Block size of 1" extension="EXT-MX-COMMON"/>
 </enum>
