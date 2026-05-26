@@ -1,35 +1,63 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2024,2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
-for_each_data_position(index in shape) {
-    in_t in = tensor_read<in_t>(input, shape, index);
-    out_t out;
-    if (is_same<out_t,bool_t>()) {
-        out = (in != 0) ? true : false;
-    } else if (is_floating_point<out_t>()) {
-        // Conversion to float cases
-        if (is_same<in_t,bool_t>()) {
-            out = (in) ? 1.0 : 0.0;
-        } else {
-            out = round_to_nearest_float<out_t>(in);
-        }
-    } else {
-        // Conversion to integer cases
-        if (is_same<in_t,bool_t>()) {
-            out = (in) ? 1 : 0;
-        } else if (is_floating_point<in_t>()) {
-            out = truncate<out_t>(apply_clip_s<i32_t>(round_to_nearest_int(in), minimum_s<out_t>(), maximum_s<out_t>()));
-        } else if (sizeof<out_t>() >= sizeof<in_t>()) {
-            out = sign_extend<out_t>(in);
-        } else {
-            out = truncate<out_t>(in);
+ERROR_IF(is_block_scale<in_t>() && rank(shape) == 0); // A scalar can't be cast to block_scale_t
+ERROR_IF(is_block_scale<in_t>() && shape[rank(shape)-1] % get_innermost_block_size<in_t>() != 0);
+
+ERROR_IF(is_block_scale<out_t>() && rank(shape) == 0); // A scalar can't be cast to block_scale_t
+ERROR_IF(is_block_scale<out_t>() && shape[rank(shape)-1] % get_innermost_block_size<out_t>() != 0);
+
+if (is_block_scale<out_t>()) {
+    ERROR_IF(is_floating_point<in_t>()); // Only allow FP to cast to Mx
+
+    using value_t = get_value_t<out_t>();
+    using scale_t = get_scale_t<out_t>();
+    size_t bs = get_innermost_block_size<out_t>();
+
+    for_data_positions(index in shape; step = bs) {
+        in_t values[] = tensor_read_range<in_t, bs>(input, shape, index);
+        in_t max_abs = tensor_block_maxabs(input, shape, index, bs);
+        scale_t scale = calc_block_scale<in_t, scale_t, value_t>(max_abs);
+
+        for_each(0 <= i < bs) {
+            value_t value = round_to_nearest_float<in_t, value_t>(values[i] / scale);
+
+            tensor_write<bs, scale_t, value_t>(output, shape, next(index, i), value, scale);
         }
     }
-    tensor_write<out_t>(output, shape, index, out);
+} else {
+    for_each_data_position(index in shape) {
+        using acc_t = access_elem_type<in_t>();
+        acc_t in = tensor_read<in_t, acc_t>(input, shape, index);
+
+        out_t out;
+        if (is_same<out_t,bool_t>()) {
+            out = (in != 0) ? true : false;
+        } else if (is_floating_point<out_t>()) {
+            // Conversion to float cases
+            if (is_same<acc_t,bool_t>()) {
+                out = (in) ? 1.0 : 0.0;
+            } else {
+                out = round_to_nearest_float<out_t>(in);
+            }
+        } else {
+            // Conversion to integer cases
+            if (is_same<acc_t,bool_t>()) {
+                out = (in) ? 1 : 0;
+            } else if (is_floating_point<acc_t>()) {
+                out = truncate<out_t>(apply_clip_s<i32_t>(round_to_nearest_int(in), minimum_s<out_t>(), maximum_s<out_t>()));
+            } else if (sizeof<out_t>() >= sizeof<acc_t>()) {
+                out = sign_extend<out_t>(in);
+            } else {
+                out = truncate<out_t>(in);
+            }
+        }
+        tensor_write<out_t>(output, shape, index, out);
+    }
 }

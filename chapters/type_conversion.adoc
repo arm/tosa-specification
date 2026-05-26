@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2025 ARM Limited
+// (C) COPYRIGHT 2020-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -37,6 +37,25 @@ Rules when casting between floating-point types:
 ** Then `abs(out_ref) - ulp \<= abs(x) \<= abs(out_ref) + 0.5*ulp` must be true and `x` must have the correct sign.
 ** This allows for both round to zero and round to nearest rounding modes.
 
+Rules when casting from block-scaled types:
+
+* For any block in `input` tensor, let `v` be a value.
+* Let `s` be the corresponding scale in that block.
+* Let `out_ref = v * s` calculated using fp64_t arithmetic.
+* Let `out_imp` be the result of the implementation.
+* Let `value_t = get_value_t<in_t>()`
+* Then `tosa_reference_check_from_block<value_t, out_t>(out_imp, out_ref, s)` must be true.
+
+Rules when casting to block-scaled types:
+
+* Let `x` be a value from the `input` tensor
+* Let `out_ref_scale` be the results of calculating the block scale for the block containing `x` using fp64_t arithmetic.
+* Let `out_ref_value = x / out_ref_scale` calculated using fp64_t arithmetic.
+* Let `out_imp_scale, out_imp_value` be the results of the implementation for input `x`.
+* Let `value_t = get_value_t<out_t>()`
+* Let `scale_t = get_scale_t<out_t>()`
+* Then `tosa_reference_check_scale<scale_t, value_t>(out_imp_scale, out_imp_value, out_ref_scale, out_ref_value)` must be true.
+
 Rules when casting between different types:
 
 * Casting from floating-point to integer:
@@ -56,7 +75,7 @@ Rules when casting between different types:
 include::{pseudocode}/operators/CAST.tosac[lines=10..-1]
 ----
 
-==== CAST_FROM_BLOCK_SCALED
+==== CAST_FROM_BLOCK_SCALED (deprecated, removed in 1.1)
 
 Apply the scales from a scale tensor to the values in a value tensor, casting the result to the output type.
 The block dimension must be the last dimension of the tensor.
@@ -77,7 +96,7 @@ include::{generated}/operators/CAST_FROM_BLOCK_SCALED.adoc[]
 include::{pseudocode}/operators/CAST_FROM_BLOCK_SCALED.tosac[lines=10..-1]
 ----
 
-==== CAST_TO_BLOCK_SCALED
+==== CAST_TO_BLOCK_SCALED (deprecated, removed in 1.1)
 
 Calculate a scale value per block of input values and use that to calculate scaled data values from an input tensor.
 The output tensors are cast to the specified scale and value types.

@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2024,2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -10,4 +10,22 @@
 void tensor_write<type>(<type> *address, shape_t shape, shape_t index, <type> value) {
     tensor_size_t offset = tensor_index_to_offset(shape, index);
     address[offset] = value;
+}
+
+void tensor_write<size_t innermost_block_size, scale_t, value_t>(block_scale_t<> *address, shape_t shape, shape_t index, value_t value, scale_t scale) {
+
+    ERROR_IF(rank(shape) == 0);
+
+    shape_t scale_shape = shape;
+    scale_shape[rank(shape) - 1] /= innermost_block_size;
+
+    shape_t scale_index = index;
+    scale_index[rank(index) - 1] /= innermost_block_size;
+
+    // NOTE: See BLOCK_SCALED_LAYOUT comment in tensor_read()
+    value_t* value_address = reinterpret_cast<value_t*>(address);
+    scale_t* scale_address = reinterpret_cast<scale_t*>(value_address + tensor_size(shape));
+
+    tensor_write<value_t>(value_address, shape, index, value);
+    tensor_write<scale_t>(scale_address, scale_shape, scale_index, scale);
 }
