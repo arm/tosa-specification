@@ -75,6 +75,7 @@ in_t tensor_block_maxabs(in_t *address, shape_t shape, shape_t index, i32_t inne
 }
 
 // block read helpers
+// block-traits on block_scale_t<>
 get_scale_t<block_scale_t<>>(); // scale_t
 get_value_t<block_scale_t<>>(); // value_t
 
@@ -84,17 +85,19 @@ size_t get_innermost_block_size<in_t>() {
     // Return block size for innermost dimension
 }
 
-// block access helpers
-get_scale_t<block_scale_t<>>(); // scale_t
-get_value_t<block_scale_t<>>(); // value_t
+// block-traits on (! block_scale_t<>) i.e. non-block-scaled types
+get_scale_t<scalar_t>(); // Return scalar_t
+get_value_t<scalar_t>(); // Return scalar_t
 
-in_t access_elem_type<in_t>() {
-    ERROR_IF(is_same<in_t, block_scale_t<>>());
+using value_scale_t<type> = tuple<get_value_t<type>(), get_scale_t<type>()>;
+
+scalar_t access_elem_type<scalar_t>() {
+    ERROR_IF(is_same<scalar_t, block_scale_t<>>());
 
     // Return in_t
 }
 
 fp32_t access_elem_type<block_scale_t<>>() {
     // Implementation defined
-    // Return scaled value as fp32_t
+    // Return scaled value type as fp32_t
 }

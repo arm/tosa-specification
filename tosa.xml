@@ -3693,6 +3693,18 @@ used.</description>
         <typesupport mode="fp32" resize_t="fp32_t" in_t="fp32_t" out_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
+        <typesupport mode="fp8" resize_t="fp32_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S_RESIZE_FP8" values="fp8e4m3_t fp8e5m2_t"/>
+          <type_bind type="in_t" set="S_RESIZE_FP8"/>
+          <type_bind type="out_t" set="S_RESIZE_FP8" same_as="in_t"/>
+        </typesupport>
+        <typesupport mode="block scaled with fp8ue8m0 scale factor, nearest neighbor" resize_t="fp32_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S_RESIZE_MX" values="bs32_fp8ue8m0_set_t"/>
+          <type_bind type="in_t" set="S_RESIZE_MX"/>
+          <type_bind type="out_t" set="S_RESIZE_MX" same_as="in_t"/>
+        </typesupport>
       </operator>
     </operatorgroup>
     <operatorgroup name="type-conversion">

@@ -40,6 +40,9 @@ class TOSASpecAsciidocGenerator:
         terms.extend(set_aliases)
         return " \N{UNION} ".join(terms)
 
+    def has_tied_type_bindings(self, op):
+        return any(len(tysup.type_binding_same_as) > 0 for tysup in op.typesupports)
+
     def get_operator_type_sets(self, op):
         definitions = {}
         for tysup in op.typesupports:
@@ -221,12 +224,18 @@ class TOSASpecAsciidocGenerator:
             file.write("\n*Supported Data Types:*\n\n")
             type_sets = self.get_operator_type_sets(op)
             if len(type_sets) > 0:
-                file.write(
+                type_set_note = (
                     "Named type sets denote a Cartesian product. "
                     "If multiple type columns reference named sets, any combination "
                     "formed by choosing one value from each referenced set is valid."
-                    "\n\n"
                 )
+                if self.has_tied_type_bindings(op):
+                    type_set_note += (
+                        " A type column marked `(= name)` reuses the concrete "
+                        "value chosen for `name` instead of adding another "
+                        "Cartesian dimension."
+                    )
+                file.write(type_set_note + "\n\n")
                 file.write("*Type Sets:*\n\n")
                 for set_name, values in type_sets.items():
                     file.write(f"`{set_name} = {self.render_type_set(values)}`\n\n")
@@ -242,7 +251,10 @@ class TOSASpecAsciidocGenerator:
                     entry = f"|{profile}|{tysup.mode}"
                     for ty in op.types:
                         if ty in tysup.type_bindings:
-                            entry += f"|{tysup.type_bindings[ty]}"
+                            binding = tysup.type_bindings[ty]
+                            if ty in tysup.type_binding_same_as:
+                                binding += f" (= {tysup.type_binding_same_as[ty]})"
+                            entry += f"|{binding}"
                         else:
                             entry += f"|{tysup.tymap[ty]}"
                     entry += "\n"

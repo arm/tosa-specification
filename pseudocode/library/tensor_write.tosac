@@ -12,7 +12,15 @@ void tensor_write<type>(<type> *address, shape_t shape, shape_t index, <type> va
     address[offset] = value;
 }
 
-void tensor_write<size_t innermost_block_size, scale_t, value_t>(block_scale_t<> *address, shape_t shape, shape_t index, value_t value, scale_t scale) {
+void tensor_write_value_scale<in_t>(in_t* address, shape_t shape, shape_t index, value_scale_t<in_t> vs) {
+    if (!is_block_scale<in_t>()) {
+        REQUIRE(get<1>(vs) == static_cast<in_t>(1.0));
+        tensor_write<in_t>(address, shape, index, get<0>(vs));
+        return;
+    }
+    size_t innermost_block_size = get_innermost_block_size<in_t>();
+    using value_t = get_value_t<in_t>();
+    using scale_t = get_scale_t<in_t>();
 
     ERROR_IF(rank(shape) == 0);
 
@@ -26,6 +34,6 @@ void tensor_write<size_t innermost_block_size, scale_t, value_t>(block_scale_t<>
     value_t* value_address = reinterpret_cast<value_t*>(address);
     scale_t* scale_address = reinterpret_cast<scale_t*>(value_address + tensor_size(shape));
 
-    tensor_write<value_t>(value_address, shape, index, value);
-    tensor_write<scale_t>(scale_address, scale_shape, scale_index, scale);
+    tensor_write<value_t>(value_address, shape, index, get<0>(vs));
+    tensor_write<scale_t>(scale_address, scale_shape, scale_index, get<1>(vs));
 }

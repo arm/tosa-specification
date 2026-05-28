@@ -12,6 +12,8 @@ in_t tensor_read<in_t>(in_t *address, shape_t shape, shape_t index) {
     return address[offset];
 }
 
+// Use when we want to read the scaled value for block_scale_t input
+// and the usual scalar value for non block scaled typed input (equivalent to `tensor_read<in_t>(...)`)
 out_t tensor_read<in_t, out_t>(in_t *address, shape_t shape, shape_t index) {
     if (!is_block_scale<in_t>()) {
         return static_cast<out_t>(tensor_read<in_t>(address, shape, index));
@@ -47,4 +49,30 @@ in_t[] tensor_read_range<in_t, size_t sz>(in_t* address, shape_t shape, shape_t 
         values[i] = tensor_read<in_t>(address, shape, next(index, i));
     }
     return values;
+}
+
+// Use when we want to read one value and scale separately
+value_scale_t<in_t> tensor_read_value_scale<in_t>(in_t* address, shape_t shape, shape_t index) {
+    if (!is_block_scale<in_t>()) {
+        return { tensor_read<in_t>(address, shape, index), static_cast<in_t>(1.0) };
+    }
+
+    using value_t = get_value_t<in_t>();
+    using scale_t = get_scale_t<in_t>();
+    size_t block_size = get_innermost_block_size<in_t>();
+
+    // NOTE: See BLOCK_SCALED_LAYOUT comment in tensor_read
+    value_t* value_address = reinterpret_cast<value_t*>(address);
+    scale_t* scale_address = reinterpret_cast<scale_t*>(value_address + tensor_size(shape));
+
+    shape_t scale_shape = shape;
+    scale_shape[rank(shape) - 1] /= block_size;
+
+    shape_t scale_index = index;
+    scale_index[rank(index) - 1] /= block_size;
+
+    value_t v = tensor_read<value_t>(value_address, shape, index);
+    scale_t s = tensor_read<scale_t>(scale_address, scale_shape, scale_index);
+
+    return {v, s};
 }

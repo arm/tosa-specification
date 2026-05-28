@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2025 ARM Limited
+// (C) COPYRIGHT 2020-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -21,7 +21,14 @@ ERROR_IF(border_y < -16 * scale_y_n || border_y >= scale_y_n);
 ERROR_IF(border_x < -16 * scale_x_n || border_x >= scale_x_n);
 ERROR_IF(OH != idiv_check((IH - 1) * scale_y_n - offset_y + border_y, scale_y_d) + 1);
 ERROR_IF(OW != idiv_check((IW - 1) * scale_x_n - offset_x + border_x, scale_x_d) + 1);
+
+ERROR_IF(is_block_scale<in_t>() && C % get_innermost_block_size<in_t>() != 0);
+ERROR_IF(is_block_scale<out_t>() && C % get_innermost_block_size<out_t>() != 0);
+ERROR_IF(is_block_scale<in_t>() && mode != NEAREST_NEIGHBOR);
+ERROR_IF(!is_integer<in_t>() && !is_same<in_t,out_t>());
+
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C) {
+    in_t in;
     out_t acc;
     resize_t dx, dy;
     resize_t unit_x, unit_y;
@@ -68,7 +75,8 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C) {
             iy = (2 * dy >= scale_y_n) ? iy1 : iy0;
             ix = (2 * dx >= scale_x_n) ? ix1 : ix0;
         }
-        in_t v = tensor_read<in_t>(input, [N,IH,IW,C], [n,iy,ix,c]);
-        tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], v);
+
+        value_scale_t<in_t> vs = tensor_read_value_scale<in_t>(input, [N,IH,IW,C], [n,iy,ix,c]);
+        tensor_write_value_scale<in_t>(output, [N,OH,OW,C], [n,oy,ox,c], vs);
     }
 }

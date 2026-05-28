@@ -7,6 +7,13 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
+bool_t is_integer<type>() {
+    if (is_same<type,i8_t>() || is_same<type,i16_t>() || is_same<type,i32_t>() || is_same<type,i48_t>() || is_same<type,i64_t>()) {
+        return true;
+    }
+    return false;
+}
+
 bool_t is_floating_point<type>() {
     if (is_same<type,fp16_t>() || is_same<type,fp32_t>() || is_same<type,bf16_t>() || is_same<type,fp8e4m3_t>() || is_same<type,fp8e5m2_t>() ||
         is_same<type,fp4e2m1_t>() || is_same<type,fp6e3m2_t>() || is_same<type,fp6e2m3_t>() || is_same<type,fp8ue8m0_t>()) {
