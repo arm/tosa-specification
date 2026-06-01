@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2024-2025 ARM Limited
+// (C) COPYRIGHT 2024-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -10,4 +10,8 @@
 ERROR_IF(axis >= rank(shape));
 ERROR_IF(axis < 0);
 REQUIRE(shape[axis] > 0);
+ERROR_IF(is_block_scale<in_t>() && rank(shape) == 0);
+ERROR_IF(is_block_scale<in_t>() &&
+         shape[rank(shape) - 1] % get_innermost_block_size<in_t>() != 0);
+
 output[0] = shape_dim(shape, axis);

@@ -4618,6 +4618,11 @@ used.</description>
         <typesupport mode="i64" in_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64" and_name="EXT-SHAPE"/>
         </typesupport>
+        <typesupport mode="MX"  version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S" values="bs32_fp8ue8m0_set_t"/>
+          <type_bind type="in_t" set="S"/>
+        </typesupport>
       </operator>
       <operator>
         <name>DIV_CEIL_SHAPE</name>
