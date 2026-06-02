@@ -56,7 +56,7 @@ include::{generated}/operators/RESHAPE.adoc[]
 include::{pseudocode}/operators/RESHAPE.tosac[lines=10..-1]
 ----
 
-==== RESHAPE_BLOCK_SCALED
+==== RESHAPE_BLOCK_SCALED (deprecated, removed in 1.1)
 
 Returns a tensor-list with the same type/values as the input, with a new shape specified by the shape argument.
 Reshape may operate on block-scaled or non-block-scaled tensors of any rank.
