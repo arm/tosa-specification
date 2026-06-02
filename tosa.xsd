@@ -129,6 +129,8 @@
     <xs:enumeration value="A_t"/>
     <xs:enumeration value="B_t"/>
     <xs:enumeration value="scale_t"/>
+    <xs:enumeration value="A_zp_t"/>
+    <xs:enumeration value="B_zp_t"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -144,8 +146,10 @@
 <xs:simpleType name="argument-type">
   <xs:restriction base="xs:string">
     <xs:enumeration value="A_t"/>
+    <xs:enumeration value="A_zp_t"/>
     <xs:enumeration value="acc_type_t"/>
     <xs:enumeration value="B_t"/>
+    <xs:enumeration value="B_zp_t"/>
     <xs:enumeration value="block_shape_t"/>
     <xs:enumeration value="block_size_t"/> <!-- This enum is deprecated and will be removed for 1.1 -->
     <xs:enumeration value="bool_t"/>
@@ -461,7 +465,9 @@ Non-symbolic datatype(s) must appear as attribute in <typesupport>.
     <xs:attribute name="TABLE_SIZE" type="xs:int"/>
     <xs:attribute name="var_t" type="datatype"/>
     <xs:attribute name="A_t" type="datatype"/>
+    <xs:attribute name="A_zp_t" type="datatype"/>
     <xs:attribute name="B_t" type="datatype"/>
+    <xs:attribute name="B_zp_t" type="datatype"/>
     <xs:attribute name="scale_t" type="datatype"/>
     <xs:attribute name="shape_t" type="datatype"/>
   </xs:complexType>

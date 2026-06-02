@@ -259,11 +259,11 @@ KS = C;
 for (0 <= n < N, 0 <= y < H, 0 <= c < C) {
   A[n, y, c] = tosa_pro_fp_data(S, KS, 0, c, (n*H+y)*C+c);
 }
-// CAST_TO_BLOCK_SCALED(A) if required
+// CAST(A) if required
 for (0 <= d < D, 0 <= x < W, 0 <= c < C) {
   B[d, x, c] = tosa_pro_fp_data(S, KS, 1, c, (d*W+x)*C+c);
 }
-// CAST_TO_BLOCK_SCALED(B) if required
+// CAST(B) if required
 ----
 
 ==== MATMUL_T_BLOCK_SCALED
