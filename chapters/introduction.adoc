@@ -188,7 +188,7 @@ Possible values for status are:
 | Status | Description
 
 
-| Complete | All operators are specified, conformance tests are provided, no changes are expected. Backward compatibility is guaranteed.
+| Complete | All operators are specified, conformance tests are provided, modifications must respect backward compatibility guarantees.
 | Experimental | Operators are subject to change, backwards compatibility is not guaranteed for experimental extensions. +
 If an implementation implements an experimental extension, it must pass the conformance tests for that extension.
 | Deprecated | Operators retained for compatibility, but may be removed in a future major release of TOSA.
