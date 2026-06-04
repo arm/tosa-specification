@@ -105,7 +105,7 @@ include::{generated}/operators/CONV2D.adoc[]
 include::{pseudocode}/operators/CONV2D.tosac[lines=10..-1]
 ----
 
-==== CONV2D_BLOCK_SCALED
+==== CONV2D_BLOCK_SCALED (deprecated, removed in 1.1)
 
 Performs a 2D convolution over the given input data and scales, using the weight data and scales.
 Implementations may choose to skip calculation of multiplies in the padding area.

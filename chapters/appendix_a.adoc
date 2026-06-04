@@ -158,9 +158,11 @@ KS = KW*KH*IC;
 for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
   input [ n, iy, ix, ic] = tosa_pro_fp_data(S, KS, 0, ((iy % KH)*KW+(ix % KW))*IC+ic, ((n*IH+iy)*IW+ix)*IC+ic);
 }
+// CAST(input) to block_scale_t<> if required
 for (0 <= oc < OC, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
   weight[oc, ky, kx, ic] = tosa_pro_fp_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
 }
+// CAST(weight) to block_scale_t<> if required
 for (0 <= oc < BC) {
   bias[oc] = tosa_pro_fp_data(S, KS, 2, oc)
 }

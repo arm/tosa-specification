@@ -40,8 +40,13 @@ class TOSASpecAsciidocGenerator:
         terms.extend(set_aliases)
         return " \N{UNION} ".join(terms)
 
-    def has_tied_type_bindings(self, op):
+    def has_same_as_bindings(self, op):
         return any(len(tysup.type_binding_same_as) > 0 for tysup in op.typesupports)
+
+    def has_access_elem_type_bindings(self, op):
+        return any(
+            len(tysup.type_binding_access_elem_type) > 0 for tysup in op.typesupports
+        )
 
     def get_operator_type_sets(self, op):
         definitions = {}
@@ -229,11 +234,19 @@ class TOSASpecAsciidocGenerator:
                     "If multiple type columns reference named sets, any combination "
                     "formed by choosing one value from each referenced set is valid."
                 )
-                if self.has_tied_type_bindings(op):
+                if self.has_same_as_bindings(op):
                     type_set_note += (
                         " A type column marked `(= name)` reuses the concrete "
                         "value chosen for `name` instead of adding another "
                         "Cartesian dimension."
+                    )
+                if self.has_access_elem_type_bindings(op):
+                    type_set_note += (
+                        " A type column marked "
+                        "`(access_elem_type of name)` reuses the access "
+                        "element type of the concrete value chosen for `name`; "
+                        "this is the concrete type itself for non-block-scaled "
+                        "types and `fp32_t` for block-scaled types."
                     )
                 file.write(type_set_note + "\n\n")
                 file.write("*Type Sets:*\n\n")
@@ -254,6 +267,11 @@ class TOSASpecAsciidocGenerator:
                             binding = tysup.type_bindings[ty]
                             if ty in tysup.type_binding_same_as:
                                 binding += f" (= {tysup.type_binding_same_as[ty]})"
+                            if ty in tysup.type_binding_access_elem_type:
+                                binding += (
+                                    " (access_elem_type of "
+                                    f"{tysup.type_binding_access_elem_type[ty]})"
+                                )
                             entry += f"|{binding}"
                         else:
                             entry += f"|{tysup.tymap[ty]}"

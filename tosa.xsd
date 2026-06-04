@@ -111,11 +111,13 @@
 <xs:simpleType name="typename">
   <xs:restriction base="xs:string">
     <xs:enumeration value="in_t"/>
+    <xs:enumeration value="in_zp_t"/>
     <xs:enumeration value="index_t"/>
     <xs:enumeration value="out_t"/>
     <xs:enumeration value="in_out_t"/>
     <xs:enumeration value="acc_t"/>
     <xs:enumeration value="weight_t"/>
+    <xs:enumeration value="weight_zp_t"/>
     <xs:enumeration value="resize_t"/>
     <xs:enumeration value="table_t"/>
     <xs:enumeration value="mul_t"/>
@@ -150,6 +152,7 @@
     <xs:enumeration value="i8_t"/>
     <xs:enumeration value="i32_t"/>
     <xs:enumeration value="in_t"/>
+    <xs:enumeration value="in_zp_t"/>
     <xs:enumeration value="in_out_t"/>
     <xs:enumeration value="nan_propagation_mode_t"/>
     <xs:enumeration value="out_t"/>
@@ -164,6 +167,7 @@
     <xs:enumeration value="tosa_graph_t"/>
     <xs:enumeration value="var_t"/>
     <xs:enumeration value="weight_t"/>
+    <xs:enumeration value="weight_zp_t"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -406,6 +410,7 @@
     <xs:attribute name="type" type="typename" use="required"/>
     <xs:attribute name="set" type="xs:string" use="required"/>
     <xs:attribute name="same_as" type="typename"/>
+    <xs:attribute name="access_elem_type" type="typename"/>
   </xs:complexType>
 </xs:element>
 
@@ -425,6 +430,11 @@ attribute such as A_t="...".
 If same_as is used on a <type_bind>, the symbolic datatype is tied to the
 same concrete value chosen for the referenced symbolic datatype. Both symbolic
 datatypes must bind to the same <type_set>.
+If access_elem_type is used on a <type_bind>, the symbolic datatype is tied
+to the access element type of the concrete value chosen for the referenced
+symbolic datatype. The access element type is the concrete type itself for
+non-block-scaled types and fp32_t for block-scaled types. Both symbolic
+datatypes must bind to the same <type_set>.
 Non-symbolic datatype(s) must appear as attribute in <typesupport>.
 -->
 
@@ -438,10 +448,12 @@ Non-symbolic datatype(s) must appear as attribute in <typesupport>.
     <xs:attribute name="mode" type="xs:string" use="required"/>
     <xs:attribute name="version_added" type="xs:string" use="required"/>
     <xs:attribute name="in_t" type="datatype"/>
+    <xs:attribute name="in_zp_t" type="datatype"/>
     <xs:attribute name="index_t" type="datatype"/>
     <xs:attribute name="out_t" type="datatype"/>
     <xs:attribute name="in_out_t" type="datatype"/>
     <xs:attribute name="weight_t" type="datatype"/>
+    <xs:attribute name="weight_zp_t" type="datatype"/>
     <xs:attribute name="acc_t" type="datatype"/>
     <xs:attribute name="resize_t" type="datatype"/>
     <xs:attribute name="table_t" type="datatype"/>

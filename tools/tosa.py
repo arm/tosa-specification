@@ -17,6 +17,15 @@ TYPE_SET_VALUE_EXPANSIONS = {
     ),
 }
 
+BLOCK_SCALE_VALUE_TYPE_MAPPING = {
+    "bs32_fp8ue8m0_fp8e4m3_t": "fp8e4m3_t",
+    "bs32_fp8ue8m0_fp8e5m2_t": "fp8e5m2_t",
+    "bs32_fp8ue8m0_fp6e3m2_t": "fp6e3m2_t",
+    "bs32_fp8ue8m0_fp6e2m3_t": "fp6e2m3_t",
+    "bs32_fp8ue8m0_fp4e2m1_t": "fp4e2m1_t",
+    "bs32_fp8ue8m0_mxint8_t": "mxint8_t",
+}
+
 DEDUCED_EXTENSION_TYPE_MAPPING = {
     "i64_t": ["EXT-INT64"],
     "i16_t": ["EXT-INT16"],
@@ -43,6 +52,12 @@ def deduce_extensions(tsmap):
     for ty in tsmap.values():
         extensions.update(DEDUCED_EXTENSION_TYPE_MAPPING.get(ty, []))
     return extensions
+
+
+def access_elem_type(ty):
+    if ty in BLOCK_SCALE_VALUE_TYPE_MAPPING:
+        return "fp32_t"
+    return ty
 
 
 # possible shapes: shape1, [2], [N,H,W,C]
@@ -146,6 +161,7 @@ class TOSAOperatorDataTypeSupport:
         type_sets=None,
         type_bindings=None,
         type_binding_same_as=None,
+        type_binding_access_elem_type=None,
     ):
         if len(generated_tuples) == 0:
             raise RuntimeError(f"Typesupport {mode} has no generated tuples")
@@ -164,6 +180,7 @@ class TOSAOperatorDataTypeSupport:
         self.type_sets = list(type_sets or [])
         self.type_bindings = dict(type_bindings or {})
         self.type_binding_same_as = dict(type_binding_same_as or {})
+        self.type_binding_access_elem_type = dict(type_binding_access_elem_type or {})
 
 
 class TOSAOperator:
@@ -293,9 +310,11 @@ class TOSASpec:
                 tsmap[ty] = tysup.get(ty)
             type_sets = self.__load_typesupport_sets(tysup, name, tsmode)
             expanded_type_sets = self.__expand_typesupport_sets(type_sets)
-            type_bindings, type_binding_same_as = self.__load_typesupport_bindings(
-                tysup, name, tsmode, types, type_sets
-            )
+            (
+                type_bindings,
+                type_binding_same_as,
+                type_binding_access_elem_type,
+            ) = self.__load_typesupport_bindings(tysup, name, tsmode, types, type_sets)
             generated_tuples = self.__expand_typesupport_tuples(
                 name,
                 tsmode,
@@ -304,6 +323,7 @@ class TOSASpec:
                 expanded_type_sets,
                 type_bindings,
                 type_binding_same_as,
+                type_binding_access_elem_type,
             )
             typesupports.append(
                 TOSAOperatorDataTypeSupport(
@@ -315,6 +335,7 @@ class TOSASpec:
                     type_sets,
                     type_bindings,
                     type_binding_same_as,
+                    type_binding_access_elem_type,
                 )
             )
         return TOSAOperator(name, args, types, typesupports)
@@ -358,11 +379,13 @@ class TOSASpec:
         # See EXPECT_TYPESUPPORT comment in tosa.xsd
         type_bindings = {}
         type_binding_same_as = {}
+        type_binding_access_elem_type = {}
         known_sets = {set_name for set_name, _ in type_sets}
         for type_bind in tysup.findall("type_bind"):
             ty_name = type_bind.get("type")
             set_name = type_bind.get("set")
             same_as = type_bind.get("same_as")
+            bound_access_elem_type = type_bind.get("access_elem_type")
             if ty_name not in types:
                 raise RuntimeError(
                     f"Operator {op_name} mode {mode} binds unknown type {ty_name}"
@@ -376,40 +399,51 @@ class TOSASpec:
                     f"Operator {op_name} mode {mode} "
                     f"references unknown type set {set_name}"
                 )
+            if same_as is not None and bound_access_elem_type is not None:
+                raise RuntimeError(
+                    f"Operator {op_name} mode {mode} binds {ty_name} with "
+                    "both same_as and access_elem_type"
+                )
             type_bindings[ty_name] = set_name
             if same_as is not None:
                 type_binding_same_as[ty_name] = same_as
+            if bound_access_elem_type is not None:
+                type_binding_access_elem_type[ty_name] = bound_access_elem_type
 
-        for ty_name, same_as in type_binding_same_as.items():
-            if same_as not in types:
+        type_binding_derived_from = {
+            **type_binding_same_as,
+            **type_binding_access_elem_type,
+        }
+        for ty_name, source_ty in type_binding_derived_from.items():
+            if source_ty not in types:
                 raise RuntimeError(
-                    f"Operator {op_name} mode {mode} ties {ty_name} "
-                    f"to unknown type {same_as}"
+                    f"Operator {op_name} mode {mode} derives {ty_name} "
+                    f"from unknown type {source_ty}"
                 )
-            if same_as not in type_bindings:
+            if source_ty not in type_bindings:
                 raise RuntimeError(
-                    f"Operator {op_name} mode {mode} ties {ty_name} "
-                    f"to unbound type {same_as}"
+                    f"Operator {op_name} mode {mode} derives {ty_name} "
+                    f"from unbound type {source_ty}"
                 )
-            if type_bindings[ty_name] != type_bindings[same_as]:
+            if type_bindings[ty_name] != type_bindings[source_ty]:
                 raise RuntimeError(
-                    f"Operator {op_name} mode {mode} ties {ty_name} "
-                    f"to {same_as} with a different type set"
+                    f"Operator {op_name} mode {mode} derives {ty_name} "
+                    f"from {source_ty} with a different type set"
                 )
 
-        for ty_name in type_binding_same_as:
+        for ty_name in type_binding_derived_from:
             seen = set()
             current = ty_name
-            while current in type_binding_same_as:
+            while current in type_binding_derived_from:
                 if current in seen:
                     raise RuntimeError(
-                        f"Operator {op_name} mode {mode} has a same_as cycle "
+                        f"Operator {op_name} mode {mode} has a derived type cycle "
                         f"starting at {ty_name}"
                     )
                 seen.add(current)
-                current = type_binding_same_as[current]
+                current = type_binding_derived_from[current]
 
-        return type_bindings, type_binding_same_as
+        return type_bindings, type_binding_same_as, type_binding_access_elem_type
 
     def __expand_typesupport_tuples(
         self,
@@ -420,6 +454,7 @@ class TOSASpec:
         type_sets,
         type_bindings,
         type_binding_same_as,
+        type_binding_access_elem_type,
     ):
         for ty_name in type_bindings:
             if tsmap.get(ty_name) is not None:
@@ -435,7 +470,9 @@ class TOSASpec:
         bound_types = [
             ty_name
             for ty_name in types
-            if ty_name in type_bindings and ty_name not in type_binding_same_as
+            if ty_name in type_bindings
+            and ty_name not in type_binding_same_as
+            and ty_name not in type_binding_access_elem_type
         ]
         bound_value_lists = [
             type_sets_map[type_bindings[ty_name]] for ty_name in bound_types
@@ -446,13 +483,21 @@ class TOSASpec:
             expanded = dict(tsmap)
             for ty_name, value in zip(bound_types, bound_values):
                 expanded[ty_name] = value
+
+            def resolve_type(ty_name):
+                if ty_name in expanded and expanded[ty_name] is not None:
+                    return expanded[ty_name]
+                if ty_name in type_binding_same_as:
+                    expanded[ty_name] = resolve_type(type_binding_same_as[ty_name])
+                    return expanded[ty_name]
+                if ty_name in type_binding_access_elem_type:
+                    source_ty = type_binding_access_elem_type[ty_name]
+                    expanded[ty_name] = access_elem_type(resolve_type(source_ty))
+                    return expanded[ty_name]
+                return expanded[ty_name]
+
             for ty_name in types:
-                if ty_name not in type_binding_same_as:
-                    continue
-                same_as = ty_name
-                while same_as in type_binding_same_as:
-                    same_as = type_binding_same_as[same_as]
-                expanded[ty_name] = expanded[same_as]
+                resolve_type(ty_name)
             generated_tuples.append(expanded)
 
         return generated_tuples
