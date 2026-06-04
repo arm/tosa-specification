@@ -178,8 +178,6 @@ include::{generated}/levels.adoc[]
 
 === Status
 
-This specification is the release candidate for TOSA 1.0.
-
 The specific status of each profile and extension is contained in the tables in <<Profiles>>.
 Possible values for status are:
 
