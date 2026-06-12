@@ -236,16 +236,24 @@ for (0 <= oc < C*M) {
 
 The following generates input test data for test set S.
 For compliant implementation, the test must pass whenever the attributes satisfy:
-`N*H*W >= MIN_DOT_PRODUCTS`
+`tensor_size(output_shape) >= MIN_DOT_PRODUCTS`
 
 [source,c++]
 ----
-KS = C;
-for (0 <= n < N, 0 <= y < H, 0 <= c < C) {
-  A[n, y, c] = tosa_pro_fp_data(S, KS, 0, c, (n*H+y)*C+c);
+// KS is the contraction dimension C. With variadic batch dimensions, this is
+// still the last axis of A.
+KS = A_shape[rank(A_shape) - 1];
+// Walk A by flat offset so the same generator works for any batch rank, then
+// recover the multidimensional index to identify the C coordinate.
+for (0 <= a_offset < tensor_size(A_shape)) {
+  a_index = tensor_offset_to_index(A_shape, a_offset);
+  A[a_index] = tosa_pro_fp_data(S, KS, 0, a_index[rank(A_shape) - 1], a_offset);
 }
-for (0 <= n < N, 0 <= c < C, 0 <= x < W) {
-  B[n, c, x] = tosa_pro_fp_data(S, KS, 1, c, (n*C+c)*W+x);
+// MATMUL uses B with shape [..., C, W], so the contraction axis is the
+// second-to-last axis of B.
+for (0 <= b_offset < tensor_size(B_shape)) {
+  b_index = tensor_offset_to_index(B_shape, b_offset);
+  B[b_index] = tosa_pro_fp_data(S, KS, 1, b_index[rank(B_shape) - 2], b_offset);
 }
 ----
 
@@ -253,19 +261,28 @@ for (0 <= n < N, 0 <= c < C, 0 <= x < W) {
 
 The following generates input test data for test set S.
 For compliant implementation, the test must pass whenever the attributes satisfy:
-`N*H*W >= MIN_DOT_PRODUCTS`
+`tensor_size(output_shape) >= MIN_DOT_PRODUCTS`
 
 [source,c++]
 ----
-KS = C;
-for (0 <= n < N, 0 <= y < H, 0 <= c < C) {
-  A[n, y, c] = tosa_pro_fp_data(S, KS, 0, c, (n*H+y)*C+c);
+// KS is the contraction dimension C. With variadic batch dimensions, this is
+// still the last axis of A.
+KS = A_shape[rank(A_shape) - 1];
+// Walk A by flat offset so the same generator works for any batch rank, then
+// recover the multidimensional index to identify the C coordinate.
+for (0 <= a_offset < tensor_size(A_shape)) {
+  a_index = tensor_offset_to_index(A_shape, a_offset);
+  A[a_index] = tosa_pro_fp_data(S, KS, 0, a_index[rank(A_shape) - 1], a_offset);
 }
-// CAST(A) if required
-for (0 <= d < D, 0 <= x < W, 0 <= c < C) {
-  B[d, x, c] = tosa_pro_fp_data(S, KS, 1, c, (d*W+x)*C+c);
+// CAST_TO_BLOCK_SCALED(A) if required
+// MATMUL_T uses B with shape [..., W, C] and implicitly swaps only the last
+// two dimensions to [..., C, W], so the contraction axis is the last axis
+// of B.
+for (0 <= b_offset < tensor_size(B_shape)) {
+  b_index = tensor_offset_to_index(B_shape, b_offset);
+  B[b_index] = tosa_pro_fp_data(S, KS, 1, b_index[rank(B_shape) - 1], b_offset);
 }
-// CAST(B) if required
+// CAST_TO_BLOCK_SCALED(B) if required
 ----
 
 ==== MATMUL_T_BLOCK_SCALED

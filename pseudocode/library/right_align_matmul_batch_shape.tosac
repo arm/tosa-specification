@@ -1,0 +1,27 @@
+//
+// This confidential and proprietary software may be used only as
+// authorised by a licensing agreement from ARM Limited
+// (C) COPYRIGHT 2026 ARM Limited
+// ALL RIGHTS RESERVED
+// The entire notice above must be reproduced on all authorised
+// copies and copies may only be made to the extent permitted
+// by a licensing agreement from ARM Limited.
+
+// Right-align the leading batch dimensions of a MATMUL operand inside the
+// shared output batch rank, treating missing leading dimensions as size 1.
+shape_t right_align_matmul_batch_shape(shape_t shape, int32_t output_batch_rank) {
+    ERROR_IF(rank(shape) < 2);
+
+    int32_t batch_rank = rank(shape) - 2;
+    ERROR_IF(output_batch_rank < batch_rank);
+
+    shape_t batch_shape(output_batch_rank);
+    for_each(0 <= i < output_batch_rank) {
+        batch_shape[i] = 1;
+    }
+    for_each(0 <= i < batch_rank) {
+        batch_shape[(output_batch_rank - batch_rank) + i] = shape[i];
+    }
+
+    return batch_shape;
+}

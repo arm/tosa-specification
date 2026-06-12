@@ -216,6 +216,25 @@ The following function derives the broadcast output shape from the input shapes.
 include::{pseudocode}/library/broadcast_shape.tosac[lines=10..-1]
 ----
 
+The following function right-aligns a `MATMUL` operand's batch
+prefix to a target batch rank so `apply_broadcast` can reuse the common index
+mapping rules.
+
+[source,c++]
+----
+include::{pseudocode}/library/right_align_matmul_batch_shape.tosac[lines=10..-1]
+----
+
+The following function derives the broadcast output shape for the leading batch
+dimensions used by `MATMUL` and `MATMUL_T`.
+Unlike general TOSA broadcasting, missing leading dimensions are treated as
+size 1 and the two innermost matrix dimensions are excluded.
+
+[source,c++]
+----
+include::{pseudocode}/library/broadcast_matmul_batch_shape.tosac[lines=10..-1]
+----
+
 The following function maps an index in the output tensor to an index in the input tensor.
 
 [source,c++]

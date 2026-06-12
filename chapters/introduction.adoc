@@ -107,9 +107,10 @@ TOSA graphs created with previous minor versions within a major version must con
 The following portions of the specification and implementation will not change within a major version:
 
 * Operator Names
-* Arguments including ordering, input/attribute/output, name, rank
-* ERROR_IF statements
-* Functionality of the pseudocode for each operator
+* Arguments including ordering, input/attribute/output, and name
+* Argument rank, except as described below for backward-compatible shape relaxations
+* ERROR_IF statements, except as described below for backward-compatible shape relaxations
+* Functionality of the pseudocode for each operator, except as described below for backward-compatible shape relaxations
 * Level definitions and checks
 * Removal of rows in the Supported Data Type tables
 * Enumerated types and values
@@ -126,6 +127,37 @@ Changes to the following do not break compatibility:
 * Additions of optional operator attributes with specified default values
 
 Minor versions are allowed to add new operators or other functionality as long as the above guarantees hold.
+
+===== Broadcasting
+
+For operators that already support broadcasting, changes that only relax the
+accepted input and output shapes are backward compatible.
+This may require updates to argument rank limits, `ERROR_IF` statements, and
+pseudocode shape handling.
+Such changes are backward compatible if every graph valid in the earlier
+version remains valid and produces the same result, and the only newly
+accepted shapes are shapes that are compatible under the <<Broadcasting>> rules.
+
+===== MATMUL and MATMUL_T
+
+`MATMUL` and `MATMUL_T` use a different matching rule for their leading batch
+dimensions than the general <<Broadcasting>> rule.
+Unlike the general <<Broadcasting>> rule, `MATMUL` and `MATMUL_T` do not
+require the two operands to have equal rank.
+Backward compatible changes for `MATMUL` and `MATMUL_T` may relax only the
+matching of those leading batch dimensions by:
+
+* Allow additional leading batch dimensions
+* Treat missing leading batch dimensions as size 1 when matching batch shapes
+
+These changes may update the argument rank limits, `ERROR_IF` statements, and
+pseudocode for `MATMUL` and `MATMUL_T`.
+They are backward compatible if every graph valid in the earlier version
+remains valid and produces the same result, and the meaning of the two
+innermost matrix dimensions and the implicit transpose performed by
+`MATMUL_T` do not change.
+Rank-1 operand handling is not part of this relaxation and can instead be
+expressed with explicit `RESHAPE` operations in the graph.
 
 In this version of TOSA, the precision requirements are subject to change while additional implementations are tested.
 When multiple implementations are shown to meet the precision requirements, those requirements will be guaranteed not to change within a major version.

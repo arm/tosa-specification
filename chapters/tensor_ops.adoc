@@ -239,7 +239,21 @@ include::{pseudocode}/operators/FFT2D.tosac[lines=10..-1]
 
 ==== MATMUL
 
-Performs two dimensional matrix multiplications.
+Performs matrix multiplications over the two innermost dimensions while treating any leading dimensions as broadcastable batch dimensions.
+`A` has shape `[A0, ..., A(n-1), H, C]`.
+`B` has shape `[B0, ..., B(m-1), C, W]`.
+`[A0, ..., A(n-1)]` and `[B0, ..., B(m-1)]` must be compatible as leading
+batch dimensions.
+Right-align these two dimension lists and treat any missing leading dimensions
+as size 1, producing common batch dimensions `[D0, ..., D(k-1)]` where
+`k = max(n, m)` and each `Di` is the larger of the two aligned dimension sizes.
+`output` has shape `[D0, ..., D(k-1), H, W]`.
+Examples of valid batch broadcasting:
+`A` shape `[2, 3, H, C]` with `B` shape `[1, 3, C, W]` produces `output`
+shape `[2, 3, H, W]`.
+`A` shape `[3, H, C]` with `B` shape `[4, 3, C, W]` produces `output` shape
+`[4, 3, H, W]` because the missing leading batch dimension in `A` is treated as
+size 1 for broadcast matching.
 
 *Precision Requirements*
 
@@ -260,11 +274,23 @@ include::{pseudocode}/operators/MATMUL.tosac[lines=10..-1]
 
 ==== MATMUL_T
 
-Performs two dimensional matrix multiplications.
-`A` matrix is of shape `N x H x C`.
-`B` matrix is of shape `D x W x C`.
-This is effectively a matrix multiply of `A` by the transposed `B` matrix.
-If the `D` dimension of input `B` is of size 1, the `B` matrix is broadcast.
+Performs matrix multiplications over the two innermost dimensions while implicitly transposing the last two dimensions of `B`.
+Any leading dimensions are broadcastable batch dimensions.
+`A` has shape `[A0, ..., A(n-1), H, C]`.
+`B` has shape `[B0, ..., B(m-1), W, C]` before swapping those last two
+dimensions to `[B0, ..., B(m-1), C, W]`.
+`[A0, ..., A(n-1)]` and `[B0, ..., B(m-1)]` must be compatible as leading
+batch dimensions.
+Right-align these two dimension lists and treat any missing leading dimensions
+as size 1, producing common batch dimensions `[D0, ..., D(k-1)]` where
+`k = max(n, m)` and each `Di` is the larger of the two aligned dimension sizes.
+`output` has shape `[D0, ..., D(k-1), H, W]`.
+Examples of valid batch broadcasting:
+`A` shape `[2, 3, H, C]` with `B` shape `[1, 3, W, C]` produces `output`
+shape `[2, 3, H, W]`.
+`A` shape `[3, H, C]` with `B` shape `[4, 3, W, C]` produces `output` shape
+`[4, 3, H, W]` because the missing leading batch dimension in `A` is treated as
+size 1 for broadcast matching.
 
 *Precision Requirements*
 

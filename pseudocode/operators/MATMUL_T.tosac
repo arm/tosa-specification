@@ -8,37 +8,75 @@
 // by a licensing agreement from ARM Limited.
 
 
-//
-// C is the contraction dimension.
-//
-// A has shape [N,H,C].
-// B has shape [D,W,C].
-//
-// D must be 1 or N.
-// If D is 1, B is broadcast.
-// Output has shape [N,H,W].
+shape_t A_shape = shape(A);
+shape_t B_shape = shape(B);
+shape_t output_shape = shape(output);
 
-ERROR_IF(D != N && D != 1);
+ERROR_IF(rank(A_shape) < 2);
+ERROR_IF(rank(B_shape) < 2);
+
+int32_t H = A_shape[rank(A_shape) - 2];
+int32_t C = A_shape[rank(A_shape) - 1];
+ERROR_IF(C != B_shape[rank(B_shape) - 1]);
+int32_t W = B_shape[rank(B_shape) - 2];
+
+shape_t output_batch_shape = broadcast_matmul_batch_shape(A_shape, B_shape);
+int32_t output_batch_rank = rank(output_batch_shape);
+
+// Right-align each operand's batch prefix so apply_broadcast() can reuse the
+// common index mapping logic for MATMUL_T batch dimensions.
+shape_t A_batch_shape = right_align_matmul_batch_shape(A_shape, output_batch_rank);
+shape_t B_batch_shape = right_align_matmul_batch_shape(B_shape, output_batch_rank);
+
+shape_t A_read_shape = A_batch_shape;
+A_read_shape.append(H);
+A_read_shape.append(C);
+shape_t B_read_shape = B_batch_shape;
+B_read_shape.append(W);
+B_read_shape.append(C);
+
+shape_t expected_output_shape = output_batch_shape;
+expected_output_shape.append(H);
+expected_output_shape.append(W);
+ERROR_IF(output_shape != expected_output_shape);
+
 ERROR_IF(!is_same<A_t,i8_t>() && A_zp != 0);
 ERROR_IF(!is_same<B_t,i8_t>() && B_zp != 0);
 ERROR_IF(is_block_scale<A_t>() && C % get_innermost_block_size<A_t>() != 0);
 ERROR_IF(is_block_scale<B_t>() && C % get_innermost_block_size<B_t>() != 0);
 
-for_each(0 <= n < N, 0 <= h < H, 0 <= w < W) {
-    out_t acc = 0;
-    size_t d = (D == 1) ? 0 : n;
+// Iterate over the broadcast batch space once, projecting each logical batch
+// coordinate back to concrete operand indices. Broadcasted source axes use 0.
+for_each(0 <= batch_offset < tensor_size(output_batch_shape)) {
+    shape_t output_batch_index = tensor_offset_to_index(output_batch_shape, batch_offset);
+    for_each(0 <= h < H, 0 <= w < W) {
+        out_t acc = 0;
 
-    for_each(0 <= c < C) {
-        out_t value1 = tensor_read<A_t, out_t>(A, [N,H,C], [n,h,c]);
-        out_t value2 = tensor_read<B_t, out_t>(B, [D,W,C], [d,w,c]);
+        shape_t a_prefix = apply_broadcast(output_batch_shape, A_batch_shape, output_batch_index);
+        a_prefix.append(h);
+        shape_t b_prefix = apply_broadcast(output_batch_shape, B_batch_shape, output_batch_index);
+        b_prefix.append(w);
 
-        value1 = apply_sub_s<out_t>(value1, static_cast<out_t>(A_zp));
-        value2 = apply_sub_s<out_t>(value2, static_cast<out_t>(B_zp));
+        for_each(0 <= c < C) {
+            shape_t a_index = a_prefix;
+            a_index.append(c);
+            shape_t b_index = b_prefix;
+            b_index.append(c);
 
-        acc = apply_add_s<out_t>(
-            acc,
-            apply_mul_s<out_t>(value1, value2));
+            out_t value1 = tensor_read<A_t, out_t>(A, A_read_shape, a_index);
+            out_t value2 = tensor_read<B_t, out_t>(B, B_read_shape, b_index);
+
+            value1 = apply_sub_s<out_t>(value1, static_cast<out_t>(A_zp));
+            value2 = apply_sub_s<out_t>(value2, static_cast<out_t>(B_zp));
+
+            acc = apply_add_s<out_t>(
+                acc,
+                apply_mul_s<out_t>(value1, value2));
+        }
+
+        shape_t output_index = output_batch_index;
+        output_index.append(h);
+        output_index.append(w);
+        tensor_write<out_t>(output, output_shape, output_index, acc);
     }
-
-    tensor_write<out_t>(output, [N,H,W], [n,h,w], acc);
 }
