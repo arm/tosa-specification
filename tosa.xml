@@ -588,7 +588,7 @@
             Bias data will be broadcast if BC == 1.</description>
             <rank min="1" max="1"/>
           </argument>
-          <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_t">
+          <argument category="input" name="input_zp" type="tensor_t" shape="[1]" tensor-element-type="in_zp_t">
             <description>Input tensor zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
             <ctc>
@@ -599,7 +599,7 @@
               <op_profile name="EXT-DYNAMIC"/>
             </ctc_remove>
           </argument>
-          <argument category="input" name="weight_zp" type="tensor_t" shape="[1]" tensor-element-type="weight_t">
+          <argument category="input" name="weight_zp" type="tensor_t" shape="[1]" tensor-element-type="weight_zp_t">
             <description>Weight zero point. Must be zero for non-int8 types.</description>
             <rank min="1" max="1"/>
             <ctc>
@@ -632,7 +632,7 @@
             <rank min="1" max="1"/>
           </argument>
           <argument category="attribute" name="acc_type" type="acc_type_t" shape="-" tensor-element-type="-">
-            <description>Enumerated type, must be one of INT32, INT48, FP16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
+            <description>Enumerated type, must be one of INT32, INT48, FP16, BF16, FP32 matching the type of acc_t in the Supported Data Types table for this operation</description>
           </argument>
           <argument category="attribute" name="local_bound" type="bool_t" shape="-" tensor-element-type="-" optional="true">
             <description>
@@ -651,39 +651,53 @@
           <type name='weight_t' />
           <type name='out_t' />
           <type name='acc_t' />
+          <type name='in_zp_t' />
+          <type name='weight_zp_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
+        <typesupport mode="signed 8x8 with int32 accumulate" in_t="i8_t" weight_t="i8_t" out_t="i32_t" acc_t="i32_t" in_zp_t="i8_t" weight_zp_t="i8_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
-        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
+        <typesupport mode="signed 8x4 with int32 accumulate" in_t="i8_t" weight_t="i4_t" out_t="i32_t" acc_t="i32_t" in_zp_t="i8_t" weight_zp_t="i4_t" version_added="1.0">
           <op_profile name="EXT-INT4"/>
         </typesupport>
-        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t" version_added="1.0">
+        <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t" in_zp_t="i16_t" weight_zp_t="i8_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t" in_zp_t="fp8e4m3_t" weight_zp_t="fp8e4m3_t" version_added="1.0">
           <op_profile name="EXT-FP8E4M3"/>
         </typesupport>
-        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t" in_zp_t="fp8e5m2_t" weight_zp_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp32 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3"/>
-        </typesupport>
-        <typesupport mode="fp8e5m2 with fp32 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-FP8E5M2"/>
-        </typesupport>
-        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp16 with fp16 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp16_t" in_zp_t="fp16_t" weight_zp_t="fp16_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t" version_added="1.0">
+        <typesupport mode="fp16 with fp32 accumulate" in_t="fp16_t" weight_t="fp16_t" out_t="fp16_t" acc_t="fp32_t" in_zp_t="fp16_t" weight_zp_t="fp16_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t" acc_t="fp32_t" version_added="1.0">
+        <typesupport mode="bf16 with fp32 accumulate" in_t="bf16_t" weight_t="bf16_t" out_t="bf16_t" acc_t="fp32_t" in_zp_t="bf16_t" weight_zp_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t" version_added="1.0">
+        <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t" in_zp_t="fp32_t" weight_zp_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
+        </typesupport>
+        <typesupport mode="Mixed precision fp with bf16/fp32 accumulate" out_t="fp16_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S1" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S2" values="bf16_t fp32_t"/>
+          <type_bind type="in_t" set="S1"/>
+          <type_bind type="weight_t" set="S1"/>
+          <type_bind type="in_zp_t" set="S1" access_elem_type="in_t"/>
+          <type_bind type="weight_zp_t" set="S1" access_elem_type="weight_t"/>
+          <type_bind type="acc_t" set="S2"/>
+        </typesupport>
+        <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S3" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
+          <type_bind type="in_t" set="S3"/>
+          <type_bind type="weight_t" set="S3"/>
+          <type_bind type="in_zp_t" set="S3" access_elem_type="in_t"/>
+          <type_bind type="weight_zp_t" set="S3" access_elem_type="weight_t"/>
         </typesupport>
       </operator>
       <operator>
@@ -935,7 +949,7 @@
             <description>Input tensor B, D matrices of size WxC. D must be either 1 or N. If D is 1, B is broadcast.</description>
             <rank min="3" max="3"/>
           </argument>
-          <argument category="input" name="A_zp" type="tensor_t" shape="[1]" tensor-element-type="i8_t">
+          <argument category="input" name="A_zp" type="tensor_t" shape="[1]" tensor-element-type="A_zp_t">
             <description>Input tensor A zero point. Must be zero unless A_t is i8_t.</description>
             <rank min="1" max="1"/>
             <ctc>
@@ -946,7 +960,7 @@
               <op_profile name="EXT-DYNAMIC"/>
             </ctc_remove>
           </argument>
-          <argument category="input" name="B_zp" type="tensor_t" shape="[1]" tensor-element-type="i8_t">
+          <argument category="input" name="B_zp" type="tensor_t" shape="[1]" tensor-element-type="B_zp_t">
             <description>Input tensor B zero point. Must be zero unless B_t is i8_t.</description>
             <rank min="1" max="1"/>
             <ctc>
@@ -966,11 +980,13 @@
           <type name='A_t' />
           <type name='B_t' />
           <type name='out_t' />
+          <type name='A_zp_t' />
+          <type name='B_zp_t' />
         </types>
-        <typesupport mode="signed 8x8 with int32 accumulate" A_t="i8_t" B_t="i8_t" out_t="i32_t" version_added="1.1">
+        <typesupport mode="signed 8x8 with int32 accumulate" A_t="i8_t" B_t="i8_t" A_zp_t="i8_t" B_zp_t="i8_t" out_t="i32_t" version_added="1.1">
           <op_profile name="PRO-INT"/>
         </typesupport>
-        <typesupport mode="signed 16x16 with int48 accumulate" A_t="i16_t" B_t="i16_t" out_t="i48_t" version_added="1.1">
+        <typesupport mode="signed 16x16 with int48 accumulate" A_t="i16_t" B_t="i16_t" A_zp_t="i16_t" B_zp_t="i16_t" out_t="i48_t" version_added="1.1">
           <op_profile name="EXT-INT16"/>
         </typesupport>
         <typesupport mode="Mixed precision fp with fp16 accumulate" out_t="fp16_t" version_added="1.1">
@@ -978,22 +994,26 @@
           <type_set name="S1_IN" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="A_t" set="S1_IN"/>
           <type_bind type="B_t" set="S1_IN"/>
+          <type_bind type="A_zp_t" set="S1_IN" access_elem_type="A_t"/>
+          <type_bind type="B_zp_t" set="S1_IN" access_elem_type="B_t"/>
         </typesupport>
         <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
           <type_set name="S2_IN" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="A_t" set="S2_IN"/>
           <type_bind type="B_t" set="S2_IN"/>
+          <type_bind type="A_zp_t" set="S2_IN" access_elem_type="A_t"/>
+          <type_bind type="B_zp_t" set="S2_IN" access_elem_type="B_t"/>
         </typesupport>
-        <typesupport mode="fp16xfp16 with fp16/fp32 accumulate" A_t="fp16_t" B_t="fp16_t" version_added="1.1">
+        <typesupport mode="fp16xfp16 with fp16/fp32 accumulate" A_t="fp16_t" B_t="fp16_t" A_zp_t="fp16_t" B_zp_t="fp16_t" version_added="1.1">
           <op_profile name="PRO-FP"/>
           <type_set name="S_FP16_OUT" values="fp16_t fp32_t"/>
           <type_bind type="out_t" set="S_FP16_OUT"/>
         </typesupport>
-        <typesupport mode="bf16xbf16 with fp32 accumulate" A_t="bf16_t" B_t="bf16_t" out_t="fp32_t" version_added="1.1">
+        <typesupport mode="bf16xbf16 with fp32 accumulate" A_t="bf16_t" B_t="bf16_t" A_zp_t="bf16_t" B_zp_t="bf16_t" out_t="fp32_t" version_added="1.1">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32xfp32 with fp32 accumulate" A_t="fp32_t" B_t="fp32_t" out_t="fp32_t" version_added="1.1">
+        <typesupport mode="fp32xfp32 with fp32 accumulate" A_t="fp32_t" B_t="fp32_t" A_zp_t="fp32_t" B_zp_t="fp32_t" out_t="fp32_t" version_added="1.1">
           <op_profile name="PRO-FP"/>
         </typesupport>
       </operator>
@@ -2849,6 +2869,11 @@
         <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
+        <typesupport mode="block scaled with fp8ue8m0 scale" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S_CONCAT_MX" values="bs32_fp8ue8m0_set_t"/>
+          <type_bind type="in_out_t" set="S_CONCAT_MX"/>
+        </typesupport>
       </operator>
       <operator>
         <name>PAD</name>
@@ -3120,6 +3145,11 @@
         </typesupport>
         <typesupport mode="fp32" in_out_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
+        </typesupport>
+        <typesupport mode="MX"  version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S" values="bs32_fp8ue8m0_set_t"/>
+          <type_bind type="in_out_t" set="S"/>
         </typesupport>
       </operator>
       <operator>
@@ -4210,6 +4240,11 @@ used.</description>
         <typesupport mode="mxint8" out_t="mxint8_t"  version_added="1.1">
           <op_profile name="EXT-MX-INT8"/>
         </typesupport>
+        <typesupport mode="MX"  version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S" values="bs32_fp8ue8m0_set_t"/>
+          <type_bind type="out_t" set="S"/>
+        </typesupport>
       </operator>
       <operator>
         <name>IDENTITY</name>
@@ -4265,6 +4300,11 @@ used.</description>
         </typesupport>
         <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.0">
           <op_profile name="PRO-FP"/>
+        </typesupport>
+        <typesupport mode="MX"  version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S" values="bs32_fp8ue8m0_set_t"/>
+          <type_bind type="in_out_t" set="S"/>
         </typesupport>
       </operator>
     </operatorgroup>
@@ -4602,6 +4642,11 @@ used.</description>
         </typesupport>
         <typesupport mode="i64" in_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64" and_name="EXT-SHAPE"/>
+        </typesupport>
+        <typesupport mode="MX"  version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S" values="bs32_fp8ue8m0_set_t"/>
+          <type_bind type="in_t" set="S"/>
         </typesupport>
       </operator>
       <operator>

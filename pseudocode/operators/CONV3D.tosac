@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2025 ARM Limited
+// (C) COPYRIGHT 2020-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -16,6 +16,8 @@ ERROR_IF(OD != idiv_check(ID - 1 + pad_d0 + pad_d1      - (KD - 1) * dilation_d,
 ERROR_IF(OH != idiv_check(IH - 1 + pad_top + pad_bottom - (KH - 1) * dilation_y, stride_y) + 1);
 ERROR_IF(OW != idiv_check(IW - 1 + pad_left + pad_right - (KW - 1) * dilation_x, stride_x) + 1);
 ERROR_IF(BC != OC && BC != 1);
+ERROR_IF(is_block_scale<in_t>() && IC % get_innermost_block_size<in_t>() != 0);
+ERROR_IF(is_block_scale<weight_t>() && IC % get_innermost_block_size<weight_t>() != 0);
 
 for_each(0 <= n < N, 0 <= od < OD, 0 <= oy < OH, 0 <= ox < OW, 0 <= oc < OC) {
     acc_t acc = 0;
@@ -28,15 +30,15 @@ for_each(0 <= n < N, 0 <= od < OD, 0 <= oy < OH, 0 <= ox < OW, 0 <= oc < OC) {
         tensor_size_t x = ix + kx * dilation_x;
         acc_t value = 0;
         if (0 <= x < IW && 0 <= y < IH && 0 <= d < ID) {
-            value  = static_cast<acc_t>(tensor_read<in_t>(input,
-                                                          [N,ID,IH,IW,IC],
-                                                          [n,d,y,x,ic]));
+            value  = tensor_read<in_t, acc_t>(input,
+                                              [N,ID,IH,IW,IC],
+                                              [n,d,y,x,ic]);
             value  = apply_sub_s<acc_t>(value, static_cast<acc_t>(input_zp));
         }
         if ((0 <= x < IW && 0 <= y < IH && 0 <= d < ID) || tosa_extra_multiplies) {
-            acc_t weight_el = static_cast<acc_t>(tensor_read<weight_t>(weight,
-                                                                       [OC,KD,KH,KW,IC],
-                                                                       [oc,kd,ky,kx,ic]));
+            acc_t weight_el = tensor_read<weight_t, acc_t>(weight,
+                                                           [OC,KD,KH,KW,IC],
+                                                           [oc,kd,ky,kx,ic]);
             weight_el = apply_sub_s<acc_t>(weight_el, static_cast<acc_t>(weight_zp));
             acc = apply_add_s<acc_t>(acc, apply_mul_s<acc_t>(value, weight_el));
         }
