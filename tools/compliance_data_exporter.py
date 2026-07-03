@@ -27,6 +27,7 @@ validation_term_mapping_profile = {
     "EXT-MX-FP8E5M2": "Extension::mx_fp8e5m2",
     "EXT-MX-INT8": "Extension::mx_int8",
     "EXT-MXFP-CONV": "Extension::mxfp_conv",
+    "EXT-CONTROLFLOW": "Extension::controlflow",
 }
 
 validation_term_mapping_type = {
@@ -83,7 +84,9 @@ def is_matched_print_mode(profile: str, print_mode: str) -> bool:
 
 
 # Retrieve the compliance information for the profile-based validation.
-def get_profile_compliance_info(operator: TOSAOperator, print_mode: str) -> set:
+def get_profile_compliance_info(
+    operator: TOSAOperator, args: TOSAOperatorArgument, print_mode: str
+) -> set:
     prof_info = {}
 
     for tysup in operator.typesupports:
@@ -114,10 +117,18 @@ def get_profile_compliance_info(operator: TOSAOperator, print_mode: str) -> set:
             prof_list.sort()
             prof_str = " ".join(prof_list)
 
-            if prof_str in prof_info.keys():
-                prof_info[prof_str].append((tsmap, version_added))
-            else:
-                prof_info[prof_str] = [(tsmap, version_added)]
+            if prof_str not in prof_info.keys():
+                prof_info[prof_str] = []
+
+            # If there are no tensor arguments in the type support map,
+            # then skip adding a versioned type support list
+            tensor_args = list(
+                filter(lambda arg: arg.tensor_element_type in tsmap.keys(), args)
+            )
+            if len(tensor_args) == 0:
+                continue
+
+            prof_info[prof_str].append((tsmap, version_added))
 
     return prof_info
 
@@ -287,10 +298,6 @@ def print_operator(
 def export_operator(operator: TOSAOperator, file, print_mode: str) -> None:
     args = get_required_arguments_info(operator)
 
-    # No compliance requirement found.
-    if len(args) == 0:
-        return
-
     """
     The layout of the `profile_compliance_depot` dictionary:
       {'profile_a, ...' : [ {sym_ty_a: param_ty_a, sym_ty_b: param_ty_b, ...},
@@ -300,7 +307,7 @@ def export_operator(operator: TOSAOperator, file, print_mode: str) -> None:
        ...
       }
     """
-    profile_compliance_depot = get_profile_compliance_info(operator, print_mode)
+    profile_compliance_depot = get_profile_compliance_info(operator, args, print_mode)
 
     # No profile compliance information found.
     if len(profile_compliance_depot) == 0:

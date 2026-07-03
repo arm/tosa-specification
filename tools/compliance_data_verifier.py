@@ -98,6 +98,16 @@ op_list = [
     "matmul_t",
     "matmul_t_block_scaled",
     "conv2d_block_scaled",
+    "assert_equal_shape",
+    "div_ceil_shape",
+    "div_floor_shape",
+    "exp2_shape",
+    "log2_ceil_shape",
+    "log2_floor_shape",
+    "max_shape",
+    "min_shape",
+    "mod_shape",
+    "slice_shape",
 ]
 
 profile_list = [
@@ -120,6 +130,7 @@ profile_list = [
     "Extension::mx_fp8e5m2",
     "Extension::mx_int8",
     "Extension::mxfp_conv",
+    "Extension::controlflow",
 ]
 
 type_list = [
