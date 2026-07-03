@@ -7,6 +7,7 @@ import regex
 
 op_list = [
     "argmax",
+    "argmin",
     "avg_pool2d",
     "avg_pool2d_adaptive",
     "conv2d",
