@@ -113,6 +113,22 @@ class TOSASpecAsciidocGenerator:
                                 other_exts,
                             )
                         )
+                    # Don't include type entries that also rely on a deduced extension
+                    # to help avoid duplication. This is because deduced extensions
+                    # rely on the input/output data types of an operation and presence
+                    # of such extensions already implies availability of a related
+                    # profile.
+                    elif (
+                        extension_name in profile_exts
+                        and extension_name in ["PRO-INT", "PRO-FP"]
+                        and len(deduced_exts) == 0
+                    ):
+                        rows.add(
+                            (
+                                self.format_typesupport_mode(op, tysup, tsmap),
+                                (),
+                            )
+                        )
                 continue
 
             if extension_name in profile_exts:
@@ -377,10 +393,13 @@ class TOSASpecAsciidocGenerator:
                 for op in sorted(all_operators, key=lambda o: o.name):
                     if op.typesupports:
                         for tysup in op.typesupports:
-                            if profile.name in tysup.profiles:
-                                f.write(
-                                    f"|{op.name}|{tysup.mode}|{tysup.version_added}\n"
-                                )
+                            # 'other_exts' is not used here because profile operator
+                            # support tables don't currently have a 'Notes' column
+                            # unlike extension operator support tables.
+                            for mode, _ in self.get_profile_extension_rows(
+                                op, tysup, profile.name
+                            ):
+                                f.write(f"|{op.name}|{mode}|{tysup.version_added}\n")
                 f.write("|===\n")
 
             f.write("=== Profile Extensions\n")

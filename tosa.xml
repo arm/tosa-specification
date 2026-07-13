@@ -123,16 +123,16 @@
         <typesupport mode="signed 16" in_t="i16_t" out_t="i32_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="signed 8" in_t="i8_t" out_t="i64_t" version_added="1.1">
+        <typesupport mode="signed 8 with signed 64 index" in_t="i8_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="signed 16" in_t="i16_t" out_t="i64_t" version_added="1.1">
+        <typesupport mode="signed 16 with signed 64 index" in_t="i16_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="signed 32" in_t="i32_t" out_t="i64_t" version_added="1.1">
+        <typesupport mode="signed 32 with signed 64 index" in_t="i32_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="signed 64" in_t="i64_t" out_t="i64_t" version_added="1.1">
+        <typesupport mode="signed 64 with signed 64 index" in_t="i64_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
         <typesupport mode="fp8e4m3" in_t="fp8e4m3_t" out_t="i32_t" version_added="1.0">
@@ -150,19 +150,19 @@
         <typesupport mode="fp32" in_t="fp32_t" out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t" out_t="i64_t" version_added="1.1">
+        <typesupport mode="fp8e4m3 with signed 64 index" in_t="fp8e4m3_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-FP8E4M3" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="i64_t" version_added="1.1">
+        <typesupport mode="fp8e5m2 with signed 64 index" in_t="fp8e5m2_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp16" in_t="fp16_t" out_t="i64_t" version_added="1.1">
+        <typesupport mode="fp16 with signed 64 index" in_t="fp16_t" out_t="i64_t" version_added="1.1">
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="bf16" in_t="bf16_t" out_t="i64_t" version_added="1.1">
+        <typesupport mode="bf16 with signed 64 index" in_t="bf16_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-BF16" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp32" in_t="fp32_t" out_t="i64_t" version_added="1.1">
+        <typesupport mode="fp32 with signed 64 index" in_t="fp32_t" out_t="i64_t" version_added="1.1">
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
       </operator>
@@ -468,7 +468,7 @@
           <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="Mixed precision fp with bf16/fp32 accumulate" out_t="fp16_t" version_added="1.1">
-          <op_profile name="DEDUCE-EXT"/>
+          <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
           <type_set name="S1" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t bs32_fp8ue8m0_set_t"/>
           <type_set name="S2" values="bf16_t fp32_t"/>
           <type_bind type="in_t" set="S1"/>
@@ -478,7 +478,7 @@
           <type_bind type="acc_t" set="S2"/>
         </typesupport>
         <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
-          <op_profile name="DEDUCE-EXT"/>
+          <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
           <type_set name="S3" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="in_t" set="S3"/>
           <type_bind type="weight_t" set="S3"/>
@@ -682,7 +682,7 @@
           <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="Mixed precision fp with bf16/fp32 accumulate" out_t="fp16_t" version_added="1.1">
-          <op_profile name="DEDUCE-EXT"/>
+          <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
           <type_set name="S1" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t bs32_fp8ue8m0_set_t"/>
           <type_set name="S2" values="bf16_t fp32_t"/>
           <type_bind type="in_t" set="S1"/>
@@ -692,7 +692,7 @@
           <type_bind type="acc_t" set="S2"/>
         </typesupport>
         <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
-          <op_profile name="DEDUCE-EXT"/>
+          <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
           <type_set name="S3" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="in_t" set="S3"/>
           <type_bind type="weight_t" set="S3"/>
@@ -1368,7 +1368,7 @@
           <type_bind type="acc_t" set="S2"/>
         </typesupport>
         <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
-          <op_profile name="DEDUCE-EXT"/>
+          <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
           <type_set name="S3" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="in_t" set="S3"/>
           <type_bind type="weight_t" set="S3"/>
@@ -3423,41 +3423,41 @@ used.</description>
         <typesupport mode="fp32" in_out_t="fp32_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="signed 8" in_out_t="i8_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="signed 8 with signed 64 indices" in_out_t="i8_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="signed 16 with signed 64 indices" in_out_t="i16_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="signed 32 with signed 64 indices" in_out_t="i32_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="signed 64" in_out_t="i64_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="signed 64 with signed 64 indices" in_out_t="i64_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp8e4m3 with signed 64 indices" in_out_t="fp8e4m3_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-FP8E4M3" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp8e5m2 with signed 64 indices" in_out_t="fp8e5m2_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp16 with signed 64 indices" in_out_t="fp16_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="bf16 with signed 64 indices" in_out_t="bf16_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-BF16" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp32 with signed 64 indices" in_out_t="fp32_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
         <typesupport mode="Boolean" in_out_t="bool_t" index_t="i32_t" version_added="1.1">
           <op_profile name="PRO-INT"/>
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="Boolean" in_out_t="bool_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="Boolean with signed 64 indices" in_out_t="bool_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
@@ -3577,41 +3577,41 @@ used.</description>
         <typesupport mode="fp32" in_out_t="fp32_t" index_t="i32_t" scale_t="-" version_added="1.1">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="signed 8" in_out_t="i8_t" index_t="i64_t" scale_t="-" version_added="1.1">
+        <typesupport mode="signed 8 with signed 64 indices" in_out_t="i8_t" index_t="i64_t" scale_t="-" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t" index_t="i64_t" scale_t="-" version_added="1.1">
+        <typesupport mode="signed 16 with signed 64 indices" in_out_t="i16_t" index_t="i64_t" scale_t="-" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t" index_t="i64_t" scale_t="-" version_added="1.1">
+        <typesupport mode="signed 32 with signed 64 indices" in_out_t="i32_t" index_t="i64_t" scale_t="-" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="signed 64" in_out_t="i64_t" index_t="i64_t" scale_t="-" version_added="1.1">
+        <typesupport mode="signed 64 with signed 64 indices" in_out_t="i64_t" index_t="i64_t" scale_t="-" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" index_t="i64_t" scale_t="-" version_added="1.1">
+        <typesupport mode="fp8e4m3 with signed 64 indices" in_out_t="fp8e4m3_t" index_t="i64_t" scale_t="-" version_added="1.1">
           <op_profile name="EXT-FP8E4M3" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" index_t="i64_t" scale_t="-" version_added="1.1">
+        <typesupport mode="fp8e5m2 with signed 64 indices" in_out_t="fp8e5m2_t" index_t="i64_t" scale_t="-" version_added="1.1">
           <op_profile name="EXT-FP8E5M2" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" index_t="i64_t" scale_t="-" version_added="1.1">
+        <typesupport mode="fp16 with signed 64 indices" in_out_t="fp16_t" index_t="i64_t" scale_t="-" version_added="1.1">
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" index_t="i64_t" scale_t="-" version_added="1.1">
+        <typesupport mode="bf16 with signed 64 indices" in_out_t="bf16_t" index_t="i64_t" scale_t="-" version_added="1.1">
           <op_profile name="EXT-BF16" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" index_t="i64_t" scale_t="-" version_added="1.1">
+        <typesupport mode="fp32 with signed 64 indices" in_out_t="fp32_t" index_t="i64_t" scale_t="-" version_added="1.1">
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
         <typesupport mode="Boolean" in_out_t="bool_t" index_t="i32_t" scale_t="-" version_added="1.1">
           <op_profile name="PRO-INT"/>
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="Boolean" in_out_t="bool_t" index_t="i64_t" scale_t="-" version_added="1.1">
+        <typesupport mode="Boolean with signed 64 indices" in_out_t="bool_t" index_t="i64_t" scale_t="-" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
@@ -3633,22 +3633,22 @@ used.</description>
         <typesupport mode="mxint8 with fp8ue8m0 scale factor" in_out_t="mxint8_t" scale_t="fp8ue8m0_t" index_t="i32_t" version_added="1.1">
           <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-INT8"/>
         </typesupport>
-        <typesupport mode="fp4e2m1 with fp8ue8m0 scale factor" in_out_t="fp4e2m1_t" scale_t="fp8ue8m0_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp4e2m1 with fp8ue8m0 scale factor  with signed 64 indices" in_out_t="fp4e2m1_t" scale_t="fp8ue8m0_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP4E2M1" and_name2="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp6e2m3 with fp8ue8m0 scale factor" in_out_t="fp6e2m3_t" scale_t="fp8ue8m0_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp6e2m3 with fp8ue8m0 scale factor with signed 64 indices" in_out_t="fp6e2m3_t" scale_t="fp8ue8m0_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E2M3" and_name2="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp6e3m2 with fp8ue8m0 scale factor" in_out_t="fp6e3m2_t" scale_t="fp8ue8m0_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp6e3m2 with fp8ue8m0 scale factor with signed 64 indices" in_out_t="fp6e3m2_t" scale_t="fp8ue8m0_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E3M2" and_name2="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp8ue8m0 scale factor" in_out_t="fp8e4m3_t" scale_t="fp8ue8m0_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp8e4m3 with fp8ue8m0 scale factor with signed 64 indices" in_out_t="fp8e4m3_t" scale_t="fp8ue8m0_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E4M3" and_name2="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e5m2 with fp8ue8m0 scale factor" in_out_t="fp8e5m2_t" scale_t="fp8ue8m0_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp8e5m2 with fp8ue8m0 scale factor with signed 64 indices" in_out_t="fp8e5m2_t" scale_t="fp8ue8m0_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E5M2" and_name2="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="mxint8 with fp8ue8m0 scale factor" in_out_t="mxint8_t" scale_t="fp8ue8m0_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="mxint8 with fp8ue8m0 scale factor with signed 64 indices" in_out_t="mxint8_t" scale_t="fp8ue8m0_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-INT8" and_name2="EXT-INT64"/>
         </typesupport>
       </operator>
@@ -3709,41 +3709,41 @@ used.</description>
         <typesupport mode="fp32" in_out_t="fp32_t" index_t="i32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="signed 8" in_out_t="i8_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="signed 8 with signed 64 indices" in_out_t="i8_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="signed 16" in_out_t="i16_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="signed 16 with signed 64 indices" in_out_t="i16_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="signed 32" in_out_t="i32_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="signed 32 with signed 64 indices" in_out_t="i32_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="signed 64" in_out_t="i64_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="signed 64 with signed 64 indices" in_out_t="i64_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp8e4m3 with signed 64 indices" in_out_t="fp8e4m3_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-FP8E4M3" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp8e5m2 with signed 64 indices" in_out_t="fp8e5m2_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp16" in_out_t="fp16_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp16 with signed 64 indices" in_out_t="fp16_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="bf16" in_out_t="bf16_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="bf16 with signed 64 indices" in_out_t="bf16_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-BF16" and_name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp32" in_out_t="fp32_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="fp32 with signed 64 indices" in_out_t="fp32_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
         <typesupport mode="Boolean" in_out_t="bool_t" index_t="i32_t" version_added="1.1">
           <op_profile name="PRO-INT"/>
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="Boolean" in_out_t="bool_t" index_t="i64_t" version_added="1.1">
+        <typesupport mode="Boolean with signed 64 indices" in_out_t="bool_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>

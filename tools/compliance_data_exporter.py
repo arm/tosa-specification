@@ -107,8 +107,17 @@ def get_profile_compliance_info(
             prof_set = set(
                 base_prof_set
             )  # Each tsmap can have its own deduced extensions
-            if should_deduce and print_mode == "Extension":
-                prof_set.update(deduce_extensions(tsmap))
+            if should_deduce:
+                deduced_extensions = deduce_extensions(tsmap)
+                if print_mode == "Extension":
+                    prof_set.update(deduced_extensions)
+                # Don't include type entries that also rely on a deduced
+                # extension to help avoid duplication. This is because deduced
+                # extensions rely on the input/output data types of an operation
+                # and presence of such extensions already implies availability
+                # of a related profile.
+                elif print_mode == "Profile" and len(deduced_extensions) > 0:
+                    continue
 
             if len(prof_set) == 0:
                 continue
