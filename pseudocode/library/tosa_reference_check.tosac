@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2025 ARM Limited
+// (C) COPYRIGHT 2020-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -11,7 +11,7 @@ bool_t tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t n
   fp64_t val_ulp = 0.0;
   if (is_same<in_t, mxint8_t>()) {
     val_ulp = 1 / 64.0;
-  } else if (is_normal_fp64(ref_value) && abs(ref_value) != 0) {
+  } else if (is_finite(ref_value) && abs(ref_value) != 0) {
     int ref_exp = ilog2(abs(ref_value));
     fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<in_t>());
     val_ulp  = ref_pow2 * exp2(-normal_frac<in_t>());
@@ -24,7 +24,7 @@ bool_t tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t n
 // Check the conversion from block scaled
 bool_t tosa_reference_check_from_block<in_t, out_t>(out_t test_value, fp64_t ref_value, fp64_t scale) {
   fp64_t err_bnd = 0.0;
-  if (is_normal_fp64(ref_value) && abs(ref_value) != 0 && !is_a_NaN(scale)) {
+  if (is_finite(ref_value) && abs(ref_value) != 0 && !is_a_NaN(scale)) {
     int ref_exp = ilog2(abs(ref_value / scale));
     fp64_t ref_pow2 = max(exp2(ref_exp), normal_min<out_t>());
     fp64_t val_ulp = ref_pow2 * exp2(-normal_frac<out_t>());

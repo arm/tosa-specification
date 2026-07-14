@@ -102,8 +102,8 @@ bool_t is_a_NaN(in_t value);
 // return true if the given value is an Infinity. Only valid for floating-point types with defined Infinity values.
 bool_t is_an_Inf(in_t value);
 
-// return true if value is a normal fp64 value (Not zero, subnormal, infinite or NaN)
-bool_t is_normal_fp64(fp64_t value);
+// return true if the given value is not an Infinity or NaN. Only valid for floating-point types
+bool_t is_finite(in_t value);
 
 // Return if type has a member scale_t
 bool_t has_scale_t<in_t>();
