@@ -989,31 +989,30 @@
         <typesupport mode="signed 16x16 with int48 accumulate" A_t="i16_t" B_t="i16_t" A_zp_t="i16_t" B_zp_t="i16_t" out_t="i48_t" version_added="1.1">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="Mixed precision fp with fp16 accumulate" out_t="fp16_t" version_added="1.1">
+        <typesupport mode="Mixed precision fp with bf16 accumulate" out_t="bf16_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
           <type_set name="S1_IN" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t bs32_fp8ue8m0_set_t"/>
-          <type_bind type="A_t" set="S1_IN"/>
+          <type_set name="S1_IN_NO_FP16" values="fp8e4m3_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_bind type="A_t" set="S1_IN_NO_FP16"/>
           <type_bind type="B_t" set="S1_IN"/>
-          <type_bind type="A_zp_t" set="S1_IN" access_elem_type="A_t"/>
+          <type_bind type="A_zp_t" set="S1_IN_NO_FP16" access_elem_type="A_t"/>
           <type_bind type="B_zp_t" set="S1_IN" access_elem_type="B_t"/>
         </typesupport>
-        <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" version_added="1.1">
+        <typesupport mode="Mixed precision fp16 x fp input with bf16 accumulate" A_t="fp16_t" A_zp_t="fp16_t" out_t="bf16_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S1_IN_NO_FP16" values="fp8e4m3_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_bind type="B_t" set="S1_IN_NO_FP16"/>
+          <type_bind type="B_zp_t" set="S1_IN_NO_FP16" access_elem_type="B_t"/>
+        </typesupport>
+        <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" version_added="1.1">
+          <op_profile name="PRO-FP" and_name="DEDUCE-EXT"/>
           <type_set name="S2_IN" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="A_t" set="S2_IN"/>
           <type_bind type="B_t" set="S2_IN"/>
           <type_bind type="A_zp_t" set="S2_IN" access_elem_type="A_t"/>
           <type_bind type="B_zp_t" set="S2_IN" access_elem_type="B_t"/>
         </typesupport>
-        <typesupport mode="fp16xfp16 with fp16/fp32 accumulate" A_t="fp16_t" B_t="fp16_t" A_zp_t="fp16_t" B_zp_t="fp16_t" version_added="1.1">
-          <op_profile name="PRO-FP"/>
-          <type_set name="S_FP16_OUT" values="fp16_t fp32_t"/>
-          <type_bind type="out_t" set="S_FP16_OUT"/>
-        </typesupport>
-        <typesupport mode="bf16xbf16 with fp32 accumulate" A_t="bf16_t" B_t="bf16_t" A_zp_t="bf16_t" B_zp_t="bf16_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-BF16"/>
-        </typesupport>
-        <typesupport mode="fp32xfp32 with fp32 accumulate" A_t="fp32_t" B_t="fp32_t" A_zp_t="fp32_t" B_zp_t="fp32_t" out_t="fp32_t" version_added="1.1">
+        <typesupport mode="fp16xfp16 with fp16 accumulate" A_t="fp16_t" B_t="fp16_t" A_zp_t="fp16_t" B_zp_t="fp16_t" out_t="fp16_t" version_added="1.1">
           <op_profile name="PRO-FP"/>
         </typesupport>
       </operator>
