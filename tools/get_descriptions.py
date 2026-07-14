@@ -37,7 +37,7 @@ for name in args.filenames:
                 continue
             if not in_description:
                 # Look for the start of an operator
-                if re.match(r"^===", text):
+                if re.match(r"^={4}\s+\S", text):
                     in_description = True
                     print(text)
             else:

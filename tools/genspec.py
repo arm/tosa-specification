@@ -94,6 +94,36 @@ class TOSASpecAsciidocGenerator:
         binding_text = ", ".join(f"{ty} = {tsmap[ty]}" for ty in bindings)
         return f"{tysup.mode} ({binding_text})"
 
+    def generate_expanded_type_set_table(self, op, file):
+        rows = []
+        for tysup in sorted(op.typesupports, key=cmp_to_key(compare_profiles)):
+            if len(tysup.type_sets) == 0:
+                continue
+            profile = " or ".join(tysup.profiles) if tysup.profiles else "Any"
+            for tsmap in tysup.generated_tuples:
+                rows.append((profile, tysup.mode, tsmap))
+
+        if len(rows) == 0:
+            return
+
+        file.write("\nifdef::backend-html5[]\n")
+        file.write(".Expanded Type Set Combinations\n")
+        file.write("[.expanded-type-set-combinations%collapsible]\n")
+        file.write("====\n")
+        file.write("|===\n")
+        header = "|Profile/Extension|Mode"
+        for ty in op.types:
+            header += f"|{ty}"
+        file.write(header + "\n\n")
+        for profile, mode, tsmap in rows:
+            entry = f"|{profile}|{mode}"
+            for ty in op.types:
+                entry += f"|{tsmap[ty]}"
+            file.write(entry + "\n")
+        file.write("|===\n")
+        file.write("====\n")
+        file.write("endif::[]\n")
+
     def get_profile_extension_rows(self, op, tysup, extension_name):
         rows = set()
         for profile in tysup.profiles:
@@ -286,6 +316,8 @@ class TOSASpecAsciidocGenerator:
                     entry += "\n"
                     file.write(entry)
             file.write("|===\n")
+            if len(type_sets) > 0:
+                self.generate_expanded_type_set_table(op, file)
         file.write("\n*Operation Function:*\n\n")
         leveltext = ""
         for arg in op.arguments:
