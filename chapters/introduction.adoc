@@ -14,6 +14,7 @@
 |Revision|Fixes
 
 |1.0.1|Fixes for POW conformance and clarifies NaN propagation when doing the dot product conformance check.
+|1.0.2|Fixes for ARGMAX to check for out of range output index, removes invalid mixed fp8 dot product bounds from appendix A, clarify operation purity and correct minor typographical errors.
 |===
 
 == Introduction
