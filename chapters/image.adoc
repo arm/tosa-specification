@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2025 ARM Limited
+// (C) COPYRIGHT 2020-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -54,6 +54,19 @@ Individual scale numerator and denominator values are allowed to be larger than 
 
 *Precision Requirements*
 
+Integer results must be exact.
+
+Non-block-scaled floating-point results in `NEAREST_NEIGHBOR` mode must be exact.
+
+The following rules apply to block-scaled inputs in `NEAREST_NEIGHBOR` mode:
+* These rules are intended to allow casting to a higher-precision scalar type as part of the computation.
+* Let `out_imp_v, out_imp_s` be the value and scale of the implementation output.
+* Let `out_ref_v, out_ref_s` be the value and scale calculated using fp64_t arithmetic.
+* Let `value_t = get_value_t<out_t>()`.
+* Let `scale_t = get_scale_t<out_t>()`.
+* Then `tosa_reference_check_scale<scale_t, value_t>(out_imp_scale, out_imp_value, out_ref_scale, out_ref_value)` must be true.
+
+The following rules apply to floating-point inputs in `BILINEAR` mode:
 * The result corresponds to a sequence of floating-point calculations.
 * The allowable error bound for the result of a resize is based on the maximum value of an element in the input tensor.
 * Let `out_imp` be the implementation output.
