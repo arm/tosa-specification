@@ -13,6 +13,8 @@ ERROR_IF(is_block_scale<in_t>() && shape[rank(shape)-1] % get_innermost_block_si
 ERROR_IF(is_block_scale<out_t>() && rank(shape) == 0); // A scalar can't be cast to block_scale_t
 ERROR_IF(is_block_scale<out_t>() && shape[rank(shape)-1] % get_innermost_block_size<out_t>() != 0);
 
+ERROR_IF(input_unsigned && !is_integer<in_t>());
+
 if (is_block_scale<out_t>()) {
     ERROR_IF(is_floating_point<in_t>()); // Only allow FP to cast to Mx
 
@@ -39,12 +41,19 @@ if (is_block_scale<out_t>()) {
         out_t out;
         if (is_same<out_t,bool_t>()) {
             out = (in != 0) ? true : false;
+        } else if (input_unsigned) {
+            uint64_t unsigned_in = zero_extend<uint64_t>(in);
+            if (is_floating_point<out_t>()) {
+                out = round_to_nearest_float<uint64_t, out_t>(unsigned_in);
+            } else {
+                out = truncate<out_t>(unsigned_in);
+            }
         } else if (is_floating_point<out_t>()) {
             // Conversion to float cases
             if (is_same<acc_t,bool_t>()) {
                 out = (in) ? 1.0 : 0.0;
             } else {
-                out = round_to_nearest_float<out_t>(in);
+                out = round_to_nearest_float<acc_t, out_t>(in);
             }
         } else {
             // Conversion to integer cases

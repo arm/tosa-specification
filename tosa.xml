@@ -3834,6 +3834,13 @@ used.</description>
             <levellimit value="rank(shape)" limit="MAX_RANK"/>
             <rank min="0" max="MAX_RANK"/>
           </argument>
+          <argument category="attribute" name="input_unsigned" type="bool_t" shape="-" tensor-element-type="-" optional="true">
+            <description>
+                This optional argument defaults to false.
+                If true, supported signless integer input values are interpreted as unsigned before conversion.
+                This is only valid for supported CAST type pairs with signless integer input.
+            </description>
+          </argument>
           <argument category="output" name="output" type="tensor_t" shape="shape" tensor-element-type="out_t">
             <description>Output tensor</description>
             <rank min="0" max="MAX_RANK"/>

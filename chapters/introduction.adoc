@@ -752,7 +752,7 @@ Unless otherwise specified, these values will be interpreted as signed two's-com
 The pseudocode will use int*_t to indicate use as a signed value and uint*_t to indicate use as an unsigned value.
 If overflow occurs doing integer calculation, the result is unpredictable, as indicated by the REQUIRE checks in the pseudocode for the operators.
 
-Unsigned 8- and 16-bit values are only allowed in the RESCALE operation, to allow for compatibility with networks which expect unsigned 8-bit or 16-bit tensors for input and output.
+Unsigned interpretation of signless integer values is only allowed where an operation explicitly defines it, such as RESCALE input and output unsigned attributes and the CAST `input_unsigned` attribute.
 
 ==== Quantization
 
