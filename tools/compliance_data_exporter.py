@@ -128,7 +128,9 @@ def get_profile_compliance_info(
             if len(tensor_args) == 0:
                 continue
 
-            prof_info[prof_str].append((tsmap, version_added))
+            entry = (tsmap, version_added)
+            if entry not in prof_info[prof_str]:
+                prof_info[prof_str].append(entry)
 
     return prof_info
 
