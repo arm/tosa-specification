@@ -123,6 +123,7 @@ Changes to the following do not break compatibility:
 * Descriptive text that does not affect functionality
 * Non-functional changes to pseudocode (for example: cleanup, variable name changes)
 * Additions of new rows to the Supported Data Type tables
+* Additions of optional operator attributes with specified default values
 
 Minor versions are allowed to add new operators or other functionality as long as the above guarantees hold.
 
