@@ -17,7 +17,7 @@ include::{generated}/operators/CAST.adoc[]
 
 *Precision Requirements*
 
-When casting between integer types, the results must be exact.
+When casting between integer types, the results must exactly match the integer conversion behavior in the pseudocode. This includes sign extension for widening, truncation for narrowing, and zero extension of the input bit pattern when `input_unsigned` is true.
 
 Rules when casting between floating-point types:
 
@@ -65,7 +65,7 @@ Rules when casting between different types:
 ** Conversion must use the round to nearest, ties to even rounding mode.
 * Casting from integer to floating-point:
 ** Let `out_imp` be the implementation output.
-** Let `out_ref` be the result calculated using fp64_t arithmetic.
+** Let `out_ref` be the result calculated using fp64_t arithmetic. If `input_unsigned` is true, `out_ref` is calculated from the unsigned mathematical value of the input element.
 ** Then `tosa_reference_check_fp<out_t>(out_imp, out_ref, 0.5)` must be true.
 * Casting to boolean type:
 ** The result must be exact.
