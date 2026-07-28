@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2024,2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -18,11 +18,20 @@ for_each(0 <= index < rank(shape1)) {
     ERROR_IF(shape[index] != size[index]);
 }
 
+// Innermost dimensions of block-scaled values must contain whole blocks, and
+// the slice must begin on a block boundary so that scales can be copied exactly.
+ERROR_IF(is_block_scale<in_out_t>() &&
+         shape1[rank(shape1) - 1] % get_innermost_block_size<in_out_t>() != 0);
+ERROR_IF(is_block_scale<in_out_t>() &&
+         shape[rank(shape) - 1] % get_innermost_block_size<in_out_t>() != 0);
+ERROR_IF(is_block_scale<in_out_t>() &&
+         start[rank(shape1) - 1] % get_innermost_block_size<in_out_t>() != 0);
+
 for_each_data_position(index in shape) {
     shape_t tmp_index = index;
     for(int32_t i = 0; i < rank(shape); i++) {
        tmp_index[i] = index[i] + start[i];
     }
-    in_out_t value = tensor_read<in_out_t>(input1, shape1, tmp_index);
-    tensor_write<in_out_t>(output, shape, index, value);
+    value_scale_t<in_out_t> vs = tensor_read_value_scale<in_out_t>(input1, shape1, tmp_index);
+    tensor_write_value_scale<in_out_t>(output, shape, index, vs);
 }
