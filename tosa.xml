@@ -3461,6 +3461,13 @@ used.</description>
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
         </typesupport>
+        <typesupport mode="block scaled with fp8ue8m0 scale" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S_GATHER_MX" values="bs32_fp8ue8m0_set_t"/>
+          <type_set name="S_GATHER_INDEX" values="i32_t i64_t"/>
+          <type_bind type="in_out_t" set="S_GATHER_MX"/>
+          <type_bind type="index_t" set="S_GATHER_INDEX"/>
+        </typesupport>
       </operator>
       <operator>
         <name>ROW_GATHER</name>
@@ -3746,6 +3753,13 @@ used.</description>
         <typesupport mode="Boolean" in_out_t="bool_t" index_t="i64_t" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-INT64"/>
           <op_profile name="PRO-FP" and_name="EXT-INT64"/>
+        </typesupport>
+        <typesupport mode="block scaled with fp8ue8m0 scale" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S_SCATTER_MX" values="bs32_fp8ue8m0_set_t"/>
+          <type_set name="S_SCATTER_INDEX" values="i32_t i64_t"/>
+          <type_bind type="in_out_t" set="S_SCATTER_MX"/>
+          <type_bind type="index_t" set="S_SCATTER_INDEX"/>
         </typesupport>
       </operator>
     </operatorgroup>
