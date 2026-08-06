@@ -103,9 +103,25 @@ class TOSASpecAsciidocGenerator:
                     continue
                 for tsmap in tysup.generated_tuples:
                     deduced_exts = tosa.deduce_extensions(tsmap)
-                    if extension_name in deduced_exts:
+
+                    # Don't include type entries that also rely on a deduced extension
+                    # to help avoid duplication. This is because deduced extensions
+                    # rely on the input/output data types of an operation and presence
+                    # of such extensions already implies availability of a related
+                    # profile.
+                    if (
+                        extension_name in profile_exts
+                        and extension_name in ["PRO-INT", "PRO-FP"]
+                        and len(deduced_exts) > 0
+                    ):
+                        continue
+
+                    all_exts = (
+                        set(profile_exts).union(deduced_exts).difference({"DEDUCE-EXT"})
+                    )
+                    if extension_name in all_exts:
                         other_exts = tuple(
-                            sorted(ext for ext in deduced_exts if ext != extension_name)
+                            sorted(all_exts.difference({extension_name}))
                         )
                         rows.add(
                             (
@@ -113,22 +129,7 @@ class TOSASpecAsciidocGenerator:
                                 other_exts,
                             )
                         )
-                    # Don't include type entries that also rely on a deduced extension
-                    # to help avoid duplication. This is because deduced extensions
-                    # rely on the input/output data types of an operation and presence
-                    # of such extensions already implies availability of a related
-                    # profile.
-                    elif (
-                        extension_name in profile_exts
-                        and extension_name in ["PRO-INT", "PRO-FP"]
-                        and len(deduced_exts) == 0
-                    ):
-                        rows.add(
-                            (
-                                self.format_typesupport_mode(op, tysup, tsmap),
-                                (),
-                            )
-                        )
+
                 continue
 
             if extension_name in profile_exts:
