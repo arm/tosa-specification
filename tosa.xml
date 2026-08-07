@@ -467,23 +467,33 @@
         <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t" in_zp_t="fp32_t" weight_zp_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="Mixed precision fp with bf16/fp32 accumulate" out_t="fp16_t" version_added="1.1">
+        <typesupport mode="Mixed precision fp with fp16/fp32 accumulate" out_t="fp16_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
-          <type_set name="S1" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t bs32_fp8ue8m0_set_t"/>
-          <type_set name="S2" values="bf16_t fp32_t"/>
+          <type_set name="S1" values="fp8e4m3_t fp8e5m2_t fp16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S2" values="fp16_t fp32_t"/>
           <type_bind type="in_t" set="S1"/>
           <type_bind type="weight_t" set="S1"/>
           <type_bind type="in_zp_t" set="S1" access_elem_type="in_t"/>
           <type_bind type="weight_zp_t" set="S1" access_elem_type="weight_t"/>
           <type_bind type="acc_t" set="S2"/>
         </typesupport>
-        <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
-          <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
-          <type_set name="S3" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
+        <typesupport mode="Mixed precision fp with bf16/fp32 accumulate" out_t="bf16_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S3" values="fp8e4m3_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S4" values="bf16_t fp32_t"/>
           <type_bind type="in_t" set="S3"/>
           <type_bind type="weight_t" set="S3"/>
           <type_bind type="in_zp_t" set="S3" access_elem_type="in_t"/>
           <type_bind type="weight_zp_t" set="S3" access_elem_type="weight_t"/>
+          <type_bind type="acc_t" set="S4"/>
+        </typesupport>
+        <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
+          <type_set name="S5" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
+          <type_bind type="in_t" set="S5"/>
+          <type_bind type="weight_t" set="S5"/>
+          <type_bind type="in_zp_t" set="S5" access_elem_type="in_t"/>
+          <type_bind type="weight_zp_t" set="S5" access_elem_type="weight_t"/>
         </typesupport>
       </operator>
       <operator>
@@ -681,23 +691,33 @@
         <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t" in_zp_t="fp32_t" weight_zp_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="Mixed precision fp with bf16/fp32 accumulate" out_t="fp16_t" version_added="1.1">
+        <typesupport mode="Mixed precision fp with fp16/fp32 accumulate" out_t="fp16_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
-          <type_set name="S1" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t bs32_fp8ue8m0_set_t"/>
-          <type_set name="S2" values="bf16_t fp32_t"/>
+          <type_set name="S1" values="fp8e4m3_t fp8e5m2_t fp16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S2" values="fp16_t fp32_t"/>
           <type_bind type="in_t" set="S1"/>
           <type_bind type="weight_t" set="S1"/>
           <type_bind type="in_zp_t" set="S1" access_elem_type="in_t"/>
           <type_bind type="weight_zp_t" set="S1" access_elem_type="weight_t"/>
           <type_bind type="acc_t" set="S2"/>
         </typesupport>
-        <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
-          <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
-          <type_set name="S3" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
+        <typesupport mode="Mixed precision fp with bf16/fp32 accumulate" out_t="bf16_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S3" values="fp8e4m3_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S4" values="bf16_t fp32_t"/>
           <type_bind type="in_t" set="S3"/>
           <type_bind type="weight_t" set="S3"/>
           <type_bind type="in_zp_t" set="S3" access_elem_type="in_t"/>
           <type_bind type="weight_zp_t" set="S3" access_elem_type="weight_t"/>
+          <type_bind type="acc_t" set="S4"/>
+        </typesupport>
+        <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
+          <type_set name="S5" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
+          <type_bind type="in_t" set="S5"/>
+          <type_bind type="weight_t" set="S5"/>
+          <type_bind type="in_zp_t" set="S5" access_elem_type="in_t"/>
+          <type_bind type="weight_zp_t" set="S5" access_elem_type="weight_t"/>
         </typesupport>
       </operator>
       <operator>
@@ -1357,23 +1377,33 @@
         <typesupport mode="fp32 with fp32 accumulate" in_t="fp32_t" weight_t="fp32_t" out_t="fp32_t" acc_t="fp32_t" in_zp_t="fp32_t" weight_zp_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="Mixed precision fp with bf16/fp32 accumulate" out_t="fp16_t" version_added="1.1">
-          <op_profile name="DEDUCE-EXT"/>
-          <type_set name="S1" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t bs32_fp8ue8m0_set_t"/>
-          <type_set name="S2" values="bf16_t fp32_t"/>
+        <typesupport mode="Mixed precision fp with fp16/fp32 accumulate" out_t="fp16_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
+          <type_set name="S1" values="fp8e4m3_t fp8e5m2_t fp16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S2" values="fp16_t fp32_t"/>
           <type_bind type="in_t" set="S1"/>
           <type_bind type="weight_t" set="S1"/>
           <type_bind type="in_zp_t" set="S1" access_elem_type="in_t"/>
           <type_bind type="weight_zp_t" set="S1" access_elem_type="weight_t"/>
           <type_bind type="acc_t" set="S2"/>
         </typesupport>
-        <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
-          <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
-          <type_set name="S3" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
+        <typesupport mode="Mixed precision fp with bf16/fp32 accumulate" out_t="bf16_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S3" values="fp8e4m3_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S4" values="bf16_t fp32_t"/>
           <type_bind type="in_t" set="S3"/>
           <type_bind type="weight_t" set="S3"/>
           <type_bind type="in_zp_t" set="S3" access_elem_type="in_t"/>
           <type_bind type="weight_zp_t" set="S3" access_elem_type="weight_t"/>
+          <type_bind type="acc_t" set="S4"/>
+        </typesupport>
+        <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
+          <type_set name="S5" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
+          <type_bind type="in_t" set="S5"/>
+          <type_bind type="weight_t" set="S5"/>
+          <type_bind type="in_zp_t" set="S5" access_elem_type="in_t"/>
+          <type_bind type="weight_zp_t" set="S5" access_elem_type="weight_t"/>
         </typesupport>
       </operator>
     </operatorgroup>
