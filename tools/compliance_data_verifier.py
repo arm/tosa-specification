@@ -97,7 +97,6 @@ op_list = [
     "cast_to_block_scaled",
     "cast_from_block_scaled",
     "matmul_t",
-    "matmul_t_block_scaled",
     "conv2d_block_scaled",
     "assert_equal_shape",
     "div_ceil_shape",

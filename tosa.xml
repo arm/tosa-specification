@@ -1112,58 +1112,6 @@
         </typesupport>
       </operator>
       <operator>
-        <name>MATMUL_T_BLOCK_SCALED</name>
-        <arguments>
-          <argument category="input" name="A_data" type="tensor_t" shape="[N,H,C]" tensor-element-type="A_t">
-            <description>Input tensor A, N matrices of size HxC</description>
-            <rank min="3" max="3"/>
-          </argument>
-          <argument category="input" name="A_scale" type="tensor_t" shape="[N,H,C/block_size]" tensor-element-type="scale_t">
-            <description>Input tensor A, N matrices of size Hx(C/block_size)</description>
-            <rank min="3" max="3"/>
-          </argument>
-          <argument category="input" name="B_data" type="tensor_t" shape="[D,W,C]" tensor-element-type="B_t">
-            <description>Input data tensor B, D matrices of size WxC</description>
-            <rank min="3" max="3"/>
-          </argument>
-          <argument category="input" name="B_scale" type="tensor_t" shape="[D,W,C/block_size]" tensor-element-type="scale_t">
-            <description>Input scale tensor B, D matrices of size Wx(C/block_size)</description>
-            <rank min="3" max="3"/>
-          </argument>
-          <argument category="attribute" name="block_size" type="block_size_t" shape="-" tensor-element-type="-">
-            <description>Block size for value tensors</description>
-          </argument>
-          <argument category="output" name="output_data" type="tensor_t" shape="[N,H,W]" tensor-element-type="out_t">
-            <description>Output tensor, N matrices of size HxW</description>
-            <rank min="3" max="3"/>
-          </argument>
-        </arguments>
-        <types>
-          <type name='A_t' />
-          <type name='B_t' />
-          <type name='scale_t' />
-          <type name='out_t' />
-        </types>
-        <typesupport mode="Scaled fp4e2m1 with fp8ue8m0 scale and fp32 accumulate" A_t="fp4e2m1_t" B_t="fp4e2m1_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP4E2M1"/>
-        </typesupport>
-        <typesupport mode="Scaled fp6e2m3 with fp8ue8m0 scale and fp32 accumulate" A_t="fp6e2m3_t" B_t="fp6e2m3_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E2M3"/>
-        </typesupport>
-        <typesupport mode="Scaled fp6e3m2 with fp8ue8m0 scale and fp32 accumulate" A_t="fp6e3m2_t" B_t="fp6e3m2_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP6E3M2"/>
-        </typesupport>
-        <typesupport mode="Scaled fp8e4m3 with fp8ue8m0 scale and fp32 accumulate" A_t="fp8e4m3_t" B_t="fp8e4m3_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E4M3"/>
-        </typesupport>
-        <typesupport mode="Scaled fp8e5m2 with fp8ue8m0 scale and fp32 accumulate" A_t="fp8e5m2_t" B_t="fp8e5m2_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-FP8E5M2"/>
-        </typesupport>
-        <typesupport mode="Scaled mxint8 with fp8ue8m0 scale and fp32 accumulate" A_t="mxint8_t" B_t="mxint8_t" scale_t="fp8ue8m0_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-MX-COMMON" and_name="EXT-MX-INT8"/>
-        </typesupport>
-      </operator>
-      <operator>
         <name>MAX_POOL2D</name>
         <arguments>
           <argument category="input" name="input" type="tensor_t" shape="[N,IH,IW,C]" tensor-element-type="in_out_t">
