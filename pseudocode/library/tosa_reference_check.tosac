@@ -57,6 +57,48 @@ bool_t tosa_reference_check_scale<scale_t, out_t>(fp64_t test_scale, fp64_t test
   return tosa_reference_check_fp<out_t>(reference_value, test_value, num_ulp);
 }
 
+bool_t tosa_reference_check_reduce_prod<in_t>(in_t test_value, fp64_t ref_value, fp64_t acc_min, fp64_t acc_max, int64_t n) {
+  if (is_a_NaN(ref_value)) {
+    if (is_a_NaN(acc_min) && is_a_NaN(acc_max)) {
+      return is_a_NaN(test_value);
+    }
+
+    // Inf * 0 could depend on the accumulation order
+    return true;
+  }
+
+  // Normalize the sign
+  if (ref_value < 0.0) {
+    ref_value  = -ref_value;
+    test_value = -test_value;
+  }
+
+  bool_t acc_max_overflow = acc_max > normal_max<in_t>();
+  bool_t acc_min_underflow = acc_min * 2.0 <= subnormal_min<in_t>();
+
+  if (acc_max_overflow && is_an_Inf(test_value)) {
+    return (test_value > 0);
+  }
+
+  // Cover possible Inf * 0
+  if (acc_max_overflow && acc_min_underflow && is_a_NaN(test_value)) {
+    return true;
+  }
+
+  if (acc_min_underflow && test_value == 0.0) {
+    return true;
+  }
+
+  // Now apply the general formula, which accounts for subnormal error
+  fp64_t acc_min_normal = apply_max_s(acc_min, normal_min<in_t>());
+  fp64_t acc_min_subnormal = apply_max_s(acc_min, subnormal_min<in_t>());
+
+  fp64_t error_relative = exp2(-normal_frac<in_t>()-1) * acc_min_normal / acc_min_subnormal;
+  fp64_t err_bnd = ref_value * (pow(1 + error_relative, n) - 1);
+
+  return tosa_reference_check_fp_bnd<in_t>(test_value, ref_value, err_bnd);
+}
+
 bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64_t err_bnd) {
   if (is_a_NaN(ref_value)) {
     if (!has_NaN<in_t>()) {
