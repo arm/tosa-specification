@@ -47,7 +47,7 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
         } else if (is_a_NaN(out_bnd_el)) {
             // No further accuracy requirements for a NaN bound
             out_err = 0.0;
-        } else if.(static_cast<out_t>(out_bnd_el * (1 + ABS_BOUND * exp2(-1-normal_frac<out_t>()))) == infinity) {
+        } else if (static_cast<out_t>(out_bnd_el * (1 + ABS_BOUND * exp2(-1-normal_frac<out_t>()))) == infinity) {
             // dot product can overflow within error bound and there is no accuracy limit
             out_err = 0.0;
         } else if (out_bnd_el == 0.0) {
@@ -68,7 +68,7 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
         out_err_sumsq += out_err * out_err;
     }
     // Only check this for input and weights for test data sets 3-5
-    if ( S >= 3 && S <= 5) {
+    if (S >= 3 && S <= 5) {
         // check output error bias magnitude for data sets S which are not positive biased
         // The factor 10 allows for up to a 4 sigma difference of the error sum around the
         // expected error sum assuming errors are normally distributed.
