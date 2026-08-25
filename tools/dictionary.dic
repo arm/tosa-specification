@@ -3,6 +3,7 @@ activations
 adoc
 acc
 ARGMAX
+ARGMIN
 AsciiDoc
 BFloat
 BILINEAR

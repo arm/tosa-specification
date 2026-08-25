@@ -36,6 +36,33 @@ include::{generated}/operators/ARGMAX.adoc[]
 include::{pseudocode}/operators/ARGMAX.tosac[lines=10..-1]
 ----
 
+==== ARGMIN
+
+This returns the index with the smallest value across the given axis of the input tensor.
+If multiple locations have equal values, returns the first match along the search axis.
+
+*Precision Requirements*
+
+Integer results must be exact.
+
+NaN propagation mode only affects floating-point types.
+It indicates either propagating or ignoring NaN.
+
+For floating-point input, the following rules apply:
+
+* In the NaN propagating mode, NaN values always compare as less than non-NaN values.
+* In the NaN ignoring mode, NaN values always compare as greater than non-NaN values.
+* The sign of a zero may be ignored when comparing values.
+* Infinities of the same sign compare as equal.
+* All NaN values compare as equal to other NaN values.
+
+include::{generated}/operators/ARGMIN.adoc[]
+
+[source,c++]
+----
+include::{pseudocode}/operators/ARGMIN.tosac[lines=10..-1]
+----
+
 ==== AVG_POOL2D
 
 This performs an average pooling over the given input tensor.
