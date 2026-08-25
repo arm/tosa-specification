@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2025 ARM Limited
+// (C) COPYRIGHT 2020-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -109,12 +109,16 @@ Reduce a tensor along the given axis by computing the product of the axis.
 
 * Subnormal bf16_t, fp16_t, and fp32_t input values may be flushed to zero before calculation.
 * If the input is a NaN, the output must be a NaN.
-** Otherwise the following may be used to validate the result:
+* Otherwise the following may be used to validate the result:
 ** Let `n` be number of elements in the product.
 ** Let `out_imp` be the implementation result.
-** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Let `err_bnd = max(abs(out_ref), normal_min<in_out_t>()) * (pow(1 + pow(2, -normal_frac<in_out_t> - 1), n) - 1)`.
-** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
+** Let `out_ref` be the result calculated using `fp64_t` arithmetic.
+** Let `value[i]` be the i-th input value in the axis used for computing `out_ref`, cast to `fp64_t`.
+** Let `pos_acc_err = pow(1 + exp2(-normal_frac<in_out_t>-1), n-1)`
+** Let `neg_acc_err = pow(1 - exp2(-normal_frac<in_out_t>-1), n-1)`
+** Let `acc_max = apply_max_s(abs(value[0]), 1) * apply_max_s(abs(value[1]), 1) * ... * apply_max_s(abs(value[n-1]), 1) * pos_acc_err`
+** Let `acc_min = apply_min_s(abs(value[0]), 1) * apply_min_s(abs(value[1]), 1) * ... * apply_min_s(abs(value[n-1]), 1) * neg_acc_err`
+** Then `tosa_reference_check_reduce_prod<in_out_t>(out_imp, out_ref, acc_min, acc_max, n)` must be true.
 
 include::{generated}/operators/REDUCE_PRODUCT.adoc[]
 
