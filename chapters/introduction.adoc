@@ -43,7 +43,7 @@ hardware such as NPUs/TPUs.
 === Specification
 
 The TOSA Specification is written as a combination of XML, AsciiDoc mark-up, and pseudocode files.
-The content is managed through a git repository here: https://git.mlplatform.org/tosa/specification.git/.
+The content is managed through a git repository here: https://github.com/arm/tosa-specification.
 The specification is developed and versioned much like software.
 The pseudocode (.tosac files) is written in a style similar to C++, however it is not guaranteed to be valid or compile as it exists.
 While the AsciiDoc content is legible and can be read fairly easily in its raw form, it is recommended to build or “render” the mark-up into PDF or HTML.
