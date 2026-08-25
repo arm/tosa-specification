@@ -1,0 +1,64 @@
+# SPDX-FileCopyrightText: Copyright 2026 Arm Limited and/or its affiliates <open-source-office@arm.com>
+# SPDX-License-Identifier: Apache-2.0
+
+name: Deploy specification to pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Build image
+        run: ci/docker/build_docker.sh --tag tosa-spec:deploy-workflow
+
+      - name: Build specification
+        run: |
+          docker run \
+            --rm \
+            -v "$PWD":/workspace \
+            -w /workspace \
+            tosa-spec:deploy-workflow bash -c " \
+              make html && \
+              mv out/html/tosa_spec.html out/html/index.html"
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: out/html
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Configure pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy to pages
+        id: deployment
+        uses: actions/deploy-pages@v4
