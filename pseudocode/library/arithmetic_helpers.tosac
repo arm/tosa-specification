@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2025 ARM Limited
+// (C) COPYRIGHT 2020-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -66,7 +66,7 @@ in_t apply_log<in_t>(in_t input) {
 }
 
 in_t apply_logical_rshift<in_t>(in_t a, in_t b) {
-    uint64_t c = zero_extend<uint32_t>(a) >> zero_extend<uint32_t>(b);
+    uint64_t c = zero_extend<uint64_t>(a) >> zero_extend<uint64_t>(b);
     return static_cast<in_t>(c);
 }
 
