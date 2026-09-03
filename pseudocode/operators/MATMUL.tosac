@@ -65,7 +65,7 @@ for_each(0 <= batch_offset < tensor_size(output_batch_shape)) {
             out_t value2 = static_cast<out_t>(tensor_read<B_t>(B, B_read_shape, b_index));
             value1 = apply_sub_s<out_t>(value1, static_cast<out_t>(A_zp));
             value2 = apply_sub_s<out_t>(value2, static_cast<out_t>(B_zp));
-            acc = apply_add_s<out_t>(acc, apply_mul_s<out_t>(value1 * value2));
+            acc = apply_add_s<out_t>(acc, apply_mul_s<out_t>(value1, value2));
         }
 
         shape_t output_index = output_batch_index;
