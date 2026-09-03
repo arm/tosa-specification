@@ -2969,11 +2969,23 @@
         <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.1">
+          <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
@@ -3046,11 +3058,20 @@
         <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
@@ -3106,11 +3127,20 @@
         <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
@@ -3246,11 +3276,20 @@
         <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
@@ -3322,11 +3361,20 @@ used.</description>
         <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
@@ -3386,11 +3434,20 @@ used.</description>
         <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
@@ -3443,11 +3500,20 @@ used.</description>
         <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
+        <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
+        </typesupport>
         <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
+        </typesupport>
+        <typesupport mode="signed 32" in_out_t="i32_t" version_added="1.1">
+          <op_profile name="PRO-FP"/>
         </typesupport>
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
