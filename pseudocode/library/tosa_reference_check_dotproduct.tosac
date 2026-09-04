@@ -35,7 +35,7 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
     for_each_data_position(index in output_shape) {
         fp64_t out_bnd_el = tensor_read<fp64_t>(output_bnd, output_shape, index);
         fp64_t out_ref_el = tensor_read<fp64_t>(output_ref, output_shape, index);
-        acc_t  out_imp_el = tensor_read<acc_t> (output_imp, output_shape, index);
+        out_t  out_imp_el = tensor_read<out_t> (output_imp, output_shape, index);
         fp64_t out_err;
 
         if (is_a_NaN(out_ref_el)) {
