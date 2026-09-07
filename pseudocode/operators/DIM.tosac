@@ -10,7 +10,6 @@
 ERROR_IF(axis >= rank(shape));
 ERROR_IF(axis < 0);
 REQUIRE(shape[axis] > 0);
-ERROR_IF(is_block_scale<in_t>() && rank(shape) == 0);
 ERROR_IF(is_block_scale<in_t>() &&
          shape[rank(shape) - 1] % get_innermost_block_size<in_t>() != 0);
 
