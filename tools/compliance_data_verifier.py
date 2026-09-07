@@ -94,8 +94,6 @@ op_list = [
     "div_shape",
     "mul_shape",
     "sub_shape",
-    "cast_to_block_scaled",
-    "cast_from_block_scaled",
     "matmul_t",
     "assert_equal_shape",
     "div_ceil_shape",
