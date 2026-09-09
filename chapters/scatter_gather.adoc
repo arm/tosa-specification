@@ -11,8 +11,11 @@
 
 ==== GATHER
 
-Generate a tensor for which each element in the output is a subtensor of the values tensor based on the indices.
-N is the number of batches, W the number of indices in each batch, K the range of each index and C the number data channels for each index.
+Generate a tensor for which each element in the output is a subtensor of the values tensor based on the indices and row_count.
+The number of consecutive rows gathered for each index is specified in the optional row_count, which defaults to 1 when not supplied.
+N is the number of batches, W is the number of indices in each batch.
+K is the total number of rows and therefore the range of each index and C is the number of data channels for each index.
+The values tensor has shape [N, K, C] and the output tensor has shape [N, W*row_count, C].
 
 *Precision Requirements*
 
@@ -72,9 +75,11 @@ include::{pseudocode}/operators/ROW_GATHER_BLOCK_SCALED.tosac[lines=10..-1]
 ==== SCATTER
 
 The values_out tensor is set to the values_in tensor with data modified as follows: data from the input tensor is inserted at the positions specified by the indices tensor.
-N is the number of batches, W the number of indices in each batch, K the range of each index and C the number data channels for each index.
-It is not permitted to repeat the same output index within a single SCATTER operation and so each output index occurs at most once.
-It follows that K >= W.
+The number of consecutive rows scattered for each index is specified in the optional row_count, which defaults to 1 when not supplied.
+N is the number of batches, W the number of indices in each batch.
+K the range of each index and C the number data channels for each index.
+It is not permitted to have row_count overlap output indexes or repeat the same output index within a single SCATTER operation and so each output index is written at most once.
+It follows that K >= (W * row_count).
 In use cases that require multiple updates to the same output position, these must be decomposed into multiple SCATTER operations.
 
 *Precision Requirements*
