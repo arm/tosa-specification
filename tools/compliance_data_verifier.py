@@ -73,7 +73,6 @@ op_list = [
     "transpose",
     "gather",
     "row_gather",
-    "row_gather_block_scaled",
     "scatter",
     "resize",
     "cast",
