@@ -126,7 +126,6 @@ profile_list = [
     "Extension::mx_fp8e4m3",
     "Extension::mx_fp8e5m2",
     "Extension::mx_int8",
-    "Extension::mxfp_conv",
     "Extension::controlflow",
 ]
 

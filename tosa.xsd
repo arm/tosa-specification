@@ -45,7 +45,6 @@
     <xs:enumeration value="EXT-MX-FP8E4M3"/>
     <xs:enumeration value="EXT-MX-FP8E5M2"/>
     <xs:enumeration value="EXT-MX-INT8"/>
-    <xs:enumeration value="EXT-MXFP-CONV"/>
   </xs:restriction>
 </xs:simpleType>
 

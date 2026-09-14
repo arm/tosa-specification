@@ -81,9 +81,6 @@
       <profile_supported>PRO-INT</profile_supported>
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-MXFP-CONV" description="Microscaling format convolution" status="Experimental">
-      <profile_supported>PRO-FP</profile_supported>
-    </profile_extension>
   </profile_extensions>
   <levels>
     <level name="none" max_rank="32" max_kernel="2147483647" max_stride="2147483647" max_scale="2048" max_log2_size="63" max_nesting="256" max_tensor_list_size="256" max_shape_len="64">No level</level>

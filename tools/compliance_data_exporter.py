@@ -26,7 +26,6 @@ validation_term_mapping_profile = {
     "EXT-MX-FP8E4M3": "Extension::mx_fp8e4m3",
     "EXT-MX-FP8E5M2": "Extension::mx_fp8e5m2",
     "EXT-MX-INT8": "Extension::mx_int8",
-    "EXT-MXFP-CONV": "Extension::mxfp_conv",
     "EXT-CONTROLFLOW": "Extension::controlflow",
 }
 
