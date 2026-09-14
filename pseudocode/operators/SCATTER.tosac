@@ -7,6 +7,7 @@
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
+ERROR_IF(row_count < 1);
 ERROR_IF(is_block_scale<in_out_t>() && C % get_innermost_block_size<in_out_t>() != 0);
 
 // The following array is used to check compliance that an output position
@@ -21,12 +22,14 @@ for_each(0 <= n < N, 0 <= k < K, 0 <= c < C) {
     output_modified[n,k,c]=false;
 }
 
-// Now perform the SCATTER operation, modifying the positions from the indices tensor
+// Now perform the SCATTER operation, modifying the positions from the indices tensor.
 for_each(0 <= n < N, 0 <= w < W, 0 <= c < C) {
     index_t k = tensor_read<index_t>(indices, [N,W], [n,w]);
-    REQUIRE(0 <= k && k < K);
-    REQUIRE(output_modified[n,k,c] == false);
-    value_scale_t<in_out_t> vs = tensor_read_value_scale<in_out_t>(input, [N,W,C], [n,w,c]);
-    tensor_write_value_scale<in_out_t>(values_out, [N,K,C], [n, k, c], vs);
-    output_modified[n,k,c] = true;
+    for(0 <= r < row_count) {
+        REQUIRE(0 <= k+r && k+r < K);
+        REQUIRE(output_modified[n,k+r,c] == false);
+        value_scale_t<in_out_t> vs = tensor_read_value_scale<in_out_t>(input, [N,W*row_count,C], [n,w*row_count + r,c]);
+        tensor_write_value_scale<in_out_t>(values_out, [N,K,C], [n, k+r, c], vs);
+        output_modified[n,k+r,c] = true;
+    }
 }
