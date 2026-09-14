@@ -4747,10 +4747,4 @@ used.</description>
 -->
 </enum>
 
-<!-- This enum is deprecated and will be removed for 1.1 -->
-<enum name="block_size_t" description="Block size for the block_scaled formats (deprecated and will be removed for 1.1)">
-  <enumval value="32" name="BLOCK_SIZE_32" description="Block size of 32" extension="EXT-MX-COMMON"/>
-  <enumval value="1" name="BLOCK_SIZE_1" description="Block size of 1" extension="EXT-MX-COMMON"/>
-</enum>
-
 </tosa>
