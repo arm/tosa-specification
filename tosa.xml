@@ -1032,6 +1032,14 @@
           <type_bind type="A_zp_t" set="S2_IN" access_elem_type="A_t"/>
           <type_bind type="B_zp_t" set="S2_IN" access_elem_type="B_t"/>
         </typesupport>
+        <typesupport mode="fp8xfp8 with fp16 accumulate" out_t="fp16_t" version_added="1.1">
+          <op_profile name="DEDUCE-EXT"/>
+          <type_set name="S3_IN" values="fp8e4m3_t fp8e5m2_t"/>
+          <type_bind type="A_t" set="S3_IN"/>
+          <type_bind type="B_t" set="S3_IN"/>
+          <type_bind type="A_zp_t" set="S3_IN" access_elem_type="A_t"/>
+          <type_bind type="B_zp_t" set="S3_IN" access_elem_type="B_t"/>
+        </typesupport>
         <typesupport mode="fp16xfp16 with fp16 accumulate" A_t="fp16_t" B_t="fp16_t" A_zp_t="fp16_t" B_zp_t="fp16_t" out_t="fp16_t" version_added="1.1">
           <op_profile name="PRO-FP"/>
         </typesupport>
