@@ -72,7 +72,6 @@ op_list = [
     "tile",
     "transpose",
     "gather",
-    "row_gather",
     "scatter",
     "resize",
     "cast",
