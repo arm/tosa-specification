@@ -285,7 +285,7 @@ Number formats not required for any operators in a profile do not need to be imp
 |i32_t
 | -
 | -
-|Signless 32-bit integer value. Will be interpreted as int32_t by all operators.
+|Signless 32-bit integer value. Will be interpreted as int32_t unless otherwise specified by an operator.
 
 |int32_t
 | -(1<<31)
@@ -295,7 +295,7 @@ Number formats not required for any operators in a profile do not need to be imp
 |i48_t
 | -
 | -
-|Signless 48-bit integer value. Will be interpreted as int48_t by all operators.
+|Signless 48-bit integer value. Will be interpreted as int48_t unless otherwise specified by an operator.
 
 |int48_t
 | -(1<<47)
@@ -305,7 +305,7 @@ Number formats not required for any operators in a profile do not need to be imp
 |i64_t
 | -
 | -
-|Signless 64-bit integer value. Will be interpreted as int64_t by all operators.
+|Signless 64-bit integer value. Will be interpreted as int64_t unless otherwise specified by an operator.
 
 |int64_t
 | -(1<<63)
