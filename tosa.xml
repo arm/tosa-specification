@@ -3609,35 +3609,36 @@ used.</description>
           <type name='resize_t'/>
           <type name='in_t'/>
           <type name='out_t'/>
+          <type name='acc_t'/>
         </types>
-        <typesupport mode="signed 8, bilinear" resize_t="i16_t" in_t="i8_t" out_t="i32_t" version_added="1.0">
+        <typesupport mode="signed 8, bilinear" resize_t="i16_t" in_t="i8_t" out_t="i32_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
-        <typesupport mode="signed 8, nearest neighbor" resize_t="i16_t" in_t="i8_t" out_t="i8_t" version_added="1.0">
+        <typesupport mode="signed 8, nearest neighbor" resize_t="i16_t" in_t="i8_t" out_t="i8_t" acc_t="-" version_added="1.0">
           <op_profile name="PRO-INT"/>
         </typesupport>
-        <typesupport mode="signed 16, bilinear" resize_t="i16_t" in_t="i16_t" out_t="i48_t" version_added="1.0">
+        <typesupport mode="signed 16, bilinear" resize_t="i16_t" in_t="i16_t" out_t="i48_t" acc_t="i48_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="signed 16, nearest neighbor" resize_t="i16_t" in_t="i16_t" out_t="i16_t" version_added="1.0">
+        <typesupport mode="signed 16, nearest neighbor" resize_t="i16_t" in_t="i16_t" out_t="i16_t" acc_t="-" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp16" resize_t="fp16_t" in_t="fp16_t" out_t="fp16_t" version_added="1.0">
+        <typesupport mode="fp16" resize_t="fp16_t" in_t="fp16_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="bf16" resize_t="bf16_t" in_t="bf16_t" out_t="bf16_t" version_added="1.0">
+        <typesupport mode="bf16" resize_t="bf16_t" in_t="bf16_t" out_t="bf16_t" acc_t="bf16_t" version_added="1.0">
           <op_profile name="EXT-BF16"/>
         </typesupport>
-        <typesupport mode="fp32" resize_t="fp32_t" in_t="fp32_t" out_t="fp32_t" version_added="1.0">
+        <typesupport mode="fp32" resize_t="fp32_t" in_t="fp32_t" out_t="fp32_t" acc_t="fp32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="fp8" resize_t="fp32_t" version_added="1.1">
+        <typesupport mode="fp8" resize_t="fp32_t" acc_t="fp32_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
           <type_set name="S_RESIZE_FP8" values="fp8e4m3_t fp8e5m2_t"/>
           <type_bind type="in_t" set="S_RESIZE_FP8"/>
           <type_bind type="out_t" set="S_RESIZE_FP8" same_as="in_t"/>
         </typesupport>
-        <typesupport mode="block scaled with fp8ue8m0 scale factor, nearest neighbor" resize_t="fp32_t" version_added="1.1">
+        <typesupport mode="block scaled with fp8ue8m0 scale factor, nearest neighbor" resize_t="fp32_t" acc_t="-" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
           <type_set name="S_RESIZE_MX" values="bs32_fp8ue8m0_set_t"/>
           <type_bind type="in_t" set="S_RESIZE_MX"/>
