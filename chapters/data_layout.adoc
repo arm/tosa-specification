@@ -15,7 +15,16 @@ No data conversion happens during a concat operation.
 
 *Precision Requirements*
 
-Results must be exact.
+Integer and non-block-scaled floating-point results must be exact.
+
+The following rules apply to block-scaled outputs.
+
+* These rules are intended to allow casting to a higher-precision scalar type as part of the computation.
+* Let `out_imp_v, out_imp_s` be the value and scale of the implementation output.
+* Let `out_ref_v, out_ref_s` be the value and scale calculated using fp64_t arithmetic.
+* Let `value_t = get_value_t<in_out_t>()`.
+* Let `scale_t = get_scale_t<in_out_t>()`.
+* Then `tosa_reference_check_scale<scale_t, value_t>(out_imp_scale, out_imp_value, out_ref_scale, out_ref_value)` must be true.
 
 include::{generated}/operators/CONCAT.adoc[]
 
@@ -47,7 +56,16 @@ Returns a tensor with the same type/values as the input, with a new shape specif
 
 *Precision Requirements*
 
-Results must be exact.
+Integer and non-block-scaled floating-point results must be exact.
+
+The following rules apply to block-scaled outputs.
+
+* These rules are intended to allow casting to a higher-precision scalar type as part of the computation.
+* Let `out_imp_v, out_imp_s` be the value and scale of the implementation output.
+* Let `out_ref_v, out_ref_s` be the value and scale calculated using fp64_t arithmetic.
+* Let `value_t = get_value_t<in_out_t>()`.
+* Let `scale_t = get_scale_t<in_out_t>()`.
+* Then `tosa_reference_check_scale<scale_t, value_t>(out_imp_scale, out_imp_value, out_ref_scale, out_ref_value)` must be true.
 
 include::{generated}/operators/RESHAPE.adoc[]
 
@@ -62,7 +80,16 @@ Returns a tensor with the same type/values as the input, with the data reversed 
 
 *Precision Requirements*
 
-Results must be exact.
+Integer and non-block-scaled floating-point results must be exact.
+
+The following rules apply to block-scaled outputs.
+
+* These rules are intended to allow casting to a higher-precision scalar type as part of the computation.
+* Let `out_imp_v, out_imp_s` be the value and scale of the implementation output.
+* Let `out_ref_v, out_ref_s` be the value and scale calculated using fp64_t arithmetic.
+* Let `value_t = get_value_t<in_out_t>()`.
+* Let `scale_t = get_scale_t<in_out_t>()`.
+* Then `tosa_reference_check_scale<scale_t, value_t>(out_imp_scale, out_imp_value, out_ref_scale, out_ref_value)` must be true.
 
 include::{generated}/operators/REVERSE.adoc[]
 
@@ -78,7 +105,16 @@ No data conversion happens during a slice operation.
 
 *Precision Requirements*
 
-Results must be exact.
+Integer and non-block-scaled floating-point results must be exact.
+
+The following rules apply to block-scaled outputs.
+
+* These rules are intended to allow casting to a higher-precision scalar type as part of the computation.
+* Let `out_imp_v, out_imp_s` be the value and scale of the implementation output.
+* Let `out_ref_v, out_ref_s` be the value and scale calculated using fp64_t arithmetic.
+* Let `value_t = get_value_t<in_out_t>()`.
+* Let `scale_t = get_scale_t<in_out_t>()`.
+* Then `tosa_reference_check_scale<scale_t, value_t>(out_imp_scale, out_imp_value, out_ref_scale, out_ref_value)` must be true.
 
 include::{generated}/operators/SLICE.adoc[]
 
@@ -93,7 +129,16 @@ Replicates input1 multiples times along each dimension.
 
 *Precision Requirements*
 
-Results must be exact.
+Integer and non-block-scaled floating-point results must be exact.
+
+The following rules apply to block-scaled outputs.
+
+* These rules are intended to allow casting to a higher-precision scalar type as part of the computation.
+* Let `out_imp_v, out_imp_s` be the value and scale of the implementation output.
+* Let `out_ref_v, out_ref_s` be the value and scale calculated using fp64_t arithmetic.
+* Let `value_t = get_value_t<in_out_t>()`.
+* Let `scale_t = get_scale_t<in_out_t>()`.
+* Then `tosa_reference_check_scale<scale_t, value_t>(out_imp_scale, out_imp_value, out_ref_scale, out_ref_value)` must be true.
 
 include::{generated}/operators/TILE.adoc[]
 
@@ -109,7 +154,16 @@ Each value in the perms list must be a valid dimension of the input tensor and m
 
 *Precision Requirements*
 
-Results must be exact.
+Integer and non-block-scaled floating-point results must be exact.
+
+The following rules apply to block-scaled outputs.
+
+* These rules are intended to allow casting to a higher-precision scalar type as part of the computation.
+* Let `out_imp_v, out_imp_s` be the value and scale of the implementation output.
+* Let `out_ref_v, out_ref_s` be the value and scale calculated using fp64_t arithmetic.
+* Let `value_t = get_value_t<in_out_t>()`.
+* Let `scale_t = get_scale_t<in_out_t>()`.
+* Then `tosa_reference_check_scale<scale_t, value_t>(out_imp_scale, out_imp_value, out_ref_scale, out_ref_value)` must be true.
 
 include::{generated}/operators/TRANSPOSE.adoc[]
 
