@@ -45,7 +45,6 @@
     <xs:enumeration value="EXT-MX-FP8E4M3"/>
     <xs:enumeration value="EXT-MX-FP8E5M2"/>
     <xs:enumeration value="EXT-MX-INT8"/>
-    <xs:enumeration value="EXT-MXFP-CONV"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -151,7 +150,6 @@
     <xs:enumeration value="B_t"/>
     <xs:enumeration value="B_zp_t"/>
     <xs:enumeration value="block_shape_t"/>
-    <xs:enumeration value="block_size_t"/> <!-- This enum is deprecated and will be removed for 1.1 -->
     <xs:enumeration value="bool_t"/>
     <xs:enumeration value="i8_t"/>
     <xs:enumeration value="i32_t"/>

@@ -252,7 +252,7 @@ for (0 <= a_offset < tensor_size(A_shape)) {
   a_index = tensor_offset_to_index(A_shape, a_offset);
   A[a_index] = tosa_pro_fp_data(S, KS, 0, a_index[rank(A_shape) - 1], a_offset);
 }
-// CAST_TO_BLOCK_SCALED(A) if required
+// CAST(A) to block_scale_t<> if required
 // MATMUL_T uses B with shape [..., W, C] and implicitly swaps only the last
 // two dimensions to [..., C, W], so the contraction axis is the last axis
 // of B.
@@ -260,7 +260,7 @@ for (0 <= b_offset < tensor_size(B_shape)) {
   b_index = tensor_offset_to_index(B_shape, b_offset);
   B[b_index] = tosa_pro_fp_data(S, KS, 1, b_index[rank(B_shape) - 1], b_offset);
 }
-// CAST_TO_BLOCK_SCALED(B) if required
+// CAST(B) to block_scale_t<> if required
 ----
 
 ==== TRANSPOSE_CONV2D
