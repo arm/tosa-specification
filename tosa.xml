@@ -4332,21 +4332,6 @@ used.</description>
         <typesupport mode="fp32" out_t="fp32_t"  version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="fp8ue8m0" out_t="fp8ue8m0_t"  version_added="1.1">
-          <op_profile name="EXT-MX-COMMON"/>
-        </typesupport>
-        <typesupport mode="fp6e3m2" out_t="fp6e3m2_t"  version_added="1.1">
-          <op_profile name="EXT-MX-FP6E3M2"/>
-        </typesupport>
-        <typesupport mode="fp6e2m3" out_t="fp6e2m3_t"  version_added="1.1">
-          <op_profile name="EXT-MX-FP6E2M3"/>
-        </typesupport>
-        <typesupport mode="fp4e2m1" out_t="fp4e2m1_t"  version_added="1.1">
-          <op_profile name="EXT-MX-FP4E2M1"/>
-        </typesupport>
-        <typesupport mode="mxint8" out_t="mxint8_t"  version_added="1.1">
-          <op_profile name="EXT-MX-INT8"/>
-        </typesupport>
         <typesupport mode="MX"  version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
           <type_set name="S" values="bs32_fp8ue8m0_set_t"/>
@@ -4731,21 +4716,6 @@ used.</description>
         </typesupport>
         <typesupport mode="fp32" in_t="fp32_t" version_added="1.1">
           <op_profile name="PRO-FP" and_name="EXT-SHAPE"/>
-        </typesupport>
-        <typesupport mode="fp6e3m2" in_t="fp6e3m2_t" version_added="1.1">
-          <op_profile name="EXT-MX-FP6E3M2" and_name="EXT-SHAPE"/>
-        </typesupport>
-        <typesupport mode="fp6e2m3" in_t="fp6e2m3_t" version_added="1.1">
-          <op_profile name="EXT-MX-FP6E2M3" and_name="EXT-SHAPE"/>
-        </typesupport>
-        <typesupport mode="fp4e2m1" in_t="fp4e2m1_t" version_added="1.1">
-          <op_profile name="EXT-MX-FP4E2M1" and_name="EXT-SHAPE"/>
-        </typesupport>
-        <typesupport mode="mxint8" in_t="mxint8_t" version_added="1.1">
-          <op_profile name="EXT-MX-INT8" and_name="EXT-SHAPE"/>
-        </typesupport>
-        <typesupport mode="fp8ue8m0" in_t="fp8ue8m0_t" version_added="1.1">
-          <op_profile name="EXT-MX-COMMON" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="i64" in_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64" and_name="EXT-SHAPE"/>
