@@ -165,6 +165,19 @@ When multiple implementations are shown to meet the precision requirements, thos
 In addition, new extensions may be added to the specification between TOSA releases.
 They may not change anything that would break backward compatibility according to the above definitions.
 
+==== Operator Versioning
+
+An operator may introduce a new replacement operator when backwards-compatibility
+constraints prevent an in-place modification.
+
+The first replacement operator will append _V2 to the original name, and subsequent
+replacements will increment the suffix sequentially to _V3, _V4, and so on.
+
+Operator versioning is independent of specification versioning.
+
+TOSA producers should strive to use the latest version that is compatible with their
+target TOSA version.
+
 === Profiles
 
 TOSA profiles enable efficient implementation on different classes of device.

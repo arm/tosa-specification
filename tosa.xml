@@ -325,7 +325,7 @@
         </typesupport>
       </operator>
      <operator>
-        <name>AVG_POOL2D_ADAPTIVE</name>
+        <name>AVG_POOL2D_V2</name>
         <arguments>
           <argument category="input" name="input" type="tensor_t" shape="[N,IH,IW,C]" tensor-element-type="in_out_t">
             <description>Input tensor</description>
@@ -1089,7 +1089,7 @@
         </typesupport>
       </operator>
       <operator>
-        <name>MAX_POOL2D_ADAPTIVE</name>
+        <name>MAX_POOL2D_V2</name>
         <arguments>
           <argument category="input" name="input" type="tensor_t" shape="[N,IH,IW,C]" tensor-element-type="in_out_t">
             <description>Input tensor 4D</description>

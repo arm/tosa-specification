@@ -86,12 +86,12 @@ include::{generated}/operators/AVG_POOL2D.adoc[]
 include::{pseudocode}/operators/AVG_POOL2D.tosac[lines=10..-1]
 ----
 
-==== AVG_POOL2D_ADAPTIVE
+==== AVG_POOL2D_V2
 
 This performs an average pooling over the given input tensor.
 A sliding window of size given by <kernel size> is passed over the input tensor, with the mean value being placed in the output tensor.
 When calculating the average, only the number of valid input tensor values, but not padding, are used to calculate the divisor.
-Compared to AVG_POOL2D, AVG_POOL2D_ADAPTIVE has the kernel, stride, pad arguments as inputs rather than attributes.
+Compared to AVG_POOL2D, AVG_POOL2D_V2 has the kernel, stride, pad arguments as inputs rather than attributes.
 
 *Precision Requirements*
 
@@ -103,7 +103,7 @@ For floating-point values, the following rules apply:
 * Outputs can be expressed as a dot product of an input vector with a vector with elements 1/KS where KS is the kernel size.
 * This dot product must meet the <<Dot product accuracy requirements>>.
 
-include::{generated}/operators/AVG_POOL2D_ADAPTIVE.adoc[]
+include::{generated}/operators/AVG_POOL2D_V2.adoc[]
 
 [source,c++]
 ----
@@ -320,11 +320,11 @@ include::{generated}/operators/MAX_POOL2D.adoc[]
 include::{pseudocode}/operators/MAX_POOL2D.tosac[lines=10..-1]
 ----
 
-==== MAX_POOL2D_ADAPTIVE
+==== MAX_POOL2D_V2
 
 This performs a max pooling over the given input tensor.
 A sliding window of size given by <kernel size> is passed over the input tensor, with the maximum value being placed in the output tensor.
-Compared to MAX_POOL2D, MAX_POOL2D_ADAPTIVE has the kernel, stride, pad arguments as inputs rather than attributes.
+Compared to MAX_POOL2D, MAX_POOL2D_V2 has the kernel, stride, pad arguments as inputs rather than attributes.
 
 *Precision Requirements*
 
@@ -345,7 +345,7 @@ Otherwise the result is the maximum non-NaN value in the window.
 * If a floating-point result is zero, then the result must be either +0.0 or -0.0 but either sign is permitted.
 * If the result is a subnormal value for bf16_t, fp16_t, or fp32_t, the result may be a zero of either sign.
 
-include::{generated}/operators/MAX_POOL2D_ADAPTIVE.adoc[]
+include::{generated}/operators/MAX_POOL2D_V2.adoc[]
 
 [source,c++]
 ----
