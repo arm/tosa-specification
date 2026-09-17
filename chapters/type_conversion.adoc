@@ -43,8 +43,7 @@ Rules when casting from block-scaled types:
 * Let `s` be the corresponding scale in that block.
 * Let `out_ref = v * s` calculated using fp64_t arithmetic.
 * Let `out_imp` be the result of the implementation.
-* Let `value_t = get_value_t<in_t>()`
-* Then `tosa_reference_check_from_block<value_t, out_t>(out_imp, out_ref, s)` must be true.
+* Then `tosa_reference_check_fp<out_t>(out_imp, out_ref, 0.5)` must be true.
 
 Rules when casting to block-scaled types:
 
