@@ -71,6 +71,7 @@ float_t get_largest_value_rounding_to_normal_max<in_t>() {
 
 scale_t calc_block_scale<in_t, scale_t, out_t>(in_t max_abs) {
   if (max_abs == 0) {
+    // This return is recommended, however as per `tosa_reference_check_scale` other behaviours are accepted
     return normal_min<scale_t>();
   } else if (is_a_NaN(max_abs) || is_an_Inf(max_abs)) {
     return NaN;
