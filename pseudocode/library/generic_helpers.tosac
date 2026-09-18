@@ -23,7 +23,8 @@ bool_t is_floating_point<type>() {
 }
 
 bool_t has_Inf<in_t>() {
-  if (is_same<in_t, fp8e4m3_t>() || is_same<in_t, fp6e2m3_t>() || is_same<in_t, fp6e3m2_t>() || is_same<in_t, fp4e2m1_t>() || is_same<in_t, mxint8_t>()) {
+  if (is_same<in_t, fp8e4m3_t>() || is_same<in_t, fp6e2m3_t>() || is_same<in_t, fp6e3m2_t>() || is_same<in_t, fp4e2m1_t>() || is_same<in_t, mxint8_t>() ||
+      is_same<in_t, fp8ue8m0_t>()) {
     return false;
   }
   if (is_floating_point<in_t>()) {
