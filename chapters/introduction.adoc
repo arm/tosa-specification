@@ -682,19 +682,25 @@ For the checks described in the following code:
 
 * Data sets defined for the operation in Appendix A <<Floating-Point Operator Test Data>> must pass.
 
+Pass the original input and weight tensors to `tosa_reference_check_dotproduct`, retaining their types as the `in_t` and `weight_t` template parameters, including when they are block-scaled.
+Inside the function, `in_access_t` and `weight_access_t` are defined using `access_elem_type` from <<Type Conversion Helpers>>: block-scaled types map to `fp32_t`, and other types are unchanged.
+The function reads each tensor into its access type using `tensor_read`, which applies the corresponding scales for block-scaled tensors.
+These values are used for the reference and error-bound calculations, while `implementation()` receives the original tensors.
+
 The following tables describe some of the constraints applied during the dot product conformance check.
+The conditions use the original `in_t` and `weight_t` types, so block-scaled tensors retain their permitted error bounds even though their values are accessed as `fp32_t` inside the checker.
 
 ABS_BOUND is the maximum allowed absolute error when NaN or overflow is not present.
 
 |===
 |Condition|ABS_BOUND|Notes
 
-|`(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3fn_t>() \|\| is_block_scale<in_t>()) && (is_same<weight_t,fp8e5m2_t>() \|\| is_same<weight_t,fp8e4m3fn_t>() \|\| is_block_scale<weight_t>()) && is_same<acc_t,fp32_t>`
+|`(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3fn_t>() \|\| is_block_scale<in_t>()) && (is_same<weight_t,fp8e5m2_t>() \|\| is_same<weight_t,fp8e4m3fn_t>() \|\| is_block_scale<weight_t>()) && is_same<acc_t,fp32_t>()`
 |`2 * max(ksb, min(ksb,64) * (1 << 10))`
-| The FP8 dot product with FP32 accumulator as well as block scaled dot products are allowed a relaxed absolute error bound. +
+| Dot products where both original operands are FP8 or block-scaled and the accumulator is FP32 are allowed a relaxed absolute error bound. +
 The 2 factor allows for different rounding modes. +
 The second term in the maximum allows accumulating intermediates at lower precision. +
-If the operator does not use an accumulator type acc_t, the final comparison should be is_same<out_t,fp32_t>.
+If the operator does not use an accumulator type acc_t, the final comparison should be is_same<out_t,fp32_t>().
 
 |`(is_same<in_t,fp32_t>() && is_same<weight_t,fp32_t>())`
 |`3 * 2 * ksb`
@@ -712,13 +718,13 @@ The squared error for each result is summed, and the result must be less than th
 |===
 |Condition|VARIANCE_ERROR_BOUND|Notes
 
-|`(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3fn_t>() \|\| is_block_scale<in_t>()) && (is_same<weight_t,fp8e5m2_t>() \|\| is_same<weight_t,fp8e4m3fn_t>() \|\| is_block_scale<weight_t>()) && is_same<acc_t,fp32_t>`
+|`(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3fn_t>() \|\| is_block_scale<in_t>()) && (is_same<weight_t,fp8e5m2_t>() \|\| is_same<weight_t,fp8e4m3fn_t>() \|\| is_block_scale<weight_t>()) && is_same<acc_t,fp32_t>()`
 | `4 * 0.4 * max(ksb, min(ksb,64) * (1 << 20))`
-| The FP8 dot product with FP32 accumulator as well as block scaled dot products are allowed a relaxed variance error bound. +
+| Dot products where both original operands are FP8 or block-scaled and the accumulator is FP32 are allowed a relaxed variance error bound. +
 The factors are similar to the absolute bound with precision factors squared for the variance bound. +
 The 0.4 factor is derived from the uniform [-1,1] distribution variance of 1/3 by rounding up. +
 The 4 factor is the square of the 2 factor in the absolute bound  to allow for different rounding modes. +
-If the operator does not use an accumulator type acc_t, the final comparison should be is_same<out_t,fp32_t>.
+If the operator does not use an accumulator type acc_t, the final comparison should be is_same<out_t,fp32_t>().
 
 |all other cases
 |`4 * 0.4 * ksb`
