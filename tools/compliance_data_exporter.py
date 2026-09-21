@@ -14,7 +14,7 @@ validation_term_mapping_profile = {
     "EXT-INT16": "Extension::int16",
     "EXT-INT4": "Extension::int4",
     "EXT-BF16": "Extension::bf16",
-    "EXT-FP8E4M3": "Extension::fp8e4m3",
+    "EXT-FP8E4M3FN": "Extension::fp8e4m3fn",
     "EXT-FP8E5M2": "Extension::fp8e5m2",
     "EXT-FFT": "Extension::fft",
     "EXT-SHAPE": "Extension::shape",
@@ -23,7 +23,7 @@ validation_term_mapping_profile = {
     "EXT-MX-FP4E2M1": "Extension::mx_fp4e2m1",
     "EXT-MX-FP6E2M3": "Extension::mx_fp6e2m3",
     "EXT-MX-FP6E3M2": "Extension::mx_fp6e3m2",
-    "EXT-MX-FP8E4M3": "Extension::mx_fp8e4m3",
+    "EXT-MX-FP8E4M3FN": "Extension::mx_fp8e4m3fn",
     "EXT-MX-FP8E5M2": "Extension::mx_fp8e5m2",
     "EXT-MX-INT8": "Extension::mx_int8",
     "EXT-CONTROLFLOW": "Extension::controlflow",
@@ -40,14 +40,14 @@ validation_term_mapping_type = {
     "bf16_t": "bf16T",
     "fp16_t": "fp16T",
     "fp32_t": "fp32T",
-    "fp8e4m3_t": "fp8e4m3T",
+    "fp8e4m3fn_t": "fp8e4m3fnT",
     "fp8e5m2_t": "fp8e5m2T",
     "fp8ue8m0_t": "fp8ue8m0T",
     "fp6e3m2_t": "fp6e3m2T",
     "fp6e2m3_t": "fp6e2m3T",
     "fp4e2m1_t": "fp4e2m1T",
     "mxint8_t": "mxint8T",
-    "bs32_fp8ue8m0_fp8e4m3_t": "bs32_fp8ue8m0_fp8e4m3T",
+    "bs32_fp8ue8m0_fp8e4m3fn_t": "bs32_fp8ue8m0_fp8e4m3fnT",
     "bs32_fp8ue8m0_fp8e5m2_t": "bs32_fp8ue8m0_fp8e5m2T",
     "bs32_fp8ue8m0_fp6e3m2_t": "bs32_fp8ue8m0_fp6e3m2T",
     "bs32_fp8ue8m0_fp6e2m3_t": "bs32_fp8ue8m0_fp6e2m3T",
@@ -274,7 +274,7 @@ def print_operator(
 
     cnt = 0
     # `profiles` can be a single profile or extension, or a set of combination
-    # of profile and extension, e.g. {PRO-INT, PRO-FP}, {EXT-BF16 and EXT-FP8E4M3},
+    # of profile and extension, e.g. {PRO-INT, PRO-FP}, {EXT-BF16 and EXT-FP8E4M3FN},
     # and {PRO-INT and EXT-VARIABLE}.
     for profiles, argument_compliances in depot.items():
         delimiter = " "

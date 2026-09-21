@@ -27,7 +27,7 @@ Rules when casting between floating-point types:
 ** The mantissa of the input value is converted to the mantissa size of the output format, with rounding if needed.
 ** If the resulting value is below the minimum subnormal number magnitude for the target format, a zero of the appropriate sign must be returned.
 ** For bf16_t, fp16_t, and fp32_t, if the resulting value is below the minimum normal number magnitude for the target format, either the corresponding subnormal value may be returned, or a zero of the appropriate sign may be returned.
-** If the output type is fp8e4m3_t or fp8e5m2_t the result must use the non-saturating conversion mode defined in <<OCP-OFP8,OCP-OFP8>>.
+** If the output type is fp8e4m3fn_t or fp8e5m2_t the result must use the non-saturating conversion mode defined in <<OCP-OFP8,OCP-OFP8>>.
 ** Otherwise if the resulting value is outside of the output representable range, an infinity of the appropriate sign must be returned.
 * If the input value is inside the output representable range then the following accuracy must be met:
 ** Let `x` be an input element.
