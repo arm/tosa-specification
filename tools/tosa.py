@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 
 TYPE_SET_VALUE_EXPANSIONS = {
     "bs32_fp8ue8m0_set_t": (
-        "bs32_fp8ue8m0_fp8e4m3_t",
+        "bs32_fp8ue8m0_fp8e4m3fn_t",
         "bs32_fp8ue8m0_fp8e5m2_t",
         "bs32_fp8ue8m0_fp6e3m2_t",
         "bs32_fp8ue8m0_fp6e2m3_t",
@@ -18,7 +18,7 @@ TYPE_SET_VALUE_EXPANSIONS = {
 }
 
 BLOCK_SCALE_VALUE_TYPE_MAPPING = {
-    "bs32_fp8ue8m0_fp8e4m3_t": "fp8e4m3_t",
+    "bs32_fp8ue8m0_fp8e4m3fn_t": "fp8e4m3fn_t",
     "bs32_fp8ue8m0_fp8e5m2_t": "fp8e5m2_t",
     "bs32_fp8ue8m0_fp6e3m2_t": "fp6e3m2_t",
     "bs32_fp8ue8m0_fp6e2m3_t": "fp6e2m3_t",
@@ -31,14 +31,14 @@ DEDUCED_EXTENSION_TYPE_MAPPING = {
     "i16_t": ["EXT-INT16"],
     "i4_t": ["EXT-INT4"],
     "bf16_t": ["EXT-BF16"],
-    "fp8e4m3_t": ["EXT-FP8E4M3"],
+    "fp8e4m3fn_t": ["EXT-FP8E4M3FN"],
     "fp8e5m2_t": ["EXT-FP8E5M2"],
     "fp8ue8m0_t": ["EXT-MX-COMMON"],
     "fp4e2m1_t": ["EXT-MX-FP4E2M1"],
     "fp6e2m3_t": ["EXT-MX-FP6E2M3"],
     "fp6e3m2_t": ["EXT-MX-FP6E3M2"],
     "mxint8_t": ["EXT-MX-INT8"],
-    "bs32_fp8ue8m0_fp8e4m3_t": ["EXT-MX-COMMON", "EXT-MX-FP8E4M3"],
+    "bs32_fp8ue8m0_fp8e4m3fn_t": ["EXT-MX-COMMON", "EXT-MX-FP8E4M3FN"],
     "bs32_fp8ue8m0_fp8e5m2_t": ["EXT-MX-COMMON", "EXT-MX-FP8E5M2"],
     "bs32_fp8ue8m0_fp6e3m2_t": ["EXT-MX-COMMON", "EXT-MX-FP6E3M2"],
     "bs32_fp8ue8m0_fp6e2m3_t": ["EXT-MX-COMMON", "EXT-MX-FP6E2M3"],

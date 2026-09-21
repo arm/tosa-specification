@@ -29,7 +29,7 @@
     <profile_extension name="EXT-BF16" description="BFloat16 operations" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-FP8E4M3" description="8-bit floating-point operations E4M3" status="Experimental">
+    <profile_extension name="EXT-FP8E4M3FN" description="8-bit floating-point operations E4M3" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
     <profile_extension name="EXT-FP8E5M2" description="8-bit floating-point operations E5M2" status="Experimental">
@@ -68,7 +68,7 @@
     <profile_extension name="EXT-MX-FP6E3M2" description="Microscaling format FP6E3M2" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-MX-FP8E4M3" description="Microscaling format FP8E4M3" status="Experimental">
+    <profile_extension name="EXT-MX-FP8E4M3FN" description="Microscaling format FP8E4M3FN" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
     <profile_extension name="EXT-MX-FP8E5M2" description="Microscaling format FP8E5M2" status="Experimental">
@@ -132,8 +132,8 @@
         <typesupport mode="signed 64 with signed 64 index" in_t="i64_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t" out_t="i32_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_t="fp8e4m3fn_t" out_t="i32_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="i32_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -147,8 +147,8 @@
         <typesupport mode="fp32" in_t="fp32_t" out_t="i32_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with signed 64 index" in_t="fp8e4m3_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3" and_name="EXT-INT64"/>
+        <typesupport mode="fp8e4m3fn with signed 64 index" in_t="fp8e4m3fn_t" out_t="i64_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN" and_name="EXT-INT64"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with signed 64 index" in_t="fp8e5m2_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2" and_name="EXT-INT64"/>
@@ -207,8 +207,8 @@
         <typesupport mode="signed 64" in_t="i64_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t" out_t="i32_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_t="fp8e4m3fn_t" out_t="i32_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="i32_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2"/>
@@ -222,8 +222,8 @@
         <typesupport mode="fp32" in_t="fp32_t" out_t="i32_t" version_added="1.1">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3" and_name="EXT-INT64"/>
+        <typesupport mode="fp8e4m3fn" in_t="fp8e4m3fn_t" out_t="i64_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN" and_name="EXT-INT64"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2" and_name="EXT-INT64"/>
@@ -305,8 +305,8 @@
         <typesupport mode="signed 16 with int32 accumulate" in_out_t="i16_t" acc_t="i32_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_out_t="fp8e4m3_t" acc_t="fp16_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn with fp16 accumulate" in_out_t="fp8e4m3fn_t" acc_t="fp16_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with fp16 accumulate" in_out_t="fp8e5m2_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -412,8 +412,8 @@
         <typesupport mode="signed 16 with int32 accumulate" in_out_t="i16_t" acc_t="i32_t" version_added="1.1">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_out_t="fp8e4m3_t" acc_t="fp16_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn with fp16 accumulate" in_out_t="fp8e4m3fn_t" acc_t="fp16_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with fp16 accumulate" in_out_t="fp8e5m2_t" acc_t="fp16_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2"/>
@@ -521,8 +521,8 @@
         <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t" in_zp_t="i16_t" weight_zp_t="i8_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t" in_zp_t="fp8e4m3_t" weight_zp_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn with fp16 accumulate" in_t="fp8e4m3fn_t" weight_t="fp8e4m3fn_t" out_t="fp16_t" acc_t="fp16_t" in_zp_t="fp8e4m3fn_t" weight_zp_t="fp8e4m3fn_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t" in_zp_t="fp8e5m2_t" weight_zp_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -541,7 +541,7 @@
         </typesupport>
         <typesupport mode="Mixed precision fp with fp16/fp32 accumulate" out_t="fp16_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
-          <type_set name="S1" values="fp8e4m3_t fp8e5m2_t fp16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S1" values="fp8e4m3fn_t fp8e5m2_t fp16_t bs32_fp8ue8m0_set_t"/>
           <type_set name="S2" values="fp16_t fp32_t"/>
           <type_bind type="in_t" set="S1"/>
           <type_bind type="weight_t" set="S1"/>
@@ -551,7 +551,7 @@
         </typesupport>
         <typesupport mode="Mixed precision fp with bf16/fp32 accumulate" out_t="bf16_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
-          <type_set name="S3" values="fp8e4m3_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S3" values="fp8e4m3fn_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
           <type_set name="S4" values="bf16_t fp32_t"/>
           <type_bind type="in_t" set="S3"/>
           <type_bind type="weight_t" set="S3"/>
@@ -561,7 +561,7 @@
         </typesupport>
         <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
-          <type_set name="S5" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S5" values="fp8e4m3fn_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="in_t" set="S5"/>
           <type_bind type="weight_t" set="S5"/>
           <type_bind type="in_zp_t" set="S5" access_elem_type="in_t"/>
@@ -662,8 +662,8 @@
         <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t" in_zp_t="i16_t" weight_zp_t="i8_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t" in_zp_t="fp8e4m3_t" weight_zp_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn with fp16 accumulate" in_t="fp8e4m3fn_t" weight_t="fp8e4m3fn_t" out_t="fp16_t" acc_t="fp16_t" in_zp_t="fp8e4m3fn_t" weight_zp_t="fp8e4m3fn_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t" in_zp_t="fp8e5m2_t" weight_zp_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -682,7 +682,7 @@
         </typesupport>
         <typesupport mode="Mixed precision fp with fp16/fp32 accumulate" out_t="fp16_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
-          <type_set name="S1" values="fp8e4m3_t fp8e5m2_t fp16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S1" values="fp8e4m3fn_t fp8e5m2_t fp16_t bs32_fp8ue8m0_set_t"/>
           <type_set name="S2" values="fp16_t fp32_t"/>
           <type_bind type="in_t" set="S1"/>
           <type_bind type="weight_t" set="S1"/>
@@ -692,7 +692,7 @@
         </typesupport>
         <typesupport mode="Mixed precision fp with bf16/fp32 accumulate" out_t="bf16_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
-          <type_set name="S3" values="fp8e4m3_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S3" values="fp8e4m3fn_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
           <type_set name="S4" values="bf16_t fp32_t"/>
           <type_bind type="in_t" set="S3"/>
           <type_bind type="weight_t" set="S3"/>
@@ -702,7 +702,7 @@
         </typesupport>
         <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
-          <type_set name="S5" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S5" values="fp8e4m3fn_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="in_t" set="S5"/>
           <type_bind type="weight_t" set="S5"/>
           <type_bind type="in_zp_t" set="S5" access_elem_type="in_t"/>
@@ -797,14 +797,14 @@
         <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn with fp16 accumulate" in_t="fp8e4m3fn_t" weight_t="fp8e4m3fn_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp32 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn with fp32 accumulate" in_t="fp8e4m3fn_t" weight_t="fp8e4m3fn_t" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with fp32 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2"/>
@@ -910,11 +910,11 @@
         <typesupport mode="signed 16x16 with int48 accumulate" A_t="i16_t" B_t="i16_t" out_t="i48_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3xfp8e4m3 with fp16 accumulate" A_t="fp8e4m3_t" B_t="fp8e4m3_t" out_t="fp16_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fnxfp8e4m3fn with fp16 accumulate" A_t="fp8e4m3fn_t" B_t="fp8e4m3fn_t" out_t="fp16_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
-        <typesupport mode="fp8e4m3xfp8e4m3 with fp32 accumulate" A_t="fp8e4m3_t" B_t="fp8e4m3_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fnxfp8e4m3fn with fp32 accumulate" A_t="fp8e4m3fn_t" B_t="fp8e4m3fn_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2xfp8e5m2 with fp16 accumulate" A_t="fp8e5m2_t" B_t="fp8e5m2_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -922,17 +922,17 @@
         <typesupport mode="fp8e5m2xfp8e5m2 with fp32 accumulate" A_t="fp8e5m2_t" B_t="fp8e5m2_t" out_t="fp32_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp8e4m3xfp8e5m2 with fp16 accumulate" A_t="fp8e4m3_t" B_t="fp8e5m2_t" out_t="fp16_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3" and_name="EXT-FP8E5M2"/>
+        <typesupport mode="fp8e4m3fnxfp8e5m2 with fp16 accumulate" A_t="fp8e4m3fn_t" B_t="fp8e5m2_t" out_t="fp16_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN" and_name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp8e4m3xfp8e5m2 with fp32 accumulate" A_t="fp8e4m3_t" B_t="fp8e5m2_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3" and_name="EXT-FP8E5M2"/>
+        <typesupport mode="fp8e4m3fnxfp8e5m2 with fp32 accumulate" A_t="fp8e4m3fn_t" B_t="fp8e5m2_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN" and_name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp8e5m2xfp8e4m3 with fp16 accumulate" A_t="fp8e5m2_t" B_t="fp8e4m3_t" out_t="fp16_t" version_added="1.1">
-          <op_profile name="EXT-FP8E5M2" and_name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e5m2xfp8e4m3fn with fp16 accumulate" A_t="fp8e5m2_t" B_t="fp8e4m3fn_t" out_t="fp16_t" version_added="1.1">
+          <op_profile name="EXT-FP8E5M2" and_name="EXT-FP8E4M3FN"/>
         </typesupport>
-        <typesupport mode="fp8e5m2xfp8e4m3 with fp32 accumulate" A_t="fp8e5m2_t" B_t="fp8e4m3_t" out_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-FP8E5M2" and_name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e5m2xfp8e4m3fn with fp32 accumulate" A_t="fp8e5m2_t" B_t="fp8e4m3fn_t" out_t="fp32_t" version_added="1.1">
+          <op_profile name="EXT-FP8E5M2" and_name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp16xfp16 with fp16 accumulate" A_t="fp16_t" B_t="fp16_t" out_t="fp16_t" version_added="1.0">
           <op_profile name="PRO-FP"/>
@@ -1000,8 +1000,8 @@
         </typesupport>
         <typesupport mode="Mixed precision fp with bf16 accumulate" out_t="bf16_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
-          <type_set name="S1_IN" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t bs32_fp8ue8m0_set_t"/>
-          <type_set name="S1_IN_NO_FP16" values="fp8e4m3_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S1_IN" values="fp8e4m3fn_t fp8e5m2_t fp16_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S1_IN_NO_FP16" values="fp8e4m3fn_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="A_t" set="S1_IN_NO_FP16"/>
           <type_bind type="B_t" set="S1_IN"/>
           <type_bind type="A_zp_t" set="S1_IN_NO_FP16" access_elem_type="A_t"/>
@@ -1009,13 +1009,13 @@
         </typesupport>
         <typesupport mode="Mixed precision fp16 x fp input with bf16 accumulate" A_t="fp16_t" A_zp_t="fp16_t" out_t="bf16_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
-          <type_set name="S1_IN_NO_FP16" values="fp8e4m3_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S1_IN_NO_FP16" values="fp8e4m3fn_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="B_t" set="S1_IN_NO_FP16"/>
           <type_bind type="B_zp_t" set="S1_IN_NO_FP16" access_elem_type="B_t"/>
         </typesupport>
         <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" version_added="1.1">
           <op_profile name="PRO-FP" and_name="DEDUCE-EXT"/>
-          <type_set name="S2_IN" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S2_IN" values="fp8e4m3fn_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="A_t" set="S2_IN"/>
           <type_bind type="B_t" set="S2_IN"/>
           <type_bind type="A_zp_t" set="S2_IN" access_elem_type="A_t"/>
@@ -1080,8 +1080,8 @@
         <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -1164,8 +1164,8 @@
         <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.1">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2"/>
@@ -1298,14 +1298,14 @@
         <typesupport mode="signed 16x8 with int48 accumulate" in_t="i16_t" weight_t="i8_t" out_t="i48_t" acc_t="i48_t" in_zp_t="i16_t" weight_zp_t="i8_t" version_added="1.0">
           <op_profile name="EXT-INT16"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp16 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp16_t" acc_t="fp16_t" in_zp_t="fp8e4m3_t" weight_zp_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn with fp16 accumulate" in_t="fp8e4m3fn_t" weight_t="fp8e4m3fn_t" out_t="fp16_t" acc_t="fp16_t" in_zp_t="fp8e4m3fn_t" weight_zp_t="fp8e4m3fn_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with fp16 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp16_t" acc_t="fp16_t" in_zp_t="fp8e5m2_t" weight_zp_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with fp32 accumulate" in_t="fp8e4m3_t" weight_t="fp8e4m3_t" out_t="fp32_t" acc_t="fp32_t" in_zp_t="fp8e4m3_t" weight_zp_t="fp8e4m3_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn with fp32 accumulate" in_t="fp8e4m3fn_t" weight_t="fp8e4m3fn_t" out_t="fp32_t" acc_t="fp32_t" in_zp_t="fp8e4m3fn_t" weight_zp_t="fp8e4m3fn_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with fp32 accumulate" in_t="fp8e5m2_t" weight_t="fp8e5m2_t" out_t="fp32_t" acc_t="fp32_t" in_zp_t="fp8e5m2_t" weight_zp_t="fp8e5m2_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2"/>
@@ -1324,7 +1324,7 @@
         </typesupport>
         <typesupport mode="Mixed precision fp with fp16/fp32 accumulate" out_t="fp16_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
-          <type_set name="S1" values="fp8e4m3_t fp8e5m2_t fp16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S1" values="fp8e4m3fn_t fp8e5m2_t fp16_t bs32_fp8ue8m0_set_t"/>
           <type_set name="S2" values="fp16_t fp32_t"/>
           <type_bind type="in_t" set="S1"/>
           <type_bind type="weight_t" set="S1"/>
@@ -1334,7 +1334,7 @@
         </typesupport>
         <typesupport mode="Mixed precision fp with bf16/fp32 accumulate" out_t="bf16_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
-          <type_set name="S3" values="fp8e4m3_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S3" values="fp8e4m3fn_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
           <type_set name="S4" values="bf16_t fp32_t"/>
           <type_bind type="in_t" set="S3"/>
           <type_bind type="weight_t" set="S3"/>
@@ -1344,7 +1344,7 @@
         </typesupport>
         <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT" and_name="PRO-FP"/>
-          <type_set name="S5" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
+          <type_set name="S5" values="fp8e4m3fn_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="in_t" set="S5"/>
           <type_bind type="weight_t" set="S5"/>
           <type_bind type="in_zp_t" set="S5" access_elem_type="in_t"/>
@@ -2860,8 +2860,8 @@
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -2946,8 +2946,8 @@
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -3015,8 +3015,8 @@
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -3080,8 +3080,8 @@
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -3165,8 +3165,8 @@ used.</description>
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -3238,8 +3238,8 @@ used.</description>
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -3304,8 +3304,8 @@ used.</description>
         <typesupport mode="signed 64" in_out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -3373,8 +3373,8 @@ used.</description>
         <typesupport mode="signed 32" in_out_t="i32_t" index_t="i32_t" version_added="1.1">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" index_t="i32_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" index_t="i32_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" index_t="i32_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -3403,8 +3403,8 @@ used.</description>
         <typesupport mode="signed 64 with signed 64 indices" in_out_t="i64_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with signed 64 indices" in_out_t="fp8e4m3_t" index_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3" and_name="EXT-INT64"/>
+        <typesupport mode="fp8e4m3fn with signed 64 indices" in_out_t="fp8e4m3fn_t" index_t="i64_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN" and_name="EXT-INT64"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with signed 64 indices" in_out_t="fp8e5m2_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2" and_name="EXT-INT64"/>
@@ -3488,8 +3488,8 @@ used.</description>
         <typesupport mode="signed 32" in_out_t="i32_t" index_t="i32_t" version_added="1.1">
           <op_profile name="PRO-FP"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" index_t="i32_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" index_t="i32_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" index_t="i32_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -3518,8 +3518,8 @@ used.</description>
         <typesupport mode="signed 64 with signed 64 indices" in_out_t="i64_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3 with signed 64 indices" in_out_t="fp8e4m3_t" index_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3" and_name="EXT-INT64"/>
+        <typesupport mode="fp8e4m3fn with signed 64 indices" in_out_t="fp8e4m3fn_t" index_t="i64_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN" and_name="EXT-INT64"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with signed 64 indices" in_out_t="fp8e5m2_t" index_t="i64_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2" and_name="EXT-INT64"/>
@@ -3633,7 +3633,7 @@ used.</description>
         </typesupport>
         <typesupport mode="fp8" resize_t="fp32_t" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
-          <type_set name="S_RESIZE_FP8" values="fp8e4m3_t fp8e5m2_t"/>
+          <type_set name="S_RESIZE_FP8" values="fp8e4m3fn_t fp8e5m2_t"/>
           <type_bind type="in_t" set="S_RESIZE_FP8"/>
           <type_bind type="out_t" set="S_RESIZE_FP8" same_as="in_t"/>
         </typesupport>
@@ -3749,13 +3749,13 @@ used.</description>
         <typesupport mode="fp to fp8" version_added="1.0">
           <op_profile name="DEDUCE-EXT"/>
           <type_set name="S_CAST_FP_TO_FP8_IN" values="bf16_t fp16_t fp32_t"/>
-          <type_set name="S_CAST_FP8" values="fp8e4m3_t fp8e5m2_t"/>
+          <type_set name="S_CAST_FP8" values="fp8e4m3fn_t fp8e5m2_t"/>
           <type_bind type="in_t" set="S_CAST_FP_TO_FP8_IN"/>
           <type_bind type="out_t" set="S_CAST_FP8"/>
         </typesupport>
         <typesupport mode="fp8 to fp" version_added="1.0">
           <op_profile name="DEDUCE-EXT"/>
-          <type_set name="S_CAST_FP8" values="fp8e4m3_t fp8e5m2_t"/>
+          <type_set name="S_CAST_FP8" values="fp8e4m3fn_t fp8e5m2_t"/>
           <type_set name="S_CAST_FP_FROM_FP8_OUT" values="bf16_t fp16_t fp32_t"/>
           <type_bind type="in_t" set="S_CAST_FP8"/>
           <type_bind type="out_t" set="S_CAST_FP_FROM_FP8_OUT"/>
@@ -3763,7 +3763,7 @@ used.</description>
 
         <typesupport mode="fp to MX" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
-          <type_set name="S_CAST_FP_TO_MX_IN" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t"/>
+          <type_set name="S_CAST_FP_TO_MX_IN" values="fp8e4m3fn_t fp8e5m2_t fp16_t bf16_t fp32_t"/>
           <type_set name="S_CAST_FP_TO_MX_OUT" values="bs32_fp8ue8m0_set_t"/>
           <type_bind type="in_t" set="S_CAST_FP_TO_MX_IN"/>
           <type_bind type="out_t" set="S_CAST_FP_TO_MX_OUT"/>
@@ -3771,7 +3771,7 @@ used.</description>
         <typesupport mode="MX to fp" version_added="1.1">
           <op_profile name="DEDUCE-EXT"/>
           <type_set name="S_CAST_MX_TO_FP_IN" values="bs32_fp8ue8m0_set_t"/>
-          <type_set name="S_CAST_MX_TO_FP_OUT" values="fp8e4m3_t fp8e5m2_t fp16_t bf16_t fp32_t"/>
+          <type_set name="S_CAST_MX_TO_FP_OUT" values="fp8e4m3fn_t fp8e5m2_t fp16_t bf16_t fp32_t"/>
           <type_bind type="in_t" set="S_CAST_MX_TO_FP_IN"/>
           <type_bind type="out_t" set="S_CAST_MX_TO_FP_OUT"/>
         </typesupport>
@@ -3931,8 +3931,8 @@ used.</description>
         <typesupport mode="64-bit" out_t="i64_t"  version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" out_t="fp8e4m3_t"  version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" out_t="fp8e4m3fn_t"  version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" out_t="fp8e5m2_t"  version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -3992,8 +3992,8 @@ used.</description>
         <typesupport mode="64-bit" in_out_t="i64_t"  version_added="1.1">
           <op_profile name="EXT-INT64"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_out_t="fp8e4m3_t" version_added="1.0">
-          <op_profile name="EXT-FP8E4M3"/>
+        <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" version_added="1.0">
+          <op_profile name="EXT-FP8E4M3FN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.0">
           <op_profile name="EXT-FP8E5M2"/>
@@ -4316,8 +4316,8 @@ used.</description>
         <typesupport mode="signed 32" in_t="i32_t" version_added="1.1">
           <op_profile name="PRO-INT" and_name="EXT-SHAPE"/>
         </typesupport>
-        <typesupport mode="fp8e4m3" in_t="fp8e4m3_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3" and_name="EXT-SHAPE"/>
+        <typesupport mode="fp8e4m3fn" in_t="fp8e4m3fn_t" version_added="1.1">
+          <op_profile name="EXT-FP8E4M3FN" and_name="EXT-SHAPE"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" version_added="1.1">
           <op_profile name="EXT-FP8E5M2" and_name="EXT-SHAPE"/>
