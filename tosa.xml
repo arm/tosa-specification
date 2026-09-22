@@ -29,10 +29,10 @@
     <profile_extension name="EXT-BF16" description="BFloat16 operations" status="Complete">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-FP8E4M3FN" description="8-bit floating-point operations E4M3" status="Experimental">
+    <profile_extension name="EXT-FP8E4M3FN" description="8-bit floating-point operations E4M3" status="Complete">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-FP8E5M2" description="8-bit floating-point operations E5M2" status="Experimental">
+    <profile_extension name="EXT-FP8E5M2" description="8-bit floating-point operations E5M2" status="Complete">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
     <profile_extension name="EXT-FFT" description="Fast Fourier Transform operations" status="Complete">
