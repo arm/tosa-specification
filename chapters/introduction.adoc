@@ -349,7 +349,7 @@ Normal values must be supported. +
 Subnormal values must be supported. +
 Signed zero must be supported.
 
-|fp8e4m3_t
+|fp8e4m3fn_t
 | -448
 | +448
 | 8-bit floating-point defined by <<OCP-OFP8,OCP-OFP8>> with four bits of exponent and three bits of mantissa. +
@@ -447,11 +447,11 @@ This ensures that an Integer profile TOSA implementation can calculate the same 
 |`block_scale_t<block_shape_t block_shape, scale_t, value_t>`
 |`BLOCK_SHAPE_32`
 |`fp8ue8m0_t`
-|`fp8e4m3_t`, `fp8e5m2_t`, `fp6e3m2_t`, `fp6e2m3_t`, `fp4e2m1_t`, `mxint8_t`
+|`fp8e4m3fn_t`, `fp8e5m2_t`, `fp6e3m2_t`, `fp6e2m3_t`, `fp4e2m1_t`, `mxint8_t`
 |A new data type is formed by instantiating the template with an allowed choice of `block_shape_t`, `scale_t`, and `value_t`. +
 The resulting data type is named `bs<block shape>_<scale type>_<value type>_t` where block shape indicates the size of innermost dimension(s), scale type is scale_t without the _t suffix, and value type is the value_t without the _t suffix. +
 The set of allowed block scaled data types is: +
-`bs32_fp8ue8m0_fp8e4m3_t`, +
+`bs32_fp8ue8m0_fp8e4m3fn_t`, +
 `bs32_fp8ue8m0_fp8e5m2_t`, +
 `bs32_fp8ue8m0_fp6e3m2_t`, +
 `bs32_fp8ue8m0_fp6e2m3_t`, +
@@ -483,8 +483,8 @@ extension set deduced for each data type.
 |bf16_t
 |EXT-BF16
 
-|fp8e4m3_t
-|EXT-FP8E4M3
+|fp8e4m3fn_t
+|EXT-FP8E4M3FN
 
 |fp8e5m2_t
 |EXT-FP8E5M2
@@ -512,9 +512,9 @@ The following table lists the composite block-scaled data types derived from the
 |===
 |Composite data type |Template instantiation |Deduced extension(s)
 
-|bs32_fp8ue8m0_fp8e4m3_t
-|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp8e4m3_t>`
-|EXT-MX-COMMON and EXT-MX-FP8E4M3
+|bs32_fp8ue8m0_fp8e4m3fn_t
+|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp8e4m3fn_t>`
+|EXT-MX-COMMON and EXT-MX-FP8E4M3FN
 
 |bs32_fp8ue8m0_fp8e5m2_t
 |`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp8e5m2_t>`
@@ -684,7 +684,7 @@ ABS_BOUND is the maximum allowed absolute error when NaN or overflow is not pres
 |===
 |Condition|ABS_BOUND|Notes
 
-|`(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3_t>() \|\| is_same<in_t,fp6e3m2_t>() \|\| is_same<in_t,fp6e2m3_t>() \|\| is_same<in_t,fp4e2m1_t>() \|\| is_same<in_t,mxint8_t>()) && is_same<acc_t,fp32_t>`
+|`(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3fn_t>() \|\| is_same<in_t,fp6e3m2_t>() \|\| is_same<in_t,fp6e2m3_t>() \|\| is_same<in_t,fp4e2m1_t>() \|\| is_same<in_t,mxint8_t>()) && is_same<acc_t,fp32_t>`
 |`2 * max(ksb, min(ksb,64) * (1 << 10))`
 | The FP8 dot product with FP32 accumulator as well as block scaled dot products are allowed a relaxed absolute error bound. +
 The 2 factor allows for different rounding modes. +
@@ -707,7 +707,7 @@ The squared error for each result is summed, and the result must be less than th
 |===
 |Condition|VARIANCE_ERROR_BOUND|Notes
 
-|`(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3_t>() \|\| is_same<in_t,fp6e3m2_t>() \|\| is_same<in_t,fp6e2m3_t>() \|\| is_same<in_t,fp4e2m1_t>() \|\| is_same<in_t,mxint8_t>()) && is_same<acc_t,fp32_t>`
+|`(is_same<in_t,fp8e5m2_t>() \|\| is_same<in_t,fp8e4m3fn_t>() \|\| is_same<in_t,fp6e3m2_t>() \|\| is_same<in_t,fp6e2m3_t>() \|\| is_same<in_t,fp4e2m1_t>() \|\| is_same<in_t,mxint8_t>()) && is_same<acc_t,fp32_t>`
 | `4 * 0.4 * max(ksb, min(ksb,64) * (1 << 20))`
 | The FP8 dot product with FP32 accumulator as well as block scaled dot products are allowed a relaxed variance error bound. +
 The factors are similar to the absolute bound with precision factors squared for the variance bound. +

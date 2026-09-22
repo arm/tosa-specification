@@ -33,7 +33,7 @@ fp64_t normal_min<in_t>() {
     return exp2(-126);
   } else if (is_same<in_t,fp16_t>()) {
     return exp2( -14);
-  } else if (is_same<in_t,fp8e4m3_t>()) {
+  } else if (is_same<in_t,fp8e4m3fn_t>()) {
     return exp2(-6);
   } else if (is_same<in_t,fp8e5m2_t>()) {
     return exp2(-14);
@@ -56,7 +56,7 @@ fp64_t normal_max<in_t>() {
     return exp2(128) - exp2(127-7);
   } else if (is_same<in_t,fp16_t>()) {
     return exp2(16) - exp2(15-10);
-  } else if (is_same<in_t,fp8e4m3_t>()) {
+  } else if (is_same<in_t,fp8e4m3fn_t>()) {
     return exp2(9) - exp2(8-2);
   } else if (is_same<in_t,fp8e5m2_t>()) {
     return exp2(16) - exp2(15-2);
@@ -93,7 +93,7 @@ int normal_frac<in_t>() {
     return  7;
   } else if (is_same<in_t,fp16_t>()) {
     return 10;
-  } else if (is_same<in_t,fp8e4m3_t>()) {
+  } else if (is_same<in_t,fp8e4m3fn_t>()) {
     return 3;
   } else if (is_same<in_t,fp8e5m2_t>()) {
     return 2;
@@ -116,7 +116,7 @@ int exponent_bits<in_t>() {
     return 5;
   } else if (is_same<in_t, bf16_t) {
     return 8;
-  } else if (is_same<in_t,fp8e4m3_t>()) {
+  } else if (is_same<in_t,fp8e4m3fn_t>()) {
     return 4;
   } else if (is_same<in_t, fp8e5m2_t>()) {
     return 5;
@@ -138,7 +138,7 @@ int exponent_bias<in_t>() {
     return 15;
   } else if (is_same<in_t, bf16_t) {
     return 127;
-  } else if (is_same<in_t,fp8e4m3_t>()) {
+  } else if (is_same<in_t,fp8e4m3fn_t>()) {
     return 7;
   } else if (is_same<in_t, fp8e5m2_t>()) {
     return 15;

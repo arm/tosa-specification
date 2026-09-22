@@ -111,7 +111,7 @@ profile_list = [
     "Extension::int16",
     "Extension::int4",
     "Extension::bf16",
-    "Extension::fp8e4m3",
+    "Extension::fp8e4m3fn",
     "Extension::fp8e5m2",
     "Extension::fft",
     "Extension::variable",
@@ -120,7 +120,7 @@ profile_list = [
     "Extension::mx_fp4e2m1",
     "Extension::mx_fp6e2m3",
     "Extension::mx_fp6e3m2",
-    "Extension::mx_fp8e4m3",
+    "Extension::mx_fp8e4m3fn",
     "Extension::mx_fp8e5m2",
     "Extension::mx_int8",
     "Extension::controlflow",
@@ -137,14 +137,14 @@ type_list = [
     "bf16T",
     "fp16T",
     "fp32T",
-    "fp8e4m3T",
+    "fp8e4m3fnT",
     "fp8e5m2T",
     "fp8ue8m0T",
     "fp6e3m2T",
     "fp6e2m3T",
     "fp4e2m1T",
     "mxint8T",
-    "bs32_fp8ue8m0_fp8e4m3T",
+    "bs32_fp8ue8m0_fp8e4m3fnT",
     "bs32_fp8ue8m0_fp8e5m2T",
     "bs32_fp8ue8m0_fp6e3m2T",
     "bs32_fp8ue8m0_fp6e2m3T",
@@ -279,7 +279,9 @@ def test_unknown_type():
 
 
 def test_unknown_condition():
-    unknown_cond = '"tosa.dim",{{{Extension::bf16,Extension::fp8e4m3},{{bf16T}},dummy}}'
+    unknown_cond = (
+        '"tosa.dim",{{{Extension::bf16,Extension::fp8e4m3fn},{{bf16T}},dummy}}'
+    )
     try:
         verify_operation_compliance_syntax(unknown_cond)
     except Exception as e:
