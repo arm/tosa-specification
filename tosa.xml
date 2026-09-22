@@ -26,7 +26,7 @@
     <profile_extension name="EXT-INT4" description="4-bit integer weights" status="Complete">
       <profile_supported>PRO-INT</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-BF16" description="BFloat16 operations" status="Experimental">
+    <profile_extension name="EXT-BF16" description="BFloat16 operations" status="Complete">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
     <profile_extension name="EXT-FP8E4M3" description="8-bit floating-point operations E4M3" status="Experimental">
