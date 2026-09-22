@@ -29,7 +29,6 @@ ERROR_IF(!is_integer<in_t>() && !is_same<in_t,out_t>());
 
 for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C) {
     in_t in;
-    out_t acc;
     resize_t dx, dy;
     resize_t unit_x, unit_y;
 
@@ -56,15 +55,23 @@ for_each(0 <= n < N, 0 <= oy < OH, 0 <= ox < OW, 0 <= c < C) {
     int16_t ix0 = apply_max_s(ix, 0);
     int16_t ix1 = apply_min_s(ix + 1, IW - 1);
     if (mode==BILINEAR) {
-        using in_s_t = make_signed(in_t); // Use signed calculations for i8/i16
-        in_s_t v00 = static_cast<in_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix0,c]));
-        in_s_t v01 = static_cast<in_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c]));
-        in_s_t v10 = static_cast<in_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c]));
-        in_s_t v11 = static_cast<in_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c]));
-        acc  = v00 * (unit_y - dy) * (unit_x - dx);
-        acc += v01 * (unit_y - dy) * dx;
-        acc += v10 * dy * (unit_x - dx);
-        acc += v11 * dy * dx;
+        using acc_s_t = make_signed(acc_t);
+
+        acc_s_t v00 = static_cast<acc_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix0,c]));
+        acc_s_t v01 = static_cast<acc_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy0,ix1,c]));
+        acc_s_t v10 = static_cast<acc_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix0,c]));
+        acc_s_t v11 = static_cast<acc_s_t>(tensor_read<in_t>(input, [N,IH,IW,C], [n,iy1,ix1,c]));
+
+        acc_s_t s_unit_y = static_cast<acc_s_t>(unit_y);
+        acc_s_t s_unit_x = static_cast<acc_s_t>(unit_x);
+        acc_s_t s_dy = static_cast<acc_s_t>(dy);
+        acc_s_t s_dx = static_cast<acc_s_t>(dx);
+
+        acc_s_t acc;
+        acc  = v00 * (s_unit_y - s_dy) * (s_unit_x - s_dx);
+        acc += v01 * (s_unit_y - s_dy) * s_dx;
+        acc += v10 * s_dy * (s_unit_x - s_dx);
+        acc += v11 * s_dy * s_dx;
         tensor_write<out_t>(output, [N,OH,OW,C], [n,oy,ox,c], acc);
     } else if (mode==NEAREST_NEIGHBOR) {
         int32_t iy, ix;
