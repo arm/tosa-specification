@@ -40,7 +40,7 @@ bool_t tosa_reference_check_scale<scale_t, out_t>(fp64_t test_scale, fp64_t test
   // the reference value to compare against.
 
   fp64_t reference_value = (ref_scale * ref_value) / test_scale;
-  int num_ulp = is_same<out_t, fp8e4m3_t>() ? 2 : 1;
+  int num_ulp = is_same<out_t, fp8e4m3fn_t>() ? 2 : 1;
   return tosa_reference_check_fp<out_t>(reference_value, test_value, num_ulp);
 }
 

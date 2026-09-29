@@ -13,6 +13,6 @@
 
 * Add PRO-FP support for integer data layout operations.
 * Add the ARGMIN operator.
-* Allow mixed fp8e4m3 * fp8e5m2 operation for the MATMUL operator.
+* Allow mixed fp8e4m3fn * fp8e5m2 operation for the MATMUL operator.
 * Add support for fp32 accumulators with the fp8 input types for the MATMUL operator.
 * Add the MATMUL_T operator.

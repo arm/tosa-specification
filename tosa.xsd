@@ -28,7 +28,7 @@
     <xs:enumeration value="EXT-INT16"/>
     <xs:enumeration value="EXT-INT4"/>
     <xs:enumeration value="EXT-BF16"/>
-    <xs:enumeration value="EXT-FP8E4M3"/>
+    <xs:enumeration value="EXT-FP8E4M3FN"/>
     <xs:enumeration value="EXT-FP8E5M2"/>
     <xs:enumeration value="EXT-FFT"/>
     <xs:enumeration value="EXT-SHAPE"/>
@@ -42,7 +42,7 @@
     <xs:enumeration value="EXT-MX-FP4E2M1"/>
     <xs:enumeration value="EXT-MX-FP6E2M3"/>
     <xs:enumeration value="EXT-MX-FP6E3M2"/>
-    <xs:enumeration value="EXT-MX-FP8E4M3"/>
+    <xs:enumeration value="EXT-MX-FP8E4M3FN"/>
     <xs:enumeration value="EXT-MX-FP8E5M2"/>
     <xs:enumeration value="EXT-MX-INT8"/>
   </xs:restriction>
@@ -78,7 +78,7 @@
     <xs:enumeration value="i32_t"/>
     <xs:enumeration value="i48_t"/>
     <xs:enumeration value="i64_t"/>
-    <xs:enumeration value="fp8e4m3_t"/>
+    <xs:enumeration value="fp8e4m3fn_t"/>
     <xs:enumeration value="fp8e5m2_t"/>
     <xs:enumeration value="fp8ue8m0_t"/>
     <xs:enumeration value="fp6e3m2_t"/>
@@ -89,7 +89,7 @@
     <xs:enumeration value="fp32_t"/>
     <xs:enumeration value="mxint8_t"/>
     <xs:enumeration value="tensor_size_t"/>
-    <xs:enumeration value="bs32_fp8ue8m0_fp8e4m3_t"/>
+    <xs:enumeration value="bs32_fp8ue8m0_fp8e4m3fn_t"/>
     <xs:enumeration value="bs32_fp8ue8m0_fp8e5m2_t"/>
     <xs:enumeration value="bs32_fp8ue8m0_fp6e3m2_t"/>
     <xs:enumeration value="bs32_fp8ue8m0_fp6e2m3_t"/>
