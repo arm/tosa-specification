@@ -10,9 +10,9 @@ TYPE_SET_VALUE_EXPANSIONS = {
     "bs32_fp8ue8m0_set_t": (
         "bs32_fp8ue8m0_fp8e4m3fn_t",
         "bs32_fp8ue8m0_fp8e5m2_t",
-        "bs32_fp8ue8m0_fp6e3m2_t",
-        "bs32_fp8ue8m0_fp6e2m3_t",
-        "bs32_fp8ue8m0_fp4e2m1_t",
+        "bs32_fp8ue8m0_fp6e3m2fn_t",
+        "bs32_fp8ue8m0_fp6e2m3fn_t",
+        "bs32_fp8ue8m0_fp4e2m1fn_t",
         "bs32_fp8ue8m0_mxint8_t",
     ),
 }
@@ -20,9 +20,9 @@ TYPE_SET_VALUE_EXPANSIONS = {
 BLOCK_SCALE_VALUE_TYPE_MAPPING = {
     "bs32_fp8ue8m0_fp8e4m3fn_t": "fp8e4m3fn_t",
     "bs32_fp8ue8m0_fp8e5m2_t": "fp8e5m2_t",
-    "bs32_fp8ue8m0_fp6e3m2_t": "fp6e3m2_t",
-    "bs32_fp8ue8m0_fp6e2m3_t": "fp6e2m3_t",
-    "bs32_fp8ue8m0_fp4e2m1_t": "fp4e2m1_t",
+    "bs32_fp8ue8m0_fp6e3m2fn_t": "fp6e3m2fn_t",
+    "bs32_fp8ue8m0_fp6e2m3fn_t": "fp6e2m3fn_t",
+    "bs32_fp8ue8m0_fp4e2m1fn_t": "fp4e2m1fn_t",
     "bs32_fp8ue8m0_mxint8_t": "mxint8_t",
 }
 
@@ -34,15 +34,15 @@ DEDUCED_EXTENSION_TYPE_MAPPING = {
     "fp8e4m3fn_t": ["EXT-FP8E4M3FN"],
     "fp8e5m2_t": ["EXT-FP8E5M2"],
     "fp8ue8m0_t": ["EXT-MX-COMMON"],
-    "fp4e2m1_t": ["EXT-MX-FP4E2M1"],
-    "fp6e2m3_t": ["EXT-MX-FP6E2M3"],
-    "fp6e3m2_t": ["EXT-MX-FP6E3M2"],
+    "fp4e2m1fn_t": ["EXT-MX-FP4E2M1FN"],
+    "fp6e2m3fn_t": ["EXT-MX-FP6E2M3FN"],
+    "fp6e3m2fn_t": ["EXT-MX-FP6E3M2FN"],
     "mxint8_t": ["EXT-MX-INT8"],
     "bs32_fp8ue8m0_fp8e4m3fn_t": ["EXT-MX-COMMON", "EXT-MX-FP8E4M3FN"],
     "bs32_fp8ue8m0_fp8e5m2_t": ["EXT-MX-COMMON", "EXT-MX-FP8E5M2"],
-    "bs32_fp8ue8m0_fp6e3m2_t": ["EXT-MX-COMMON", "EXT-MX-FP6E3M2"],
-    "bs32_fp8ue8m0_fp6e2m3_t": ["EXT-MX-COMMON", "EXT-MX-FP6E2M3"],
-    "bs32_fp8ue8m0_fp4e2m1_t": ["EXT-MX-COMMON", "EXT-MX-FP4E2M1"],
+    "bs32_fp8ue8m0_fp6e3m2fn_t": ["EXT-MX-COMMON", "EXT-MX-FP6E3M2FN"],
+    "bs32_fp8ue8m0_fp6e2m3fn_t": ["EXT-MX-COMMON", "EXT-MX-FP6E2M3FN"],
+    "bs32_fp8ue8m0_fp4e2m1fn_t": ["EXT-MX-COMMON", "EXT-MX-FP4E2M1FN"],
     "bs32_fp8ue8m0_mxint8_t": ["EXT-MX-COMMON", "EXT-MX-INT8"],
 }
 

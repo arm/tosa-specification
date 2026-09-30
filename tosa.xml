@@ -59,13 +59,13 @@
     <profile_extension name="EXT-MX-COMMON" description="Base for MXFP microscaling formats" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-MX-FP4E2M1" description="Microscaling format FP4E2M1" status="Experimental">
+    <profile_extension name="EXT-MX-FP4E2M1FN" description="Microscaling format FP4E2M1FN" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-MX-FP6E2M3" description="Microscaling format FP6E2M3" status="Experimental">
+    <profile_extension name="EXT-MX-FP6E2M3FN" description="Microscaling format FP6E2M3FN" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-MX-FP6E3M2" description="Microscaling format FP6E3M2" status="Experimental">
+    <profile_extension name="EXT-MX-FP6E3M2FN" description="Microscaling format FP6E3M2FN" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
     <profile_extension name="EXT-MX-FP8E4M3FN" description="Microscaling format FP8E4M3FN" status="Experimental">

@@ -325,7 +325,7 @@ Number formats not required for any operators in a profile do not need to be imp
 | (1<<63)-1
 |Signed 64-bit two's-complement value.
 
-|fp4e2m1_t
+|fp4e2m1fn_t
 | -6.0
 | +6.0
 | 4-bit floating-point defined by <<OCP-MX,OCP-MX>> with two bits of exponent and one bit of mantissa. +
@@ -333,7 +333,7 @@ Normal values must be supported. +
 Subnormal values must be supported. +
 Signed zero must be supported.
 
-|fp6e3m2_t
+|fp6e3m2fn_t
 | -28.0
 | +28.0
 | 6-bit floating-point defined by <<OCP-MX,OCP-MX>> with three bits of exponent and two bits of mantissa. +
@@ -341,7 +341,7 @@ Normal values must be supported. +
 Subnormal values must be supported. +
 Signed zero must be supported.
 
-|fp6e2m3_t
+|fp6e2m3fn_t
 | -7.5
 | +7.5
 | 6-bit floating-point defined by <<OCP-MX,OCP-MX>> with two bits of exponent and three bits of mantissa. +
@@ -447,15 +447,15 @@ This ensures that an Integer profile TOSA implementation can calculate the same 
 |`block_scale_t<block_shape_t block_shape, scale_t, value_t>`
 |`BLOCK_SHAPE_32`
 |`fp8ue8m0_t`
-|`fp8e4m3fn_t`, `fp8e5m2_t`, `fp6e3m2_t`, `fp6e2m3_t`, `fp4e2m1_t`, `mxint8_t`
+|`fp8e4m3fn_t`, `fp8e5m2_t`, `fp6e3m2fn_t`, `fp6e2m3fn_t`, `fp4e2m1fn_t`, `mxint8_t`
 |A new data type is formed by instantiating the template with an allowed choice of `block_shape_t`, `scale_t`, and `value_t`. +
 The resulting data type is named `bs<block shape>_<scale type>_<value type>_t` where block shape indicates the size of innermost dimension(s), scale type is scale_t without the _t suffix, and value type is the value_t without the _t suffix. +
 The set of allowed block scaled data types is: +
 `bs32_fp8ue8m0_fp8e4m3fn_t`, +
 `bs32_fp8ue8m0_fp8e5m2_t`, +
-`bs32_fp8ue8m0_fp6e3m2_t`, +
-`bs32_fp8ue8m0_fp6e2m3_t`, +
-`bs32_fp8ue8m0_fp4e2m1_t`, +
+`bs32_fp8ue8m0_fp6e3m2fn_t`, +
+`bs32_fp8ue8m0_fp6e2m3fn_t`, +
+`bs32_fp8ue8m0_fp4e2m1fn_t`, +
 `bs32_fp8ue8m0_mxint8_t`.
 |===
 
@@ -492,14 +492,14 @@ extension set deduced for each data type.
 |fp8ue8m0_t
 |EXT-MX-COMMON
 
-|fp4e2m1_t
-|EXT-MX-FP4E2M1
+|fp4e2m1fn_t
+|EXT-MX-FP4E2M1FN
 
-|fp6e2m3_t
-|EXT-MX-FP6E2M3
+|fp6e2m3fn_t
+|EXT-MX-FP6E2M3FN
 
-|fp6e3m2_t
-|EXT-MX-FP6E3M2
+|fp6e3m2fn_t
+|EXT-MX-FP6E3M2FN
 
 |mxint8_t
 |EXT-MX-INT8
@@ -520,17 +520,17 @@ The following table lists the composite block-scaled data types derived from the
 |`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp8e5m2_t>`
 |EXT-MX-COMMON and EXT-MX-FP8E5M2
 
-|bs32_fp8ue8m0_fp6e3m2_t
-|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp6e3m2_t>`
-|EXT-MX-COMMON and EXT-MX-FP6E3M2
+|bs32_fp8ue8m0_fp6e3m2fn_t
+|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp6e3m2fn_t>`
+|EXT-MX-COMMON and EXT-MX-FP6E3M2FN
 
-|bs32_fp8ue8m0_fp6e2m3_t
-|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp6e2m3_t>`
-|EXT-MX-COMMON and EXT-MX-FP6E2M3
+|bs32_fp8ue8m0_fp6e2m3fn_t
+|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp6e2m3fn_t>`
+|EXT-MX-COMMON and EXT-MX-FP6E2M3FN
 
-|bs32_fp8ue8m0_fp4e2m1_t
-|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp4e2m1_t>`
-|EXT-MX-COMMON and EXT-MX-FP4E2M1
+|bs32_fp8ue8m0_fp4e2m1fn_t
+|`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, fp4e2m1fn_t>`
+|EXT-MX-COMMON and EXT-MX-FP4E2M1FN
 
 |bs32_fp8ue8m0_mxint8_t
 |`block_scale_t<BLOCK_SHAPE_32, fp8ue8m0_t, mxint8_t>`
