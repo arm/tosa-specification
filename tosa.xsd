@@ -31,6 +31,10 @@
     <xs:enumeration value="EXT-FP8E4M3FN"/>
     <xs:enumeration value="EXT-FP8E5M2"/>
     <xs:enumeration value="EXT-FFT"/>
+    <xs:enumeration value="EXT-ARGMIN"/>
+    <xs:enumeration value="EXT-AVGPOOL2D-V2"/>
+    <xs:enumeration value="EXT-MATMUL-T"/>
+    <xs:enumeration value="EXT-MAXPOOL2D-V2"/>
     <xs:enumeration value="EXT-SHAPE"/>
     <xs:enumeration value="EXT-VARIABLE"/>
     <xs:enumeration value="EXT-CONTROLFLOW"/>
