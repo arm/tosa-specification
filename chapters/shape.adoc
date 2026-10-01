@@ -121,11 +121,11 @@ include::{pseudocode}/operators/LOG2_CEIL_SHAPE.tosac[lines=10..-1]
 Computation of the base two logarithm of each element in input.
 Result is rounded down.
 
-include::{generated}/operators/LOG2_CEIL_SHAPE.adoc[]
+include::{generated}/operators/LOG2_FLOOR_SHAPE.adoc[]
 
 [source,c++]
 ----
-include::{pseudocode}/operators/LOG2_CEIL_SHAPE.tosac[lines=10..-1]
+include::{pseudocode}/operators/LOG2_FLOOR_SHAPE.tosac[lines=10..-1]
 ----
 
 ==== MAX_SHAPE
