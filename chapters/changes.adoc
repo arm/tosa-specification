@@ -11,8 +11,97 @@
 
 === Changes to the TOSA specification between version 1.0 and version 1.1
 
-* Add PRO-FP support for integer data layout operations.
-* Add the ARGMIN operator.
-* Allow mixed fp8e4m3fn * fp8e5m2 operation for the MATMUL operator.
-* Add support for fp32 accumulators with the fp8 input types for the MATMUL operator.
-* Add the MATMUL_T operator.
+==== New features and modifications
+* Add the experimental `EXT-INT64` extension, defining the `i64_t` number format and
+  64-bit integer operator support.
+* Add the experimental `EXT-SHAPE` extension, for expressing shape calculations on
+  `shape_t` values which must resolve to constants at backend compile time.
+* Add the experimental `EXT-MX-COMMON` extension for OCP microscaling formats and
+  the compound `block_scale_t` type, with block shape, scale and value components.
+  Support microscaling formats on the following operations:
+  ** `CAST`
+  ** `CONCAT`
+  ** `CONST`
+  ** `CONV2D`
+  ** `CONV3D`
+  ** `DIM`
+  ** `GATHER`
+  ** `IDENTITY`
+  ** `MATMUL_T`
+  ** `RESHAPE`
+  ** `RESIZE` (nearest neighbor)
+  ** `REVERSE`
+  ** `SCATTER`
+  ** `SLICE`
+  ** `TILE`
+  ** `TRANSPOSE`
+  ** `TRANSPOSE_CONV2D`
+* Add the experimental `EXT-MX-FP4E2M1FN`, `EXT-MX-FP6E2M3FN`, `EXT-MX-FP6E3M2FN`,
+  `EXT-MX-FP8E4M3FN`, `EXT-MX-FP8E5M2` and `EXT-MX-INT8` extensions for the respective
+  `fp4e2m1fn_t`, `fp6e2m3fn_t`, `fp6e3m2fn_t`, `fp8e4m3fn_t`, `fp8e5m2_t` and
+  `mxint8_t` value formats in block-scaled tensors. Each requires `EXT-MX-COMMON`.
+* Rename fp8e4m3_t to fp8e4m3fn_t with "fn" indicating fp8e4m3fn_t has no infinity
+  encoding and rename `EXT-FP8E4M3` to `EXT-FP8E4M3FN`.
+* Move `EXT-FP8E5M2`, `EXT-FP8E4M3FN` and `EXT-BF16` from Experimental to Complete status,
+  indicating future modifications must respect backward compatibility guarantees.
+* Add `EXT-ARGMIN`, which introduces the `ARGMIN` operator that returns the first index
+  of the smallest value along an axis.
+* Add `EXT-MATMUL-T`, which introduces the `MATMUL_T` operator that multiplies `A` by
+  `B` while implicitly transposing the last two dimensions of `B`. Leading
+  dimensions are broadcastable batch dimensions.
+* Add `EXT-AVGPOOL2D-V2` and `EXT-MAXPOOL2D-V2` which introduce the `AVG_POOL2D_V2` and
+  `MAX_POOL2D_V2` operators respectively. These take kernel, stride and pad as
+  `shape_t` inputs rather than attributes, allowing these parameters to be
+  expressed using shape calculations.
+* Allow a variable number of leading broadcastable batch dimensions in `MATMUL`,
+  including operands with different numbers of batch dimensions.
+* Support mixed `fp8e4m3fn_t` and `fp8e5m2_t` inputs in `MATMUL` with `fp32_t`
+  accumulation and output.
+* Add mixed floating-point input and weight combinations to `CONV2D`, `CONV3D` and
+  `TRANSPOSE_CONV2D`, with supported `fp16_t`, `bf16_t` and `fp32_t` accumulator and
+  output combinations as listed in their Supported Data Types tables.
+* Add `fp32_t` accumulation and output for `fp8e4m3fn_t` and `fp8e5m2_t` inputs to
+  `CONV2D`, `CONV3D`, `DEPTHWISE_CONV2D` and `TRANSPOSE_CONV2D`.
+* Add the `DEDUCE-EXT` marker to Supported Data Types tables to indicate that
+  required extensions are deduced from concrete input and output data types.
+* Add mixed `bf16_t` and `fp32_t` input and weight combinations with `fp32_t`
+  accumulation and output to `DEPTHWISE_CONV2D`.
+* Add `fp8e4m3fn_t` and `fp8e5m2_t` support to `RESIZE`.
+* Add `PRO-FP` support for integer data in `CONCAT`, `PAD`, `RESHAPE`, `REVERSE`,
+  `SLICE`, `TILE`, `TRANSPOSE`, `GATHER` and `SCATTER`.
+* Add `bool_t` data support to `GATHER` and `SCATTER` in `PRO-INT` and `PRO-FP`.
+* Add an optional compile-time-constant `row_count` input to `GATHER` and `SCATTER`,
+  defaulting to 1, to gather or scatter consecutive rows for each index.
+* Add an optional `input_unsigned` attribute to `CAST`, defaulting to false. When
+  true, supported signless integer inputs are zero-extended and interpreted as
+  unsigned values.
+* Add `CAST` conversions between `bool_t` and `fp32_t` in `PRO-FP`.
+* Change the `EXT-VARIABLE` `var_shape` attribute type to `shape_t`.
+
+==== Conformance updates
+* Expand the absolute error bound for `fp32_t` dot products to account for
+  implementations using `bf16_t` multiply-accumulate operations.
+* Allow 1.0 ULP of error for `ADD`, `SUB` and `MUL` with `bf16_t` inputs, accommodating
+  implementations that calculate in `fp32_t`.
+* Allow `SIGMOID` to flush subnormal `bf16_t`, `fp16_t` and `fp32_t` results to
+  positive zero.
+* Allow floating-point comparisons and minimum/maximum operations, including
+  `MAX_POOL2D`, `MAXIMUM`, `MINIMUM`, `EQUAL`, `GREATER`, `GREATER_EQUAL`,
+  `REDUCE_MAX` and `REDUCE_MIN`, to distinguish or ignore the sign of zero.
+* Update `REDUCE_PRODUCT` conformance to account for overflow and underflow that
+  depend on accumulation order.
+* Update `AVG_POOL2D` scaling precision to reduce accuracy loss for low-precision
+  floating-point types.
+* Clarify that integer `RESIZE` results and non-block-scaled floating-point
+  `NEAREST_NEIGHBOR` results must be exact.
+* `CAST` now uses `tosa_reference_check_fp` with symmetric error bounds replacing the
+  undefined `tosa_reference_ulp` check, ensuring handling of NaN and infinity values
+  is explicit.
+
+==== Fixes and clarifications
+* Clarify that the backwards compatibility policy permits optional attributes
+  with specified defaults and shape-only broadcasting relaxations.
+* Check for overflow before addition in `apply_add_s` and subtraction in
+  `apply_sub_s`.
+* Check for overflow and a non-zero divisor in `apply_intdiv_s`.
+* Correct the `MATMUL` `apply_mul_s` pseudocode invocation.
