@@ -441,7 +441,7 @@ Note: Integer number formats smaller than 8 bits may be used provided that the n
 For example, the result of a convolution with low precision data must equal that of running the convolution at 8 bits and then clipping the result to the permitted output range.
 This ensures that an Integer profile TOSA implementation can calculate the same result.
 
-Note: The name of floating-point number formats continaing "fn", such as `fp8e4m3fn_t`, indicate the type has no encoding for infinities.
+Note: The name of floating-point number formats containing "fn", such as `fp8e4m3fn_t`, indicate the type has no encoding for infinities.
 
 .Supported Number Format Sets
 [cols="1,2,2,2,3,5"]
