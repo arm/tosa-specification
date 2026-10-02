@@ -45,6 +45,8 @@ This function takes the following arguments:
 Some test data values are scaled by the bound parameter B which is defined in the table below.
 B is set to be the largest value that is both representable by the input type and such that B*B does not overflow the output precision.
 In the case of mixed input types, B is the largest value that is representable by both input types such that B*B does not overflow the output precision.
+For composite block-scaled inputs, select B by treating each composite input type as `fp32_t`, regardless of its `value_t`.
+Generate the data in `fp32_t`, then convert it to the required block-scaled type as described in <<Floating-Point Operator Test Data>>.
 |===
 | inputs type           | output type      | B value
 | fp8e4m3fn             | fp16             | (1<<8) - (1<<4)  = 240
@@ -146,6 +148,11 @@ For most operations this means that the output tensor must have at least MIN_DOT
 For most operations batch size can be increased if necessary so that this holds.
 For this version of the specification, MIN_DOT_PRODUCTS is set to 1000.
 
+For an operand with a block-scaled type, the pseudocode below first generates an `fp32_t` tensor.
+After all its elements have been generated, convert the whole tensor to the operand's block-scaled type using <<CAST>>, which determines the scale and values for each block.
+The notation `CAST<source_t, destination_t>(tensor)` below denotes this tensor conversion.
+Use the resulting block-scaled tensor as the operator input and pass it directly to `tosa_reference_check_dotproduct`, which accesses its values as `fp32_t` internally as described in <<Dot product accuracy requirements>>.
+
 ==== CONV2D
 
 The following generates input test data for test set S.
@@ -158,11 +165,15 @@ KS = KW*KH*IC;
 for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
   input [ n, iy, ix, ic] = tosa_pro_fp_data(S, KS, 0, ((iy % KH)*KW+(ix % KW))*IC+ic, ((n*IH+iy)*IW+ix)*IC+ic);
 }
-// CAST(input) to block_scale_t<> if required
+if (is_block_scale<in_t>()) {
+  input = CAST<fp32_t, in_t>(input);
+}
 for (0 <= oc < OC, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
   weight[oc, ky, kx, ic] = tosa_pro_fp_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
 }
-// CAST(weight) to block_scale_t<> if required
+if (is_block_scale<weight_t>()) {
+  weight = CAST<fp32_t, weight_t>(weight);
+}
 for (0 <= oc < BC) {
   bias[oc] = tosa_pro_fp_data(S, KS, 2, oc)
 }
@@ -180,11 +191,15 @@ KS = KD*KW*KH*IC;
 for (0 <= n < N, 0 <= id < UD, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
   input [ n, id, iy, ix, ic] = tosa_pro_fp_data(S, KS, 0, (((id % KD)*KH+(iy % KH))*KW+(ix % KW))*IC+ic, (((n*ID+id)*IH+iy)*IW+ix)*IC+ic);
 }
-// CAST(input) to block_scale_t<> if required
+if (is_block_scale<in_t>()) {
+  input = CAST<fp32_t, in_t>(input);
+}
 for (0 <= oc < OC, 0 <= kd < KD, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
   weight[oc, kd, ky, kx, ic] = tosa_pro_fp_data(S, KS, 1, ((kd*KH+ky)*KW+kx)*IC+ic, (((oc*KD+kd)*KH+ky)*KW+kx)*IC+ic);
 }
-// CAST(weight) to block_scale_t<> if required
+if (is_block_scale<weight_t>()) {
+  weight = CAST<fp32_t, weight_t>(weight);
+}
 for (0 <= oc < BC) {
   bias[oc] = tosa_pro_fp_data(S, KS, 2, oc)
 }
@@ -252,7 +267,9 @@ for (0 <= a_offset < tensor_size(A_shape)) {
   a_index = tensor_offset_to_index(A_shape, a_offset);
   A[a_index] = tosa_pro_fp_data(S, KS, 0, a_index[rank(A_shape) - 1], a_offset);
 }
-// CAST(A) to block_scale_t<> if required
+if (is_block_scale<A_t>()) {
+  A = CAST<fp32_t, A_t>(A);
+}
 // MATMUL_T uses B with shape [..., W, C] and implicitly swaps only the last
 // two dimensions to [..., C, W], so the contraction axis is the last axis
 // of B.
@@ -260,7 +277,9 @@ for (0 <= b_offset < tensor_size(B_shape)) {
   b_index = tensor_offset_to_index(B_shape, b_offset);
   B[b_index] = tosa_pro_fp_data(S, KS, 1, b_index[rank(B_shape) - 1], b_offset);
 }
-// CAST(B) to block_scale_t<> if required
+if (is_block_scale<B_t>()) {
+  B = CAST<fp32_t, B_t>(B);
+}
 ----
 
 ==== TRANSPOSE_CONV2D
@@ -275,8 +294,14 @@ KS = KW*KH*IC;
 for (0 <= n < N, 0 <= iy < IH, 0 <= ix < IW, 0 <= ic < IC) {
   input [ n, iy, ix, ic] = tosa_pro_fp_data(S, KS, 0, ((iy % KH)*KW+(ix % KW))*IC+ic, ((n*IH+iy)*IW+ix)*IC+ic);
 }
+if (is_block_scale<in_t>()) {
+  input = CAST<fp32_t, in_t>(input);
+}
 for (0 <= oc < OC, 0 <= ky < KH, 0 <= kx < KW, 0 <= ic < IC) {
   weight[oc, ky, kx, ic] = tosa_pro_fp_data(S, KS, 1, (ky*KW+kx)*IC+ic, ((oc*KH+ky)*KW+kx)*IC+ic);
+}
+if (is_block_scale<weight_t>()) {
+  weight = CAST<fp32_t, weight_t>(weight);
 }
 for (0 <= oc < BC) {
   bias[oc] = tosa_pro_fp_data(S, KS, 2, oc)

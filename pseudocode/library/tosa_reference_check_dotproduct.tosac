@@ -13,11 +13,24 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
     T<weight_t> weight,  // weight tensor
     T<out_t> bias        // bias tensor
 ) {
-    T<in_t>     input_abs  = apply_max_s<in_t>(abs(input),      normal_min<in_t>());     // Element-wise
-    T<weight_t> weight_abs = apply_max_s<weight_t>(abs(weight), normal_min<weight_t>()); // Element-wise
-    T<out_t>    bias_abs   = apply_max_s<out_t>(abs(bias),      normal_min<out_t>());    // Element-wise
+    // Keep in_t and weight_t unchanged for ABS_BOUND and VARIANCE_ERROR_BOUND.
+    // Access block-scaled values as fp32_t; other types are unchanged.
+    using in_access_t = access_elem_type<in_t>();
+    using weight_access_t = access_elem_type<weight_t>();
+    T<in_access_t> input_access(shape(input));
+    T<weight_access_t> weight_access(shape(weight));
+    for_each_data_position(index in shape(input)) {
+        input_access[index] = tensor_read<in_t, in_access_t>(input, shape(input), index);
+    }
+    for_each_data_position(index in shape(weight)) {
+        weight_access[index] = tensor_read<weight_t, weight_access_t>(weight, shape(weight), index);
+    }
+
+    T<in_access_t> input_abs = apply_max_s<in_access_t>(abs(input_access), normal_min<in_access_t>()); // Element-wise
+    T<weight_access_t> weight_abs = apply_max_s<weight_access_t>(abs(weight_access), normal_min<weight_access_t>()); // Element-wise
+    T<out_t> bias_abs = apply_max_s<out_t>(abs(bias), normal_min<out_t>()); // Element-wise
     if (!local_bound) {
-        in_t input_abs_max = max_value(input_abs);  // maximum over all elements
+        in_access_t input_abs_max = max_value(input_abs);  // maximum over all elements
         for_each_data_position(index in shape(input_abs)) {
             input_abs[index] = input_abs_max;  // set all entries to global maximum
         }
@@ -25,7 +38,7 @@ bool_t tosa_reference_check_dotproduct<OP, in_t, weight_t, out_t, acc_t>(
     // reference_fp64(OP) calculates the results of operation OP using fp64_t arithmetic
     // implementation(OP) runs operation OP using the implementation under test
     T<out_t>  output_imp = implementation(OP, input, weight, bias, tosa_extra_multiplies = IMPLEMENTATION_DEFINED);
-    T<fp64_t> output_ref = reference_fp64(OP, input, weight, bias, tosa_extra_multiplies = false);
+    T<fp64_t> output_ref = reference_fp64(OP, input_access, weight_access, bias, tosa_extra_multiplies = false);
     T<fp64_t> output_bnd = reference_fp64(OP, input_abs, weight_abs, bias_abs, tosa_extra_multiplies = true);
 
     tensor_size_t T = tensor_size(output_shape);  // number dot product results
