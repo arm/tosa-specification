@@ -38,6 +38,22 @@
     <profile_extension name="EXT-FFT" description="Fast Fourier Transform operations" status="Complete">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
+    <profile_extension name="EXT-ARGMIN" description="ARGMIN operator" status="Experimental">
+      <profile_supported>PRO-INT</profile_supported>
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-AVGPOOL2D-V2" description="AVG_POOL2D_V2 operator" status="Experimental">
+      <profile_supported>PRO-INT</profile_supported>
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-MATMUL-T" description="MATMUL_T operator" status="Experimental">
+      <profile_supported>PRO-INT</profile_supported>
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
+    <profile_extension name="EXT-MAXPOOL2D-V2" description="MAX_POOL2D_V2 operator" status="Experimental">
+      <profile_supported>PRO-INT</profile_supported>
+      <profile_supported>PRO-FP</profile_supported>
+    </profile_extension>
     <profile_extension name="EXT-VARIABLE" description="Stateful variable operations" status="Experimental">
       <profile_supported>PRO-INT</profile_supported>
       <profile_supported>PRO-FP</profile_supported>
@@ -190,52 +206,52 @@
           <type name='out_t' />
         </types>
         <typesupport mode="signed 8" in_t="i8_t" out_t="i32_t" version_added="1.1">
-          <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-INT" and_name="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="signed 16" in_t="i16_t" out_t="i32_t" version_added="1.1">
-          <op_profile name="EXT-INT16"/>
+          <op_profile name="EXT-INT16" and_name="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="signed 8 with signed 64 index" in_t="i8_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-INT64"/>
+          <op_profile name="EXT-INT64" and_name="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="signed 16 with signed 64 index" in_t="i16_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-INT64"/>
+          <op_profile name="EXT-INT64" and_name="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="signed 32 with signed 64 index" in_t="i32_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-INT64"/>
+          <op_profile name="EXT-INT64" and_name="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="signed 64 with signed 64 index" in_t="i64_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-INT64"/>
+          <op_profile name="EXT-INT64" and_name="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="fp8e4m3fn" in_t="fp8e4m3fn_t" out_t="i32_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3FN"/>
+          <op_profile name="EXT-FP8E4M3FN" and_name="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_t="fp8e5m2_t" out_t="i32_t" version_added="1.1">
-          <op_profile name="EXT-FP8E5M2"/>
+          <op_profile name="EXT-FP8E5M2" and_name="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="fp16" in_t="fp16_t" out_t="i32_t" version_added="1.1">
-          <op_profile name="PRO-FP"/>
+          <op_profile name="PRO-FP" and_name="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="bf16" in_t="bf16_t" out_t="i32_t" version_added="1.1">
-          <op_profile name="EXT-BF16"/>
+          <op_profile name="EXT-BF16" and_name="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="fp32" in_t="fp32_t" out_t="i32_t" version_added="1.1">
-          <op_profile name="PRO-FP"/>
+          <op_profile name="PRO-FP" and_name="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="fp8e4m3fn with signed 64 index" in_t="fp8e4m3fn_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3FN" and_name="EXT-INT64"/>
+          <op_profile name="EXT-FP8E4M3FN" and_name="EXT-INT64" and_name2="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with signed 64 index" in_t="fp8e5m2_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-FP8E5M2" and_name="EXT-INT64"/>
+          <op_profile name="EXT-FP8E5M2" and_name="EXT-INT64" and_name2="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="fp16 with signed 64 index" in_t="fp16_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="PRO-FP" and_name="EXT-INT64"/>
+          <op_profile name="PRO-FP" and_name="EXT-INT64" and_name2="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="bf16 with signed 64 index" in_t="bf16_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-BF16" and_name="EXT-INT64"/>
+          <op_profile name="EXT-BF16" and_name="EXT-INT64" and_name2="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="fp32 with signed 64 index" in_t="fp32_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="PRO-FP" and_name="EXT-INT64"/>
+          <op_profile name="PRO-FP" and_name="EXT-INT64" and_name2="EXT-ARGMIN"/>
         </typesupport>
       </operator>
       <operator>
@@ -407,28 +423,28 @@
           <type name='acc_t' />
         </types>
         <typesupport mode="signed 8 with int32 accumulate" in_out_t="i8_t" acc_t="i32_t"  version_added="1.1">
-          <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-INT" and_name="EXT-AVGPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="signed 16 with int32 accumulate" in_out_t="i16_t" acc_t="i32_t" version_added="1.1">
-          <op_profile name="EXT-INT16"/>
+          <op_profile name="EXT-INT16" and_name="EXT-AVGPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="fp8e4m3fn with fp16 accumulate" in_out_t="fp8e4m3fn_t" acc_t="fp16_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3FN"/>
+          <op_profile name="EXT-FP8E4M3FN" and_name="EXT-AVGPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="fp8e5m2 with fp16 accumulate" in_out_t="fp8e5m2_t" acc_t="fp16_t" version_added="1.1">
-          <op_profile name="EXT-FP8E5M2"/>
+          <op_profile name="EXT-FP8E5M2" and_name="EXT-AVGPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="fp16 with fp16 accumulate" in_out_t="fp16_t" acc_t="fp16_t" version_added="1.1">
-          <op_profile name="PRO-FP"/>
+          <op_profile name="PRO-FP" and_name="EXT-AVGPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="fp16 with fp32 accumulate" in_out_t="fp16_t" acc_t="fp32_t" version_added="1.1">
-          <op_profile name="PRO-FP"/>
+          <op_profile name="PRO-FP" and_name="EXT-AVGPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="bf16 with fp32 accumulate" in_out_t="bf16_t" acc_t="fp32_t" version_added="1.1">
-          <op_profile name="EXT-BF16"/>
+          <op_profile name="EXT-BF16" and_name="EXT-AVGPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="fp32 with fp32 accumulate" in_out_t="fp32_t" acc_t="fp32_t" version_added="1.1">
-          <op_profile name="PRO-FP"/>
+          <op_profile name="PRO-FP" and_name="EXT-AVGPOOL2D-V2"/>
         </typesupport>
       </operator>
       <operator>
@@ -999,13 +1015,13 @@
           <type name='B_zp_t' />
         </types>
         <typesupport mode="signed 8x8 with int32 accumulate" A_t="i8_t" B_t="i8_t" A_zp_t="i8_t" B_zp_t="i8_t" out_t="i32_t" version_added="1.1">
-          <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-INT" and_name="EXT-MATMUL-T"/>
         </typesupport>
         <typesupport mode="signed 16x16 with int48 accumulate" A_t="i16_t" B_t="i16_t" A_zp_t="i16_t" B_zp_t="i16_t" out_t="i48_t" version_added="1.1">
-          <op_profile name="EXT-INT16"/>
+          <op_profile name="EXT-INT16" and_name="EXT-MATMUL-T"/>
         </typesupport>
         <typesupport mode="Mixed precision fp with bf16 accumulate" out_t="bf16_t" version_added="1.1">
-          <op_profile name="DEDUCE-EXT"/>
+          <op_profile name="DEDUCE-EXT" and_name="EXT-MATMUL-T"/>
           <type_set name="S1_IN" values="fp8e4m3fn_t fp8e5m2_t fp16_t bf16_t bs32_fp8ue8m0_set_t"/>
           <type_set name="S1_IN_NO_FP16" values="fp8e4m3fn_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="A_t" set="S1_IN_NO_FP16"/>
@@ -1014,13 +1030,13 @@
           <type_bind type="B_zp_t" set="S1_IN" access_elem_type="B_t"/>
         </typesupport>
         <typesupport mode="Mixed precision fp16 x fp input with bf16 accumulate" A_t="fp16_t" A_zp_t="fp16_t" out_t="bf16_t" version_added="1.1">
-          <op_profile name="DEDUCE-EXT"/>
+          <op_profile name="DEDUCE-EXT" and_name="EXT-MATMUL-T"/>
           <type_set name="S1_IN_NO_FP16" values="fp8e4m3fn_t fp8e5m2_t bf16_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="B_t" set="S1_IN_NO_FP16"/>
           <type_bind type="B_zp_t" set="S1_IN_NO_FP16" access_elem_type="B_t"/>
         </typesupport>
         <typesupport mode="Mixed precision fp with fp32 accumulate" out_t="fp32_t" version_added="1.1">
-          <op_profile name="PRO-FP" and_name="DEDUCE-EXT"/>
+          <op_profile name="PRO-FP" and_name="DEDUCE-EXT" and_name2="EXT-MATMUL-T"/>
           <type_set name="S2_IN" values="fp8e4m3fn_t fp8e5m2_t fp16_t bf16_t fp32_t bs32_fp8ue8m0_set_t"/>
           <type_bind type="A_t" set="S2_IN"/>
           <type_bind type="B_t" set="S2_IN"/>
@@ -1028,7 +1044,7 @@
           <type_bind type="B_zp_t" set="S2_IN" access_elem_type="B_t"/>
         </typesupport>
         <typesupport mode="fp8xfp8 with fp16 accumulate" out_t="fp16_t" version_added="1.1">
-          <op_profile name="DEDUCE-EXT"/>
+          <op_profile name="DEDUCE-EXT" and_name="EXT-MATMUL-T"/>
           <type_set name="S3_IN" values="fp8e4m3fn_t fp8e5m2_t"/>
           <type_bind type="A_t" set="S3_IN"/>
           <type_bind type="B_t" set="S3_IN"/>
@@ -1036,7 +1052,7 @@
           <type_bind type="B_zp_t" set="S3_IN" access_elem_type="B_t"/>
         </typesupport>
         <typesupport mode="fp16xfp16 with fp16 accumulate" A_t="fp16_t" B_t="fp16_t" A_zp_t="fp16_t" B_zp_t="fp16_t" out_t="fp16_t" version_added="1.1">
-          <op_profile name="PRO-FP"/>
+          <op_profile name="PRO-FP" and_name="EXT-MATMUL-T"/>
         </typesupport>
       </operator>
       <operator>
@@ -1165,25 +1181,25 @@
           <type name='in_out_t' />
         </types>
         <typesupport mode="signed 8" in_out_t="i8_t" version_added="1.1">
-          <op_profile name="PRO-INT"/>
+          <op_profile name="PRO-INT" and_name="EXT-MAXPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="signed 16" in_out_t="i16_t" version_added="1.1">
-          <op_profile name="EXT-INT16"/>
+          <op_profile name="EXT-INT16" and_name="EXT-MAXPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="fp8e4m3fn" in_out_t="fp8e4m3fn_t" version_added="1.1">
-          <op_profile name="EXT-FP8E4M3FN"/>
+          <op_profile name="EXT-FP8E4M3FN" and_name="EXT-MAXPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="fp8e5m2" in_out_t="fp8e5m2_t" version_added="1.1">
-          <op_profile name="EXT-FP8E5M2"/>
+          <op_profile name="EXT-FP8E5M2" and_name="EXT-MAXPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="fp16" in_out_t="fp16_t"  version_added="1.1">
-          <op_profile name="PRO-FP"/>
+          <op_profile name="PRO-FP" and_name="EXT-MAXPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="bf16" in_out_t="bf16_t"  version_added="1.1">
-          <op_profile name="EXT-BF16"/>
+          <op_profile name="EXT-BF16" and_name="EXT-MAXPOOL2D-V2"/>
         </typesupport>
         <typesupport mode="fp32" in_out_t="fp32_t"  version_added="1.1">
-          <op_profile name="PRO-FP"/>
+          <op_profile name="PRO-FP" and_name="EXT-MAXPOOL2D-V2"/>
         </typesupport>
       </operator>
       <operator>
