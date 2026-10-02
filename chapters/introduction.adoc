@@ -242,8 +242,8 @@ If an implementation implements an experimental extension, it must pass the conf
 
 The following number formats are defined in TOSA.
 The number formats supported by a given operator are listed in its table of supported types.
-A TOSA implementation must support the number formats listed in the supported data types for operators contained in that profile.
-Number formats not required for any operators in a profile do not need to be implemented.
+A TOSA implementation must support the number formats listed in the supported data types for operators contained in that profile or extension.
+Number formats not required for any operators in a profile or extension do not need to be implemented.
 
 .Number formats
 [cols="1,1,1,5"]
@@ -331,7 +331,8 @@ Number formats not required for any operators in a profile do not need to be imp
 | 4-bit floating-point defined by <<OCP-MX,OCP-MX>> with two bits of exponent and one bit of mantissa. +
 Normal values must be supported. +
 Subnormal values must be supported. +
-Signed zero must be supported.
+Signed zero must be supported. +
+This format has no encoding for infinities.
 
 |fp6e3m2fn_t
 | -28.0
@@ -339,7 +340,8 @@ Signed zero must be supported.
 | 6-bit floating-point defined by <<OCP-MX,OCP-MX>> with three bits of exponent and two bits of mantissa. +
 Normal values must be supported. +
 Subnormal values must be supported. +
-Signed zero must be supported.
+Signed zero must be supported. +
+This format has no encoding for infinities.
 
 |fp6e2m3fn_t
 | -7.5
@@ -347,7 +349,8 @@ Signed zero must be supported.
 | 6-bit floating-point defined by <<OCP-MX,OCP-MX>> with two bits of exponent and three bits of mantissa. +
 Normal values must be supported. +
 Subnormal values must be supported. +
-Signed zero must be supported.
+Signed zero must be supported. +
+This format has no encoding for infinities.
 
 |fp8e4m3fn_t
 | -448
@@ -437,6 +440,8 @@ The minimum and maximum values for each type are given in the preceding table.
 Note: Integer number formats smaller than 8 bits may be used provided that the numerical result is the same as using a sequence of 8-bit TOSA operations.
 For example, the result of a convolution with low precision data must equal that of running the convolution at 8 bits and then clipping the result to the permitted output range.
 This ensures that an Integer profile TOSA implementation can calculate the same result.
+
+Note: The name of floating-point number formats continaing "fn", such as `fp8e4m3fn_t`, indicate the type has no encoding for infinities.
 
 .Supported Number Format Sets
 [cols="1,2,2,2,3,5"]
