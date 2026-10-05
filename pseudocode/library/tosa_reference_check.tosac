@@ -8,6 +8,10 @@
 // by a licensing agreement from ARM Limited.
 
 bool_t tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num_ulp) {
+    return tosa_reference_check_fp<in_t>(test_value, ref_value, num_ulp, num_ulp);
+}
+
+bool_t tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t num_ulp_low, fp64_t num_ulp_high) {
   fp64_t val_ulp = 0.0;
   if (is_same<in_t, mxint8_t>()) {
     val_ulp = 1 / 64.0;
@@ -17,8 +21,9 @@ bool_t tosa_reference_check_fp<in_t>(in_t test_value, fp64_t ref_value, fp64_t n
     val_ulp  = ref_pow2 * exp2(-normal_frac<in_t>());
   }
 
-  fp64_t err_bnd = val_ulp * num_ulp;
-  return tosa_reference_check_fp_bnd<in_t>(test_value, ref_value, err_bnd);
+  fp64_t err_bnd_high = val_ulp * num_ulp_high;
+  fp64_t err_bnd_low = val_ulp * num_ulp_low;
+  return tosa_reference_check_fp_bnd<in_t>(test_value, ref_value, err_bnd_low, err_bnd_high);
 }
 
 bool_t tosa_reference_check_scale<scale_t, out_t>(fp64_t test_scale, fp64_t test_value,
@@ -91,6 +96,10 @@ bool_t tosa_reference_check_reduce_prod<in_t>(in_t test_value, fp64_t ref_value,
 }
 
 bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64_t err_bnd) {
+    return tosa_reference_check_fp_bnd<in_t>(test_value, ref_value, err_bnd, err_bnd);
+}
+
+bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64_t err_bnd_low, fp64_t err_bnd_high) {
   if (is_a_NaN(ref_value)) {
     if (!has_NaN<in_t>()) {
       return true;
@@ -98,7 +107,7 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
     // If the reference value is a NaN, the test value must also be any NaN.
     return is_a_NaN(test_value);
   }
-  if (!is_finite(err_bnd)) {
+  if (!is_finite(err_bnd_high) || !is_finite(err_bnd_low)) {
     return true;
   }
 
@@ -107,14 +116,14 @@ bool_t tosa_reference_check_fp_bnd<in_t>(in_t test_value, fp64_t ref_value, fp64
   fp64_t ref_high_cap = ref_value < 0.0 ? -normal_lowest<in_t>() : normal_max<in_t>();
   fp64_t ref_low_cap = ref_value < 0.0 ? -normal_max<in_t>() : normal_lowest<in_t>() ;
 
-  REQUIRE(err_bnd >= 0.0);
+  REQUIRE(err_bnd_high >= 0.0 && err_bnd_low >= 0.0);
   if (ref_value < 0.0) {
     ref_value  = -ref_value;
     test_value64 = -test_value64;
   }
 
-  fp64_t ref_max = ref_value + err_bnd;
-  fp64_t ref_min = ref_value - err_bnd;
+  fp64_t ref_max = ref_value + err_bnd_high;
+  fp64_t ref_min = ref_value - err_bnd_low;
 
   if (!has_Inf<in_t>() && !has_NaN<in_t>()) {
     if (ref_max > ref_high_cap) ref_max = ref_high_cap;
