@@ -16,7 +16,7 @@ ERROR_IF(is_block_scale<out_t>() && shape[rank(shape)-1] % get_innermost_block_s
 ERROR_IF(input_unsigned && !is_integer<in_t>());
 
 if (is_block_scale<out_t>()) {
-    ERROR_IF(is_floating_point<in_t>()); // Only allow FP to cast to Mx
+    ERROR_IF(!is_floating_point<in_t>()); // Only allow FP to cast to Mx
 
     using value_t = get_value_t<out_t>();
     using scale_t = get_scale_t<out_t>();
