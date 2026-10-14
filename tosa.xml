@@ -137,13 +137,13 @@
           <op_profile name="EXT-INT16"/>
         </typesupport>
         <typesupport mode="signed 8 with signed 64 index" in_t="i8_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-INT64"/>
+          <op_profile name="EXT-INT64" and_name="PRO-INT"/>
         </typesupport>
         <typesupport mode="signed 16 with signed 64 index" in_t="i16_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-INT64"/>
+          <op_profile name="EXT-INT64" and_name="EXT-INT16"/>
         </typesupport>
         <typesupport mode="signed 32 with signed 64 index" in_t="i32_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-INT64"/>
+          <op_profile name="EXT-INT64" and_name="PRO-INT"/>
         </typesupport>
         <typesupport mode="signed 64 with signed 64 index" in_t="i64_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64"/>
@@ -212,13 +212,13 @@
           <op_profile name="EXT-INT16" and_name="EXT-ARGMIN"/>
         </typesupport>
         <typesupport mode="signed 8 with signed 64 index" in_t="i8_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-INT64" and_name="EXT-ARGMIN"/>
+          <op_profile name="EXT-INT64" and_name="EXT-ARGMIN" and_name2="PRO-INT"/>
         </typesupport>
         <typesupport mode="signed 16 with signed 64 index" in_t="i16_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-INT64" and_name="EXT-ARGMIN"/>
+          <op_profile name="EXT-INT64" and_name="EXT-ARGMIN" and_name2="EXT-INT16"/>
         </typesupport>
         <typesupport mode="signed 32 with signed 64 index" in_t="i32_t" out_t="i64_t" version_added="1.1">
-          <op_profile name="EXT-INT64" and_name="EXT-ARGMIN"/>
+          <op_profile name="EXT-INT64" and_name="EXT-ARGMIN" and_name2="PRO-INT"/>
         </typesupport>
         <typesupport mode="signed 64 with signed 64 index" in_t="i64_t" out_t="i64_t" version_added="1.1">
           <op_profile name="EXT-INT64" and_name="EXT-ARGMIN"/>
