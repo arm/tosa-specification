@@ -900,4 +900,4 @@ The following publications are referred to in this specification, or provide mor
 
 . [[IEEE-754]]IEEE Std 754-2008, _IEEE Standard for Floating-point Arithmetic_, August 2008.
 . [[OCP-OFP8]]Open Compute Project OCP 8-bit Floating Point Specification (OFP8) Revision 1.0
-. [[OCP-MX]] Open Compute Project OCP Microscaling Formats (MX) Specification Version 1.0
+. [[OCP-MX]] https://www.opencompute.org/wp-content/uploads/2026/10/OCP_MicroXcaling_Spec_v1.1.0-1.pdf[Open Compute Project OCP MicroXcaling (MX) Specification Version 1.1.0]
