@@ -23,6 +23,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        # Fetch all history for tags and branches
+        with:
+          fetch-depth: 0
 
       - name: Build image
         run: ci/docker/build_docker.sh --tag tosa-spec:deploy-workflow
@@ -33,14 +36,12 @@ jobs:
             --rm \
             -v "$PWD":/workspace \
             -w /workspace \
-            tosa-spec:deploy-workflow bash -c " \
-              make html && \
-              mv out/html/tosa_spec.html out/html/index.html"
+            tosa-spec:deploy-workflow ci/build_pages_docker.sh
 
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: out/html
+          path: out/pages
           retention-days: 1
 
   deploy:
