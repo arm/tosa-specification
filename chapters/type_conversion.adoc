@@ -63,7 +63,7 @@ Rules when casting between different types:
 * Casting from integer to floating-point:
 ** Let `out_imp` be the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic. If `input_unsigned` is true, `out_ref` is calculated from the unsigned mathematical value of the input element.
-** Then `tosa_reference_check_fp<out_t>(out_imp, out_ref, 0.5)` must be true.
+** Then `tosa_reference_check_fp<out_t>(out_imp, out_ref, 1.0, 0.5)` must be true.
 * Casting to boolean type:
 ** The result must be exact.
 
