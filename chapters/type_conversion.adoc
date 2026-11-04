@@ -32,8 +32,9 @@ Rules when casting between floating-point types:
 * If the input value is inside the output representable range then the following accuracy must be met:
 ** Let `out_imp` be the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Then `tosa_reference_check_fp<out_t>(out_imp, out_ref, 1.0, 0.5)` must be true.
-** This allows for both round to zero and round to nearest rounding modes.
+** Let `ulp_high = normal_frac<in_t> > normal_frac<out_t> ? 0.75 : 0.5`.
+** Then `tosa_reference_check_fp<out_t>(out_imp, out_ref, 1.0, ulp_high)` must be true.
+** This allows for both round to zero and round to nearest rounding modes, and also allows for rounding to an intermediate higher-precision type in narrowing casts.
 
 Rules when casting from block-scaled types:
 
@@ -63,7 +64,9 @@ Rules when casting between different types:
 * Casting from integer to floating-point:
 ** Let `out_imp` be the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic. If `input_unsigned` is true, `out_ref` is calculated from the unsigned mathematical value of the input element.
-** Then `tosa_reference_check_fp<out_t>(out_imp, out_ref, 1.0, 0.5)` must be true.
+** Let `ulp_high = bit_width<in_t> > normal_frac<out_t> + 1 ? 0.75 : 0.5`.
+** Then `tosa_reference_check_fp<out_t>(out_imp, out_ref, 1.0, ulp_high)` must be true.
+** This allows for rounding to an intermediate higher-precision floating point type in the process of casting.
 * Casting to boolean type:
 ** The result must be exact.
 
