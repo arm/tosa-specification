@@ -157,6 +157,23 @@ int exponent_bias<in_t>() {
   }
 }
 
+// Size of an integer type in bits
+int bit_width<in_t>() {
+  if (is_same<in_t,i64_t>()) {
+    return 64;
+  } else if (is_same<in_t,i48_t>()) {
+    return 48;
+  } else if (is_same<in_t,i32_t>()) {
+    return 32;
+  } else if (is_same<in_t,i16_t>()) {
+    return 16;
+  } else if (is_same<in_t,i8_t>()) {
+    return 8;
+  } else if (is_same<in_t,i4_t>()) {
+    return 4;
+  }
+}
+
 fp64_t calcAbsErrorBound<in_t>(fp64_t bound_magnitude, fp64_t bounds_value,
                                fp64_t lower_bound, fp64_t normal_divisor) {
     fp64_t error_bound = 0.0;

@@ -58,7 +58,7 @@ out_t sign_extend<out_t>(in_t input);
 // For two's complement integer values where out_t has more bits than in_t, insert zero values for all bits between the top bit of input and the top bit of output.
 out_t zero_extend<out_t>(in_t input);
 
-// output is the sizeof(out_t) least significant bits in input.
+// output is the bit_width<out_t>() least significant bits in input.
 // Nop for floating-point types
 out_t truncate(in_t input);
 
