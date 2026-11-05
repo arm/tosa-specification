@@ -107,6 +107,7 @@ The following functions are used to define the valid conditions for TOSA operato
 The REQUIRE function defines the conditions required by the TOSA operator.
 If the conditions are not met then the result of the TOSA graph is marked as unpredictable.
 Once the graph_result is set to tosa_unpredictable, the whole graph is considered unpredictable.
+Note that whether REQUIRE has side effects is implementation-defined.
 
 The ERROR_IF function defines a condition that must set an error if the condition holds and the graph is not unpredictable.
 Note that if a graph contains both unpredictable and error statements then result of tosa_execute_graph() is tosa_unpredictable.
