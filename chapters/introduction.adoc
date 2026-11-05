@@ -368,7 +368,7 @@ For a given input graph (with attributes) and input tensors there are three poss
 
 An implementation must behave as follows given the above tosa_graph result values:
 
-* For tosa_unpredictable, the implementation can return whatever result it chooses (including error), but must not write outside the bounds of any tensors involved in execution.
+* For tosa_unpredictable, the implementation can return whatever result it chooses (including error).
 * For tosa_error, the implementation must return an error result (and there is no requirement on how much of the graph is executed, if any).
 * For tosa_valid, the implementation must execute the entire graph without error and return the result defined by this specification.
 
