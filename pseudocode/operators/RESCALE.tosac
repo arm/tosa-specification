@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2025 ARM Limited
+// (C) COPYRIGHT 2020-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -36,7 +36,7 @@ for_each_data_position(index in shape) {
         extended_in_zp = zero_extend<int48_t>(input_zp);
     }
     else {
-        value = sign_extend<int48_t>(value);
+        value = sign_extend<int48_t>(in_value);
         extended_in_zp = sign_extend<int48_t>(input_zp);
     }
 
