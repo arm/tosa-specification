@@ -292,7 +292,7 @@ include::{pseudocode}/library/tosa_reference_check.tosac[lines=10..-1]
 
 The following definitions are used in pseudocode to do numeric conversions.
 Where the *float_t* type is used, it represents all of the floating-point data types supported by the given profile.
-See <<Number formats>> for details on the floating-point formats.
+See <<Supported Number Formats>> for details on the floating-point formats.
 
 [source,c++]
 ----
