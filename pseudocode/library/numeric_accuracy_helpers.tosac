@@ -122,11 +122,11 @@ int normal_frac<in_t>() {
 
 // Exponent width
 int exponent_bits<in_t>() {
-  if (is_same<in_t, fp32_t) {
+  if (is_same<in_t, fp32_t>()) {
     return 8;
-  } else if (is_same<in_t, fp16_t) {
+  } else if (is_same<in_t, fp16_t>()) {
     return 5;
-  } else if (is_same<in_t, bf16_t) {
+  } else if (is_same<in_t, bf16_t>()) {
     return 8;
   } else if (is_same<in_t,fp8e4m3fn_t>()) {
     return 4;
@@ -149,11 +149,11 @@ int exponent_bits<in_t>() {
 }
 
 int exponent_bias<in_t>() {
-  if (is_same<in_t, fp32_t) {
+  if (is_same<in_t, fp32_t>()) {
     return 127;
-  } else if (is_same<in_t, fp16_t) {
+  } else if (is_same<in_t, fp16_t>()) {
     return 15;
-  } else if (is_same<in_t, bf16_t) {
+  } else if (is_same<in_t, bf16_t>()) {
     return 127;
   } else if (is_same<in_t,fp8e4m3fn_t>()) {
     return 7;

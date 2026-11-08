@@ -1,7 +1,7 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2025 ARM Limited
+// (C) COPYRIGHT 2020-2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -62,7 +62,7 @@ Elementwise ceiling operation
 * The following may be used to validate the result:
 ** Let `out_imp` the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 0.5)` must be true.
+** Then `tosa_reference_check_fp<in_out_t>(out_imp, out_ref, 0.5)` must be true.
 
 include::{generated}/operators/CEIL.adoc[]
 
@@ -134,7 +134,7 @@ Elementwise e to the x operation
 ** Let `x` be an input element.
 ** Let `out_imp` the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Let `err_base` be `is_same<in_out_t, fp32_t> ? 3 : 1`.
+** Let `err_base` be `is_same<in_out_t, fp32_t>() ? 3 : 1`.
 ** Let `err_bnd = calcAbsErrorBound<in_out_t>(out_ref, (err_base+2*abs(x)), 0, 1)`.
 ** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
@@ -163,7 +163,7 @@ Elementwise floor operation.
 * The following may be used to validate the result:
 ** Let `out_imp` the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 0.5)` must be true.
+** Then `tosa_reference_check_fp<in_out_t>(out_imp, out_ref, 0.5)` must be true.
 
 include::{generated}/operators/FLOOR.adoc[]
 
@@ -262,7 +262,7 @@ Elementwise reciprocal operation. For integer operation, a TABLE should be used 
 * Otherwise, the following may be used to validate the result:
 ** Let `out_imp` the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 1)` must be true.
+** Then `tosa_reference_check_fp<in_out_t>(out_imp, out_ref, 1)` must be true.
 
 include::{generated}/operators/RECIPROCAL.adoc[]
 
@@ -289,7 +289,7 @@ Elementwise reciprocal square root operation. For integer operation, a TABLE sho
 * Otherwise, the following may be used to validate the result:
 ** Let `out_imp` the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Then `tosa_reference_check_fp<in_t>(out_imp, out_ref, 2)` must be true.
+** Then `tosa_reference_check_fp<in_out_t>(out_imp, out_ref, 2)` must be true.
 
 include::{generated}/operators/RSQRT.adoc[]
 
@@ -317,7 +317,7 @@ Elementwise sine operation for values given in radians.
 ** Let `x` be an input element.
 ** Let `out_imp` the implementation output.
 ** Let `out_ref` be the result calculated using fp64_t arithmetic.
-** Let `err_bnd = max(calcAbsErrorBound<in_out_t>(x, 2, 0, 2), pi*normal_min<in_out_t>())`.
+** Let `err_bnd = max(calcAbsErrorBound<in_out_t>(x, 2, 0, 2), pi()*normal_min<in_out_t>())`.
 ** Then `tosa_reference_check_fp_bnd<in_out_t>(out_imp, out_ref, err_bnd)` must be true.
 
 include::{generated}/operators/SIN.adoc[]

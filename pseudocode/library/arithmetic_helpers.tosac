@@ -33,7 +33,7 @@ in_t apply_arith_rshift<in_t>(in_t a, in_t b) {
 in_t apply_intdiv_s<in_t>(in_t a, in_t b) {
     int64_t a_i64 = sign_extend<int64_t>(a);
     int64_t b_i64 = sign_extend<int64_t>(b);
-    REQUIRE(b_i64 != 0)
+    REQUIRE(b_i64 != 0);
     REQUIRE(!(a_i64 == std::numeric_limits<int64_t>::min() && b_i64 == -1));
 
     //rounding towards zero
@@ -70,7 +70,7 @@ in_t apply_logical_rshift<in_t>(in_t a, in_t b) {
     return static_cast<in_t>(c);
 }
 
-in_t compare_nan<in_t>(in_t a, in_t b, nan_propagation_t nan_mode) {
+in_t compare_nan<in_t>(in_t a, in_t b, nan_propagation_mode_t nan_mode) {
     REQUIRE(is_a_NaN(a) || is_a_NaN(b));
 
     if (nan_mode == PROPAGATE) {
@@ -81,7 +81,7 @@ in_t compare_nan<in_t>(in_t a, in_t b, nan_propagation_t nan_mode) {
     return is_a_NaN(a) ? b : a;
 }
 
-in_t apply_max_s<in_t>(in_t a, in_t b, nan_propagation_t nan_mode=PROPAGATE) {
+in_t apply_max_s<in_t>(in_t a, in_t b, nan_propagation_mode_t nan_mode=PROPAGATE) {
     if (is_floating_point<in_t>()) {
         if (is_a_NaN(a) || is_a_NaN(b)) {
             return compare_nan(a, b, nan_mode);
@@ -96,7 +96,7 @@ in_t apply_max_u<in_t>(in_t a, in_t b) {
     if (zero_extend<uint64_t>(a) >= zero_extend<int64_t>(b)) return a; else return b;
 }
 
-in_t apply_min_s<in_t>(in_t a, in_t b, nan_propagation_t nan_mode=PROPAGATE) {
+in_t apply_min_s<in_t>(in_t a, in_t b, nan_propagation_mode_t nan_mode=PROPAGATE) {
     if (is_floating_point<in_t>()) {
         if (is_a_NaN(a) || is_a_NaN(b)) {
             return compare_nan(a, b, nan_mode);
@@ -111,7 +111,7 @@ in_t apply_min_u<in_t>(in_t a, in_t b) {
     if (zero_extend<int64_t>(a) < zero_extend<int64_t>(b)) return a; else return b;
 }
 
-in_t apply_clip_s<in_t>(in_t value, in_t min_val, in_t max_val, nan_propagation_t nan_mode=PROPAGATE) {
+in_t apply_clip_s<in_t>(in_t value, in_t min_val, in_t max_val, nan_propagation_mode_t nan_mode=PROPAGATE) {
     if (is_floating_point<in_t>()) {
         REQUIRE(min_val <= max_val);
         REQUIRE(!is_a_NaN(min_val) && !is_a_NaN(max_val));
@@ -166,8 +166,8 @@ in_t apply_sub_u<in_t>(in_t a, in_t b) {
 }
 
 int32_t count_leading_zeros<in_t>(in_t a) {
-    int32_t acc = (is_same<in_t,i64_t>) ? 64 : 32;
-    if (is_same<in_t,i64_t>) {
+    int32_t acc = (is_same<in_t,i64_t>()) ? 64 : 32;
+    if (is_same<in_t,i64_t>()) {
         if (a != 0) {
             uint64_t mask;
             mask = 1 << (64 - 1); // width of int64_t - 1
