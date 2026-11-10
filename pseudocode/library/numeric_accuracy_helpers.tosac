@@ -47,6 +47,10 @@ fp64_t normal_min<in_t>() {
     return 1/64.0;
   } else if (is_same<in_t,fp8ue8m0_t>()) {
     return exp2(-127);
+  } else {
+    ERROR_IF(true); // Unsupported type
+    return 0.0;     // Placeholder after recording the error
+  }
 }
 
 fp64_t normal_max<in_t>() {
@@ -70,6 +74,9 @@ fp64_t normal_max<in_t>() {
     return 1.0 + 63.0/64.0;
   } else if (is_same<in_t,fp8ue8m0_t>()) {
     return exp2(127);
+  } else {
+    ERROR_IF(true); // Unsupported type
+    return 0.0;     // Placeholder after recording the error
   }
 }
 
@@ -107,16 +114,19 @@ int normal_frac<in_t>() {
     return 0;
   } else if (is_same<in_t,fp8ue8m0_t>()) {
     return 0;
+  } else {
+    ERROR_IF(true); // Unsupported type
+    return 0;       // Placeholder after recording the error
   }
 }
 
 // Exponent width
 int exponent_bits<in_t>() {
-  if (is_same<in_t, fp32_t) {
+  if (is_same<in_t, fp32_t>()) {
     return 8;
-  } else if (is_same<in_t, fp16_t) {
+  } else if (is_same<in_t, fp16_t>()) {
     return 5;
-  } else if (is_same<in_t, bf16_t) {
+  } else if (is_same<in_t, bf16_t>()) {
     return 8;
   } else if (is_same<in_t,fp8e4m3fn_t>()) {
     return 4;
@@ -130,15 +140,20 @@ int exponent_bits<in_t>() {
     return 2;
   } else if (is_same<in_t, mxint8_t>()) {
     return 0;
+  } else if (is_same<in_t, fp8ue8m0_t>()) {
+    return 8;
+  } else {
+    ERROR_IF(true); // Unsupported type
+    return 0;       // Placeholder after recording the error
   }
 }
 
 int exponent_bias<in_t>() {
-  if (is_same<in_t, fp32_t) {
+  if (is_same<in_t, fp32_t>()) {
     return 127;
-  } else if (is_same<in_t, fp16_t) {
+  } else if (is_same<in_t, fp16_t>()) {
     return 15;
-  } else if (is_same<in_t, bf16_t) {
+  } else if (is_same<in_t, bf16_t>()) {
     return 127;
   } else if (is_same<in_t,fp8e4m3fn_t>()) {
     return 7;
@@ -154,6 +169,9 @@ int exponent_bias<in_t>() {
     return 6;
   } else if (is_same<in_t, fp8ue8m0_t>()) {
     return 127;
+  } else {
+    ERROR_IF(true); // Unsupported type
+    return 0;       // Placeholder after recording the error
   }
 }
 

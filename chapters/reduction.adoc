@@ -114,8 +114,8 @@ Reduce a tensor along the given axis by computing the product of the axis.
 ** Let `out_imp` be the implementation result.
 ** Let `out_ref` be the result calculated using `fp64_t` arithmetic.
 ** Let `value[i]` be the i-th input value in the axis used for computing `out_ref`, cast to `fp64_t`.
-** Let `pos_acc_err = pow(1 + exp2(-normal_frac<in_out_t>-1), n-1)`
-** Let `neg_acc_err = pow(1 - exp2(-normal_frac<in_out_t>-1), n-1)`
+** Let `pos_acc_err = pow(1 + exp2(-normal_frac<in_out_t>()-1), n-1)`
+** Let `neg_acc_err = pow(1 - exp2(-normal_frac<in_out_t>()-1), n-1)`
 ** Let `acc_max = apply_max_s(abs(value[0]), 1) * apply_max_s(abs(value[1]), 1) * ... * apply_max_s(abs(value[n-1]), 1) * pos_acc_err`
 ** Let `acc_min = apply_min_s(abs(value[0]), 1) * apply_min_s(abs(value[1]), 1) * ... * apply_min_s(abs(value[n-1]), 1) * neg_acc_err`
 ** Then `tosa_reference_check_reduce_prod<in_out_t>(out_imp, out_ref, acc_min, acc_max, n)` must be true.
