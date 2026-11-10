@@ -1,14 +1,14 @@
 //
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
-// (C) COPYRIGHT 2020-2024 ARM Limited
+// (C) COPYRIGHT 2020-2024,2026 ARM Limited
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
 // by a licensing agreement from ARM Limited.
 
 REQUIRE(0 <= shift && shift <= 63);
-REQUIRE(is_same<in_t,int32_t>() || shift == 0);
+REQUIRE(is_same<in_t,i32_t>() || shift == 0);
 ERROR_IF(shape != broadcast_shape(shape1, shape2));
 for_each_data_position(index in shape) {
     shape_t index1 = apply_broadcast(shape, shape1, index);

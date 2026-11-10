@@ -60,7 +60,7 @@ out_t zero_extend<out_t>(in_t input);
 
 // output is the bit_width<out_t>() least significant bits in input.
 // Nop for floating-point types
-out_t truncate(in_t input);
+out_t truncate<out_t>(in_t input);
 
 // Return the largest value such that all smaller magnitude values will round without overflow
 float_t get_largest_value_rounding_to_normal_max<in_t>() {
