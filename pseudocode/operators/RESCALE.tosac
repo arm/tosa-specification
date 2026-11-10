@@ -23,9 +23,9 @@ for_each_data_position(index in shape) {
     ERROR_IF(is_same<out_t,i32_t>() && input_unsigned);
     ERROR_IF(is_same<in_t,i32_t>() && output_unsigned);
     ERROR_IF(is_same<in_t,i48_t>() && output_unsigned);
-    ERROR_IF(is_same<in_t, i48_t> && input_unsigned); // No support for u48 inputs
-    ERROR_IF(is_same<in_t, i32_t> && input_unsigned); // No support for u32 inputs
-    ERROR_IF(is_same<out_t, i32_t> && output_unsigned); // No support for u32 outputs
+    ERROR_IF(is_same<in_t, i48_t>() && input_unsigned); // No support for u48 inputs
+    ERROR_IF(is_same<in_t, i32_t>() && input_unsigned); // No support for u32 inputs
+    ERROR_IF(is_same<out_t, i32_t>() && output_unsigned); // No support for u32 outputs
     ERROR_IF(per_channel && rank(input) < 1);
 
     in_t in_value = tensor_read<in_t>(input, shape, index);
