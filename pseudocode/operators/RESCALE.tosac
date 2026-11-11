@@ -50,9 +50,9 @@ for_each_data_position(index in shape) {
     if (output_unsigned) {
         int32_t extended_out_zp = zero_extend<int32_t>(output_zp);
         result = apply_add_s<int32_t>(result, extended_out_zp);
-        out = static_cast<out_t>(apply_clip_u<i32_t>(result,
-                                                     minimum_u<out_t>(),
-                                                     maximum_u<out_t>()));
+        out = static_cast<out_t>(apply_clip_s<i32_t>(result,
+                                                     zero_extend<int32_t>(minimum_u<out_t>()),
+                                                     zero_extend<int32_t>(maximum_u<out_t>())));
     }
     else {
         int32_t extended_out_zp = sign_extend<int32_t>(output_zp);
