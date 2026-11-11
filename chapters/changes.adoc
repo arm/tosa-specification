@@ -18,6 +18,7 @@
   `shape_t` values which must resolve to constants at backend compile time.
 * Add the experimental `EXT-MX-COMMON` extension for OCP microscaling formats and
   the compound `block_scale_t` type, with block shape, scale and value components.
+  Reference version 1.1.0 of the OCP MX specification.
   Support microscaling formats on the following operations:
   ** `CAST`
   ** `CONCAT`
@@ -94,9 +95,11 @@
   floating-point types.
 * Clarify that integer `RESIZE` results and non-block-scaled floating-point
   `NEAREST_NEIGHBOR` results must be exact.
-* `CAST` now uses `tosa_reference_check_fp` with symmetric error bounds replacing the
+* `CAST` now uses `tosa_reference_check_fp`, replacing the
   undefined `tosa_reference_ulp` check, ensuring handling of NaN and infinity values
   is explicit.
+* Allow integer-to-floating-point `CAST` to round towards zero as well as to
+  nearest, using an error bound of 1.0 ULP towards zero.
 
 ==== Fixes and clarifications
 * Clarify that the backwards compatibility policy permits optional attributes
@@ -105,3 +108,12 @@
   `apply_sub_s`.
 * Check for overflow and a non-zero divisor in `apply_intdiv_s`.
 * Correct the `MATMUL` `apply_mul_s` pseudocode invocation.
+* Remove the restriction on out-of-bounds writes for graphs whose result is
+  unpredictable, and clarify that whether `REQUIRE` has side effects is
+  implementation-defined.
+* Correct `flatten`, the scale reference check argument order, and input references
+  in `RESCALE`.
+* Correct the signed bounds used by `apply_sub_s` and the closing brace in
+  `normal_min`.
+* Correct pseudocode syntax, helper calls and type references.
+* Correct `MUL` shift validation to recognize `i32_t` inputs.

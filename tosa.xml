@@ -93,7 +93,7 @@
     <profile_extension name="EXT-MX-INT8" description="Microscaling format INT8" status="Experimental">
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
-    <profile_extension name="EXT-SHAPE" description="Shape calcuation operators" status="Experimental">
+    <profile_extension name="EXT-SHAPE" description="Shape calculation operators" status="Experimental">
       <profile_supported>PRO-INT</profile_supported>
       <profile_supported>PRO-FP</profile_supported>
     </profile_extension>
