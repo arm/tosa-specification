@@ -99,7 +99,9 @@
   undefined `tosa_reference_ulp` check, ensuring handling of NaN and infinity values
   is explicit.
 * Allow integer-to-floating-point `CAST` to round towards zero as well as to
-  nearest, using an error bound of 1.0 ULP towards zero.
+  nearest, using an error bound of 1.0 ULP towards zero, allowing truncation.
+* Update `CAST` to allow 0.75 ULPs of error in the direction away from 0 when casting to 
+  floating-point types, allowing a higher-precision intermediate type to be used.
 
 ==== Fixes and clarifications
 * Clarify that the backwards compatibility policy permits optional attributes
