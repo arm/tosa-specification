@@ -2,6 +2,7 @@
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
 // (C) COPYRIGHT 2020-2024 ARM Limited
+// Copyright 2026 Eylon Eliyahu Krause <eylon1909@gmail.com>
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -25,6 +26,6 @@ for_each(0 <= n < N, 0 <= oy < H, 0 <= ox < W/2 + 1) {
             sum_imag += -val_real * 0.0;
         }
     }
-    tensor_write<in_out_t>(output_real, [N,H,W], [n,oy,ox], sum_real);
-    tensor_write<in_out_t>(output_imag, [N,H,W], [n,oy,ox], sum_imag);
+    tensor_write<in_out_t>(output_real, [N,H,W/2 + 1], [n,oy,ox], sum_real);
+    tensor_write<in_out_t>(output_imag, [N,H,W/2 + 1], [n,oy,ox], sum_imag);
 }
