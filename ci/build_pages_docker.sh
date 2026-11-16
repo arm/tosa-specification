@@ -6,7 +6,7 @@
 set -Eeuo pipefail
 
 # Tags of the specification releases to build
-RELEASE_TAGS=(v1.0.0 v1.0.1 v1.0.2)
+RELEASE_TAGS=(v1.0.0 v1.0.1 v1.0.2 v1.1.0)
 
 build() {
   make -C "$1" html
