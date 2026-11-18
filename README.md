@@ -1,9 +1,27 @@
+<!--
+PDX-FileCopyrightText: Copyright 2020,2022,2024,2026 Arm Limited and/or its affiliates.
+SPDX-License-Identifier: Apache-2.0
+-->
+
 TOSA Specification Repository
 =============
 
 This repository contains the source files for the TOSA specification.
 See the specification itself for details on the purpose and definition
 of the specification.
+
+# Pre-rendered versions
+
+Rendered versions of the TOSA specification in HTML format.
+
+Releases:
+- `v1.1.0` - https://arm.github.io/tosa-specification/releases/v1.1.0/
+- `v1.0.2` - https://arm.github.io/tosa-specification/releases/v1.0.2/
+- `v1.0.1` - https://arm.github.io/tosa-specification/releases/v1.0.1/
+- `v1.0.0` - https://arm.github.io/tosa-specification/releases/v1.0.0/
+
+In development:
+- `main` - https://arm.github.io/tosa-specification/
 
 # Build requirements
 The TOSA specification is written in asciidoc format, and has been built
