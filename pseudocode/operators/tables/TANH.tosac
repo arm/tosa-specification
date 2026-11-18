@@ -9,6 +9,7 @@
 // by a licensing agreement from ARM Limited.
 
 int32_t tanh_reference(int32_t x) {  // input x range is -256 to +256 inclusive
+    REQUIRE(x >= -256 && x <= 256);
     fp64_t v = static_cast<fp64_t>(x) / static_cast<fp64_t>(32);
     v = exp(-2.0*v);
     v = (1.0-v)/(1.0+v);
