@@ -2,6 +2,7 @@
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
 // (C) COPYRIGHT 2020-2024 ARM Limited
+// Copyright 2026 Eylon Eliyahu Krause <eylon1909@gmail.com>
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -9,7 +10,7 @@
 
 ERROR_IF(axis < 0  || axis >= rank(shape1));
 ERROR_IF(shape[axis] != 1);
-shape_t left_shape  = (axis > 1) ? shape[0:axis-1] : [];
+shape_t left_shape  = (axis > 0) ? shape[0:axis-1] : [];
 shape_t right_shape = (axis < rank(shape)-1) ? shape[axis+1:rank(shape)-1] : [];
 for_each_data_position(left_index in left_shape) {
     for_each_data_position(right_index in right_shape) {
