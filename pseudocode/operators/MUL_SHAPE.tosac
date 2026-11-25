@@ -2,6 +2,7 @@
 // This confidential and proprietary software may be used only as
 // authorised by a licensing agreement from ARM Limited
 // (C) COPYRIGHT 2024-2025 ARM Limited
+// Copyright 2026 Eylon Eliyahu Krause <eylon1909@gmail.com>
 // ALL RIGHTS RESERVED
 // The entire notice above must be reproduced on all authorised
 // copies and copies may only be made to the extent permitted
@@ -10,5 +11,12 @@
 ERROR_IF(length(input1) != length(input2));
 
 for(int32_t index=0; index < length(input1); index++) {
-    output[index] = apply_mul_s<tensor_size_t>(input1[index], input2[index]);
+    tensor_size_t a = input1[index];
+    tensor_size_t b = input2[index];
+    // Ensure the product is representable as a tensor_size_t
+    if (a > 0 && b > 0) REQUIRE(a <= maximum_s<tensor_size_t>() / b);
+    if (a < 0 && b < 0) REQUIRE(a >= maximum_s<tensor_size_t>() / b);
+    if (a > 0 && b < 0) REQUIRE(b >= minimum_s<tensor_size_t>() / a);
+    if (a < 0 && b > 0) REQUIRE(a >= minimum_s<tensor_size_t>() / b);
+    output[index] = apply_mul_s<tensor_size_t>(a, b);
 }
